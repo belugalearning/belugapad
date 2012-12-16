@@ -28,13 +28,14 @@
 @synthesize mount;
 @synthesize hidden;
 
-@synthesize isLargeObject;
+@synthesize assetType;
 
 @synthesize targetNumber, usePicker;
 
 @synthesize numberDotRenderComponent;
 @synthesize renderAsDots;
 @synthesize numberMode;
+@synthesize backgroundType;
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -53,6 +54,7 @@
         
         size=CGSizeZero;
         position=CGPointZero;
+        backgroundType=@"Tile";
         
         renderAsDots=NO;
         
@@ -78,8 +80,9 @@
     dupe.prefixText=[[self.prefixText copy] autorelease];
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     dupe.renderAsDots=self.renderAsDots;
+    dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -121,7 +124,8 @@
 
 -(NSNumber*)value
 {
-    return numberValue;
+    if(numberValue)return numberValue;
+    else return @0;
 }
 
 
@@ -222,6 +226,7 @@
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
     
+    [self redrawBkg];
     
     [nf release];
     
@@ -346,7 +351,7 @@
 {
     if(self.hidden)return;
     
-    textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useTheseAssets=self.assetType;
     
     // text mode
     self.textRenderComponent.useAlternateFont=YES;
@@ -369,11 +374,25 @@
     else
     {
         //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
-        self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+        if(self.interactive)
+            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+        else
+            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
+
     }
+    
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
+        size.width=170;
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(void)redrawBkg
+{
+    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
+    [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
 }
 
 -(void)destroy

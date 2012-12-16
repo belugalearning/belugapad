@@ -135,7 +135,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         TFLog(@"logged in with beluga user id: %@", urId);
         
         [allUsersDatabase open];
-        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick FROM users WHERE id = ?", urId];
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [allUsersDatabase close];
         
@@ -200,13 +200,13 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableArray *users = [NSMutableArray array];
     
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password FROM users"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
     [allUsersDatabase close];
     
-    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"interest"  ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
+    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"nick" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
     [users sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]];
     return users;
 }
@@ -267,13 +267,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback
 {
-    NSMutableDictionary *d = [NSMutableDictionary dictionary];
-    [d setObject:nickName forKey:@"nick"];
-    [d setObject:password forKey:@"password"];
-    
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSGetUserPath
-                                                  parameters:d];
+                                                  parameters:@{ @"nick":nickName, @"password":password }];
     
     __block typeof(self) bself = self;
     
@@ -356,15 +352,19 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     __block typeof(self) bself = self;
     __block SEL processData = @selector(processDownloadedState:);
     
-    [NSURLConnection sendAsynchronousRequest:req
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *res, NSData *data, NSError *e) {
-                               if (!e && res && [(NSHTTPURLResponse*)res statusCode] == 200 && data)
-                               {
-                                   NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:processData userInfo:@{ @"userId":userId, @"responseData":data } repeats:YES];
-                                   [bself performSelector:processData withObject:timer];
-                               }
-                           }];
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
+    {
+        BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]] && [op.response statusCode] == 200;
+        if (reqSuccess)
+        {
+            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:processData userInfo:@{ @"userId":userId, @"responseData":res } repeats:YES];
+            [bself performSelector:processData withObject:timer];
+        }
+    };
+    
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
 }
 
 -(void)processDownloadedState:(NSTimer*)timer
@@ -654,6 +654,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableDictionary *user = [NSMutableDictionary dictionary];
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
+    [user setValue:[rs stringForColumn:@"password"] forKey:@"password"];
     return user;
 }
 
@@ -703,6 +704,11 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [currentUserStateDatabase executeUpdate:@"INSERT INTO FeatureKeys(key, encounters) VALUES(?,?)", key, [@[time] JSONString]];
     }
     [currentUserStateDatabase close];
+}
+
+-(void)notifyStartingFeatureKey:(NSString*)featureKey
+{
+    
 }
 
 -(void)dealloc

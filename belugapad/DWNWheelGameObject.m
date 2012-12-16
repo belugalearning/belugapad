@@ -33,6 +33,10 @@
 @synthesize Locked;
 @synthesize HasDecimals;
 @synthesize HasNegative;
+@synthesize ComponentHeight;
+@synthesize ComponentWidth;
+@synthesize ComponentSpacing;
+@synthesize UnderlaySpriteFileName;
 
 -(void)dealloc
 {

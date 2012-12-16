@@ -24,7 +24,8 @@
 @synthesize mount;
 @synthesize hidden;
 
-@synthesize isLargeObject;
+@synthesize assetType;
+@synthesize backgroundType;
 
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -37,6 +38,8 @@
         enabled=YES;
         interactive=YES;
         valueOperator=@"";
+        assetType=@"Small";
+        backgroundType=@"Tile";
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -52,10 +55,10 @@
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     dupe.enabled=self.enabled;
     dupe.valueOperator=[[self.valueOperator copy] autorelease];
-    
+    dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -84,7 +87,7 @@
     
     self.text=theValueOperator;
     if([theValueOperator isEqualToString:@"/"])
-        self.text=@"%";
+        self.text=@"÷";
 }
 
 -(NSString*)returnMyText
@@ -100,6 +103,8 @@
     if([self.text isEqualToString:@"x"])
         myText=@"times by";
     if([self.text isEqualToString:@"%"])
+        myText=@"divided by";
+    if([self.text isEqualToString:@"÷"])
         myText=@"divided by";
     if([self.text isEqualToString:@"="])
         myText=@"equals";
@@ -181,7 +186,7 @@
 -(void)setupDraw
 {
     if(self.hidden)return;
-    textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useTheseAssets=self.assetType;
     //text render to create it's label
     [textRenderComponent setupDraw];
     
@@ -195,6 +200,8 @@
     //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
     self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
+        size.width=170;
     
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];

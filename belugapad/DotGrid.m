@@ -183,7 +183,7 @@
             int ftmax=[ft intValue];
             NSMutableArray *reqdFactorShapes=[[NSMutableArray alloc] init];
             
-            for(int i=1; i<ftmax; i++)
+            for(int i=1; i<=ftmax; i++)
             {
                 if(!(ftmax % i))
                 {
@@ -271,6 +271,15 @@
         doNotSimplifyFractions=NO;
         showDraggableBlock=YES;
     }
+    
+    if(showDraggableBlock)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_DRAG_TO_CREATE_BLOCK"];
+        
+    [usersService notifyStartingFeatureKey:@"DOTGRID_TAP_TO_COUNT"];
+    [usersService notifyStartingFeatureKey:@"DOTGRID_ALLOW_RESIZE_SHAPE"];
+    
+    if(evalType==kProblemSumOfFractions)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_EVAL_SUM_FRACTIONS"];
 
 }
 
@@ -397,7 +406,7 @@
     if(showDraggableBlock)
     {
         dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Sq40.png")];
-        [dragBlock setPosition:ccp(55,650)];
+        [dragBlock setPosition:ccp(55,550)];
         [renderLayer addChild:dragBlock];
     }
 
@@ -1487,6 +1496,7 @@
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
+                w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
                 w.HasCountBubble=showCountBubble;
                 w.CountBubbleRenderLayer=anchorLayer;
                 
@@ -1531,6 +1541,7 @@
     w.Components=numberWheelComponents;
     w.Position=ccp(lx-140,(ly-120)-200*[numberWheels count]);
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
+    w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasCountBubble=NO;
     w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
     [w.RenderLayer addChild:w.Label];
@@ -2167,6 +2178,7 @@
 -(BOOL)checkForCorrectShapeSizes
 {
     int correctShapes=0;
+    int shapesOnGrid=0;
     NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
     NSMutableArray *matchObjects=[[NSMutableArray alloc]init];
     //for each object that conforms to being a shapegroup
@@ -2174,6 +2186,7 @@
     {
         if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
+            shapesOnGrid++;
             DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
             DWDotGridAnchorGameObject *fa=nil;
             DWDotGridAnchorGameObject *la=nil;
@@ -2223,7 +2236,7 @@
         }
     }
     
-    if(correctShapes==[reqShapes count])
+    if(correctShapes==[reqShapes count] && shapesOnGrid==correctShapes)
     {
         for(DWDotGridShapeGameObject *s in matchObjects)
         {

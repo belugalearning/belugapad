@@ -16,6 +16,7 @@
 #import "SGBtxeProtocols.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRow.h"
+#import "SGBtxeObjectIcon.h"
 
 @implementation SGDtoolContainer
 
@@ -25,6 +26,8 @@
 @synthesize LineType;
 @synthesize ShowCount, CountLabel;
 @synthesize RenderLayer;
+@synthesize IsEvalTarget;
+@synthesize Selected;
 
 -(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andShowCount:(BOOL)showValue andRenderLayer:(CCLayer*)aRenderLayer
 {
@@ -34,6 +37,8 @@
         [aRenderLayer addChild:self.BaseNode z:500];
         self.ShowCount=showValue;
         self.RenderLayer=aRenderLayer;
+        self.IsEvalTarget=NO;
+        self.Selected=NO;
         
         if(aLabel){
 //            self.Label=[CCLabelTTF labelWithString:aLabel fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
@@ -218,10 +223,18 @@
 
 -(void)setGroupBTXELabel:(id)thisLabel
 {
-    BTXELabel=thisLabel;
-    
-    if(!BTXERow)
+    if(BTXERow)
     {
+        if([BTXELabel isKindOfClass:[SGBtxeObjectIcon class]])
+           [(SGBtxeObjectIcon*)BTXELabel destroy];
+        
+        BTXERow=nil;
+        BTXELabel=nil;
+        
+    }
+        BTXELabel=thisLabel;
+//    else
+//    {
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer];
         row.forceVAlignTop=NO;
         SGBtxeContainerMgr *rowContMgr=row.containerMgrComponent;
@@ -231,13 +244,26 @@
         [row setupDraw];
         BTXERow=row;
         
-    }
+//    }
     [self repositionLabel];
 }
 
 -(int)blocksInShape
 {
     return [self.BlocksInShape count];
+}
+
+-(void)selectMyBlocks
+{
+    if(!self.Selected)
+        self.Selected=YES;
+    else if(self.Selected)
+        self.Selected=NO;
+        
+    for(id<Moveable> go in self.BlocksInShape)
+    {
+        [go selectMe];
+    }
 }
 
 -(void)setGroupLabelString:(NSString*)toThisString

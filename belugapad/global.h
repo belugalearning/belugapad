@@ -365,6 +365,7 @@
 
 //distribution tool
 #define DISTRIBUTION_EVAL_TYPE @"DISTRIBUTION_EVAL_TYPE"
+#define IS_EVAL_TARGET @"IS_EVAL_TARGET"
 #define HAS_CAGE @"HAS_CAGE"
 #define DOCK_TYPE @"DOCK_TYPE"
 #define BLOCK_TYPE @"BLOCK_TYPE"
@@ -466,11 +467,12 @@
 #define BTXE_VPAD 9.0f
 #define BTXE_OTBKG_SPRITE_W 8.0f
 #define BTXE_OTBKG_SPRITE_H 38.0f
-#define BTXE_OTBKG_WIDTH_OVERDRAW_PAD 10.0f
+#define BTXE_OTBKG_WIDTH_OVERDRAW_PAD 30.0f
 #define BTXE_PICKUP_PROXIMITY 25.0f
 #define BTXE_ROW_DEFAULT_MAX_WIDTH 924.0f
 #define BTXE_NAMESPACE @"http://zubi.me/namespaces/2012/BTXE"
 #define BTXE_T @"b:t"
+#define BTXE_BR @"b:br"
 #define BTXE_OT @"b:ot"
 #define BTXE_OI @"b:oi"
 #define BTXE_ON @"b:on"
@@ -480,7 +482,7 @@
 #define BTXE_COMMOT @"b:commot"
 
 
-#define QUESTION_SEPARATOR_PADDING -15.0f
+#define QUESTION_SEPARATOR_PADDING -0.0f
 
 
 //scoring

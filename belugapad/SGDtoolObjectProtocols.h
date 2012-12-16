@@ -29,7 +29,7 @@
 -(void)move;
 -(void)animateToPosition;
 -(BOOL)amIProximateTo:(CGPoint)location;
--(void)resetTint;
+-(void)selectMe;
 
 @end
 
@@ -75,6 +75,8 @@
 @property (retain) CCLabelTTF *CountLabel;
 @property (retain) id BTXELabel;
 @property (retain) SGBtxeRow *BTXERow;
+@property BOOL IsEvalTarget;
+@property BOOL Selected;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
@@ -84,6 +86,7 @@
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
 -(void)destroyThisObject;
+-(void)selectMyBlocks;
 
 @end
 

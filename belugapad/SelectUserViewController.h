@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PassCodeView.h"
 
 @class AppDelegate;
 
-@interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PassCodeViewDelegate>
 {
     IBOutlet UIImageView *backgroundImageView;
-    IBOutlet UIView *selectUserView;
-    IBOutlet UIView *editUserView;
-    IBOutlet UIView *loadExistingUserView;
 }
+-(void)passCodeBecameInvalid:(PassCodeView*)passCodeView;
+-(void)passCodeBecameValid:(PassCodeView*)passCodeView;
 @end

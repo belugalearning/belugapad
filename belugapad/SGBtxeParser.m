@@ -20,6 +20,7 @@
 #import "SGBtxeObjectIcon.h"
 #import "SGBtxePlaceholder.h"
 #import "SGBtxeObjectOperator.h"
+#import "SGBtxeLineBreak.h"
 
 const NSString *matchNumbers=@"0123456789";
 
@@ -77,10 +78,11 @@ const NSString *matchNumbers=@"0123456789";
             {
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
+                
                 on.text=s;
                 on.enabled=YES;
                 on.interactive=NO;
-                
+
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
             }
             else
@@ -108,6 +110,13 @@ const NSString *matchNumbers=@"0123456789";
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
+    }
+    
+    else if([element.name isEqualToString:BTXE_BR])
+    {
+        SGBtxeLineBreak *br=[[SGBtxeLineBreak alloc] initWithGameWorld:gameWorld];
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:br];
     }
     
     else if([element.name isEqualToString:BTXE_OBJ])

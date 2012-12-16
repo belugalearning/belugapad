@@ -38,16 +38,18 @@
 
 
 #define HD_HEADER_HEIGHT 65.0f
-#define HD_BUTTON_INSET 40.0f
-#define TRAY_BUTTON_SPACE 68.0f
-#define TRAY_BUTTON_INSET 0.0f
+#define HD_BUTTON_INSET 65.0f
+#define TRAY_BUTTON_SPACE 80.0f
+#define TRAY_BUTTON_INSET -35.0f
 #define HD_SCORE_INSET 40.0f
+#define BACKGROUND_MUSIC_FILE_NAME @"/sfx/go/sfx_journey_map_general_background_score.mp3"
+#define PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME @"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3"
 
 //CCPickerView
 //#define kComponentWidth 54
-#define kComponentWidth 70
-#define kComponentHeight 50
-#define kComponentSpacing 7
+#define kComponentWidth 71
+#define kComponentHeight 62
+#define kComponentSpacing 6
 
 #define CORNER_TRAY_POS_X 700.0f
 #define CORNER_TRAY_POS_Y 460.0f
@@ -158,7 +160,7 @@ static float kTimeToHintToolTray=7.0f;
         [self populatePerstLayer];
         
         pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
-        pbtn.position=ccp(HD_BUTTON_INSET, 2*cy - 30);
+        pbtn.position=ccp(HD_BUTTON_INSET-30, 2*cy - 30);
         pbtn.tag=3;
         pbtn.opacity=0;
         [perstLayer addChild:pbtn z:3];
@@ -176,7 +178,7 @@ static float kTimeToHintToolTray=7.0f;
         //dynamic problem parser (persists to end of pipeline)
         DynProblemParser=[[DProblemParser alloc] init];
         
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        ac = (AppController*)[[UIApplication sharedApplication] delegate];
         loggingService = ac.loggingService;
         contentService = ac.contentService;
         usersService = ac.usersService;
@@ -191,6 +193,8 @@ static float kTimeToHintToolTray=7.0f;
         [self schedule:@selector(doUpdateOnQuarterSecond:) interval:1.0f/40.0f];
         
         [TestFlight passCheckpoint:@"STARTED_TOOLHOST"];
+    
+        doPlaySound=YES;
     }
     
     return self;
@@ -294,7 +298,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)playAudioFlourish
 {
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/integrated/blpress-flourish.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer_1.wav")];
 }
 
 #pragma mark draw and ticks
@@ -395,6 +399,21 @@ static float kTimeToHintToolTray=7.0f;
             [(id<Text>)CurrentBTXE setText:[self returnPickerNumber]];
         }
         
+    }
+    
+    if(countUpToJmap)
+    {
+        if(!hasShownComplete){
+            [self doWinning];
+            hasShownComplete=YES;
+        }
+        timeToReturnToJmap+=delta;
+        
+        if(timeToReturnToJmap>3.1f)
+        {
+            [self showCompleteAndReturnToMap];
+            countUpToJmap=NO;
+        }
     }
     
     if(evalShowCommit)[self showHideCommit];
@@ -528,7 +547,7 @@ static float kTimeToHintToolTray=7.0f;
     
     NSString *bf=[NSString stringWithFormat:@"/images/menu/HR_Multiplier_%d.png", m];
     multiplierBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(bf)];
-    multiplierBadge.position=ccp(cx+95, 2*cy-15);
+    multiplierBadge.position=ccp(cx-95, 2*cy-multiplierBadge.contentSize.height/1.7);
     //multiplierBadge.position=ccp(cx,cy);
     [self addChild:multiplierBadge z:4];
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_incremented.wav")];
@@ -679,25 +698,31 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        [TestFlight passCheckpoint:@"PIPELINE_COMPLETE_LEAVING_TO_JMAP"];
-        
-        //no more problems in this sequence, bail to menu
-        
-        //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
-        
-        //assume completion
-        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
-        
-        contentService.fullRedraw=YES;
-        contentService.lightUpProgressFromLastNode=YES;
-        
-        [self returnToMap];
+        countUpToJmap=YES;
     }
+}
+
+-(void)showCompleteAndReturnToMap
+{
+    [TestFlight passCheckpoint:@"PIPELINE_COMPLETE_LEAVING_TO_JMAP"];
+    
+    //no more problems in this sequence, bail to menu
+    
+    //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
+    
+    //assume completion
+    [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
+    
+    contentService.fullRedraw=YES;
+    contentService.lightUpProgressFromLastNode=YES;
+    
+    [self returnToMap];
 }
 
 -(void) loadProblem
 {
     trayWheelShowing=NO;
+    trayCornerShowing=NO;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
@@ -861,16 +886,12 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
-    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
-    [readProblemDesc setPosition:ccp(50,600)];
-    [problemDefLayer addChild:readProblemDesc];
-    
     if(!thisProblemDescription)
         self.thisProblemDescription=[descRow returnRowStringForSpeech];
     
     [self readOutProblemDescription];
     
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
 }
 -(void)addCommitButton
 {
@@ -901,8 +922,9 @@ static float kTimeToHintToolTray=7.0f;
 {
     metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_MQ_Tip.png")];
     [metaArrow setPosition:ccp(lx-124,2*cy-30)];
-    [metaArrow setTag:3];
-    [metaArrow setOpacity:0];
+//    [metaArrow setTag:3];
+//    [metaArrow setOpacity:0];
+    [metaArrow setVisible:NO];
     [problemDefLayer addChild:metaArrow z:10];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
@@ -919,14 +941,23 @@ static float kTimeToHintToolTray=7.0f;
     [self addCommitButton];
 }
 
--(void)readOutProblemDescription
+-(void)readOutProblemDescriptionAndForce:(BOOL)forceRead
 {
-    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+    if(ac.IsMuted && !forceRead)return;
     
-//    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
     NSString *readString=[[thisProblemDescription copy] autorelease];
     
     [ac speakString:readString];
+}
+
+-(void)readOutProblemDescription
+{
+    [self readOutProblemDescriptionAndForce:NO];
+}
+
+-(void)stopAllSpeaking
+{
+    [ac stopAllSpeaking];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
@@ -996,8 +1027,9 @@ static float kTimeToHintToolTray=7.0f;
     traybtnPad.tag=3;
     
     traybtnCalc.position=ccp(2*cx-(2*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
-    traybtnWheel.position=ccp(2*cx-(3*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
-    traybtnMq.position=ccp(2*cx-(4*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+    traybtnMq.position=ccp(2*cx-(3*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+    traybtnWheel.position=ccp(2*cx-(4*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+
     traybtnPad.position=ccp(2*cx-(5*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
 
     
@@ -1008,6 +1040,11 @@ static float kTimeToHintToolTray=7.0f;
     //if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
     
     TFLog(@"resetting problem");
+    
+    [qTrayTop removeFromParentAndCleanup:YES];
+    [qTrayMid removeFromParentAndCleanup:YES];
+    [qTrayBot removeFromParentAndCleanup:YES];
+    [readProblemDesc removeFromParentAndCleanup:YES];
     
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
@@ -1085,7 +1122,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1093,6 +1130,10 @@ static float kTimeToHintToolTray=7.0f;
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
+        
+        muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
+        [muteBtn setPosition:ccp(250,250)];
+        [pauseLayer addChild:muteBtn z:20];
         
         if(contentService.pathToTestDef)
         {
@@ -1125,7 +1166,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)hidePauseMenu
 {
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     [pauseLayer setVisible:NO];
     isPaused=NO;
     
@@ -1154,7 +1195,24 @@ static float kTimeToHintToolTray=7.0f;
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+        [self stopAllSpeaking];
         [self returnToMap];
+    }
+    if(CGRectContainsPoint(muteBtn.boundingBox, location))
+    {
+        if(ac.IsMuted)
+        {
+            ac.IsMuted=NO;
+            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")]];
+            
+            [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
+        }
+        else
+        {
+            ac.IsMuted=YES;
+            [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
+        }
     }
 //    if(CGRectContainsPoint(kPauseMenuLogOut, location))
 //    {
@@ -1163,8 +1221,6 @@ static float kTimeToHintToolTray=7.0f;
 //        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
 //        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
 //    }
-    
-    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     
     //bottom right tap for debug skip problem
     if (!ac.ReleaseMode && location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
@@ -1299,6 +1355,11 @@ static float kTimeToHintToolTray=7.0f;
     // check the answer mode and assign
     NSNumber *aMode=[pdefMQ objectForKey:META_QUESTION_ANSWER_MODE];
     if (aMode) mqAnswerMode=[aMode intValue];
+    
+    if(mqAnswerMode==kMetaQuestionAnswerSingle)
+        [usersService notifyStartingFeatureKey:@"METAQUESTION_ANSWER_MODE_SINGLE"];
+    else if(mqAnswerMode==kMetaQuestionAnswerMulti)
+        [usersService notifyStartingFeatureKey:@"METAQUESTION_ANSWER_MODE_MULTI"];
     
     // check the eval mode and assign
 //    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
@@ -1724,6 +1785,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)setupNumberPicker:(NSDictionary *)pdefNP
 {
+    [usersService notifyStartingFeatureKey:@"NUMBERPICKER_PROBLEM"];
     numberPickerForThisProblem=YES;
     toolCanEval=NO;
     shownProblemStatusFor=0;
@@ -2125,7 +2187,6 @@ static float kTimeToHintToolTray=7.0f;
         [self playAudioPress];
         
         //check commit threshold for insertion
-        AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
         
         //only assess triggers if the insertion mode is enabled, and if we're at the episode head (e.g. don't nest insertions)
         if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead && ![contentService isUsingTestPipeline])
@@ -2180,7 +2241,7 @@ static float kTimeToHintToolTray=7.0f;
     //create row
     SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     descRow=row;
-    row.position=ccp(cx, (cy*2) - 95);
+    row.position=ccp(cx, (cy*2) - 130);
 
     NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     if(numberMode)
@@ -2220,6 +2281,32 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
+    
+    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/Question_tray_play.png")];
+//    [readProblemDesc setOpacity:0];
+//    [readProblemDesc setTag:2];
+    
+    qTrayTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Top.png")];
+    qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
+    qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
+    
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
+    
+    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
+    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
+    
+    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))];
+    
+    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200)]];
+    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200)]];
+    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200)]];
+    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
+    
+    
+    [problemDefLayer addChild:readProblemDesc];
+    [problemDefLayer addChild:qTrayTop];
+    [problemDefLayer addChild:qTrayBot];
+    [problemDefLayer addChild:qTrayMid];
     
     
     //show and hide separator for exprbuilder
@@ -2317,7 +2404,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else if(CGRectContainsPoint(readProblemDesc.boundingBox, location))
     {
-        [self readOutProblemDescription];
+        [self readOutProblemDescriptionAndForce:YES];
         return;
     }
     else
@@ -2354,8 +2441,10 @@ static float kTimeToHintToolTray=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
     {
+        doPlaySound=NO;
         //remove any trays
         [self removeAllTrays];
+        doPlaySound=YES;
         
         //user pressed commit button
         [self checkUserCommit];
@@ -2432,21 +2521,22 @@ static float kTimeToHintToolTray=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    CGRect bbCalc=CGRectMake(traybtnCalc.position.x-traybtnCalc.contentSize.width/2,traybtnCalc.position.y-(HD_HEADER_HEIGHT/2), traybtnCalc.contentSize.width, HD_HEADER_HEIGHT);
-    CGRect bbMq=CGRectMake(traybtnMq.position.x-traybtnMq.contentSize.width/2,traybtnMq.position.y-(HD_HEADER_HEIGHT/2), traybtnMq.contentSize.width, HD_HEADER_HEIGHT);
-    CGRect bbWheel=CGRectMake(traybtnWheel.position.x-traybtnWheel.contentSize.width/2,traybtnWheel.position.y-(HD_HEADER_HEIGHT/2), traybtnWheel.contentSize.width, HD_HEADER_HEIGHT);
-    CGRect bbPad=CGRectMake(traybtnPad.position.x-traybtnPad.contentSize.width/2,traybtnPad.position.y-(HD_HEADER_HEIGHT/2), traybtnPad.contentSize.width, HD_HEADER_HEIGHT);
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
     
-    if(isAnimatingIn||autoMoveToNextProblem) return;
+    if(isAnimatingIn||autoMoveToNextProblem||showingProblemComplete||showingProblemIncomplete) return;
     
     if(isPaused)
     {
         [self checkPauseTouches:location];
         return;
     }
+    
+    CGRect bbCalc=CGRectMake(traybtnCalc.position.x-traybtnCalc.contentSize.width/2,traybtnCalc.position.y-(HD_HEADER_HEIGHT/2), traybtnCalc.contentSize.width, HD_HEADER_HEIGHT);
+    CGRect bbMq=CGRectMake(traybtnMq.position.x-traybtnMq.contentSize.width/2,traybtnMq.position.y-(HD_HEADER_HEIGHT/2), traybtnMq.contentSize.width, HD_HEADER_HEIGHT);
+    CGRect bbWheel=CGRectMake(traybtnWheel.position.x-traybtnWheel.contentSize.width/2,traybtnWheel.position.y-(HD_HEADER_HEIGHT/2), traybtnWheel.contentSize.width, HD_HEADER_HEIGHT);
+    CGRect bbPad=CGRectMake(traybtnPad.position.x-traybtnPad.contentSize.width/2,traybtnPad.position.y-(HD_HEADER_HEIGHT/2), traybtnPad.contentSize.width, HD_HEADER_HEIGHT);
     
     
     if(heldObject)
@@ -2639,9 +2729,27 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(350.0f, (cy*2)-95);
-        [descRow animateAndMoveToPosition:ccp(350.0f, (cy*2)-95)];
+        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-130)];
         
         [descRow relayoutChildrenToWidth:625];
+        
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayBot.scaleY]];
+        
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/3.1), qTrayBot.position.y)]];
+        
+//        [qTrayTop setScaleX:0.7];
+//        [qTrayMid setScaleX:0.7];
+//        [qTrayBot setScaleX:0.7];
+        
+//        [qTrayTop setPosition:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)];
+//        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
+//        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
+        
         [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
         
         trayCornerShowing=YES;
@@ -2654,8 +2762,25 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(cx, (cy*2) - 95);
+
+//        [qTrayTop setScaleX:1.0];
+//        [qTrayMid setScaleX:1.0];
+//        [qTrayBot setScaleX:1.0];
+//        
+//        [qTrayTop setPosition:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)];
+//        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
+//        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
+
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
         
-        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 95)];
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/3.1), qTrayBot.position.y)]];
+        
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
         
@@ -2680,15 +2805,24 @@ static float kTimeToHintToolTray=7.0f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_appears.wav")];
     trayLayerCalc.visible=YES;
     trayCalcShowing=YES;
-    [traybtnCalc setColor:ccc3(247,143,6)];
+    
+    [traybtnCalc setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Selected.png")]];
+    //[traybtnCalc setColor:ccc3(247,143,6)];
 }
 
 -(void)hideCalc
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_disappears.wav")];
+    
     trayLayerCalc.visible=NO;
     trayCalcShowing=NO;
-    [traybtnCalc setColor:ccc3(255,255,255)];
+    
+    if(hasTrayCalc)
+        [traybtnCalc setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")]];
+    else
+        [traybtnCalc setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")]];
+
 }
 
 -(void)showMq
@@ -2697,19 +2831,36 @@ static float kTimeToHintToolTray=7.0f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_appears.wav")];
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
-    [traybtnMq setColor:ccc3(247,143,6)];
+//    [traybtnMq setColor:ccc3(247,143,6)];
+    [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Selected.png")]];
+
     if(metaArrow)[metaArrow setVisible:NO];
 }
 
 -(void)hideMq
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
     [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
-    [traybtnMq setColor:ccc3(255,255,255)];
+    
+    if(hasTrayMq)
+        [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Available.png")]];
+    else
+        [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_NotAvailable.png")]];
+    
     if(metaArrow && [self metaQuestionSelectedCount]==0)
-        [metaArrow setVisible:YES];
+        //[metaArrow setVisible:YES];
+        [metaArrow setVisible:NO];
+}
+
+-(void)disableWheel
+{
+    hasTrayWheel=NO;
+    numberPickerForThisProblem=NO;
+    [self hideWheel];
+    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
 }
 
 -(void)showWheel
@@ -2727,7 +2878,7 @@ static float kTimeToHintToolTray=7.0f;
         
         for(int i=0;i<pickerCols;i++)
         {
-            [pickerView spinComponent:i speed:15 easeRate:15 repeat:2 stopRow:0];
+            [pickerView spinComponent:i speed:40 easeRate:5 repeat:2 stopRow:0];
         }
         
         //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
@@ -2738,15 +2889,23 @@ static float kTimeToHintToolTray=7.0f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_appears.wav")];
     trayLayerWheel.visible=YES;
     trayWheelShowing=YES;
-    [traybtnWheel setColor:ccc3(247,143,6)];
+//    [traybtnWheel setColor:ccc3(247,143,6)];
+    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Selected.png")]];
 }
 
 -(void)hideWheel
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_disappears.wav")];
+
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
-    [traybtnWheel setColor:ccc3(255,255,255)];
+//    [traybtnWheel setColor:ccc3(255,255,255)];
+    
+    if(hasTrayWheel)
+        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
+    else
+        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
 }
 
 -(void)showPad
@@ -2764,15 +2923,19 @@ static float kTimeToHintToolTray=7.0f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
-    [traybtnPad setColor:ccc3(247,143,6)];
+//    [traybtnPad setColor:ccc3(247,143,6)];
+    [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Selected.png")]];
 }
 
 -(void)hidePad
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
+
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
-    [traybtnPad setColor:ccc3(255,255,255)];
+//    [traybtnPad setColor:ccc3(255,255,255)];
+    [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
@@ -2815,9 +2978,9 @@ static float kTimeToHintToolTray=7.0f;
     if(self.pickerView) return;
     
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[self numberOfComponentsInPickerView:self.pickerView]];
-    NSString *strULSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
+//    NSString *strULSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
-    CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
+//    CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
     if(currentTool)
@@ -2826,19 +2989,20 @@ static float kTimeToHintToolTray=7.0f;
         pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
+
     
     if(CurrentBTXE && ([((id<Text>)CurrentBTXE).text floatValue]>0 || [((id<Text>)CurrentBTXE).text floatValue]<0))
         [self updatePickerNumber:((id<Text>)CurrentBTXE).text];
     
 
     
-    [ulSprite setPosition:pickerView.position];
+//    [ulSprite setPosition:pickerView.position];
 
     
     
     [ovSprite setPosition:pickerView.position];
     [trayLayerWheel addChild:ovSprite z:18];
-    [trayLayerWheel addChild:ulSprite z:19];
+//    [trayLayerWheel addChild:ulSprite z:19];
     [trayLayerWheel addChild:self.pickerView z:20];
 }
 
@@ -2963,6 +3127,13 @@ static float kTimeToHintToolTray=7.0f;
     CGSize size = CGSizeMake(200, 100);
     
     return size;
+}
+
+- (CCNode *)underlayImage:(CCPickerView *)pickerView {
+    
+    NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
+    return sprite;
 }
 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView {

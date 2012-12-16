@@ -40,11 +40,13 @@ typedef enum {
 @class DebugViewController;
 @class EditPDefViewController;
 @class SGBtxeRow;
+@class AppController;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     float cx, cy, lx, ly;
     
+    AppController *ac;
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;
@@ -56,6 +58,10 @@ typedef enum {
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
+    
+    CCSprite *qTrayTop;
+    CCSprite *qTrayMid;
+    CCSprite *qTrayBot;
     
     CCNode *nPicker;
     
@@ -114,6 +120,7 @@ typedef enum {
     
     CCSprite *hostBackground;
     CCSprite *pauseMenu;
+    CCSprite *muteBtn;
     CCSprite *problemComplete;
     CCSprite *problemIncomplete;
     CCSprite *pbtn;
@@ -212,6 +219,11 @@ typedef enum {
     
     BOOL evalShowCommit;
     
+    BOOL countUpToJmap;
+    BOOL hasShownComplete;
+    BOOL doPlaySound;
+    float timeToReturnToJmap;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -239,6 +251,7 @@ typedef enum {
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
 -(void)showHideCommit;
+-(void)disableWheel;
 -(void)showWheel;
 -(void)hideWheel;
 -(void)readOutProblemDescription;

@@ -21,8 +21,9 @@
 @synthesize usePicker;
 @synthesize mount;
 @synthesize hidden;
-@synthesize isLargeObject;
+@synthesize assetType;
 @synthesize container;
+@synthesize backgroundType;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -35,6 +36,7 @@
         enabled=YES;
         interactive=YES;
         usePicker=NO;
+        backgroundType=@"Tile";
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
@@ -52,8 +54,9 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     dupe.usePicker=self.usePicker;
+    dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
     
@@ -140,6 +143,12 @@
     
 }
 
+-(void)setText:(NSString *)theText
+{
+    text=[theText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [self redrawBkg];
+}
+
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour
 {
     [textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
@@ -161,7 +170,8 @@
 -(void)setupDraw
 {
     if(self.hidden)return;
-    textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useTheseAssets=self.assetType;
+    textRenderComponent.useAlternateFont=YES;
     //text render to create it's label
     [textRenderComponent setupDraw];
     
@@ -176,9 +186,19 @@
     self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
     
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
+        size.width=170;
+    
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
     
+}
+
+-(void)redrawBkg
+{
+    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
+    [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
 }
 
 -(void)activate

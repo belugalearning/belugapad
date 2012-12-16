@@ -27,8 +27,11 @@
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
 @synthesize baseNode;
-@synthesize isLarge;
+@synthesize myAssetType;
 @synthesize defaultNumbermode;
+@synthesize tintMyChildren;
+@synthesize backgroundType;
+
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -38,7 +41,10 @@
         size=CGSizeZero;
         position=CGPointZero;
         forceVAlignTop=NO;
-        isLarge=NO;
+//        isLarge=NO;
+        tintMyChildren=YES;
+        backgroundType=@"Tile";
+        myAssetType=@"Small";
         self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
@@ -86,9 +92,16 @@
     for (id<Bounding, RenderObject> c in children) {
         
         if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
-            ((id<MovingInteractive>)c).isLargeObject=self.isLarge;
+            ((id<MovingInteractive>)c).assetType=self.myAssetType;
+        
         if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
-            ((SGBtxePlaceholder*)c).isLargeObject=self.isLarge;
+            ((SGBtxePlaceholder*)c).assetType=self.myAssetType;
+        
+        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
+            ((id<MovingInteractive>)c).backgroundType=self.backgroundType;
+        
+        if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
+            ((SGBtxePlaceholder*)c).backgroundType=self.backgroundType;
         
         [c setupDraw];
         
@@ -145,9 +158,21 @@
 -(NSString*)returnRowStringForSpeech
 {
     NSString *rowString=@"";
+    id lastc=nil;
     
     for(id c in children)
     {
+        if(lastc)
+        {
+            if(([lastc isKindOfClass:[SGBtxeObjectIcon class]] || [lastc isKindOfClass:[SGBtxeObjectNumber class]] ||
+               [lastc isKindOfClass:[SGBtxeObjectText class]]) &&
+               ([c isKindOfClass:[SGBtxeObjectIcon class]] || [c isKindOfClass:[SGBtxeObjectNumber class]] ||
+                [c isKindOfClass:[SGBtxeObjectText class]]))
+            {
+                rowString=[NSString stringWithFormat:@"%@, ", rowString];
+            }
+        }
+        
         if([c isKindOfClass:[SGBtxeText class]])
         {
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];
@@ -160,7 +185,22 @@
         
         if([c isKindOfClass:[SGBtxeObjectNumber class]])
         {
-            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
+            
+            NSNumberFormatter *nf = [NSNumberFormatter new];
+            nf.numberStyle = NSNumberFormatterDecimalStyle;
+            NSNumber *thisNumber=[NSNumber numberWithFloat:[[(SGBtxeObjectNumber*)c numberText]floatValue]];
+            NSString *str = [nf stringFromNumber:thisNumber];
+            [nf release];
+            
+            if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0)
+            {
+                str=[str stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                rowString=[NSString stringWithFormat:@"%@ negative %@", rowString, str];
+            }
+            else
+            {
+                rowString=[NSString stringWithFormat:@"%@ %@", rowString, str];
+            }
         }
         
         if([c isKindOfClass:[SGBtxeObjectIcon class]])
@@ -172,6 +212,7 @@
         {
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectOperator*)c returnMyText]];
         }
+        lastc=c;
         
     }
     

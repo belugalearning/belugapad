@@ -44,7 +44,7 @@
 
 @property BOOL ReleaseMode;
 @property BOOL AuthoringMode;
-
+@property BOOL IsMuted;
 @property BOOL IsIpad1;
 
 //uikit gubbins
@@ -62,5 +62,6 @@
 -(void)writeLogMemoryUsage;
 -(void)tearDownUI;
 -(void)speakString:(NSString*)speakThis;
+-(void)stopAllSpeaking;
 
 @end

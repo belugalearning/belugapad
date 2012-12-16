@@ -94,6 +94,9 @@ static float kDistanceBetweenBlocks=70.0f;
         usersService = ac.usersService;
         loggingService = ac.loggingService;
         
+        drawNode=[[CCDrawNode alloc]init];
+        [renderLayer addChild:drawNode];
+        
         [self readPlist:pdef];
         [self populateGW];
         
@@ -153,11 +156,14 @@ static float kDistanceBetweenBlocks=70.0f;
             [totalValueLabel setString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]]];
         }
     }
-
+    [self drawConnections];
+    //[self checkForOverlappingContainers];
 }
 
--(void)draw
+-(void)drawConnections
 {
+    [drawNode clear];
+    
     for(id go in [gw AllGameObjects])
     {
         if([go conformsToProtocol:@protocol(ShapeContainer)])
@@ -214,6 +220,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     id<ShapeContainer>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
                     id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
+                    lastNewBondObject=nearestObject;
                 }
                 else{
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
@@ -223,14 +230,6 @@ static float kDistanceBetweenBlocks=70.0f;
         }
     }
     
-    
-//    for (int i=0; i<DRAW_DEPTH; i++)
-//    {
-//        for(id go in [gw AllGameObjects]) {
-//            if([go conformsToProtocol:@protocol(Pairable)])
-//                [((id<Pairable>)go) draw:i];
-//        }
-//    } 
 }
 
 -(void)drawBondLineFrom:(CGPoint)p1 to:(CGPoint)p2
@@ -252,7 +251,7 @@ static float kDistanceBetweenBlocks=70.0f;
         barHalfW=1 + (30 * (diff / (gw.Blackboard.MaxObjectDistance-70.0f)));
     }
     
-    ccDrawColor4F(1, 1, 1, op);
+//    ccDrawColor4F(1, 1, 1, op);
     
     CGPoint line=[BLMath SubtractVector:p1 from:p2];
     CGPoint lineN=[BLMath NormalizeVector:line];
@@ -276,7 +275,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
     
     for(int j=-barHalfW; j<0; j++)
@@ -284,7 +283,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
     
     for(int k=barHalfW; k>0; k--)
@@ -292,7 +291,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
 
 }
@@ -348,6 +347,24 @@ static float kDistanceBetweenBlocks=70.0f;
     
 
     usedShapeTypes=[[NSMutableArray alloc]init];
+    
+    if(problemHasCage)
+    {
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_ADD_FROM_CAGE"];
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_REMOVE_TO_CAGE"];
+    }
+    
+    if([initObjects count]==1 && !problemHasCage)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_SPLIT_INIT_OBJECT"];
+    
+    if([initAreas count]>0 && evalType)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_EVAL_AREAS"];
+    
+    if(evalType==kCheckTaggedGroups)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_BTXE_LABELLING"];
+    
+    if(evalType==kCheckContainerValues||evalType==kCheckEvalAreaValues)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_VALUES"];
 }
 
 -(void)populateGW
@@ -399,7 +416,7 @@ static float kDistanceBetweenBlocks=70.0f;
         if(!dockType)
             dockType=@"Infinite";
         
-        if(!addedCages && [dockType isEqualToString:@"Infinite"])
+        if(!addedCages)
             addedCages=[[NSMutableArray alloc]init];
         
         if([usedShapeTypes count]==0)
@@ -440,6 +457,7 @@ static float kDistanceBetweenBlocks=70.0f;
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
+    BOOL isEvalTarget = [[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
 
     
     if(!thisColour)
@@ -476,6 +494,8 @@ static float kDistanceBetweenBlocks=70.0f;
         container.LineType=@"Breakable";
     
     container.AllowDifferentTypes=bondDifferentTypes;
+    container.IsEvalTarget=isEvalTarget;
+    
     if (label && !existingGroups) existingGroups = [NSMutableArray arrayWithObject:label];
     float startPosX=0;
     float startPosY=0;
@@ -485,7 +505,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         int farLeft=(numBlocks/2)*60;
         int farRight=lx-30;
-        int topMost=ly-170;
+        int topMost=ly-200;
         int botMost=180;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
@@ -737,6 +757,12 @@ static float kDistanceBetweenBlocks=70.0f;
     return totalValue;
 }
 
+-(void)removePickupFromContainer
+{
+    if(currentPickupObject.MyContainer)
+        [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+}
+
 -(void)removeBlockByCage
 {
     if([dockType isEqualToString:@"15"])return;
@@ -755,9 +781,6 @@ static float kDistanceBetweenBlocks=70.0f;
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
         [s setZOrder:100];
-        
-        if(currentPickupObject.MyContainer)
-            [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
@@ -783,11 +806,11 @@ static float kDistanceBetweenBlocks=70.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                if(!thisCont.BTXERow)
-                {
+                //if(!thisCont.BTXERow)
+                //{
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
                     break;
-                }
+                //}
             }
         }
     }
@@ -1390,6 +1413,7 @@ static float kDistanceBetweenBlocks=70.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    touchStart=location;
     
     
     // loop over 
@@ -1458,7 +1482,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-200.0f) && [BLMath DistanceBetween:touchStart and:location]>8.0f)
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
@@ -1523,8 +1547,9 @@ static float kDistanceBetweenBlocks=70.0f;
     if(!spawnedNewObj && hasMovedCagedBlock)
         [cage spawnNewBlock];
     
-    if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
+    if(location.y<cage.MySprite.contentSize.height && problemHasCage)
     {
+        [self removePickupFromContainer];
         [self removeBlockByCage];
         
         [self setTouchVarsToOff];
@@ -1540,6 +1565,20 @@ static float kDistanceBetweenBlocks=70.0f;
         if(CGRectContainsPoint(inactiveRect, location))
         {
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_blocks_added_to_evaluation_area.wav")];
+        }
+        
+        if([BLMath DistanceBetween:touchStart and:location]<=8.0f)
+        {
+            id<ShapeContainer>blockContainer=currentPickupObject.MyContainer;
+            if([blockContainer.LineType isEqualToString:@"Unbreakable"])
+            {
+                [self deselectAll];
+                [blockContainer selectMyBlocks];
+            }
+            else
+            {
+                [(id<Moveable>)currentPickupObject selectMe];
+            }
         }
         
         BOOL gotTarget=NO;
@@ -1684,6 +1723,83 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     // empty selected objects
     [self setTouchVarsToOff];
+}
+
+-(void)deselectAll
+{
+    for (id<Selectable,Moveable,NSObject>go in gw.AllGameObjectsCopy) {
+        
+        if([go conformsToProtocol:@protocol(Moveable)])
+        {
+            id<ShapeContainer,NSObject>goCont=go.MyContainer;
+            
+            if([goCont isKindOfClass:[SGDtoolContainer class]])
+                goCont.Selected=NO;
+            go.Selected=YES;
+            [go selectMe];
+        }
+    }
+}
+
+-(CGRect)rectForThisShape:(id<ShapeContainer>)thisShape
+{
+    CGRect thisShapeRect=CGRectNull;
+    for(id<Moveable> block in thisShape.BlocksInShape)
+    {
+        CCSprite *s=block.mySprite;
+        thisShapeRect=CGRectUnion(thisShapeRect, s.boundingBox);
+    }
+
+    
+    return thisShapeRect;
+}
+
+-(void)checkForOverlappingContainers
+{
+    NSMutableArray *shapeRects=[[NSMutableArray alloc]init];
+    NSMutableArray *shapeObjects=[[NSMutableArray alloc]init];
+    
+    for(id<NSObject,ShapeContainer> go in gw.AllGameObjectsCopy)
+    {
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
+        {
+            CGRect thisShapeRect=CGRectNull;
+            for(id<Moveable> block in go.BlocksInShape)
+            {
+                CCSprite *s=block.mySprite;
+                thisShapeRect=CGRectUnion(thisShapeRect, s.boundingBox);
+            }
+            [shapeRects addObject:[NSValue valueWithCGRect:thisShapeRect]];
+            [shapeObjects addObject:go];
+        }
+    }
+    
+    
+    for(int i=0;i<[shapeObjects count];i++)
+    {
+        id<ShapeContainer>cont=[shapeObjects objectAtIndex:i];
+        CGRect contRect=[[shapeRects objectAtIndex:i]CGRectValue];
+        
+        for(int o=0;o<[shapeObjects count];o++)
+        {
+            if(o==i)continue;
+            
+            id<ShapeContainer>thisCont=[shapeObjects objectAtIndex:o];
+            
+            while(CGRectIntersectsRect(contRect, [self rectForThisShape:thisCont]))
+            {
+                for(id<Moveable>thisBlock in thisCont.BlocksInShape)
+                {
+                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x-1,thisBlock.mySprite.position.y)];
+                }
+                for(id<Moveable>thisBlock in cont.BlocksInShape)
+                {
+                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x+1,thisBlock.mySprite.position.y)];
+                }
+            }
+        }
+    }
+    
 }
 
 -(void)setTouchVarsToOff
@@ -1895,9 +2011,10 @@ static float kDistanceBetweenBlocks=70.0f;
     
     else if(evalType==kCheckTaggedGroups)
     {
-        NSDictionary *d=[solutionsDef objectAtIndex:0];
+        NSMutableDictionary *d=[solutionsDef objectAtIndex:0];
         int solutionsExpected=[d count];
         int solutionsFound=0;
+        int totalShapes=0;
         
         
         for(id cont in gw.AllGameObjects)
@@ -1906,6 +2023,7 @@ static float kDistanceBetweenBlocks=70.0f;
             if([cont conformsToProtocol:@protocol(ShapeContainer)])
             {
                 id <ShapeContainer> thisCont=cont;
+                totalShapes++;
                 
                 NSLog(@"BTXE Label tag %@", ((id<Interactive>)thisCont.BTXELabel).tag);
                 
@@ -1914,8 +2032,11 @@ static float kDistanceBetweenBlocks=70.0f;
                     int thisVal=[[d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag] intValue];
                     if([thisCont.BlocksInShape count]==thisVal)
                         solutionsFound++;
+                 
+                    [d removeObjectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag];
                     
                 }
+            
             }
         }
         
@@ -1936,7 +2057,7 @@ static float kDistanceBetweenBlocks=70.0f;
 //            }
 //        }
         
-        if (solutionsFound==solutionsExpected)
+        if (solutionsFound==solutionsExpected && solutionsFound==totalShapes)
             return YES;
         else
             return NO;
@@ -1970,6 +2091,38 @@ static float kDistanceBetweenBlocks=70.0f;
     else if(evalType==kCheckEvalAreaValues)
     {
         return [self evalValueOfEvalAreas];
+    }
+    
+    else if(evalType==kCheckSelectedGroupEvalTarget)
+    {
+        int selectCount=0;
+        int reqCount=0;
+        int selectEval=0;
+        BOOL gotTarget=NO;
+        
+        for(NSDictionary *d in initObjects)
+            if([[d objectForKey:IS_EVAL_TARGET]boolValue])reqCount++;
+        
+        for(id<NSObject,ShapeContainer> cont in gw.AllGameObjects)
+        {
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            {
+                if(cont.Selected)
+                {
+                    selectCount++;
+                }
+                if(cont.IsEvalTarget && cont.Selected)
+                {
+                    selectEval++;
+                    gotTarget=YES;
+                }
+            }
+        }
+        
+        if(selectCount==reqCount && selectEval==reqCount && gotTarget)
+            return YES;
+        else
+            return NO;
     }
     
 

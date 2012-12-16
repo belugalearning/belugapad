@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>How much {@larger} is {$var1} than {$var2}?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$var1-$var2}</string>
+	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>DVARS</key>
+	<dict>
+		<key>$var1</key>
+		<dict>
+			<key>MAX</key>
+			<string>10</string>
+			<key>MIN</key>
+			<string>7</string>
+		</dict>
+		<key>$var2</key>
+		<dict>
+			<key>MAX</key>
+			<string>5</string>
+			<key>MIN</key>
+			<string>2</string>
+		</dict>
+		<key>$var3</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$var1-$var2}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@larger</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>larger</string>
+				<string>bigger</string>
+				<string>greater</string>
+				<string>more</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -15,7 +15,7 @@
 {
     ToolHost *toolHost;
     DWGameWorld *gw;
-
+    
     CCLayer *topSection;
     CCLayer *bottomSection;
     
@@ -35,9 +35,12 @@
     
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
+    NSMutableArray *allLabels;
+    NSMutableArray *allSprites;
     NSArray *solutionsDef;
     
     DWNWheelGameObject *nWheel;
+
     
     CGPoint lastTouch;
     CGPoint touchStart;
@@ -50,16 +53,9 @@
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
-    BOOL topTouch;
-    BOOL bottomTouch;
-    BOOL startedInActiveRow;
-    BOOL doingHorizontalDrag;
-    BOOL doingVerticalDrag;
-    
     BOOL goodBadHighlight;
     BOOL renderBlockLabels;
-    BOOL movedTopSection;
-    BOOL hideRenderLayer;
+    
     
     BOOL audioHasPlayedOverTarget;
     BOOL audioHasPlayedOnTarget;
@@ -77,13 +73,12 @@
     int currentNumberPos;
     int previousNumberPos;
     float currentTotal;
+    float lastTotal;
     float rowMultiplier;
     int startColValue;
     
-    int currentTouchCount;
+    BOOL renderingChanges;
     
-    NSMutableArray *selectedNumbers;
-    NSMutableArray *rowMultipliers;
     NSMutableArray *drawnObjects;
     
     // rendering vars
@@ -96,21 +91,12 @@
     
     //problem state
     BOOL expressionIsEqual;
+    
+    CCDrawNode *drawNode;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
--(void)createVisibleNumbers;
--(void)updateLabels:(CGPoint)position;
--(void)updateBlock;
--(void)checkBlockWithBase:(float)thisBase andSelection:(int)thisSelection;
--(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
--(void)handlePassThruScaling:(float)scale;
--(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
--(BOOL)evalExpression;
 -(void)evalProblem;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;

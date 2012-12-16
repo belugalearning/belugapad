@@ -20,7 +20,8 @@
 @synthesize container;
 @synthesize mount;
 @synthesize hidden;
-@synthesize isLargeObject;
+@synthesize assetType;
+@synthesize backgroundType;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
@@ -32,6 +33,7 @@
         iconTag=@"";
         enabled=YES;
         interactive=YES;
+        assetType=@"Small";
         
         //todo: init render
         iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
@@ -49,7 +51,7 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     
     dupe.iconTag=[[self.iconTag copy] autorelease];
     
@@ -144,7 +146,7 @@
 {
     if(self.hidden)return;
     
-    iconRenderComponent.useLargeAssets=self.isLargeObject;
+    iconRenderComponent.assetType=self.assetType;
     
     [self.iconRenderComponent setupDraw];
     

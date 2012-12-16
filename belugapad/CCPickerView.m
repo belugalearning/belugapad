@@ -25,6 +25,9 @@
 -(void)initialLoad {
 
     CCNode *overlayImage = [delegate overlayImage:self];
+    CCNode *underlayImage = [delegate underlayImage:self];
+    
+    [self addChild:underlayImage z:0];
     [self addChild:overlayImage z:10];
     
 //    CGSize size = [delegate sizeOfPickerView:self];
@@ -42,7 +45,7 @@
     
 
     
-    rect = CGRectMake(self.position.x - size.width/2, self.position.y - size.height/2, size.width, size.height);
+    rect = CGRectMake(self.position.x - size.width/2, self.position.y - (size.height/2)+7, size.width, size.height-10);
     
 //    clippingRegion=CGRectMake(-rect.size.width / 2.0f, -rect.size.height / 2.0f, rect.size.width, rect.size.height);
     clippingRegion=CC_RECT_POINTS_TO_PIXELS(rect);

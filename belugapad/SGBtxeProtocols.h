@@ -36,7 +36,10 @@
 
 @property (retain) CCLayer *renderLayer;
 @property (retain) CCNode *baseNode;
-@property BOOL isLarge;
+//@property BOOL isLarge;
+@property (retain) NSString *myAssetType;
+@property BOOL tintMyChildren;
+@property (retain) NSString *backgroundType;
 @property BOOL forceVAlignTop;
 
 
@@ -115,7 +118,9 @@
 @property CGPoint originalPosition;
 @property (retain) id mount;
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
-@property BOOL isLargeObject;
+//@property BOOL isLargeObject;
+@property (retain) NSString *assetType;
+@property (retain) NSString *backgroundType;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
@@ -131,8 +136,10 @@
 @protocol BtxeMount
 
 @property (retain) id<Interactive, NSObject> mountedObject;
+@property (retain) NSString *backgroundType;
 
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
+-(CGRect)returnBoundingBox;
 
 @end
 

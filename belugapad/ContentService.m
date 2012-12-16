@@ -608,6 +608,7 @@
         {
             //get the pid
             NSString *pid=[insertdict objectForKey:@"PROBLEM_ID"];
+            
             Problem *p = [[[Problem alloc] initWithDatabase:contentDatabase andProblemId:pid] autorelease];
             
             //insert this problem into the current episode -- there is some duplication here with inserting problems in general

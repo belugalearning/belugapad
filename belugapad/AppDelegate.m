@@ -49,6 +49,7 @@
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
 @synthesize AuthoringMode;
+@synthesize IsMuted;
 @synthesize IsIpad1;
 
 @synthesize searchBar, searchList;
@@ -155,6 +156,8 @@
     
 	director_.wantsFullScreenLayout = YES;
     
+    self.IsMuted = NO;
+    
 	// Display FSP and SPF
     [director_ setDisplayStats:!self.ReleaseMode];
     
@@ -248,6 +251,11 @@
     NSLog(@"I'm about to talk and say: %@", speakThis);
     [self.acaSpeech startSpeakingString:speakThis];
 #endif
+}
+
+-(void)stopAllSpeaking
+{
+    [self.acaSpeech stopSpeaking];
 }
 
 -(void)tearDownUI

@@ -17,17 +17,29 @@
 	<key>thing_p</key>
 	<string>people</string>
 	<key>30_bubble</key>
-	<string>the slider</string>
+	<string>slider</string>
 	<key>30_commit</key>
 	<string>OK button</string>
 	<key>30_mq_true</key>
-	<string>button with the correct answer on it</string>
+	<string>button or buttons that display a correct answer</string>
 	<key>30_Q</key>
 	<string>what?</string>
+	<key>30_QM</key>
+	<string>question mark</string>
 	<key>30_pv_block</key>
+	<string>blocks</string>
+	<key>30_pv_block_s</key>
 	<string>block</string>
+	<key>30_pv_block_p</key>
+	<string>blocks</string>
+	<key>30_PV_Block_Neg_s</key>
+	<string>block</string>
+	<key>30_PV_Block_Neg_p</key>
+	<string>blocks</string>
 	<key>30_pv_grid</key>
 	<string>container</string>
+	<key>30_pv_grid_p</key>
+	<string>containers</string>
 	<key>30_pv_dock_with_block</key>
 	<string>dock</string>
 	<key>30_Counter_Start</key>
@@ -42,6 +54,8 @@
 	<string>pause button</string>
 	<key>30_DT_Shape_Circle</key>
 	<string>circles</string>
+	<key>30_DT_Shape_Circle_s</key>
+	<string>circle</string>
 	<key>30_DT_Shape_Ellipse</key>
 	<string>ellipses</string>
 	<key>30_DT_Shape_Square</key>
@@ -50,8 +64,14 @@
 	<string>rounded squares</string>
 	<key>30_DT_Shape_House</key>
 	<string>houses</string>
+	<key>30_DT_Shape_Diamond</key>
+	<string>diamonds</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
+	<key>30_TT_25</key>
+	<string>25 square</string>
+	<key>30_TT_5</key>
+	<string>circles with 5 on them along the top and side</string>
 	<key>30_nl_jump_forward</key>
 	<string>jump button</string>
 	<key>30_pipe_in</key>
@@ -60,12 +80,18 @@
 	<string>output pipe</string>
 	<key>30_NB_grid</key>
 	<string>container</string>
+	<key>30_NB_grid_p</key>
+	<string>containers</string>
 	<key>30_TT_Tile_Black</key>
 	<string>black square</string>
 	<key>30_NB_Block</key>
 	<string>bar</string>
+	<key>30_NB_Block_p</key>
+	<string>bars</string>
 	<key>30_NL_Yellow</key>
 	<string>yellow marker</string>
+	<key>30_SB_Drop</key>
+	<string>container</string>
 	<key>1</key>
 	<string>1</string>
 	<key>2</key>

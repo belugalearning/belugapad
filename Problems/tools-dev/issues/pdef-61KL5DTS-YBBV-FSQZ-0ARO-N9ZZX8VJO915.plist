@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is {$x} x {$y} ?</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>2</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>40</integer>
+	<key>DRAW_MODE</key>
+	<integer>2</integer>
+	<key>DISABLE_DRAWING</key>
+	<true/>
+	<key>SELECT_WHOLE_SHAPE</key>
+	<true/>
+	<key>RENDER_SHAPE_DIMENSIONS</key>
+	<true/>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>START_X</key>
+			<string>1</string>
+			<key>START_Y</key>
+			<string>1</string>
+			<key>END_X</key>
+			<string>{1+$x}</string>
+			<key>END_Y</key>
+			<string>{1+$y}</string>
+		</dict>
+	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is {$x} x {$y} ?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$x*$y}</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>RETAIN</key>
+			<true/>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>8</string>
+		</dict>
+		<dict>
+			<key>RETAIN</key>
+			<true/>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>8</string>
+		</dict>
+	</array>
+	<key>REPEAT_SET</key>
+	<string>b</string>
+</dict>
+</plist>

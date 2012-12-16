@@ -189,14 +189,20 @@ static float kNBFontSizeLarge=35.0f;
     mountedObjects = [[NSMutableArray alloc]init];
     mountedObjectBadges = [[NSMutableArray alloc]init];
     mountedObjectLabels = [[NSMutableArray alloc]init];
+    allRows = [[NSMutableArray alloc]init];
+    
+    if([initCages count]==1)
+        [usersService notifyStartingFeatureKey:@"NUMBERBONDS_SINGLE_VALUE_ANSWER"];
+    else if([initCages count]>1)
+        [usersService notifyStartingFeatureKey:@"NUMBERBONDS_MULTI_VALUE_ANSWER"];
 }
 
 -(void)populateGW
 {
 
     int dockSize=12;
-    float dockPieceYPos=582.0f;
-    float initBarStartYPos=582.0f;
+    float initBarStartYPos=532.0f;
+    float dockPieceYPos=initBarStartYPos;
     float initCageStartYPos=0.0f;
     
     if(useBlockScaling)
@@ -438,6 +444,7 @@ static float kNBFontSizeLarge=35.0f;
         pogo.MountPosition = prgo.Position;
         [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
         
+        [allRows addObject:prgo];
         [fillText release];
         [pogo release];
     }
@@ -807,13 +814,16 @@ static float kNBFontSizeLarge=35.0f;
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
-        
+        [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
         
         DWNBondObjectGameObject *pogo = (DWNBondObjectGameObject*)[gw Blackboard].PickupObject;
         
         pogo.MovePosition = location;
-        [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
+        
+        for(DWNBondRowGameObject *r in allRows)
+        {
+            [r handleMessage:kDWareYouADropTarget];
+        }
         
         if(blocksUsedFromThisStore[pogo.IndexPos]==blocksForThisStore[pogo.IndexPos]-1 && storeCanCreate[pogo.IndexPos])
             storeCanCreate[pogo.IndexPos]=NO;
@@ -865,8 +875,7 @@ static float kNBFontSizeLarge=35.0f;
         }
 
         //previously removex b/c of log perf - restored for testing with sans-Couchbase logging
-        [loggingService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK
-            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
+        //[loggingService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         
         hasMovedBlock=YES;
 

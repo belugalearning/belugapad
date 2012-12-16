@@ -193,8 +193,15 @@
     
     if(isIntroPlist)
         initBubbles=0;
+
+    [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_EVALUATION"];
+    [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_OPERATION"];
     
+    if(showNewPipe)
+        [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_SHOW_INPUT_PIPE"];
     
+    if([supportedOperators count]>1)
+        [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_SHOW_MULTIPLE_OPERATORS"];    
 }
 
 -(void)populateGW
@@ -225,7 +232,7 @@
     [commitPipe setPosition:ccp(cx,55)];
     [commitPipe setOpacity:0];
     [commitPipe setTag:1];
-    [renderLayer addChild:commitPipe];
+    [renderLayer addChild:commitPipe z:1000];
 
     if(showSolutionOnPipe)
     {
@@ -239,7 +246,7 @@
     
     if(showNewPipe) {
         newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
-        [newPipe setPosition:ccp(57,560)];
+        [newPipe setPosition:ccp(57,500)];
         [newPipe setOpacity:0];
         [newPipe setTag:1];
         [renderLayer addChild:newPipe];
@@ -269,8 +276,13 @@
     id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    float xStartPos=(arc4random()%800)+100;
-    float yStartPos=(arc4random()%600)+100;
+    int farLeft=100;
+    int farRight=lx-60;
+    int topMost=ly-170;
+    int botMost=130;
+    
+    float xStartPos=farLeft + arc4random() % (farRight - farLeft);
+    float yStartPos=botMost + arc4random() % (topMost - botMost);
     
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
@@ -686,7 +698,7 @@
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(21, 560);
+    pickerView.position = ccp(21, 500);
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
@@ -777,6 +789,12 @@
     return sprite;
 }
 
+- (CCNode *)underlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/FB_OutPut_Pipe__Picker_Overlay.png")];
+    [sprite setOpacity:0];
+    return sprite;
+}
+
 - (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
 
     NSLog(@"Component %d stopped spinning.", component);
@@ -864,6 +882,8 @@
     {
         if([pickupObject conformsToProtocol:@protocol(Group)])
         {
+            if(location.y>ly-200||location.y<50)return;
+            if(location.x>lx-60||location.x<60)return;
             id<Group>grp=(id<Group>)pickupObject;
             [grp moveGroupPositionFrom:lastTouch To:location];
             isInBubble=[grp checkIfInBubbleAt:location];

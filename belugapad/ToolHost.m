@@ -1107,10 +1107,6 @@ static float kTimeToHintToolTray=7.0f;
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
-    [qTrayTop removeFromParentAndCleanup:YES];
-    [qTrayMid removeFromParentAndCleanup:YES];
-    [qTrayBot removeFromParentAndCleanup:YES];
-    [readProblemDesc removeFromParentAndCleanup:YES];
     
     [descGw release];
     descGw=nil;
@@ -1250,7 +1246,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     //top left tap for edit pdef
-    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(kRectButtonCommit, location))
+    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
     {
         [self editPDef];
     }
@@ -1522,7 +1518,7 @@ static float kTimeToHintToolTray=7.0f;
     if(isAnimatingIn)
         return;
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible)
+    if (CGRectContainsPoint(commitBtn.boundingBox, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible && !autoMoveToNextProblem)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
@@ -1952,7 +1948,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        if(CGRectContainsPoint(kRectButtonCommit, origloc) && commitBtn.visible)
+        if(CGRectContainsPoint(commitBtn.boundingBox, origloc) && commitBtn.visible && !autoMoveToNextProblem)
         {
             //[self playAudioPress];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
@@ -2307,10 +2303,10 @@ static float kTimeToHintToolTray=7.0f;
     [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
     
     
-    [backgroundLayer addChild:readProblemDesc];
-    [backgroundLayer addChild:qTrayTop];
-    [backgroundLayer addChild:qTrayBot];
-    [backgroundLayer addChild:qTrayMid];
+    [problemDefLayer addChild:readProblemDesc];
+    [problemDefLayer addChild:qTrayTop];
+    [problemDefLayer addChild:qTrayBot];
+    [problemDefLayer addChild:qTrayMid];
     
     
     //show and hide separator for exprbuilder
@@ -2443,7 +2439,7 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
+    if (CGRectContainsPoint(commitBtn.boundingBox, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible && !autoMoveToNextProblem)
     {
         doPlaySound=NO;
         //remove any trays
@@ -2744,6 +2740,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/3.1), qTrayBot.position.y)]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2781,6 +2778,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/3.1), qTrayBot.position.y)]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         

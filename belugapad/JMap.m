@@ -160,19 +160,7 @@ typedef enum {
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
         
         [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
-                
-//        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
-//        [daemon setMode:kDaemonModeFollowing];
-//        
-//        logOutBtnBounds=CGRectMake(kLogOutBtnPadding, winsize.height - kLogOutBtnSize.height - kLogOutBtnPadding, kLogOutBtnSize.width, kLogOutBtnSize.height);
-////        
-////        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
-////                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
-//        logOutBtnCentre = CGPointMake(logOutBtnBounds.origin.x + kLogOutBtnSize.width/2, logOutBtnBounds.origin.y + kLogOutBtnSize.height/2);
-//        CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/log-out.png")];
-//        [b setPosition:logOutBtnCentre];
-//        [foreLayer addChild:b];
-        
+                        
         //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
         
         [TestFlight passCheckpoint:@"STARTED_JMAP"];
@@ -186,12 +174,6 @@ typedef enum {
 
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos
 {
-//    mapLayer.anchorPoint=ccp(cx, cy);
-//    
-//    CCEaseInOut *ease=[CCEaseInOut actionWithAction:[CCScaleBy actionWithDuration:0.5f scale:4.0f] rate:2.0f];
-//    [mapLayer runAction:ease];
-//    
-//    [self scheduleOnce:@selector(gotoToolHost:) delay:0.5f];
     
     [self gotoToolHost:0];
 }
@@ -223,6 +205,8 @@ typedef enum {
     gw.Blackboard.RenderLayer=mapLayer;
     
     gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
+    
+    //used for debug draw of map positioning
 //    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
     
 }
@@ -727,7 +711,6 @@ typedef enum {
                 [artefacts addObject:cryd];
                 [featureindex addObject:cryd];
                 
-//                NSLog(@"parsed an artefact");
             }
             else if([href rangeOfString:@"Feature_Stage"].location!=NSNotFound)
             {
@@ -741,7 +724,6 @@ typedef enum {
                 [features addObject:fd];
                 [featureindex addObject:fd];
                 
-//                NSLog(@"parsed a feature");
             }
             else if([href rangeOfString:@"Node_Placeholder"].location!=NSNotFound)
             {
@@ -751,7 +733,6 @@ typedef enum {
                 [nodes addObject:noded];
                 [featureindex addObject:noded];
                 
-//                NSLog(@"parsed a node");
             }
             else if([href rangeOfString:@"Mastery_Placeholder"].location!=NSNotFound)
             {
@@ -761,7 +742,6 @@ typedef enum {
                 [featureindex addObject:masd];
                 [idata setValue:masd forKey:@"MASTERY"];
                 
-//                NSLog(@"parsed a mastery node/pin");
             }
         }
     }
@@ -892,138 +872,6 @@ typedef enum {
     return nil;
 }
 
-#pragma mark transitions
-
-//-(void)createNodeSliceFrom:(ConceptNode*)n
-//{
-//    //establish if there are problems
-//    currentNodeSliceHasProblems=n.pipelines.count>0;
-//    if(currentNodeSliceHasProblems)
-//    {
-//        currentNodeSliceHasProblems=NO;
-//        for (int i=0; i<n.pipelines.count; i++) {
-//            Pipeline *p = [contentService pipelineWithId:[n.pipelines objectAtIndex:i]];
-//            
-//            if(p.problems.count>0 && [p.name isEqualToString:@"25May"])
-//            {
-//                currentNodeSliceHasProblems=YES;
-//                break;
-//            }
-//        }
-//    }
-//    
-//    NSString *bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg.png");
-//    if(!currentNodeSliceHasProblems) bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg-nopin.png");
-//    
-//    CCSprite *ns=[CCSprite spriteWithFile:bpath];
-//    [ns setScale:kNodeSliceStartScale];
-//    [ns setPosition:n.journeySprite.position];
-//
-//    [mapLayer addChild:ns];
-//    [nodeSliceNodes addObject:n];
-//    
-//    n.nodeSliceSprite=ns;
-//    
-//    float time1=0.1f;
-//    float time2=0.9f;
-//    float time3=0.2f;
-//    
-//    CCScaleTo *scale1=[CCScaleTo actionWithDuration:time1 scale:0.3f];
-//    CCScaleTo *scale2=[CCScaleTo actionWithDuration:time2 scale:0.5f];
-//    CCEaseOut *ease2=[CCEaseOut actionWithAction:scale2 rate:0.5f];
-//    CCScaleTo *scale3=[CCScaleTo actionWithDuration:time3 scale:1.0f];
-//    CCSequence *scaleSeq=[CCSequence actions:scale1, ease2, scale3, nil];
-//    
-//    CCDelayTime *move1=[CCDelayTime actionWithDuration:time1 + time2];
-//    CCMoveTo *move2=[CCMoveTo actionWithDuration:time3 position:[mapLayer convertToNodeSpace:kNodeSliceOrigin]];
-//    CCSequence *moveSeq=[CCSequence actions:move1, move2, nil];
-//    
-//    [ns runAction:scaleSeq];
-//    [ns runAction:moveSeq];
-//}
-//
-//-(void)cancelNodeSliceTransition
-//{
-//    if(!currentNodeSliceNode) return;
-//    
-//    CCSprite *ns=currentNodeSliceNode.nodeSliceSprite;
-//    
-//    [ns stopAllActions];
-//    
-//    CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
-//    CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
-//    CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:currentNodeSliceNode.journeySprite.position];
-//    [ns runAction:scaleto];
-//    [ns runAction:fade];
-//    [ns runAction:moveto];
-//    
-//    currentNodeSliceNode=nil;
-//}
-//
-//-(void)tidyUpRemovedNodeSlices
-//{
-//    NSMutableArray *removedS=[[NSMutableArray alloc] init];
-//    
-//    for (ConceptNode *n in nodeSliceNodes) {
-//        if(n.nodeSliceSprite.opacity==0)
-//        {
-//            [mapLayer removeChild:n.nodeSliceSprite cleanup:YES];
-//            //[n.nodeSliceSprite release];
-//            n.nodeSliceSprite=nil;
-//            [removedS addObject:n];
-//            
-//        }
-//    }
-//    
-//    [nodeSliceNodes removeObjectsInArray:removedS];
-//    [removedS release];
-//}
-//
-//-(void)removeNodeSlices
-//{
-//    [self tidyUpRemovedNodeSlices];
-//    
-//    if([lightSprites containsObject:nodeSliceLight])[lightSprites removeObject:nodeSliceLight];
-//    
-//    for (ConceptNode *n in nodeSliceNodes) {
-//        
-//        CCSprite *ns=n.nodeSliceSprite;
-//        
-//        if(ns.opacity==255)
-//        {
-//            CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
-//            CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
-//            CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:n.journeySprite.position];
-//            [ns runAction:scaleto];
-//            [ns runAction:fade];
-//            [ns runAction:moveto];
-//        }
-//    }
-//    
-//}
-
-#pragma mark user i/o
-
-//-(void)startSeletedPin
-//{
-//    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode._id);
-//    
-//    if (currentNodeSliceNode.pipelines.count>0) {
-//        //need to get the right pipeline -- named @"25May"
-//        for (NSString *pid in currentNodeSliceNode.pipelines) {
-//            Pipeline *p=[contentService pipelineWithId:pid];
-//            if([p.name isEqualToString:@"25May"])
-//            {
-//                [contentService startPipelineWithId:pid forNode:currentNodeSliceNode];
-//                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
-//                break;
-//            }
-//        }
-//    }
-//    else {
-//        NSLog(@"failed to start -- no pipelines found");
-//    }
-//}
 
 #pragma mark touch handling
 
@@ -1129,17 +977,6 @@ typedef enum {
     }
 }
 
-//- (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
-//{
-//    //test for node hit and start transition
-//    ConceptNode *n=[self nodeWithin:(kPropXNodeHitDist * lx) ofLocation:lOnMap];
-//    if(n)
-//    {
-//        //[self createNodeSliceFrom:n];
-//        NSLog(@"hit node %@", n._id);
-//        
-//    }
-//}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -1166,10 +1003,6 @@ typedef enum {
 
             lastTouch=l;
             
-//            CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
-            
-//            [daemon setTarget:l];    
-//            [daemon setRestingPoint:l];
         }
     }
     //pinch handling
@@ -1332,7 +1165,7 @@ typedef enum {
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    [ac speakString:searchBar.text];
+//    [ac speakString:searchBar.text];
     
     [ac.searchList removeFromSuperview];
 }

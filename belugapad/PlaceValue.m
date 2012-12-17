@@ -680,9 +680,9 @@ static float kTimeToCageShake=7.0f;
             
             cge.mySprite=cageContainer;
             
-            if(isNegativeProblem)
-                cge.ObjectValue=-currentColumnValue;
-            else
+//            if(isNegativeProblem)
+//                cge.ObjectValue=-currentColumnValue;
+//            else
                 cge.ObjectValue=currentColumnValue;
             
             // set our column specific options on the store
@@ -753,6 +753,7 @@ static float kTimeToCageShake=7.0f;
             if(defaultBlocksToMake>maxBlocks)
                 defaultBlocksToMake=maxBlocks;
             
+            
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
             //CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
@@ -783,10 +784,6 @@ static float kTimeToCageShake=7.0f;
         }
         else if(isNegativeProblem && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
-            [currentBlockValues addObject:[NSNumber numberWithInt:cageDefaultValue]];
-            
-            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", cageDefaultValue] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
-            
             float PosX=i*(kPropXColumnSpacing*lx)-120;
             float PosY=(ly*kCageYOrigin)-41;
             
@@ -799,11 +796,9 @@ static float kTimeToCageShake=7.0f;
             
             //[minusSprite setPosition:ccp(PosX,PosY-25)];
             //[posiSprite setPosition:ccp(PosX,PosY+25)];
-            [label setPosition:ccp(PosX+120,PosY+61)];
             
             [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
             [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
-            [blockLabels addObject:label];
             
             
             if(![multipleBlockMax objectForKey:currentColumnValueKey])
@@ -818,14 +813,23 @@ static float kTimeToCageShake=7.0f;
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else if(cageDefaultValue!=1)
+                defaultBlocksToMake=cageDefaultValue;
             else
                 defaultBlocksToMake=1;
             
+            if(defaultBlocksToMake<0){
+                DWPlaceValueCageGameObject *myCage=[allCages objectAtIndex:[allCages count]-1];
+                myCage.ObjectValue=-myCage.ObjectValue;
+            }
             
             if(debugLogging)
                 NSLog(@"currentBlockValues count %d, minusSprites count %d, plusSprites count %d, blockLabels count %d", [currentBlockValues count], [multipleMinusSprites count], [multiplePlusSprites count], [blockLabels count]);
-
-        
+            
+            [currentBlockValues addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
+            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
+            [label setPosition:ccp(PosX+120,PosY+61)];
+            [blockLabels addObject:label];
             [label setTag:3];
             [label setOpacity:0];
             [label setColor:ccc3(0,0,0)];
@@ -1317,14 +1321,17 @@ static float kTimeToCageShake=7.0f;
         if(showValue)
         {
             CCSprite *countBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/pv_counter_total.png")];
-            [countBg setPosition:ccp(lx-60,ly-85)];
+            [countBg setPosition:ccp(lx-60,40)];
             [countBg setTag:3];
+            [countBg setRotation:180.0f];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
             sumLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:25.0f];
             [sumLabel setTag:3];
+            [sumLabel setRotation:180.0f];
+            
             [sumLabel setOpacity:0];
-            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];
+            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2.4)];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
 
             [countBg addChild:sumLabel z:10];
@@ -2249,8 +2256,8 @@ static float kTimeToCageShake=7.0f;
         DWPlaceValueBlockGameObject *go=[DWPlaceValueBlockGameObject alloc];
         [gw populateAndAddGameObject:go withTemplateName:@"TplaceValueObject"];
         
-        CGPoint locationToAnimateFrom=[renderLayer convertToNodeSpace:gw.Blackboard.TestTouchLocation];
-        
+        //CGPoint locationToAnimateFrom=[renderLayer convertToNodeSpace:gw.Blackboard.TestTouchLocation];
+        CGPoint locationToAnimateFrom=gw.Blackboard.TestTouchLocation;
         go.PosX=locationToAnimateFrom.x;
         go.PosY=locationToAnimateFrom.y;
         
@@ -2303,6 +2310,8 @@ static float kTimeToCageShake=7.0f;
 //            }
 //        }
 
+//        DWPlaceValueNetGameObject *newMount=nil;
+        
         for (int r=0; r<[gw.Blackboard.CurrentStore count]; r++) {
             if(stop)break;
             
@@ -2322,6 +2331,7 @@ static float kTimeToCageShake=7.0f;
                     go.Mount=co;
                     go.AnimateMe=YES;
                     co.MountedObject=go;
+//                    newMount=co;
                     go.PosX=co.PosX;
                     go.PosY=co.PosY;
                     //                    [go handleMessage:kDWsetMount];
@@ -2331,6 +2341,23 @@ static float kTimeToCageShake=7.0f;
                 }
             }
         }
+        
+//        if (incr>0) {
+//            [gw.Blackboard.PickupObject handleMessage:kDWdismantle andPayload:nil withLogLevel:0];
+//            [gw delayRemoveGameObject:gw.Blackboard.PickupObject];
+//            gw.Blackboard.PickupObject=nil;
+//        }
+//        else
+//        {
+//            for (int i=0; i<[gw.Blackboard.SelectedObjects count]; i++) {
+//                DWPlaceValueBlockGameObject *go=[gw.Blackboard.SelectedObjects objectAtIndex:i];
+//                go.Mount=newMount;
+//                
+//                [go handleMessage:kDWresetToMountPositionAndDestroy andPayload:nil withLogLevel:0];
+//            }
+//            [gw.Blackboard.SelectedObjects removeAllObjects];
+//            
+//        }
 
         
         [go release];

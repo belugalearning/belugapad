@@ -3740,6 +3740,7 @@ static float kTimeToCageShake=7.0f;
     if(userAddedBlocks)[userAddedBlocks release];
     
     [gw release];
+    [sgw release];
     
     [super dealloc];
 }

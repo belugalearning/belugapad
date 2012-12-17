@@ -1402,7 +1402,8 @@ static float kTimeToHintToolTray=7.0f;
         CCSprite *answerBtn;
         SGBtxeRow *row;
 //        CCLabelTTF *answerLabel;
-        
+        NSString *raw=nil;
+        NSString *answerLabelString=nil;
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
         {
@@ -1413,10 +1414,10 @@ static float kTimeToHintToolTray=7.0f;
 //            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
             
             // then the answer label
-            NSString *raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+            raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
             
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
-            NSString *answerLabelString=[NSString stringWithFormat:@"%@", raw];
+            answerLabelString=[NSString stringWithFormat:@"%@", raw];
             
             if(answerLabelString.length<3)
             {
@@ -1435,15 +1436,7 @@ static float kTimeToHintToolTray=7.0f;
                 answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
             }
             
-            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
-            
-            row.forceVAlignTop=NO;
-            row.rowWidth=answerBtn.contentSize.width-10;
 
-            [row parseXML:answerLabelString];
-            [row setupDraw];
-            [row inflateZindex];
-            [row tagMyChildrenForIntro];
 
             
 //            [answerLabel setString:answerLabelString];
@@ -1474,7 +1467,16 @@ static float kTimeToHintToolTray=7.0f;
         [trayLayerMq addChild:answerBtn];
         [metaQuestionAnswerButtons addObject:answerBtn];
         
-        
+        if(answerLabelString){
+            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
+            
+            row.forceVAlignTop=NO;
+            row.rowWidth=answerBtn.contentSize.width-10;
+            [row parseXML:answerLabelString];
+            [row setupDraw];
+            [row inflateZindex];
+            [row tagMyChildrenForIntro];
+        }
         // check for text, render if nesc
         if(row)
         {

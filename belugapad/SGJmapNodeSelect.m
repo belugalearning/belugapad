@@ -71,30 +71,10 @@
     {
         ret=YES;
       
-        //select me / show sign
-        //todo -- this should only work if enabled (otherwise resort to mastery node if applicable)
+        //no longer hacky at all -- completely miss the mastery/node check (no chance of hitting this anyway as there are no mastery pins, and allow direct access
         
-        //this is a bit hacky -- and a good demonstration of why this should potentially be two components
-        if([gameObject isKindOfClass:[SGJmapNode class]])
-        {
-            SGJmapNode *gom=(SGJmapNode*)gameObject;
-            
-            //check that this node has previous been completed -- or that we're in authoring mode, in which case allow direct access
-            if(gom.EnabledAndComplete || ((AppController*)[UIApplication sharedApplication].delegate).AuthoringMode)
-            {
-                //show the sign on our own node
-                [self showSignWithForce:NO];
-            }
-            else {
-                //show the sign on our parent mastery
-                [gom.MasteryNode.NodeSelectComponent showSignWithForce:YES];
-            }
-        }
-        else {
-            //this is mastery -- pop the sign
-            [self showSignWithForce:NO];
-        }
-    
+        //this is mastery -- pop the sign
+        [self showSignWithForce:NO];
     }
     else {
         

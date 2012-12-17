@@ -1332,7 +1332,7 @@ typedef enum {
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    [ac speakString:searchBar.text];
+//    [ac speakString:searchBar.text];
     
     [ac.searchList removeFromSuperview];
 }

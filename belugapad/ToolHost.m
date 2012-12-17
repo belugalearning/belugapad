@@ -2767,7 +2767,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayBot.position.y)]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2805,7 +2805,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayBot.position.y)]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         

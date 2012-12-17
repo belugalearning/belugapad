@@ -1414,6 +1414,23 @@ static float kTimeToHintToolTray=7.0f;
             // then the answer label
             raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
             
+            if(raw.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
+            }
+            else if([[raw substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
+            }
+            
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
             answerLabelString=[NSString stringWithFormat:@"%@", raw];
             

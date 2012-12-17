@@ -1041,10 +1041,7 @@ static float kTimeToHintToolTray=7.0f;
     
     TFLog(@"resetting problem");
     
-    [qTrayTop removeFromParentAndCleanup:YES];
-    [qTrayMid removeFromParentAndCleanup:YES];
-    [qTrayBot removeFromParentAndCleanup:YES];
-    [readProblemDesc removeFromParentAndCleanup:YES];
+    [self tearDownQuestionTray];
     
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
@@ -1107,6 +1104,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    [self tearDownQuestionTray];
     
     [descGw release];
     descGw=nil;
@@ -2146,6 +2144,15 @@ static float kTimeToHintToolTray=7.0f;
         NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
     }
 }
+
+-(void)tearDownQuestionTray
+{
+    [qTrayTop removeFromParentAndCleanup:YES];
+    [qTrayMid removeFromParentAndCleanup:YES];
+    [qTrayBot removeFromParentAndCleanup:YES];
+    [readProblemDesc removeFromParentAndCleanup:YES];
+}
+
 -(void)tearDownNumberPicker
 {
     if(CurrentBTXE)CurrentBTXE=nil;

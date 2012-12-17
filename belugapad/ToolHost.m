@@ -409,7 +409,7 @@ static float kTimeToHintToolTray=7.0f;
         }
         timeToReturnToJmap+=delta;
         
-        if(timeToReturnToJmap>3.1f)
+        if(timeToReturnToJmap>2.9f)
         {
             [self showCompleteAndReturnToMap];
             countUpToJmap=NO;
@@ -1741,6 +1741,7 @@ static float kTimeToHintToolTray=7.0f;
     evalShowCommit=NO;
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
+    hasShownComplete=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
     
     if(metaQuestionForThisProblem)

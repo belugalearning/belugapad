@@ -1241,7 +1241,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     //top left tap for edit pdef
-    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(kRectButtonCommit, location))
+    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
     {
         [self editPDef];
     }
@@ -1513,7 +1513,7 @@ static float kTimeToHintToolTray=7.0f;
     if(isAnimatingIn)
         return;
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible && !autoMoveToNextProblem)
+    if (CGRectContainsPoint(commitBtn.boundingBox, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible && !autoMoveToNextProblem)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
@@ -1943,7 +1943,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        if(CGRectContainsPoint(kRectButtonCommit, origloc) && commitBtn.visible && !autoMoveToNextProblem)
+        if(CGRectContainsPoint(commitBtn.boundingBox, origloc) && commitBtn.visible && !autoMoveToNextProblem)
         {
             //[self playAudioPress];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
@@ -2428,7 +2428,7 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible && !autoMoveToNextProblem)
+    if (CGRectContainsPoint(commitBtn.boundingBox, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible && !autoMoveToNextProblem)
     {
         doPlaySound=NO;
         //remove any trays

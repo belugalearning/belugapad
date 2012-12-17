@@ -487,32 +487,33 @@ static int shadowSteps=5;
         }
         
     }
+
+    //don't render any mastery pin at all -- it's not used and shouldn't happen, but sprite renderes as per issue #571
     
-    
-    //render the actual mastery sprite itself, as well as the label
-    
-    if(ParentGO.EnabledAndComplete)
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Complete_Right.png"];
-    }
-    else
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Incomplete_Right.png"];
-    }
-    //ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
-    ParentGO.MasteryPinPosition=[[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"MASTERY"] objectForKey:@"POS"] CGPointValue];
-    [nodeSprite setPosition:ParentGO.MasteryPinPosition];
-    
-    if(ParentGO.flip)nodeSprite.flipX=YES;
-    
-    if(ParentGO.MasteryPinPosition.x < ParentGO.Position.x)
-    {
-        ((SGJmapMasteryNode*)ParentGO).flip=YES;
-    }
-    
-    [nodeSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-    [ParentGO.RenderBatch addChild:nodeSprite z:6];
+//    //render the actual mastery sprite itself, as well as the label
+//    
+//    if(ParentGO.EnabledAndComplete)
+//    {
+//        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Complete_Right.png"];
+//    }
+//    else
+//    {
+//        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Incomplete_Right.png"];
+//    }
+//    //ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
+//    ParentGO.MasteryPinPosition=[[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"MASTERY"] objectForKey:@"POS"] CGPointValue];
+//    [nodeSprite setPosition:ParentGO.MasteryPinPosition];
+//    
+//    if(ParentGO.flip)nodeSprite.flipX=YES;
+//    
+//    if(ParentGO.MasteryPinPosition.x < ParentGO.Position.x)
+//    {
+//        ((SGJmapMasteryNode*)ParentGO).flip=YES;
+//    }
+//    
+//    [nodeSprite setVisible:ParentGO.Visible];
+//    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
+//    [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
     NSString *labelText=ParentGO.UserVisibleString;
     

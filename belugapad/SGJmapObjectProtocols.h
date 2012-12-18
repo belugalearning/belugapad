@@ -71,6 +71,8 @@
 @protocol Completable
 
     @property BOOL EnabledAndComplete;
+    @property BOOL Attempted;
+    @property (retain) NSDate *DateLastPlayed;
 
 @end
 

@@ -414,9 +414,13 @@ typedef enum {
             SGJmapNode *newnodeC=(SGJmapNode*)newnode;
             
             newnodeC.ustate=[udata objectForKey:n._id];
+            if(ac.lastJmapViewUState) newnodeC.lastustate=[ac.lastJmapViewUState objectForKey:n._id];
             
             //mock old enabledAndComplete by directly accessing the lastPlayed of the node
-            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastPlayed > 0);
+            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastCompleted > 0);
+            newnodeC.Attempted=(newnodeC.ustate.lastPlayed > 0);
+            newnodeC.DateLastPlayed=(newnodeC.ustate.lastPlayed);
+            
             
             
             newnode.HitProximity=40.0f;

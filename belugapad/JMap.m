@@ -421,6 +421,11 @@ typedef enum {
             newnodeC.Attempted=(newnodeC.ustate.lastPlayed > 0);
             newnodeC.DateLastPlayed=(newnodeC.ustate.lastPlayed);
             
+            if(newnodeC.EnabledAndComplete && newnodeC.lastustate.lastCompleted<=0)
+            {
+                newnodeC.FreshlyCompleted=YES;
+                NSLog(@"FRESHLY COMPLETED <<<<<<<<<<<<<<<<<<< !");
+            }
             
             
             newnode.HitProximity=40.0f;

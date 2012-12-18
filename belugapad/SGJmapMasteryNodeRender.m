@@ -366,6 +366,16 @@ static int shadowSteps=5;
         
         [child setupArtefactRender];
     }
+    
+    [self setupPlaneRender];
+}
+
+-(void)setupPlaneRender
+{
+    for(SGJmapMasteryNode *othermn in ParentGO.EffectedPathDestinationNodes)
+    {
+        [gameWorld.Blackboard.debugDrawNode drawSegmentFrom:ParentGO.Position to:othermn.Position radius:5.0f color:ccc4f(1,1,1,1)];
+    }
 }
 
 -(void)readyIslandRender

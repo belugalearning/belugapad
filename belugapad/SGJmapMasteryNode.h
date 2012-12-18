@@ -36,6 +36,8 @@
 
 @property float PreviousPreReqPercentage;
 
+@property (retain, readonly) NSMutableArray *EffectedPathDestinationNodes;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

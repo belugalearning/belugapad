@@ -38,6 +38,8 @@
 
 @synthesize renderLayout, renderBase;
 
+@synthesize EffectedPathDestinationNodes;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -45,6 +47,8 @@
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
         self.Visible=NO;
+        
+        EffectedPathDestinationNodes=[NSMutableArray array];
         
         MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
         ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];

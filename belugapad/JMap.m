@@ -207,7 +207,7 @@ typedef enum {
     gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
     
     //used for debug draw of map positioning
-//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
+    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
     
 }
 
@@ -425,10 +425,9 @@ typedef enum {
             newnodeC.Attempted=(newnodeC.ustate.lastPlayed > 0);
             newnodeC.DateLastPlayed=(newnodeC.ustate.lastPlayed);
             
-            if(newnodeC.EnabledAndComplete && newnodeC.lastustate.lastCompleted<=0)
+            if(newnodeC.EnabledAndComplete && (newnodeC.lastustate!=nil && newnodeC.lastustate.lastCompleted<=0))
             {
                 newnodeC.FreshlyCompleted=YES;
-                NSLog(@"FRESHLY COMPLETED <<<<<<<<<<<<<<<<<<< !");
             }
             
             
@@ -576,6 +575,9 @@ typedef enum {
                     {
                         mgo.FreshlyCompleted=YES;
                         playTransitionAudio=YES;
+                        
+                        //that means that node's island has a effective link to this one, add it with link data
+                        [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
                     }
                 }
             }

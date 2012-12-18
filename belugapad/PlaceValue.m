@@ -100,6 +100,7 @@ static float kTimeToCageShake=7.0f;
         lastCount = gw.Blackboard.SelectedObjects.count; 
         
         gw.Blackboard.inProblemSetup = NO;
+        shouldUpdateLabels = YES;
         
         debugLogging=NO;
         
@@ -1588,8 +1589,9 @@ static float kTimeToCageShake=7.0f;
 -(void)calcProblemTotalCount
 {
     totalCount=0;
+    DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
     
-    if(showColumnUserCount){
+    if(showColumnUserCount && b.Mount!=b.LastMount && b.Mount){
 
         float amountAdded=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).ObjectValue;
         CCLabelTTF *l=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:150.0f];

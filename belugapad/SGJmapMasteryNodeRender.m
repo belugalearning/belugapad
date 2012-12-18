@@ -281,10 +281,16 @@ static int shadowSteps=5;
     if(iCount==0)iCount=1; // handle islands with no nodes
 
     //get an island selection base
-    self.islandShapeIdx=(arc4random()%10) + 1;
+    //self.islandShapeIdx=(arc4random()%10) + 1;
+    
+    self.islandShapeIdx=ParentGO.renderBase;
+//    if(self.islandShapeIdx>0)self.islandShapeIdx-=1;
     
     //get island data base
-    self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+    //self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+    
+    self.islandLayoutIdx=ParentGO.renderLayout % 4;
+    if(self.islandLayoutIdx>0)self.islandLayoutIdx-=1;
 
     //island stage
     self.islandStage=1;

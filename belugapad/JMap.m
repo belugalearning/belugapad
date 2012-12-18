@@ -387,7 +387,12 @@ typedef enum {
         //create a node go
         if(n.mastery)
         {
-            newnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            SGJmapMasteryNode *mnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            
+            newnode=(id<CouchDerived, Configurable, Selectable, Transform>)mnode;
+            
+            mnode.renderBase=n.renderBase;
+            mnode.renderLayout=n.renderLayout;
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;

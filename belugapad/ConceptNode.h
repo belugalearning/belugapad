@@ -21,6 +21,9 @@
 @property (readonly) NSString *utd;
 @property (readonly) NSArray *regions;
 
+@property (readonly) int renderLayout;
+@property (readonly) int renderBase;
+
 //not persisted
 @property bool isLit;
 

@@ -107,7 +107,10 @@
     [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
-    if(ParentGO.flip) nodeSprite.flipX=YES;
+    if(ParentGO.flip)
+    {
+     nodeSprite.color=ccc3(255, 0, 0);   
+    }
     
     if(((AppController*)[[UIApplication sharedApplication] delegate]).AuthoringMode)
     {

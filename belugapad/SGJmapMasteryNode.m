@@ -15,6 +15,8 @@
 
 @synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes, EnabledAndComplete, Region, PrereqCount, PrereqComplete, PrereqPercentage, Disabled, Attempted, DateLastPlayed, FreshlyCompleted;
 
+@synthesize PreviousPreReqPercentage;
+
 //transform protocol properties
 @synthesize Position, RenderBatch;
 

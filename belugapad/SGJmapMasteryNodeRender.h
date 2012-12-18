@@ -47,6 +47,8 @@
 @property int islandStage;
 @property (retain) NSMutableArray *indexedBaseNodes;
 
+@property int previousIslandStage;
+
 -(void)draw:(int)z;
 -(void)setup;
 

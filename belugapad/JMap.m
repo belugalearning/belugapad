@@ -559,6 +559,35 @@ typedef enum {
                 NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
             }
             
+
+            //calculate old prqc
+            int pprqcomplete=0;
+            for(SGJmapNode *n in mgo.ChildNodes)
+            {
+                for (SGJmapNode *prqn in n.PrereqNodes) {
+                    if(prqn.EnabledAndComplete && !prqn.FreshlyCompleted) {                        
+                            pprqcomplete++;
+                        }
+                    else if(prqn.EnabledAndComplete && prqn.FreshlyCompleted)
+                    {
+                        mgo.FreshlyCompleted=YES;
+                    }
+                }
+            }
+            
+            if(mgo.PrereqCount>0)
+            {
+                mgo.PreviousPreReqPercentage =(pprqcomplete / (float)prqcount) * 100.0f;
+            }
+            else if(mgo.ChildNodes.count>0)
+            {
+                mgo.PreviousPreReqPercentage=100;
+            }
+            else {
+                mgo.PreviousPreReqPercentage=0;
+            }
+            
+            
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
@@ -777,11 +806,22 @@ typedef enum {
 
 -(NSNumber*)getBoxedIsFlippedFromTransformString:(NSString*)t
 {
+    if(t.length==0)return [NSNumber numberWithBool:NO];
+    
     NSArray *ps=[t componentsSeparatedByString:@" "];
     NSString *sx=[ps objectAtIndex:0];
     sx=[sx stringByReplacingOccurrencesOfString:@"matrix(" withString:@""];
-    int set=[sx intValue];
-    return [NSNumber numberWithBool:(set<0)];
+
+    int set=0;
+    if([sx isEqualToString:@"-1"])
+    {
+     set=-1;
+        
+    }
+    
+    NSNumber *res=[NSNumber numberWithBool:(set<0)];
+    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
+    return res;
 }
 
 

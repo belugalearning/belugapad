@@ -34,6 +34,8 @@
 @property int renderLayout;
 @property int renderBase;
 
+@property float PreviousPreReqPercentage;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

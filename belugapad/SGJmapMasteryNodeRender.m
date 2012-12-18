@@ -43,6 +43,8 @@ static int shadowSteps=5;
 
 @synthesize islandShapeIdx, islandLayoutIdx, islandStage;
 
+@synthesize previousIslandStage;
+
 -(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform, CouchDerived>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
@@ -296,6 +298,10 @@ static int shadowSteps=5;
     self.islandStage=1;
     if(ParentGO.PrereqPercentage>=30)self.islandStage=3;
     if(ParentGO.PrereqPercentage>=70)self.islandStage=5;
+    
+    self.previousIslandStage=1;
+    if(ParentGO.PreviousPreReqPercentage>=30)self.previousIslandStage=3;
+    if(ParentGO.PreviousPreReqPercentage>=70)self.previousIslandStage=5;
 
     
 //    //position children
@@ -344,6 +350,8 @@ static int shadowSteps=5;
         CGPoint pos=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).position;
         
         child.Position=pos;
+        
+        child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
         
         //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
         
@@ -451,8 +459,11 @@ static int shadowSteps=5;
         CCSprite *basesprite=[CCSprite spriteWithSpriteFrameName:@"spacer.png"];
         basesprite.position=ccpAdd([self halvedSubCentre:rawpos], ParentGO.Position);
         [ParentGO.RenderBatch addChild:basesprite z:5];
-        [self.indexedBaseNodes addObject:basesprite];
         
+        BOOL flip=[[f objectForKey:@"FLIPPED"] boolValue];
+        basesprite.flipX=flip;
+        
+        [self.indexedBaseNodes addObject:basesprite];
         
         [gameWorld.Blackboard.debugDrawNode drawDot:basesprite.position radius:5.0f color:ccc4f(1, 0, 0, 0.5f)];
         
@@ -478,17 +489,49 @@ static int shadowSteps=5;
         
         if(size>2 || self.islandStage<3)
         {
-            NSString *fname=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+            NSString *fnameold=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.previousIslandStage, size, variant];
             
-            [base setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
+            
+            //create random delay to go before all transitions
+            //fade out needs to be 1.5s
+            //fade in needs to be 1s, starting and 0.5s
+            
+            if(ParentGO.FreshlyCompleted)
+            {
+                CCSprite *oldfsprite=[CCSprite spriteWithSpriteFrameName:fnameold];
+                [base addChild:oldfsprite];
+                
+                [oldfsprite runAction:[CCFadeOut actionWithDuration:3.0f]];
+            }
+            
+            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
+            [base addChild:newfsprite];
+            
+            if(ParentGO.FreshlyCompleted)
+            {
+                newfsprite.opacity=0;
+                [newfsprite runAction:[CCFadeIn actionWithDuration:3.0f]];
+            }
             
             if(size==5 && self.islandStage>4)
             {
-                base.position=ccpAdd(base.position, ccp(0, -75));
+                newfsprite.position=ccpAdd(base.position, ccp(0, -75));
             }
+            
+            // mod pos of old sprite if existing
             
             //sort irregular x offset
             base.position=ccpAdd(base.position, ccp(50,-25));
+
+            
+            NSLog(@"island state -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
+            
+            if(ParentGO.FreshlyCompleted)
+            {
+                NSLog(@"is fresh! -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
+                
+            }
             
         }
         

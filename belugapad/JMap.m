@@ -285,6 +285,10 @@ typedef enum {
     ac.lastJmapViewUState=udata;
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+    
+    if(playTransitionAudio)
+       [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
+    playTransitionAudio=NO;
 }
 
 -(void)getUserData

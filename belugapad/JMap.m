@@ -571,6 +571,7 @@ typedef enum {
                     else if(prqn.EnabledAndComplete && prqn.FreshlyCompleted)
                     {
                         mgo.FreshlyCompleted=YES;
+                        playTransitionAudio=YES;
                     }
                 }
             }

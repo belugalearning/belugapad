@@ -389,7 +389,13 @@ typedef enum {
         id<CouchDerived, Configurable, Selectable, Transform> newnode;
         
         //create a node go
-        if(n.mastery)
+        
+        if(n.comingSoon)
+        {
+            //todo -- create new coming soon island
+            
+        }
+        else if(n.mastery)
         {
             SGJmapMasteryNode *mnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             

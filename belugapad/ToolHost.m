@@ -2163,10 +2163,15 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)tearDownQuestionTray
 {
-    [qTrayTop removeFromParentAndCleanup:YES];
-    [qTrayMid removeFromParentAndCleanup:YES];
-    [qTrayBot removeFromParentAndCleanup:YES];
-    [readProblemDesc removeFromParentAndCleanup:YES];
+    if(qTrayTop)[qTrayTop removeFromParentAndCleanup:YES];
+    if(qTrayMid)[qTrayMid removeFromParentAndCleanup:YES];
+    if(qTrayBot)[qTrayBot removeFromParentAndCleanup:YES];
+    if(readProblemDesc)[readProblemDesc removeFromParentAndCleanup:YES];
+    
+    qTrayTop=nil;
+    qTrayMid=nil;
+    qTrayBot=nil;
+    readProblemDesc=nil;
 }
 
 -(void)tearDownNumberPicker

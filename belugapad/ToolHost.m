@@ -1048,7 +1048,7 @@ static float kTimeToHintToolTray=7.0f;
 
     if(evalMode==kProblemEvalOnCommit)
     {
-        [commitBtn removeFromParentAndCleanup:YES];
+        if(commitBtn)[commitBtn removeFromParentAndCleanup:YES];
         commitBtn=nil;
     }
     
@@ -1105,7 +1105,7 @@ static float kTimeToHintToolTray=7.0f;
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
-    
+    commitBtn=nil;
     [descGw release];
     descGw=nil;
     

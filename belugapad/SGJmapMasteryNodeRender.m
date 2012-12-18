@@ -502,26 +502,28 @@ static int shadowSteps=5;
             NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
             NSString *fnameold=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.previousIslandStage, size, variant];
             
+            float stdTime = arc4random() % 11 * 0.1;
+            float actTime = 1.5f;
             
             //create random delay to go before all transitions
             //fade out needs to be 1.5s
             //fade in needs to be 1s, starting and 0.5s
             
-            if(ParentGO.FreshlyCompleted)
+            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
             {
                 CCSprite *oldfsprite=[CCSprite spriteWithSpriteFrameName:fnameold];
                 [base addChild:oldfsprite];
                 
-                [oldfsprite runAction:[CCFadeOut actionWithDuration:3.0f]];
+                [oldfsprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
             }
             
             CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
             [base addChild:newfsprite];
             
-            if(ParentGO.FreshlyCompleted)
+            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
             {
                 newfsprite.opacity=0;
-                [newfsprite runAction:[CCFadeIn actionWithDuration:3.0f]];
+                [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
             }
             
             if(size==5 && self.islandStage>4)

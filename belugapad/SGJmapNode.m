@@ -13,7 +13,7 @@
 
 @implementation SGJmapNode
 
-@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode, PrereqNodes, Attempted, DateLastPlayed;
+@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode, PrereqNodes, Attempted, DateLastPlayed, FreshlyCompleted;
 
 //Transform protocol properties
 @synthesize Position, RenderBatch;

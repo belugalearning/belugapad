@@ -73,6 +73,7 @@
     @property BOOL EnabledAndComplete;
     @property BOOL Attempted;
     @property (retain) NSDate *DateLastPlayed;
+    @property BOOL FreshlyCompleted;
 
 @end
 

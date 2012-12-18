@@ -111,9 +111,30 @@
             if(n.ustate.highScore>0)sScore=[NSString stringWithFormat:@"%d", n.ustate.highScore];
             NSString *sPlayButton=@"PLAY NOW";
             if(n.ustate.lastPlayed>0)sPlayButton=@"PLAY AGAIN";
+         
+//            NSDateFormatter *df=[[NSDateFormatter alloc]init];
+//            [df setDateFormat:@"dd/MM/YYYY"];
+//            NSString *lastPlayedDate=[df stringFromDate:ParentGO.DateLastPlayed];
+//            [df release];
+            
+            NSString *displayString=nil;
+            
+            NSDate *today=[NSDate date];
+            NSDate *lastPlayed=ParentGO.DateLastPlayed;
+            
+            NSTimeInterval secondsBetween=[today timeIntervalSinceDate:lastPlayed];
+            int numberOfDays=secondsBetween/86400;
+            int numberOfWeeks=numberOfDays/7;
+            
+            if(numberOfDays==0)
+                displayString=@"TODAY";
+            else if(numberOfDays>0 && numberOfWeeks==0)
+                displayString=[NSString stringWithFormat:@"%d DAYS AGO", numberOfDays];
+            else if(numberOfDays>0 && numberOfWeeks>0)
+                displayString=[NSString stringWithFormat:@"%d WEEKS AGO", numberOfWeeks];
             
             NSString *splayed=@"NOT PLAYED";
-            if(n.ustate.lastPlayed>0)splayed=@"tbc: played";
+            if(n.ustate.lastPlayed>0)splayed=[NSString stringWithFormat:@"LAST PLAYED\n%@", displayString];
             
             if(n.ustate.lastPlayed>0)
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-tall.png")];
@@ -149,7 +170,7 @@
 
             
             CCLabelTTF *days=[CCLabelTTF labelWithString:splayed dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
-            [days setPosition:ccp(100, 45)];
+            [days setPosition:ccp(100, 50)];
             [days setColor:ccc3(200, 200, 200)];
             [signSprite addChild:days];
         }

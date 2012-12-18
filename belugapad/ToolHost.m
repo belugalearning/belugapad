@@ -1102,9 +1102,9 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)tearDownProblemDef
 {
+    [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
-    [self tearDownQuestionTray];
     
     [descGw release];
     descGw=nil;
@@ -1220,6 +1220,11 @@ static float kTimeToHintToolTray=7.0f;
 //        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
 //    }
     
+    //top left tap for edit pdef
+    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
+    {
+        [self editPDef];
+    }
     //bottom right tap for debug skip problem
     if (!ac.ReleaseMode && location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
@@ -1241,12 +1246,6 @@ static float kTimeToHintToolTray=7.0f;
         {
             [self debugShowPipelineState];
         }
-    }
-    
-    //top left tap for edit pdef
-    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
-    {
-        [self editPDef];
     }
 }
 

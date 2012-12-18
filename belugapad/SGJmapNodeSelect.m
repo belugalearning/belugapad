@@ -130,11 +130,19 @@
             [playSprite addChild:playlabel];
             
             
-            CCLabelTTF *score=[CCLabelTTF labelWithString:sScore dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
-            [score setPosition:ccp(100, 85)];
-            [score setColor:ccc3(255, 255, 255)];
-            [signSprite addChild:score];
-            
+            NSNumberFormatter *nf = [NSNumberFormatter new];
+            nf.numberStyle = NSNumberFormatterDecimalStyle;
+            NSNumber *thisNumber=[NSNumber numberWithFloat:[sScore floatValue]];
+            sScore = [nf stringFromNumber:thisNumber];
+            [nf release];
+
+            if([thisNumber floatValue]>0)
+            {
+                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+                [score setPosition:ccp(100, 85)];
+                [score setColor:ccc3(255, 255, 255)];
+                [signSprite addChild:score];
+            }
             CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
             [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
             [signSprite addChild:newSprite];

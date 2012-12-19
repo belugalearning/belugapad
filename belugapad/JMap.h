@@ -48,6 +48,8 @@
     
     CGPoint lastTap;
     float lastTapTime;
+    
+    BOOL playTransitionAudio;
 }
 
 +(CCScene *)scene;

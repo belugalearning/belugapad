@@ -409,10 +409,10 @@ static float kTimeToHintToolTray=7.0f;
         }
         timeToReturnToJmap+=delta;
         
-        if(timeToReturnToJmap>3.1f)
+        if(timeToReturnToJmap>2.9f)
         {
-            [self showCompleteAndReturnToMap];
             countUpToJmap=NO;
+            [self showCompleteAndReturnToMap];
         }
     }
     
@@ -1041,17 +1041,14 @@ static float kTimeToHintToolTray=7.0f;
     
     TFLog(@"resetting problem");
     
-    [qTrayTop removeFromParentAndCleanup:YES];
-    [qTrayMid removeFromParentAndCleanup:YES];
-    [qTrayBot removeFromParentAndCleanup:YES];
-    [readProblemDesc removeFromParentAndCleanup:YES];
+    [self tearDownQuestionTray];
     
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
 
     if(evalMode==kProblemEvalOnCommit)
     {
-        [commitBtn removeFromParentAndCleanup:YES];
+        if(commitBtn)[commitBtn removeFromParentAndCleanup:YES];
         commitBtn=nil;
     }
     
@@ -1105,9 +1102,10 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)tearDownProblemDef
 {
+    [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
-    
+    commitBtn=nil;
     [descGw release];
     descGw=nil;
     
@@ -1222,6 +1220,11 @@ static float kTimeToHintToolTray=7.0f;
 //        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
 //    }
     
+    //top left tap for edit pdef
+    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
+    {
+        [self editPDef];
+    }
     //bottom right tap for debug skip problem
     if (!ac.ReleaseMode && location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
@@ -1243,12 +1246,6 @@ static float kTimeToHintToolTray=7.0f;
         {
             [self debugShowPipelineState];
         }
-    }
-    
-    //top left tap for edit pdef
-    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(kRectButtonCommit, location))
-    {
-        [self editPDef];
     }
 }
 
@@ -1402,7 +1399,8 @@ static float kTimeToHintToolTray=7.0f;
         CCSprite *answerBtn;
         SGBtxeRow *row;
 //        CCLabelTTF *answerLabel;
-        
+        NSString *raw=nil;
+        NSString *answerLabelString=nil;
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
         {
@@ -1413,10 +1411,27 @@ static float kTimeToHintToolTray=7.0f;
 //            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
             
             // then the answer label
-            NSString *raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+            raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+            
+            if(raw.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
+            }
+            else if([[raw substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
+            }
             
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
-            NSString *answerLabelString=[NSString stringWithFormat:@"%@", raw];
+            answerLabelString=[NSString stringWithFormat:@"%@", raw];
             
             if(answerLabelString.length<3)
             {
@@ -1435,15 +1450,7 @@ static float kTimeToHintToolTray=7.0f;
                 answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
             }
             
-            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
-            
-            row.forceVAlignTop=NO;
-            row.rowWidth=answerBtn.contentSize.width-10;
 
-            [row parseXML:answerLabelString];
-            [row setupDraw];
-            [row inflateZindex];
-            [row tagMyChildrenForIntro];
 
             
 //            [answerLabel setString:answerLabelString];
@@ -1474,7 +1481,16 @@ static float kTimeToHintToolTray=7.0f;
         [trayLayerMq addChild:answerBtn];
         [metaQuestionAnswerButtons addObject:answerBtn];
         
-        
+        if(answerLabelString){
+            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
+            
+            row.forceVAlignTop=NO;
+            row.rowWidth=answerBtn.contentSize.width-10;
+            [row parseXML:answerLabelString];
+            [row setupDraw];
+            [row inflateZindex];
+            [row tagMyChildrenForIntro];
+        }
         // check for text, render if nesc
         if(row)
         {
@@ -1518,7 +1534,7 @@ static float kTimeToHintToolTray=7.0f;
     if(isAnimatingIn)
         return;
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible)
+    if (CGRectContainsPoint(commitBtn.boundingBox, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible && !autoMoveToNextProblem)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
@@ -1741,6 +1757,7 @@ static float kTimeToHintToolTray=7.0f;
     evalShowCommit=NO;
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
+    hasShownComplete=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
     
     if(metaQuestionForThisProblem)
@@ -1948,7 +1965,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        if(CGRectContainsPoint(kRectButtonCommit, origloc) && commitBtn.visible)
+        if(CGRectContainsPoint(commitBtn.boundingBox, origloc) && commitBtn.visible && !autoMoveToNextProblem)
         {
             //[self playAudioPress];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
@@ -2143,6 +2160,20 @@ static float kTimeToHintToolTray=7.0f;
         NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
     }
 }
+
+-(void)tearDownQuestionTray
+{
+    if(qTrayTop)[qTrayTop removeFromParentAndCleanup:YES];
+    if(qTrayMid)[qTrayMid removeFromParentAndCleanup:YES];
+    if(qTrayBot)[qTrayBot removeFromParentAndCleanup:YES];
+    if(readProblemDesc)[readProblemDesc removeFromParentAndCleanup:YES];
+    
+    qTrayTop=nil;
+    qTrayMid=nil;
+    qTrayBot=nil;
+    readProblemDesc=nil;
+}
+
 -(void)tearDownNumberPicker
 {
     if(CurrentBTXE)CurrentBTXE=nil;
@@ -2303,10 +2334,10 @@ static float kTimeToHintToolTray=7.0f;
     [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
     
     
-    [problemDefLayer addChild:readProblemDesc];
-    [problemDefLayer addChild:qTrayTop];
-    [problemDefLayer addChild:qTrayBot];
-    [problemDefLayer addChild:qTrayMid];
+    [backgroundLayer addChild:readProblemDesc];
+    [backgroundLayer addChild:qTrayTop];
+    [backgroundLayer addChild:qTrayBot];
+    [backgroundLayer addChild:qTrayMid];
     
     
     //show and hide separator for exprbuilder
@@ -2439,7 +2470,7 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
+    if (CGRectContainsPoint(commitBtn.boundingBox, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible && !autoMoveToNextProblem)
     {
         doPlaySound=NO;
         //remove any trays
@@ -2740,7 +2771,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayBot.position.y)]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2778,7 +2809,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/3.1), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayBot.position.y)]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         

@@ -34,6 +34,8 @@
 #import "SGJmapNodeSelect.h"
 #import "SGJmapRegion.h"
 #import "SGJmapCloud.h"
+#import "SGJmapComingSoonNode.h"
+#import "SGJmapPaperPlane.h"
 
 #import "JSONKit.h"
 #import "TestFlight.h"
@@ -160,19 +162,7 @@ typedef enum {
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
         
         [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
-                
-//        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
-//        [daemon setMode:kDaemonModeFollowing];
-//        
-//        logOutBtnBounds=CGRectMake(kLogOutBtnPadding, winsize.height - kLogOutBtnSize.height - kLogOutBtnPadding, kLogOutBtnSize.width, kLogOutBtnSize.height);
-////        
-////        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
-////                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
-//        logOutBtnCentre = CGPointMake(logOutBtnBounds.origin.x + kLogOutBtnSize.width/2, logOutBtnBounds.origin.y + kLogOutBtnSize.height/2);
-//        CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/log-out.png")];
-//        [b setPosition:logOutBtnCentre];
-//        [foreLayer addChild:b];
-        
+                        
         //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
         
         [TestFlight passCheckpoint:@"STARTED_JMAP"];
@@ -186,12 +176,6 @@ typedef enum {
 
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos
 {
-//    mapLayer.anchorPoint=ccp(cx, cy);
-//    
-//    CCEaseInOut *ease=[CCEaseInOut actionWithAction:[CCScaleBy actionWithDuration:0.5f scale:4.0f] rate:2.0f];
-//    [mapLayer runAction:ease];
-//    
-//    [self scheduleOnce:@selector(gotoToolHost:) delay:0.5f];
     
     [self gotoToolHost:0];
 }
@@ -223,7 +207,9 @@ typedef enum {
     gw.Blackboard.RenderLayer=mapLayer;
     
     gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
-//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
+    
+    //used for debug draw of map positioning
+    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
     
 }
 
@@ -301,6 +287,13 @@ typedef enum {
     ac.lastJmapViewUState=udata;
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+    
+    if(playTransitionAudio)
+       [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
+    playTransitionAudio=NO;
+    
+//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0)];
+//    [plane setup];
 }
 
 -(void)getUserData
@@ -401,9 +394,22 @@ typedef enum {
         id<CouchDerived, Configurable, Selectable, Transform> newnode;
         
         //create a node go
-        if(n.mastery)
+        
+        if(n.comingSoon)
         {
-            newnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
+            
+            newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
+            
+        }
+        else if(n.mastery)
+        {
+            SGJmapMasteryNode *mnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            
+            newnode=(id<CouchDerived, Configurable, Selectable, Transform>)mnode;
+            
+            mnode.renderBase=n.renderBase;
+            mnode.renderLayout=n.renderLayout;
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;
@@ -425,9 +431,17 @@ typedef enum {
             SGJmapNode *newnodeC=(SGJmapNode*)newnode;
             
             newnodeC.ustate=[udata objectForKey:n._id];
+            if(ac.lastJmapViewUState) newnodeC.lastustate=[ac.lastJmapViewUState objectForKey:n._id];
             
             //mock old enabledAndComplete by directly accessing the lastPlayed of the node
-            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastPlayed > 0);
+            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastCompleted > 0);
+            newnodeC.Attempted=(newnodeC.ustate.lastPlayed > 0);
+            newnodeC.DateLastPlayed=(newnodeC.ustate.lastPlayed);
+            
+            if(newnodeC.EnabledAndComplete && (newnodeC.lastustate!=nil && newnodeC.lastustate.lastCompleted<=0))
+            {
+                newnodeC.FreshlyCompleted=YES;
+            }
             
             
             newnode.HitProximity=40.0f;
@@ -561,6 +575,39 @@ typedef enum {
                 NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
             }
             
+
+            //calculate old prqc
+            int pprqcomplete=0;
+            for(SGJmapNode *n in mgo.ChildNodes)
+            {
+                for (SGJmapNode *prqn in n.PrereqNodes) {
+                    if(prqn.EnabledAndComplete && !prqn.FreshlyCompleted) {                        
+                            pprqcomplete++;
+                        }
+                    else if(prqn.EnabledAndComplete && prqn.FreshlyCompleted)
+                    {
+                        mgo.FreshlyCompleted=YES;
+                        playTransitionAudio=YES;
+                        
+                        //that means that node's island has a effective link to this one, add it with link data
+                        [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
+                    }
+                }
+            }
+            
+            if(mgo.PrereqCount>0)
+            {
+                mgo.PreviousPreReqPercentage =(pprqcomplete / (float)prqcount) * 100.0f;
+            }
+            else if(mgo.ChildNodes.count>0)
+            {
+                mgo.PreviousPreReqPercentage=100;
+            }
+            else {
+                mgo.PreviousPreReqPercentage=0;
+            }
+            
+            
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
@@ -572,7 +619,11 @@ typedef enum {
         SGJmapMasteryNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
         SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
         
-        if(leftgo && rightgo)
+        BOOL connectNodes=YES;
+        
+        if(![leftgo isKindOfClass:[SGJmapMasteryNode class]]||![rightgo isKindOfClass:[SGJmapMasteryNode class]])connectNodes=NO;
+        
+        if(leftgo && rightgo && connectNodes)
         {
             [leftgo.ConnectFromMasteryNodes addObject:rightgo];
             [rightgo.ConnectToMasteryNodes addObject:leftgo];
@@ -727,7 +778,6 @@ typedef enum {
                 [artefacts addObject:cryd];
                 [featureindex addObject:cryd];
                 
-//                NSLog(@"parsed an artefact");
             }
             else if([href rangeOfString:@"Feature_Stage"].location!=NSNotFound)
             {
@@ -741,7 +791,6 @@ typedef enum {
                 [features addObject:fd];
                 [featureindex addObject:fd];
                 
-//                NSLog(@"parsed a feature");
             }
             else if([href rangeOfString:@"Node_Placeholder"].location!=NSNotFound)
             {
@@ -751,7 +800,6 @@ typedef enum {
                 [nodes addObject:noded];
                 [featureindex addObject:noded];
                 
-//                NSLog(@"parsed a node");
             }
             else if([href rangeOfString:@"Mastery_Placeholder"].location!=NSNotFound)
             {
@@ -761,7 +809,6 @@ typedef enum {
                 [featureindex addObject:masd];
                 [idata setValue:masd forKey:@"MASTERY"];
                 
-//                NSLog(@"parsed a mastery node/pin");
             }
         }
     }
@@ -783,11 +830,22 @@ typedef enum {
 
 -(NSNumber*)getBoxedIsFlippedFromTransformString:(NSString*)t
 {
+    if(t.length==0)return [NSNumber numberWithBool:NO];
+    
     NSArray *ps=[t componentsSeparatedByString:@" "];
     NSString *sx=[ps objectAtIndex:0];
     sx=[sx stringByReplacingOccurrencesOfString:@"matrix(" withString:@""];
-    int set=[sx intValue];
-    return [NSNumber numberWithBool:(set<0)];
+
+    int set=0;
+    if([sx isEqualToString:@"-1"])
+    {
+     set=-1;
+        
+    }
+    
+    NSNumber *res=[NSNumber numberWithBool:(set<0)];
+    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
+    return res;
 }
 
 
@@ -892,138 +950,6 @@ typedef enum {
     return nil;
 }
 
-#pragma mark transitions
-
-//-(void)createNodeSliceFrom:(ConceptNode*)n
-//{
-//    //establish if there are problems
-//    currentNodeSliceHasProblems=n.pipelines.count>0;
-//    if(currentNodeSliceHasProblems)
-//    {
-//        currentNodeSliceHasProblems=NO;
-//        for (int i=0; i<n.pipelines.count; i++) {
-//            Pipeline *p = [contentService pipelineWithId:[n.pipelines objectAtIndex:i]];
-//            
-//            if(p.problems.count>0 && [p.name isEqualToString:@"25May"])
-//            {
-//                currentNodeSliceHasProblems=YES;
-//                break;
-//            }
-//        }
-//    }
-//    
-//    NSString *bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg.png");
-//    if(!currentNodeSliceHasProblems) bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg-nopin.png");
-//    
-//    CCSprite *ns=[CCSprite spriteWithFile:bpath];
-//    [ns setScale:kNodeSliceStartScale];
-//    [ns setPosition:n.journeySprite.position];
-//
-//    [mapLayer addChild:ns];
-//    [nodeSliceNodes addObject:n];
-//    
-//    n.nodeSliceSprite=ns;
-//    
-//    float time1=0.1f;
-//    float time2=0.9f;
-//    float time3=0.2f;
-//    
-//    CCScaleTo *scale1=[CCScaleTo actionWithDuration:time1 scale:0.3f];
-//    CCScaleTo *scale2=[CCScaleTo actionWithDuration:time2 scale:0.5f];
-//    CCEaseOut *ease2=[CCEaseOut actionWithAction:scale2 rate:0.5f];
-//    CCScaleTo *scale3=[CCScaleTo actionWithDuration:time3 scale:1.0f];
-//    CCSequence *scaleSeq=[CCSequence actions:scale1, ease2, scale3, nil];
-//    
-//    CCDelayTime *move1=[CCDelayTime actionWithDuration:time1 + time2];
-//    CCMoveTo *move2=[CCMoveTo actionWithDuration:time3 position:[mapLayer convertToNodeSpace:kNodeSliceOrigin]];
-//    CCSequence *moveSeq=[CCSequence actions:move1, move2, nil];
-//    
-//    [ns runAction:scaleSeq];
-//    [ns runAction:moveSeq];
-//}
-//
-//-(void)cancelNodeSliceTransition
-//{
-//    if(!currentNodeSliceNode) return;
-//    
-//    CCSprite *ns=currentNodeSliceNode.nodeSliceSprite;
-//    
-//    [ns stopAllActions];
-//    
-//    CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
-//    CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
-//    CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:currentNodeSliceNode.journeySprite.position];
-//    [ns runAction:scaleto];
-//    [ns runAction:fade];
-//    [ns runAction:moveto];
-//    
-//    currentNodeSliceNode=nil;
-//}
-//
-//-(void)tidyUpRemovedNodeSlices
-//{
-//    NSMutableArray *removedS=[[NSMutableArray alloc] init];
-//    
-//    for (ConceptNode *n in nodeSliceNodes) {
-//        if(n.nodeSliceSprite.opacity==0)
-//        {
-//            [mapLayer removeChild:n.nodeSliceSprite cleanup:YES];
-//            //[n.nodeSliceSprite release];
-//            n.nodeSliceSprite=nil;
-//            [removedS addObject:n];
-//            
-//        }
-//    }
-//    
-//    [nodeSliceNodes removeObjectsInArray:removedS];
-//    [removedS release];
-//}
-//
-//-(void)removeNodeSlices
-//{
-//    [self tidyUpRemovedNodeSlices];
-//    
-//    if([lightSprites containsObject:nodeSliceLight])[lightSprites removeObject:nodeSliceLight];
-//    
-//    for (ConceptNode *n in nodeSliceNodes) {
-//        
-//        CCSprite *ns=n.nodeSliceSprite;
-//        
-//        if(ns.opacity==255)
-//        {
-//            CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
-//            CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
-//            CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:n.journeySprite.position];
-//            [ns runAction:scaleto];
-//            [ns runAction:fade];
-//            [ns runAction:moveto];
-//        }
-//    }
-//    
-//}
-
-#pragma mark user i/o
-
-//-(void)startSeletedPin
-//{
-//    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode._id);
-//    
-//    if (currentNodeSliceNode.pipelines.count>0) {
-//        //need to get the right pipeline -- named @"25May"
-//        for (NSString *pid in currentNodeSliceNode.pipelines) {
-//            Pipeline *p=[contentService pipelineWithId:pid];
-//            if([p.name isEqualToString:@"25May"])
-//            {
-//                [contentService startPipelineWithId:pid forNode:currentNodeSliceNode];
-//                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
-//                break;
-//            }
-//        }
-//    }
-//    else {
-//        NSLog(@"failed to start -- no pipelines found");
-//    }
-//}
 
 #pragma mark touch handling
 
@@ -1080,6 +1006,7 @@ typedef enum {
         if(!zoomedOut)
         {
             [self testForNodeTouchAt:lOnMap];
+            [self testForPlaneTouchAt:lOnMap];
         }
         else if(touchCount==1)
         {
@@ -1126,20 +1053,22 @@ typedef enum {
                 break;
             }
         }
+        
     }
 }
 
-//- (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
-//{
-//    //test for node hit and start transition
-//    ConceptNode *n=[self nodeWithin:(kPropXNodeHitDist * lx) ofLocation:lOnMap];
-//    if(n)
-//    {
-//        //[self createNodeSliceFrom:n];
-//        NSLog(@"hit node %@", n._id);
-//        
-//    }
-//}
+-(void)testForPlaneTouchAt:(CGPoint)lOnMap
+{
+    for (id go in [gw AllGameObjects]) {
+        
+        if([go isKindOfClass:[SGJmapPaperPlane class]])
+        {
+            SGJmapPaperPlane *thisPlane=(SGJmapPaperPlane*)go;
+            [thisPlane checkTouchOnMeAt:lOnMap];
+            break;
+        }
+    }
+}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -1166,10 +1095,6 @@ typedef enum {
 
             lastTouch=l;
             
-//            CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
-            
-//            [daemon setTarget:l];    
-//            [daemon setRestingPoint:l];
         }
     }
     //pinch handling
@@ -1332,7 +1257,7 @@ typedef enum {
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    [ac speakString:searchBar.text];
+//    [ac speakString:searchBar.text];
     
     [ac.searchList removeFromSuperview];
 }

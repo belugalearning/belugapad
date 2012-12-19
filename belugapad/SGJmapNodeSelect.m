@@ -71,30 +71,10 @@
     {
         ret=YES;
       
-        //select me / show sign
-        //todo -- this should only work if enabled (otherwise resort to mastery node if applicable)
+        //no longer hacky at all -- completely miss the mastery/node check (no chance of hitting this anyway as there are no mastery pins, and allow direct access
         
-        //this is a bit hacky -- and a good demonstration of why this should potentially be two components
-        if([gameObject isKindOfClass:[SGJmapNode class]])
-        {
-            SGJmapNode *gom=(SGJmapNode*)gameObject;
-            
-            //check that this node has previous been completed -- or that we're in authoring mode, in which case allow direct access
-            if(gom.EnabledAndComplete || ((AppController*)[UIApplication sharedApplication].delegate).AuthoringMode)
-            {
-                //show the sign on our own node
-                [self showSignWithForce:NO];
-            }
-            else {
-                //show the sign on our parent mastery
-                [gom.MasteryNode.NodeSelectComponent showSignWithForce:YES];
-            }
-        }
-        else {
-            //this is mastery -- pop the sign
-            [self showSignWithForce:NO];
-        }
-    
+        //this is mastery -- pop the sign
+        [self showSignWithForce:NO];
     }
     else {
         
@@ -131,9 +111,30 @@
             if(n.ustate.highScore>0)sScore=[NSString stringWithFormat:@"%d", n.ustate.highScore];
             NSString *sPlayButton=@"PLAY NOW";
             if(n.ustate.lastPlayed>0)sPlayButton=@"PLAY AGAIN";
+         
+//            NSDateFormatter *df=[[NSDateFormatter alloc]init];
+//            [df setDateFormat:@"dd/MM/YYYY"];
+//            NSString *lastPlayedDate=[df stringFromDate:ParentGO.DateLastPlayed];
+//            [df release];
+            
+            NSString *displayString=nil;
+            
+            NSDate *today=[NSDate date];
+            NSDate *lastPlayed=ParentGO.DateLastPlayed;
+            
+            NSTimeInterval secondsBetween=[today timeIntervalSinceDate:lastPlayed];
+            int numberOfDays=secondsBetween/86400;
+            int numberOfWeeks=numberOfDays/7;
+            
+            if(numberOfDays==0)
+                displayString=@"TODAY";
+            else if(numberOfDays>0 && numberOfWeeks==0)
+                displayString=[NSString stringWithFormat:@"%d DAYS AGO", numberOfDays];
+            else if(numberOfDays>0 && numberOfWeeks>0)
+                displayString=[NSString stringWithFormat:@"%d WEEKS AGO", numberOfWeeks];
             
             NSString *splayed=@"NOT PLAYED";
-            if(n.ustate.lastPlayed>0)splayed=@"tbc: played";
+            if(n.ustate.lastPlayed>0)splayed=[NSString stringWithFormat:@"LAST PLAYED\n%@", displayString];
             
             if(n.ustate.lastPlayed>0)
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-tall.png")];
@@ -150,18 +151,26 @@
             [playSprite addChild:playlabel];
             
             
-            CCLabelTTF *score=[CCLabelTTF labelWithString:sScore dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
-            [score setPosition:ccp(100, 85)];
-            [score setColor:ccc3(255, 255, 255)];
-            [signSprite addChild:score];
-            
+            NSNumberFormatter *nf = [NSNumberFormatter new];
+            nf.numberStyle = NSNumberFormatterDecimalStyle;
+            NSNumber *thisNumber=[NSNumber numberWithFloat:[sScore floatValue]];
+            sScore = [nf stringFromNumber:thisNumber];
+            [nf release];
+
+            if([thisNumber floatValue]>0)
+            {
+                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+                [score setPosition:ccp(100, 85)];
+                [score setColor:ccc3(255, 255, 255)];
+                [signSprite addChild:score];
+            }
             CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
             [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
             [signSprite addChild:newSprite];
 
             
             CCLabelTTF *days=[CCLabelTTF labelWithString:splayed dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
-            [days setPosition:ccp(100, 45)];
+            [days setPosition:ccp(100, 50)];
             [days setColor:ccc3(200, 200, 200)];
             [signSprite addChild:days];
         }

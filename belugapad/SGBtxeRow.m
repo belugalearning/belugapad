@@ -130,6 +130,8 @@
 
 -(void)tagMyChildrenForIntro
 {
+    if(!gameWorld.Blackboard.inProblemSetup)return;
+    
     for(id c in children)
     {
         if([c isKindOfClass:[SGBtxeText class]])

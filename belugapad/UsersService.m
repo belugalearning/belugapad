@@ -267,13 +267,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback
 {
-    NSMutableDictionary *d = [NSMutableDictionary dictionary];
-    [d setObject:nickName forKey:@"nick"];
-    [d setObject:password forKey:@"password"];
-    
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSGetUserPath
-                                                  parameters:d];
+                                                  parameters:@{ @"nick":nickName, @"password":password }];
     
     __block typeof(self) bself = self;
     
@@ -356,15 +352,19 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     __block typeof(self) bself = self;
     __block SEL processData = @selector(processDownloadedState:);
     
-    [NSURLConnection sendAsynchronousRequest:req
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *res, NSData *data, NSError *e) {
-                               if (!e && res && [(NSHTTPURLResponse*)res statusCode] == 200 && data)
-                               {
-                                   NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:processData userInfo:@{ @"userId":userId, @"responseData":data } repeats:YES];
-                                   [bself performSelector:processData withObject:timer];
-                               }
-                           }];
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
+    {
+        BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]] && [op.response statusCode] == 200;
+        if (reqSuccess)
+        {
+            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:processData userInfo:@{ @"userId":userId, @"responseData":res } repeats:YES];
+            [bself performSelector:processData withObject:timer];
+        }
+    };
+    
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
 }
 
 -(void)processDownloadedState:(NSTimer*)timer

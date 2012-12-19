@@ -14,6 +14,7 @@
 
 @class DWGameWorld;
 @class DWGameObject;
+@class SGGameWorld;
 @class DWPlaceValueNetGameObject;
 @class Daemon;
 @class ToolHost;
@@ -120,6 +121,7 @@
     
     
     DWGameWorld *gw;
+    SGGameWorld *sgw;
 
     CGPoint touchStartPos;
     CGPoint touchEndPos;

@@ -66,6 +66,7 @@
 -(void)handleMessage:(SGMessageType)messageType
 {
     
+    
 }
 
 -(void)doUpdate:(ccTime)delta

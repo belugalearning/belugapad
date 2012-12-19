@@ -399,6 +399,8 @@ typedef enum {
         {
             SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
             
+            comingSoonNode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
             newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
             
         }
@@ -1065,8 +1067,23 @@ typedef enum {
         if([go isKindOfClass:[SGJmapPaperPlane class]])
         {
             SGJmapPaperPlane *thisPlane=(SGJmapPaperPlane*)go;
-            if([thisPlane checkTouchOnMeAt:lOnMap])
+            
+            NSValue *ret=[thisPlane checkTouchOnMeAt:lOnMap];
+            if(ret)
+            {
+                CGPoint dest=[ret CGPointValue];
+                
+                //pan map
+//                CGPoint moveto=ccp(300-dest.x, 600-dest.y);
+                
+                if(zoomedOut)dest=[BLMath MultiplyVector:dest byScalar:REGION_ZOOM_LEVEL];
+                
+                [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:2.5f position:dest] rate:2.0f]];
+
+             
+                //stop looking
                 break;
+            }
         }
     }
 }

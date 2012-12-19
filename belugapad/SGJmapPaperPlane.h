@@ -22,5 +22,5 @@
 @property CGPoint Destination;
 
 -(SGJmapPaperPlane*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andDestination:(CGPoint) aDestination;
--(BOOL)checkTouchOnMeAt:(CGPoint)location;
+-(NSValue*)checkTouchOnMeAt:(CGPoint)location;
 @end

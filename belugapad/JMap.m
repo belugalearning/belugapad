@@ -292,8 +292,8 @@ typedef enum {
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;
     
-    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0)];
-    [plane setup];
+//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0)];
+//    [plane setup];
 }
 
 -(void)getUserData

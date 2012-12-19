@@ -15,7 +15,8 @@
 @property (retain) CCLayer *RenderLayer;
 @property (retain) CCSprite *planeSprite;
 
+@property CGPoint Destination;
 
--(SGJmapPaperPlane*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
+-(SGJmapPaperPlane*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andDestination:(CGPoint) aDestination;
 -(BOOL)checkTouchOnMeAt:(CGPoint)location;
 @end

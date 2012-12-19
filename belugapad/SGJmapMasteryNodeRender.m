@@ -12,6 +12,7 @@
 #import "PRFilledPolygon.h"
 #import "BLMath.h"
 #import "global.h"
+#import "SGJmapPaperPlane.h"
 
 #import "TouchXML.h"
 
@@ -374,7 +375,14 @@ static int shadowSteps=5;
 {
     for(SGJmapMasteryNode *othermn in ParentGO.EffectedPathDestinationNodes)
     {
-        [gameWorld.Blackboard.debugDrawNode drawSegmentFrom:ParentGO.Position to:othermn.Position radius:5.0f color:ccc4f(1,1,1,1)];
+        CGPoint path=[BLMath SubtractVector:ParentGO.Position from:othermn.Position];
+        CGPoint startpos=[BLMath AddVector:ParentGO.Position toVector:[BLMath MultiplyVector:path byScalar:0.2f]];
+        
+        SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:startpos andDestination:othermn.Position];
+        
+        [plane setup];
+        
+        [gameWorld.Blackboard.debugDrawNode drawSegmentFrom:ParentGO.Position to:othermn.Position radius:5.0f color:ccc4f(1,1,1,0.3f)];
     }
 }
 

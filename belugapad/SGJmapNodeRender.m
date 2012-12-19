@@ -104,7 +104,7 @@
     else if (pn.Attempted)
     {
         //should be yellow
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Attempted_Right.png"];
     }
     else if(pn.MasteryNode.PrereqPercentage>0)
     {

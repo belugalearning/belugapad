@@ -15,7 +15,8 @@
 @synthesize pipelines;
 @synthesize x, y, mastery, jtd, utd;
 @synthesize regions;
-
+@synthesize renderLayout, renderBase;
+@synthesize comingSoon;
 @synthesize isLit;
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet
@@ -30,6 +31,7 @@
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
+        comingSoon=[resultSet boolForColumn:@"cs"];
         
         NSArray *jtds=[[resultSet stringForColumn:@"jtd"] objectFromJSONString];
         if(jtds.count>0) jtd=[jtds objectAtIndex:0];
@@ -38,6 +40,12 @@
         NSArray *utds=[[resultSet stringForColumn:@"utd"] objectFromJSONString];
         if(utds.count>0) utd=[utds objectAtIndex:0];
         else utd=@"";
+        
+        NSArray *renderBases=[[resultSet stringForColumn:@"renderbase"] objectFromJSONString];
+        if(renderBases.count>0) renderBase=[[renderBases objectAtIndex:0] integerValue];
+        
+        NSArray *renderLayouts=[[resultSet stringForColumn:@"renderlayout"] objectFromJSONString];
+        if(renderLayouts.count>0) renderLayout=[[renderLayouts objectAtIndex:0] integerValue];
         
         NSString *rstring=[resultSet stringForColumn:@"region"];
         NSData *rdata=[rstring dataUsingEncoding:NSUTF8StringEncoding];

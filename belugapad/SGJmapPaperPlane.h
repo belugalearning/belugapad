@@ -10,6 +10,10 @@
 #import "SGJmapObjectProtocols.h"
 
 @interface SGJmapPaperPlane : SGGameObject <Transform, Drawing, ProximityResponder, Configurable>
+{
+    bool planeUsed;
+}
+
 
 @property int PlaneType;
 @property (retain) CCLayer *RenderLayer;
@@ -18,5 +22,5 @@
 @property CGPoint Destination;
 
 -(SGJmapPaperPlane*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andDestination:(CGPoint) aDestination;
--(BOOL)checkTouchOnMeAt:(CGPoint)location;
+-(NSValue*)checkTouchOnMeAt:(CGPoint)location;
 @end

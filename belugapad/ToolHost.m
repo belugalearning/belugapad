@@ -342,7 +342,6 @@ static float kTimeToHintToolTray=7.0f;
         moveToNextProblemTime-=delta;
         if(moveToNextProblemTime<0)
         {
-            autoMoveToNextProblem=NO;
             
             [self gotoNewProblem];
         }
@@ -430,12 +429,13 @@ static float kTimeToHintToolTray=7.0f;
     //don't eval if we're in an auto move to next problem
     
     //if the problem is complete and we aren't already moving to the next one
-    if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
-    {   
+    if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem && !hasUpdatedScore)
+    {
+        autoMoveToNextProblem=YES;
+        hasUpdatedScore=YES;
         [self incrementScoreAndMultiplier];
         
         moveToNextProblemTime=kMoveToNextProblemTime;
-        autoMoveToNextProblem=YES;
     }
     
     //if the problem is to be skipped b/c of triggered insertion and we aren't already moving to the next one
@@ -700,6 +700,7 @@ static float kTimeToHintToolTray=7.0f;
     {
         countUpToJmap=YES;
     }
+    autoMoveToNextProblem=NO;
 }
 
 -(void)showCompleteAndReturnToMap
@@ -721,6 +722,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void) loadProblem
 {
+    hasUpdatedScore=NO;
     trayWheelShowing=NO;
     trayCornerShowing=NO;
     hasTrayWheel=NO;

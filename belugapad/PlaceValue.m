@@ -501,7 +501,6 @@ static float kTimeToCageShake=7.0f;
         // if column headers should be shown
         if(showColumnHeader)
         {
-            CCLabelTTF *columnHeader;
             NSString *headerString=nil;
             
             SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:sgw andRenderLayer:renderLayer];
@@ -540,12 +539,9 @@ static float kTimeToCageShake=7.0f;
             
             if(gw.Blackboard.inProblemSetup)
             {
-//                [columnHeader setTag:3];
-//                [columnHeader setOpacity:0];
-//                [columnHeader setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
-//                [renderLayer addChild:columnHeader z:5];
-            
-                row.position=[renderLayer convertToWorldSpace:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
+                
+                row.position=ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader);
+                
                 NSLog(@"this row position is %@", NSStringFromCGPoint(row.position));
                 //row.position=[self.ForeLayer convertToWorldSpace:ccp(i*(kPropXColumnSpacing*lx), 120)];
                 [row parseXML:headerString];

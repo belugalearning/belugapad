@@ -57,7 +57,38 @@
     planeSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFileName)];
     [planeSprite setPosition:Position];
     planeSprite.rotation=remAngle;
-    [RenderLayer addChild:planeSprite];
+    [RenderLayer addChild:planeSprite z:99];
+    
+    
+    //pick it up
+    CCEaseInOut *ml1=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.25f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml2=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.95f] rate:2.0f];
+    
+    //pick it up
+    CCEaseInOut *ml3=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.15f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml4=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.97f] rate:2.0f];
+    
+    //pick it up
+    CCEaseInOut *ml5=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.05f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml6=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f] rate:2.0f];
+    
+    //delay
+    CCDelayTime *dt=[CCDelayTime actionWithDuration:2.0f];
+    
+    CCSequence *s=[CCSequence actions:ml1, ml2, ml3, ml4, ml5, ml6, dt, nil];
+    
+    CCEaseInOut *oe=[CCEaseInOut actionWithAction:s rate:2.0f];
+    
+    //repeat
+    CCRepeatForever *rf=[CCRepeatForever actionWithAction:oe];
+    
+    [planeSprite runAction:rf];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -75,14 +106,33 @@
     
 }
 
--(BOOL)checkTouchOnMeAt:(CGPoint)location
+-(NSValue*)checkTouchOnMeAt:(CGPoint)location
 {
-    if(CGRectContainsPoint(planeSprite.boundingBox, [planeSprite convertToNodeSpace:location]))
+    if(planeUsed) return nil;;
+    
+    if(CGRectContainsPoint(planeSprite.boundingBox, location))
     {
-        [planeSprite runAction:[CCFadeOut actionWithDuration:2.0f]];
-        return YES;
+        planeUsed=YES;
+        
+        [planeSprite stopAllActions];
+        
+        CCMoveTo *mt=[CCMoveTo actionWithDuration:3.0f position:self.Destination];
+        
+        CCEaseInOut *eio=[CCEaseInOut actionWithAction:mt rate:2.0f];
+        
+        [planeSprite runAction:eio];
+        
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:2.5f];
+        
+        CCFadeOut *fo=[CCFadeOut actionWithDuration:0.5f];
+        
+        CCSequence *s=[CCSequence actions:dt, fo, nil];
+        
+        [planeSprite runAction:s];
+        
+        return [NSValue valueWithCGPoint:[BLMath SubtractVector:self.Destination from:self.Position]];
     }else{
-        return NO;
+        return nil;
     }
 }
 

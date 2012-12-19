@@ -215,6 +215,8 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < gw.Blackboard.MaxObjectDistance+50 || nearestObject==lastNewBondObject)
             {
+                if(nearestObject==nil)return;
+                
                 if(bondAllObjects)
                 {
                     id<ShapeContainer>theRightContainer=((id<Moveable>)nearestObject).MyContainer;

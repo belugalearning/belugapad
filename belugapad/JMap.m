@@ -206,10 +206,10 @@ typedef enum {
     
     gw.Blackboard.RenderLayer=mapLayer;
     
-    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
+//    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
     
     //used for debug draw of map positioning
-    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
+//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
     
 }
 

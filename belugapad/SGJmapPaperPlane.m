@@ -77,7 +77,7 @@
 
 -(BOOL)checkTouchOnMeAt:(CGPoint)location
 {
-    if(CGRectContainsPoint(planeSprite.boundingBox, [planeSprite convertToNodeSpace:location]))
+    if(CGRectContainsPoint(planeSprite.boundingBox, location))
     {
         [planeSprite runAction:[CCFadeOut actionWithDuration:2.0f]];
         return YES;

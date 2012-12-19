@@ -123,6 +123,8 @@
 		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
 		55C908D015F62BD900BD64F2 /* SGFBlockOpBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */; };
 		55CD0507165AC1200040630A /* LongDivision.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD0506165AC1200040630A /* LongDivision.m */; };
+		55D08E6A16812AD60065895D /* SGJmapComingSoonNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D08E6916812AD60065895D /* SGJmapComingSoonNode.m */; };
+		55D08E6E16812B0C0065895D /* SGJmapPaperPlane.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D08E6D16812B0C0065895D /* SGJmapPaperPlane.m */; };
 		55E7CBDA157FC82400A399CF /* DWPieSplitterPieGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */; };
 		55E7CBDF157FC85200A399CF /* DWPieSplitterSliceGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */; };
 		55E7CBE3157FC8B800A399CF /* DWPieSplitterContainerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBE2157FC8B800A399CF /* DWPieSplitterContainerGameObject.m */; };
@@ -671,6 +673,10 @@
 		55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockOpBubble.m; sourceTree = "<group>"; };
 		55CD0505165AC11F0040630A /* LongDivision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongDivision.h; sourceTree = "<group>"; };
 		55CD0506165AC1200040630A /* LongDivision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongDivision.m; sourceTree = "<group>"; };
+		55D08E6816812AD60065895D /* SGJmapComingSoonNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapComingSoonNode.h; sourceTree = "<group>"; };
+		55D08E6916812AD60065895D /* SGJmapComingSoonNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapComingSoonNode.m; sourceTree = "<group>"; };
+		55D08E6C16812B0C0065895D /* SGJmapPaperPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapPaperPlane.h; sourceTree = "<group>"; };
+		55D08E6D16812B0C0065895D /* SGJmapPaperPlane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapPaperPlane.m; sourceTree = "<group>"; };
 		55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterPieGameObject.h; sourceTree = "<group>"; };
 		55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterPieGameObject.m; sourceTree = "<group>"; };
 		55E7CBDD157FC85200A399CF /* DWPieSplitterSliceGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterSliceGameObject.h; sourceTree = "<group>"; };
@@ -2327,6 +2333,10 @@
 				7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */,
 				7F588F501602796F0015F504 /* SGJmapCloud.h */,
 				7F588F511602796F0015F504 /* SGJmapCloud.m */,
+				55D08E6816812AD60065895D /* SGJmapComingSoonNode.h */,
+				55D08E6916812AD60065895D /* SGJmapComingSoonNode.m */,
+				55D08E6C16812B0C0065895D /* SGJmapPaperPlane.h */,
+				55D08E6D16812B0C0065895D /* SGJmapPaperPlane.m */,
 			);
 			name = Jmap;
 			sourceTree = "<group>";
@@ -3557,6 +3567,8 @@
 				0CA32F10166506DD00FC5423 /* NumpadInputController.m in Sources */,
 				558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */,
 				5526EEE0167A1314001A683D /* ClippingTest.m in Sources */,
+				55D08E6A16812AD60065895D /* SGJmapComingSoonNode.m in Sources */,
+				55D08E6E16812B0C0065895D /* SGJmapPaperPlane.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

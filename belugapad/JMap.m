@@ -34,6 +34,8 @@
 #import "SGJmapNodeSelect.h"
 #import "SGJmapRegion.h"
 #import "SGJmapCloud.h"
+#import "SGJmapComingSoonNode.h"
+#import "SGJmapPaperPlane.h"
 
 #import "JSONKit.h"
 #import "TestFlight.h"
@@ -289,6 +291,9 @@ typedef enum {
     if(playTransitionAudio)
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;
+    
+    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0)];
+    [plane setup];
 }
 
 -(void)getUserData
@@ -392,7 +397,9 @@ typedef enum {
         
         if(n.comingSoon)
         {
-            //todo -- create new coming soon island
+            SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
+            
+            newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
             
         }
         else if(n.mastery)
@@ -612,7 +619,11 @@ typedef enum {
         SGJmapMasteryNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
         SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
         
-        if(leftgo && rightgo)
+        BOOL connectNodes=YES;
+        
+        if(![leftgo isKindOfClass:[SGJmapMasteryNode class]]||![rightgo isKindOfClass:[SGJmapMasteryNode class]])connectNodes=NO;
+        
+        if(leftgo && rightgo && connectNodes)
         {
             [leftgo.ConnectFromMasteryNodes addObject:rightgo];
             [rightgo.ConnectToMasteryNodes addObject:leftgo];
@@ -995,6 +1006,7 @@ typedef enum {
         if(!zoomedOut)
         {
             [self testForNodeTouchAt:lOnMap];
+            [self testForPlaneTouchAt:lOnMap];
         }
         else if(touchCount==1)
         {
@@ -1041,9 +1053,22 @@ typedef enum {
                 break;
             }
         }
+        
     }
 }
 
+-(void)testForPlaneTouchAt:(CGPoint)lOnMap
+{
+    for (id go in [gw AllGameObjects]) {
+        
+        if([go isKindOfClass:[SGJmapPaperPlane class]])
+        {
+            SGJmapPaperPlane *thisPlane=(SGJmapPaperPlane*)go;
+            [thisPlane checkTouchOnMeAt:lOnMap];
+            break;
+        }
+    }
+}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {

@@ -89,6 +89,10 @@
     }
 }
 
+-(void)flipSprite
+{
+    [self.NodeRenderComponent flipSprite];
+}
 
 -(void)setup
 {

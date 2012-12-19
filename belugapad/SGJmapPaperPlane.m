@@ -106,9 +106,9 @@
     
 }
 
--(BOOL)checkTouchOnMeAt:(CGPoint)location
+-(NSValue*)checkTouchOnMeAt:(CGPoint)location
 {
-    if(planeUsed) return NO;
+    if(planeUsed) return nil;;
     
     if(CGRectContainsPoint(planeSprite.boundingBox, location))
     {
@@ -130,9 +130,9 @@
         
         [planeSprite runAction:s];
         
-        return YES;
+        return [NSValue valueWithCGPoint:[BLMath SubtractVector:self.Destination from:self.Position]];
     }else{
-        return NO;
+        return nil;
     }
 }
 

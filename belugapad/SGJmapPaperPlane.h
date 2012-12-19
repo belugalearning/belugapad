@@ -10,6 +10,10 @@
 #import "SGJmapObjectProtocols.h"
 
 @interface SGJmapPaperPlane : SGGameObject <Transform, Drawing, ProximityResponder, Configurable>
+{
+    bool planeUsed;
+}
+
 
 @property int PlaneType;
 @property (retain) CCLayer *RenderLayer;

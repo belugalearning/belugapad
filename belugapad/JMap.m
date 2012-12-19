@@ -292,7 +292,7 @@ typedef enum {
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;
     
-//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0)];
+//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0) andDestination:ccp(100,100)];
 //    [plane setup];
 }
 
@@ -590,7 +590,8 @@ typedef enum {
                         playTransitionAudio=YES;
                         
                         //that means that node's island has a effective link to this one, add it with link data
-                        [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
+                        if(![prqn.MasteryNode.EffectedPathDestinationNodes containsObject:mgo])
+                            [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
                     }
                 }
             }
@@ -1064,8 +1065,8 @@ typedef enum {
         if([go isKindOfClass:[SGJmapPaperPlane class]])
         {
             SGJmapPaperPlane *thisPlane=(SGJmapPaperPlane*)go;
-            [thisPlane checkTouchOnMeAt:lOnMap];
-            break;
+            if([thisPlane checkTouchOnMeAt:lOnMap])
+                break;
         }
     }
 }

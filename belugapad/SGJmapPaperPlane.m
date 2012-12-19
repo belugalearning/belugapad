@@ -108,7 +108,7 @@
 
 -(BOOL)checkTouchOnMeAt:(CGPoint)location
 {
-    if(CGRectContainsPoint(planeSprite.boundingBox, [planeSprite convertToNodeSpace:location]))
+    if(CGRectContainsPoint(planeSprite.boundingBox, location))
     {
         [planeSprite stopAllActions];
         

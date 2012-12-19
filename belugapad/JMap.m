@@ -1064,8 +1064,8 @@ typedef enum {
         if([go isKindOfClass:[SGJmapPaperPlane class]])
         {
             SGJmapPaperPlane *thisPlane=(SGJmapPaperPlane*)go;
-            [thisPlane checkTouchOnMeAt:lOnMap];
-            break;
+            if([thisPlane checkTouchOnMeAt:lOnMap])
+                break;
         }
     }
 }

@@ -121,11 +121,6 @@
     [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
-    if(ParentGO.flip)
-    {
-     nodeSprite.color=ccc3(255, 0, 0);   
-    }
-    
     if(((AppController*)[[UIApplication sharedApplication] delegate]).AuthoringMode)
     {
         labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Source Sans Pro" fontSize:14.0f];
@@ -134,6 +129,11 @@
         [ParentGO.RenderBatch.parent addChild:labelSprite z:99];
     }
     
+}
+
+-(void)flipSprite
+{
+    nodeSprite.flipX=ParentGO.flip;
 }
 
 -(void)setupArtefact

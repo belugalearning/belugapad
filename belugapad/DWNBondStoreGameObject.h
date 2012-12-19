@@ -7,8 +7,9 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
-@interface DWNBondStoreGameObject : DWGameObject
+@interface DWNBondStoreGameObject : DWGameObject <LogPolling,LogPollPositioning>
 
 @property float AcceptedObjectValue;
 @property (retain) NSMutableArray *MountedObjects;

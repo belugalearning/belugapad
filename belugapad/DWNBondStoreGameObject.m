@@ -8,6 +8,7 @@
 
 #import "DWNBondStoreGameObject.h"
 
+
 @implementation DWNBondStoreGameObject
 
 @synthesize AcceptedObjectValue;
@@ -15,7 +16,13 @@
 @synthesize Position;
 @synthesize Label;
 @synthesize Length;
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGFBlockBlock"; }
 
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
 -(void)dealloc
 {
     self.MountedObjects=nil;

@@ -57,7 +57,7 @@
     planeSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFileName)];
     [planeSprite setPosition:Position];
     planeSprite.rotation=remAngle;
-    [RenderLayer addChild:planeSprite];
+    [RenderLayer addChild:planeSprite z:99];
     
     
     //pick it up
@@ -108,12 +108,28 @@
 
 -(BOOL)checkTouchOnMeAt:(CGPoint)location
 {
+    if(planeUsed) return NO;
+    
     if(CGRectContainsPoint(planeSprite.boundingBox, location))
     {
+        planeUsed=YES;
+        
         [planeSprite stopAllActions];
         
+        CCMoveTo *mt=[CCMoveTo actionWithDuration:3.0f position:self.Destination];
         
-        [planeSprite runAction:[CCFadeOut actionWithDuration:2.0f]];
+        CCEaseInOut *eio=[CCEaseInOut actionWithAction:mt rate:2.0f];
+        
+        [planeSprite runAction:eio];
+        
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:2.5f];
+        
+        CCFadeOut *fo=[CCFadeOut actionWithDuration:0.5f];
+        
+        CCSequence *s=[CCSequence actions:dt, fo, nil];
+        
+        [planeSprite runAction:s];
+        
         return YES;
     }else{
         return NO;

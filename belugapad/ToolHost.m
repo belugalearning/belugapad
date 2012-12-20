@@ -2317,16 +2317,6 @@ static float kTimeToHintToolTray=7.0f;
     [row setupDraw];
     
     [row fadeInElementsFrom:1.0f andIncrement:0.1f];
-
-    
-    //question separator bar -- flow with bottom of btxe
-    if(!questionSeparatorSprite)
-    {
-        questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
-        [backgroundLayer addChild:questionSeparatorSprite];
-    }
-    
-    questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
     
     readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/Question_tray_play.png")];
 //    [readProblemDesc setOpacity:0];
@@ -2353,10 +2343,6 @@ static float kTimeToHintToolTray=7.0f;
     [backgroundLayer addChild:qTrayTop];
     [backgroundLayer addChild:qTrayBot];
     [backgroundLayer addChild:qTrayMid];
-    
-    
-    //show and hide separator for exprbuilder
-    questionSeparatorSprite.visible= ![currentTool isKindOfClass:[ExprBuilder class]];
     
     descGw.Blackboard.inProblemSetup=NO;
 }
@@ -2796,8 +2782,6 @@ static float kTimeToHintToolTray=7.0f;
 //        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
 //        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
         
-        [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
-        
         trayCornerShowing=YES;
     }
 }
@@ -2829,8 +2813,6 @@ static float kTimeToHintToolTray=7.0f;
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
-        
-        [questionSeparatorSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
         
         trayCornerShowing=NO;
     }

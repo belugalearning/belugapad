@@ -354,6 +354,10 @@ static int shadowSteps=5;
         
         child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
         
+        [child flipSprite];
+        
+        NSLog(@"child flip? %@", child.flip? @"YES":@"NO");
+        
         //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
         
         

@@ -12,6 +12,7 @@
 @interface SGJmapComingSoonNode : SGGameObject <Transform, CouchDerived, Configurable>
 
 @property (retain) CCLayer *RenderLayer;
+@property (retain) NSString *UserVisibleString;
 
 -(SGJmapComingSoonNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 

@@ -7,10 +7,11 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
 @class DWNBondRowGameObject;
 
-@interface DWNBondObjectGameObject : DWGameObject
+@interface DWNBondObjectGameObject : DWGameObject <LogPolling,LogPollPositioning>
 
 @property float ObjectValue;
 @property CGPoint Position;

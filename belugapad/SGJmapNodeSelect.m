@@ -128,7 +128,9 @@
             
             if(numberOfDays==0)
                 displayString=@"TODAY";
-            else if(numberOfDays>0 && numberOfWeeks==0)
+            if(numberOfDays==1 && numberOfWeeks==0)
+                displayString=[NSString stringWithFormat:@"%d DAY AGO", numberOfDays];
+            else if(numberOfDays>1 && numberOfWeeks==0)
                 displayString=[NSString stringWithFormat:@"%d DAYS AGO", numberOfDays];
             else if(numberOfDays>0 && numberOfWeeks>0)
                 displayString=[NSString stringWithFormat:@"%d WEEKS AGO", numberOfWeeks];

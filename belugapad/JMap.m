@@ -401,6 +401,8 @@ typedef enum {
         {
             SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
             
+            comingSoonNode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
             newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
             
         }

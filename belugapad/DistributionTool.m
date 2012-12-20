@@ -2013,7 +2013,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     else if(evalType==kCheckTaggedGroups)
     {
-        NSMutableDictionary *d=[solutionsDef objectAtIndex:0];
+        NSMutableDictionary *d=[NSMutableDictionary dictionaryWithDictionary:[solutionsDef objectAtIndex:0]];
         int solutionsExpected=[d count];
         int solutionsFound=0;
         int totalShapes=0;
@@ -2027,7 +2027,7 @@ static float kDistanceBetweenBlocks=70.0f;
                 id <ShapeContainer> thisCont=cont;
                 totalShapes++;
                 
-                NSLog(@"BTXE Label tag %@", ((id<Interactive>)thisCont.BTXELabel).tag);
+                NSLog(@"BTXE Label tag %@ has %d objects", ((id<Interactive>)thisCont.BTXELabel).tag, [thisCont.BlocksInShape count]);
                 
                 if([d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag])
                 {
@@ -2041,6 +2041,8 @@ static float kDistanceBetweenBlocks=70.0f;
             
             }
         }
+        
+        NSLog(@"solutions found %d, expected %d, total shapes %d", solutionsFound, solutionsExpected, totalShapes);
         
 //        for(id cont in gw.AllGameObjects)
 //        {

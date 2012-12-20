@@ -19,12 +19,16 @@
 @property (retain) SGJmapNodeRender* NodeRenderComponent;
 @property (retain) SGJmapMasteryNode *MasteryNode;
 @property (retain) NSMutableArray *PrereqNodes;
+
 @property (retain) UserNodeState *ustate;
+@property (retain) UserNodeState *lastustate;
+
 @property (retain) CCSprite *artefactSpriteBase;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 -(void)setupArtefactRender;
+-(void)flipSprite;
 
 @end
 

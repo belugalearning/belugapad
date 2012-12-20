@@ -48,10 +48,14 @@
     
     CGPoint lastTap;
     float lastTapTime;
+    
+    BOOL playTransitionAudio;
 }
 
 +(CCScene *)scene;
 
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos;
+-(BOOL) isPointInView:(CGPoint)testPoint;
+
 
 @end

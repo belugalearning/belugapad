@@ -94,20 +94,32 @@
 
 -(void)setup
 {
-    if(((SGJmapNode*)ParentGO).EnabledAndComplete)
+    SGJmapNode *pn=(SGJmapNode*)ParentGO;
+    
+    if(pn.EnabledAndComplete)
     {
+        //should be blue
         nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Complete_Right.png"];
     }
-    else 
+    else if (pn.Attempted)
     {
+        //should be yellow
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Attempted_Right.png"];
+    }
+    else if(pn.MasteryNode.PrereqPercentage>0)
+    {
+        //should be red
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
+    }
+    else
+    {
+        //should be a stalk / stump
         nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
     }
     
     [nodeSprite setPosition:ParentGO.Position];
     [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
-    
-    if(ParentGO.flip) nodeSprite.flipX=YES;
     
     if(((AppController*)[[UIApplication sharedApplication] delegate]).AuthoringMode)
     {
@@ -117,6 +129,11 @@
         [ParentGO.RenderBatch.parent addChild:labelSprite z:99];
     }
     
+}
+
+-(void)flipSprite
+{
+    nodeSprite.flipX=ParentGO.flip;
 }
 
 -(void)setupArtefact

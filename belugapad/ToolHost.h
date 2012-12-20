@@ -222,6 +222,7 @@ typedef enum {
     BOOL countUpToJmap;
     BOOL hasShownComplete;
     BOOL doPlaySound;
+    BOOL hasUpdatedScore;
     float timeToReturnToJmap;
     
 }

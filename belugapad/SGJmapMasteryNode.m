@@ -13,7 +13,9 @@
 
 @implementation SGJmapMasteryNode
 
-@synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes, EnabledAndComplete, Region, PrereqCount, PrereqComplete, PrereqPercentage, Disabled;
+@synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes, EnabledAndComplete, Region, PrereqCount, PrereqComplete, PrereqPercentage, Disabled, Attempted, DateLastPlayed, FreshlyCompleted;
+
+@synthesize PreviousPreReqPercentage;
 
 //transform protocol properties
 @synthesize Position, RenderBatch;
@@ -34,6 +36,10 @@
 
 @synthesize flip;
 
+@synthesize renderLayout, renderBase;
+
+@synthesize EffectedPathDestinationNodes;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -41,6 +47,8 @@
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
         self.Visible=NO;
+        
+        EffectedPathDestinationNodes=[NSMutableArray array];
         
         MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
         ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];

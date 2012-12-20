@@ -14,6 +14,8 @@
 #import "ToolConsts.h"
 #import "PlaceValueConsts.h"
 #import "DWGameWorld.h"
+#import "SGGameWorld.h"
+#import "SGBtxeRow.h"
 #import "Daemon.h"
 #import "ToolHost.h"
 #import "UsersService.h"
@@ -73,6 +75,9 @@ static float kTimeToCageShake=7.0f;
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
+
+        
+        sgw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
@@ -95,6 +100,7 @@ static float kTimeToCageShake=7.0f;
         lastCount = gw.Blackboard.SelectedObjects.count; 
         
         gw.Blackboard.inProblemSetup = NO;
+        shouldUpdateLabels = YES;
         
         debugLogging=NO;
         
@@ -460,12 +466,14 @@ static float kTimeToCageShake=7.0f;
 -(void)populateGW
 {
     thisLog=0;
-    renderLayer = [[CCLayer alloc] init];
-    [self.ForeLayer addChild:renderLayer];
     
     int currentColumnRows = 0;
     int currentColumnRopes = 0;
     
+    renderLayer = [[CCLayer alloc] init];
+    [self.ForeLayer addChild:renderLayer];
+    
+    sgw.Blackboard.RenderLayer = renderLayer;
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
     float ropeWidth = kPropXNetSpace*lx;
@@ -493,25 +501,55 @@ static float kTimeToCageShake=7.0f;
         // if column headers should be shown
         if(showColumnHeader)
         {
-            CCLabelTTF *columnHeader;
+            NSString *headerString=nil;
+            
+            SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:sgw andRenderLayer:renderLayer];
+            
+            row.forceVAlignTop=NO;
+            row.rowWidth=200;
+
             
             // check if a custom header exists or use a generic one
             if([showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]])
             {
-                NSString *columnHeaderText = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
-                columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:CHANGO fontSize:30.0f];
+                headerString = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
+                //columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:CHANGO fontSize:30.0f];
             }
             else
             {
-                columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:CHANGO fontSize:30.0f];
+                headerString = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:CHANGO fontSize:30.0f];
             }
+            
+            if(headerString.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                headerString=[NSString stringWithFormat:@"<b:t>%@</b:t>", headerString];
+            }
+            else if([[headerString substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                headerString=[NSString stringWithFormat:@"<b:t>%@</b:t>", headerString];
+            }
+            
             if(gw.Blackboard.inProblemSetup)
             {
-                [columnHeader setTag:3];
-                [columnHeader setOpacity:0];
-                [columnHeader setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
-                [renderLayer addChild:columnHeader z:5];
+                
+                row.position=ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader);
+                
+                NSLog(@"this row position is %@", NSStringFromCGPoint(row.position));
+                //row.position=[self.ForeLayer convertToWorldSpace:ccp(i*(kPropXColumnSpacing*lx), 120)];
+                [row parseXML:headerString];
+                [row setupDraw];
+                [row inflateZindex];
+//                [row tagMyChildrenForIntro];
             }
+            
         }
         
         
@@ -1547,8 +1585,9 @@ static float kTimeToCageShake=7.0f;
 -(void)calcProblemTotalCount
 {
     totalCount=0;
+    DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
     
-    if(showColumnUserCount){
+    if(showColumnUserCount && b.Mount!=b.LastMount && b.Mount){
 
         float amountAdded=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).ObjectValue;
         CCLabelTTF *l=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:150.0f];
@@ -3699,6 +3738,7 @@ static float kTimeToCageShake=7.0f;
     if(userAddedBlocks)[userAddedBlocks release];
     
     [gw release];
+    [sgw release];
     
     [super dealloc];
 }

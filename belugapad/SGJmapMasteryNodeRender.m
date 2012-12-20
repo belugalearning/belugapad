@@ -12,6 +12,7 @@
 #import "PRFilledPolygon.h"
 #import "BLMath.h"
 #import "global.h"
+#import "SGJmapPaperPlane.h"
 
 #import "TouchXML.h"
 
@@ -42,6 +43,8 @@ static int shadowSteps=5;
 @synthesize ParentGO, sortedChildren, allPerimPoints, scaledPerimPoints, zoomedOut;
 
 @synthesize islandShapeIdx, islandLayoutIdx, islandStage;
+
+@synthesize previousIslandStage;
 
 -(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform, CouchDerived>)aGameObject
 {
@@ -218,7 +221,13 @@ static int shadowSteps=5;
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+    if(needToTransition)
+    {
+        if([gameWorld.Blackboard.jmapInstance isPointInView:ParentGO.Position])
+        {
+            [self transitionToNewState];
+        }
+    }
 }
 
 -(void)draw:(int)z
@@ -281,15 +290,25 @@ static int shadowSteps=5;
     if(iCount==0)iCount=1; // handle islands with no nodes
 
     //get an island selection base
-    self.islandShapeIdx=(arc4random()%10) + 1;
+    //self.islandShapeIdx=(arc4random()%10) + 1;
+    
+    self.islandShapeIdx=ParentGO.renderBase;
+//    if(self.islandShapeIdx>0)self.islandShapeIdx-=1;
     
     //get island data base
-    self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+    //self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+    
+    self.islandLayoutIdx=ParentGO.renderLayout % 4;
+    if(self.islandLayoutIdx>0)self.islandLayoutIdx-=1;
 
     //island stage
     self.islandStage=1;
     if(ParentGO.PrereqPercentage>=30)self.islandStage=3;
     if(ParentGO.PrereqPercentage>=70)self.islandStage=5;
+    
+    self.previousIslandStage=1;
+    if(ParentGO.PreviousPreReqPercentage>=30)self.previousIslandStage=3;
+    if(ParentGO.PreviousPreReqPercentage>=70)self.previousIslandStage=5;
 
     
 //    //position children
@@ -339,6 +358,12 @@ static int shadowSteps=5;
         
         child.Position=pos;
         
+        child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
+        
+        [child flipSprite];
+        
+        NSLog(@"child flip? %@", child.flip? @"YES":@"NO");
+        
         //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
         
         
@@ -351,6 +376,23 @@ static int shadowSteps=5;
         [gameWorld.Blackboard.debugDrawNode drawDot:child.artefactSpriteBase.position radius:15.0f color:ccc4f(1, 1, 0, 0.5f)];
         
         [child setupArtefactRender];
+    }
+    
+    [self setupPlaneRender];
+}
+
+-(void)setupPlaneRender
+{
+    for(SGJmapMasteryNode *othermn in ParentGO.EffectedPathDestinationNodes)
+    {
+        CGPoint path=[BLMath SubtractVector:ParentGO.Position from:othermn.Position];
+        CGPoint startpos=[BLMath AddVector:ParentGO.Position toVector:[BLMath MultiplyVector:path byScalar:0.2f]];
+        
+        SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:startpos andDestination:othermn.Position];
+        
+        [plane setup];
+        
+        [gameWorld.Blackboard.debugDrawNode drawSegmentFrom:ParentGO.Position to:othermn.Position radius:5.0f color:ccc4f(1,1,1,0.3f)];
     }
 }
 
@@ -443,10 +485,15 @@ static int shadowSteps=5;
         CGPoint rawpos=[[f objectForKey:@"POS"] CGPointValue];
         
         CCSprite *basesprite=[CCSprite spriteWithSpriteFrameName:@"spacer.png"];
+        
+        
         basesprite.position=ccpAdd([self halvedSubCentre:rawpos], ParentGO.Position);
         [ParentGO.RenderBatch addChild:basesprite z:5];
-        [self.indexedBaseNodes addObject:basesprite];
         
+        BOOL flip=[[f objectForKey:@"FLIPPED"] boolValue];
+        basesprite.flipX=flip;
+        
+        [self.indexedBaseNodes addObject:basesprite];
         
         [gameWorld.Blackboard.debugDrawNode drawDot:basesprite.position radius:5.0f color:ccc4f(1, 0, 0, 0.5f)];
         
@@ -455,6 +502,39 @@ static int shadowSteps=5;
 //        [ParentGO.RenderBatch addChild:node z:5];
     }
     
+}
+
+-(void)transitionToNewState
+{
+    for(NSDictionary *f in [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURES"])
+    {
+        //CGPoint pos=[self subCentre:[[f objectForKey:@"POS"] CGPointValue]];
+        int size=[[f objectForKey:@"SIZE"] integerValue];
+        //int variant=[[f objectForKey:@"VARIANT"] integerValue];
+        int variant=(arc4random() %2) +1;
+        
+        int targetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:f];
+        CCSprite *base=[self.indexedBaseNodes objectAtIndex:targetIdx];
+        
+        if(size>2 || self.islandStage<3)
+        {
+            float stdTime = arc4random() % 11 * 0.1;
+            float actTime = 1.5f;
+            
+            
+            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+            
+            [oldNodeSprite runAction:[CCFadeOut actionWithDuration:actTime/2]];
+            
+            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
+            [base addChild:newfsprite];
+            newfsprite.opacity=0;
+            [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
+            
+            newfsprite.position=ccpAdd(base.position, ccp(0, -75));
+        }
+    }
+    needToTransition=NO;
 }
 
 -(void)readyNodeSpriteRender
@@ -472,17 +552,54 @@ static int shadowSteps=5;
         
         if(size>2 || self.islandStage<3)
         {
-            NSString *fname=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+//            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+            NSString *fnameold=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.previousIslandStage, size, variant];
             
-            [base setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
+//            float stdTime = arc4random() % 11 * 0.1;
+//            float actTime = 1.5f;
             
-            if(size==5 && self.islandStage>4)
-            {
-                base.position=ccpAdd(base.position, ccp(0, -75));
-            }
+            //create random delay to go before all transitions
+            //fade out needs to be 1.5s
+            //fade in needs to be 1s, starting and 0.5s
+            
+            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
+                needToTransition=YES;
+            
+//            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
+//            {
+                oldNodeSprite=[CCSprite spriteWithSpriteFrameName:fnameold];
+                [base addChild:oldNodeSprite];
+//
+//                [oldNodeSprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
+//            }
+            
+//            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
+//            [base addChild:newfsprite];
+            
+//            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
+//            {
+//                newfsprite.opacity=0;
+//                [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
+//            }
+//            
+//            if(size==5 && self.islandStage>4)
+//            {
+//                newfsprite.position=ccpAdd(base.position, ccp(0, -75));
+//            }
+            
+            // mod pos of old sprite if existing
             
             //sort irregular x offset
             base.position=ccpAdd(base.position, ccp(50,-25));
+
+            
+            NSLog(@"island state -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
+            
+            if(ParentGO.FreshlyCompleted)
+            {
+                NSLog(@"is fresh! -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
+                
+            }
             
         }
         

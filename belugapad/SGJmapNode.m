@@ -13,7 +13,7 @@
 
 @implementation SGJmapNode
 
-@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode, PrereqNodes;
+@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode, PrereqNodes, Attempted, DateLastPlayed, FreshlyCompleted;
 
 //Transform protocol properties
 @synthesize Position, RenderBatch;
@@ -33,6 +33,7 @@
 @synthesize flip;
 
 @synthesize ustate;
+@synthesize lastustate;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {   
@@ -88,6 +89,10 @@
     }
 }
 
+-(void)flipSprite
+{
+    [self.NodeRenderComponent flipSprite];
+}
 
 -(void)setup
 {

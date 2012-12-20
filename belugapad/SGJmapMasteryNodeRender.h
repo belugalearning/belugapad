@@ -26,11 +26,14 @@
     ccColor4B stepColours[10];
     
     BOOL zoomedOut;
+    BOOL needToTransition;
     
     ccColor4B currentCol;
     
     CCSprite *islandSprite;
     CCSprite *islandShadowSprite;
+    
+    CCSprite *oldNodeSprite;
     
     NSMutableArray *featureSprites;
     
@@ -46,6 +49,8 @@
 @property int islandLayoutIdx;
 @property int islandStage;
 @property (retain) NSMutableArray *indexedBaseNodes;
+
+@property int previousIslandStage;
 
 -(void)draw:(int)z;
 -(void)setup;

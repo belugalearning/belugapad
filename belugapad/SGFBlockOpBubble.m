@@ -14,7 +14,13 @@
 @implementation SGFBlockOpBubble
 
 @synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label, SupportedOperators, ChildOperators, zIndex;
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGFBlockOpBubble"; }
 
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
 -(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andOperators:(NSArray*)theseOperators;
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -125,6 +131,9 @@
     Label=nil;
     SupportedOperators=nil;
     ChildOperators=nil;
+    self.logPollId=nil;
+    if(logPollId)[logPollId release];
+    logPollId=nil;
     [super dealloc];
 }
 

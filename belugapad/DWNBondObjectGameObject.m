@@ -26,6 +26,14 @@
 @synthesize lastZIndex;
 @synthesize HintObject;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGFBlockBlock"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
+
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {
     if( (self=[super initWithGameWorld:aGameWorld] )) 

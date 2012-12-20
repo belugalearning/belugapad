@@ -34,6 +34,8 @@
 #import "SGJmapNodeSelect.h"
 #import "SGJmapRegion.h"
 #import "SGJmapCloud.h"
+#import "SGJmapComingSoonNode.h"
+#import "SGJmapPaperPlane.h"
 
 #import "JSONKit.h"
 #import "TestFlight.h"
@@ -204,7 +206,9 @@ typedef enum {
     
     gw.Blackboard.RenderLayer=mapLayer;
     
-    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
+    gw.Blackboard.jmapInstance=self;
+    
+//    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
     
     //used for debug draw of map positioning
 //    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
@@ -285,6 +289,13 @@ typedef enum {
     ac.lastJmapViewUState=udata;
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+    
+    if(playTransitionAudio)
+       [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
+    playTransitionAudio=NO;
+    
+//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0) andDestination:ccp(100,100)];
+//    [plane setup];
 }
 
 -(void)getUserData
@@ -385,9 +396,24 @@ typedef enum {
         id<CouchDerived, Configurable, Selectable, Transform> newnode;
         
         //create a node go
-        if(n.mastery)
+        
+        if(n.comingSoon)
         {
-            newnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
+            
+            comingSoonNode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
+            
+        }
+        else if(n.mastery)
+        {
+            SGJmapMasteryNode *mnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            
+            newnode=(id<CouchDerived, Configurable, Selectable, Transform>)mnode;
+            
+            mnode.renderBase=n.renderBase;
+            mnode.renderLayout=n.renderLayout;
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;
@@ -409,9 +435,17 @@ typedef enum {
             SGJmapNode *newnodeC=(SGJmapNode*)newnode;
             
             newnodeC.ustate=[udata objectForKey:n._id];
+            if(ac.lastJmapViewUState) newnodeC.lastustate=[ac.lastJmapViewUState objectForKey:n._id];
             
             //mock old enabledAndComplete by directly accessing the lastPlayed of the node
-            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastPlayed > 0);
+            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastCompleted > 0);
+            newnodeC.Attempted=(newnodeC.ustate.lastPlayed > 0);
+            newnodeC.DateLastPlayed=(newnodeC.ustate.lastPlayed);
+            
+            if(newnodeC.EnabledAndComplete && (newnodeC.lastustate!=nil && newnodeC.lastustate.lastCompleted<=0))
+            {
+                newnodeC.FreshlyCompleted=YES;
+            }
             
             
             newnode.HitProximity=40.0f;
@@ -545,6 +579,40 @@ typedef enum {
                 NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
             }
             
+
+            //calculate old prqc
+            int pprqcomplete=0;
+            for(SGJmapNode *n in mgo.ChildNodes)
+            {
+                for (SGJmapNode *prqn in n.PrereqNodes) {
+                    if(prqn.EnabledAndComplete && !prqn.FreshlyCompleted) {                        
+                            pprqcomplete++;
+                        }
+                    else if(prqn.EnabledAndComplete && prqn.FreshlyCompleted)
+                    {
+                        mgo.FreshlyCompleted=YES;
+                        playTransitionAudio=YES;
+                        
+                        //that means that node's island has a effective link to this one, add it with link data
+                        if(![prqn.MasteryNode.EffectedPathDestinationNodes containsObject:mgo])
+                            [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
+                    }
+                }
+            }
+            
+            if(mgo.PrereqCount>0)
+            {
+                mgo.PreviousPreReqPercentage =(pprqcomplete / (float)prqcount) * 100.0f;
+            }
+            else if(mgo.ChildNodes.count>0)
+            {
+                mgo.PreviousPreReqPercentage=100;
+            }
+            else {
+                mgo.PreviousPreReqPercentage=0;
+            }
+            
+            
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
@@ -556,7 +624,11 @@ typedef enum {
         SGJmapMasteryNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
         SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
         
-        if(leftgo && rightgo)
+        BOOL connectNodes=YES;
+        
+        if(![leftgo isKindOfClass:[SGJmapMasteryNode class]]||![rightgo isKindOfClass:[SGJmapMasteryNode class]])connectNodes=NO;
+        
+        if(leftgo && rightgo && connectNodes)
         {
             [leftgo.ConnectFromMasteryNodes addObject:rightgo];
             [rightgo.ConnectToMasteryNodes addObject:leftgo];
@@ -763,11 +835,22 @@ typedef enum {
 
 -(NSNumber*)getBoxedIsFlippedFromTransformString:(NSString*)t
 {
+    if(t.length==0)return [NSNumber numberWithBool:NO];
+    
     NSArray *ps=[t componentsSeparatedByString:@" "];
     NSString *sx=[ps objectAtIndex:0];
     sx=[sx stringByReplacingOccurrencesOfString:@"matrix(" withString:@""];
-    int set=[sx intValue];
-    return [NSNumber numberWithBool:(set<0)];
+
+    int set=0;
+    if([sx isEqualToString:@"-1"])
+    {
+     set=-1;
+        
+    }
+    
+    NSNumber *res=[NSNumber numberWithBool:(set<0)];
+    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
+    return res;
 }
 
 
@@ -872,6 +955,13 @@ typedef enum {
     return nil;
 }
 
+-(BOOL) isPointInView:(CGPoint)testPoint
+{
+    if(zoomedOut)return NO;
+    
+    return CGRectContainsPoint(CGRectMake(-mapLayer.position.x, -mapLayer.position.y, 1024, 768), testPoint);
+}
+
 
 #pragma mark touch handling
 
@@ -928,6 +1018,7 @@ typedef enum {
         if(!zoomedOut)
         {
             [self testForNodeTouchAt:lOnMap];
+            [self testForPlaneTouchAt:lOnMap];
         }
         else if(touchCount==1)
         {
@@ -974,9 +1065,37 @@ typedef enum {
                 break;
             }
         }
+        
     }
 }
 
+-(void)testForPlaneTouchAt:(CGPoint)lOnMap
+{
+    for (id go in [gw AllGameObjects]) {
+        
+        if([go isKindOfClass:[SGJmapPaperPlane class]])
+        {
+            SGJmapPaperPlane *thisPlane=(SGJmapPaperPlane*)go;
+            
+            NSValue *ret=[thisPlane checkTouchOnMeAt:lOnMap];
+            if(ret)
+            {
+                CGPoint dest=[ret CGPointValue];
+                
+                //pan map
+//                CGPoint moveto=ccp(300-dest.x, 600-dest.y);
+                
+                if(zoomedOut)dest=[BLMath MultiplyVector:dest byScalar:REGION_ZOOM_LEVEL];
+                
+                [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:2.5f position:dest] rate:2.0f]];
+
+             
+                //stop looking
+                break;
+            }
+        }
+    }
+}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {

@@ -8,9 +8,9 @@
 
 #import "SGGameObject.h"
 #import "SGFBlockObjectProtocols.h"
+#import "LogPollingProtocols.h"
 
-
-@interface SGFBlockOpBubble : SGGameObject <Rendered, Operator>
+@interface SGFBlockOpBubble : SGGameObject <Rendered, Operator, LogPolling, LogPollPositioning>
 
 -(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andOperators:(NSArray*)theseOperators;
 

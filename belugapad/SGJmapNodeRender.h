@@ -22,6 +22,6 @@
 -(void)setup;
 -(void)updatePosition:(CGPoint)pos;
 -(void)setupArtefact;
-
+-(void)flipSprite;
 
 @end

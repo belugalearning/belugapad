@@ -2317,16 +2317,6 @@ static float kTimeToHintToolTray=7.0f;
     [row setupDraw];
     
     [row fadeInElementsFrom:1.0f andIncrement:0.1f];
-
-    
-    //question separator bar -- flow with bottom of btxe
-    if(!questionSeparatorSprite)
-    {
-        questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
-        [backgroundLayer addChild:questionSeparatorSprite];
-    }
-    
-    questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
     
     readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/Question_tray_play.png")];
 //    [readProblemDesc setOpacity:0];
@@ -2341,7 +2331,7 @@ static float kTimeToHintToolTray=7.0f;
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
     
-    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))];
+    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))];
     
     [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200)]];
     [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200)]];
@@ -2353,10 +2343,6 @@ static float kTimeToHintToolTray=7.0f;
     [backgroundLayer addChild:qTrayTop];
     [backgroundLayer addChild:qTrayBot];
     [backgroundLayer addChild:qTrayMid];
-    
-    
-    //show and hide separator for exprbuilder
-    questionSeparatorSprite.visible= ![currentTool isKindOfClass:[ExprBuilder class]];
     
     descGw.Blackboard.inProblemSetup=NO;
 }
@@ -2786,7 +2772,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2795,8 +2781,6 @@ static float kTimeToHintToolTray=7.0f;
 //        [qTrayTop setPosition:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)];
 //        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
 //        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
-        
-        [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
         
         trayCornerShowing=YES;
     }
@@ -2824,13 +2808,11 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
-        
-        [questionSeparatorSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
         
         trayCornerShowing=NO;
     }

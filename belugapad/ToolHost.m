@@ -367,6 +367,15 @@ static float kTimeToHintToolTray=7.0f;
     
     if(delayShowMeta&&timeToMetaStart>2.0f){
         [self showMq];
+        
+        for(int i=0;i<[metaQuestionAnswerLabels count];i++)
+        {
+            SGBtxeRow *row=[metaQuestionAnswerLabels objectAtIndex:i];
+            
+            [row setupDraw];
+            [row inflateZindex];
+            [row tagMyChildrenForIntro];
+        }
         timeToMetaStart=0.0f;
         delayShowMeta=NO;
     }
@@ -1476,7 +1485,14 @@ static float kTimeToHintToolTray=7.0f;
         // render buttons
         //float sectionW=adjLX / metaQuestionAnswerCount;
         float sectionW=(metaQuestionBanner.contentSize.width / metaQuestionAnswerCount)-8;
-        float startOffset=answerBtn.contentSize.width/2;
+        float startOffset=0;
+        
+        if(metaQuestionAnswerCount==2)
+            startOffset=answerBtn.contentSize.width-19;
+        else if(metaQuestionAnswerCount==3)
+            startOffset=answerBtn.contentSize.width/2;
+        else if(metaQuestionAnswerCount==4)
+            startOffset=10;
         
         
         [answerBtn setPosition:ccp(startOffset+((24*s)/2)+((i+0.5) * sectionW), answersY)];
@@ -1492,25 +1508,19 @@ static float kTimeToHintToolTray=7.0f;
             row.forceVAlignTop=NO;
             row.rowWidth=answerBtn.contentSize.width-10;
             [row parseXML:answerLabelString];
-            [row setupDraw];
-            [row inflateZindex];
-            [row tagMyChildrenForIntro];
+            [metaQuestionAnswerLabels addObject:row];
         }
         // check for text, render if nesc
         if(row)
         {
             row.position=answerBtn.position;
-//            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
-//            [answerLabel setColor:kMetaAnswerLabelColorSelected];
-//            [answerLabel setOpacity:0];
-//            [answerLabel setTag: 3];
-//            [answerBtn addChild:answerLabel];
-//            [metaQuestionAnswerLabels addObject:answerLabel];
         }
     
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
+    
+    
 
     
 }

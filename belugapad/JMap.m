@@ -206,6 +206,8 @@ typedef enum {
     
     gw.Blackboard.RenderLayer=mapLayer;
     
+    gw.Blackboard.jmapInstance=self;
+    
 //    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
     
     //used for debug draw of map positioning
@@ -951,6 +953,13 @@ typedef enum {
         }
     }
     return nil;
+}
+
+-(BOOL) isPointInView:(CGPoint)testPoint
+{
+    if(zoomedOut)return NO;
+    
+    return CGRectContainsPoint(CGRectMake(-mapLayer.position.x, -mapLayer.position.y, 1024, 768), testPoint);
 }
 
 

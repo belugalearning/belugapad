@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JMap.h"
 
 @class CCLayer;
 @class CCSpriteBatchNode;
@@ -20,6 +21,8 @@
 @property float MaxObjectDistance;
 @property (retain) NSMutableArray *islandData;
 @property (retain) CCSpriteBatchNode *btxeIconBatch;
+
+@property (retain) JMap *jmapInstance;
 
 @property (retain) CCDrawNode *debugDrawNode;
 

@@ -116,6 +116,18 @@ static float kNBFontSizeLarge=35.0f;
         if(isWinning)[toolHost shakeCommitButton];
     }
     
+    for(int i=0;i<[mountedObjects count];i++)
+    {
+        if([[mountedObjects objectAtIndex:i]isKindOfClass:[NSNull class]])continue;
+        NSArray *a=[mountedObjects objectAtIndex:i];
+        
+        for(DWNBondObjectGameObject *pogo in a)
+        {
+            if(!CGPointEqualToPoint(pogo.BaseNode.position, pogo.MountPosition) && pogo.BaseNode.numberOfRunningActions==0)
+                pogo.BaseNode.position=pogo.MountPosition;
+        }
+    }
+    
     [self updateLabels];
 
 }

@@ -1003,7 +1003,9 @@ typedef enum {
         [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         [usersService setCurrentUserToUserWithId:nil];
         
-        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
+        ac.lastJmapViewUState=nil;
+        [ac returnToLogin];
+        
         return;
     }
 

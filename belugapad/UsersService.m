@@ -333,7 +333,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     // the next time this method is called (say now) we send this date back to the server
     // the server includes in the response below a list of batch ids that it has processed for this user on this device since that date
     
-    // this tells UsersService#applyDownloadedStateUpdatesForCurrentUser which rows in the activity tables have been accounted for in the state database and should thus be deleted before recalculating state locally
+    // this tells UsersService#applyDownloadedStateUpdatesForCurrentUser which rows in the activity tables have been accounted for in the state database and should thus be deleted from the all-users db before recalculating state locally
     
     // anyway...
     [allUsersDatabase open];
@@ -473,6 +473,13 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     // write the database
     NSString *urStateDbPath = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"user-state/%@.db", self.currentUserId]];
     [dbData writeToFile:urStateDbPath atomically:NO];
+    if (currentUserStateDatabase)
+    {
+        [currentUserStateDatabase close];
+        [currentUserStateDatabase release];
+        currentUserStateDatabase = nil;
+    }
+    currentUserStateDatabase = [[FMDatabase databaseWithPath:urStateDbPath] retain];
     
     // ensure there's a row for every node in the content database
     [self ensureStateDbConsistency];
@@ -485,6 +492,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     if ([processedDeviceBatchIds count])
     {
         NSString *sql = [NSString stringWithFormat:@"DELETE FROM NodePlays WHERE user_id='%@' AND batch_id IN ('%@')", self.currentUserId, [processedDeviceBatchIds componentsJoinedByString:@"','"]];
+        [allUsersDatabase executeUpdate:sql];
+        
+        sql = [NSString stringWithFormat:@"DELETE FROM FeatureKeys WHERE user_id='%@' AND batch_id IN ('%@')", self.currentUserId, [processedDeviceBatchIds componentsJoinedByString:@"','"]];
         [allUsersDatabase executeUpdate:sql];
     }
     
@@ -503,6 +513,40 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         if (ns) [ns updateStateFromNodePlay:[[[NodePlay alloc] initFromFMResultSet:rs] autorelease]];
     }
     for (UserNodeState* ns in [nodesStates allValues]) [ns saveState];
+    
+    NSMutableDictionary *urActivityFKEncounters = [NSMutableDictionary dictionary];
+    rs = [allUsersDatabase executeQuery:@"SELECT key,encounters FROM FeatureKeys WHERE user_id=?", self.currentUserId];
+    while ([rs next])
+        [urActivityFKEncounters setValue:[[rs stringForColumnIndex:1] objectFromJSONString] forKey:[rs stringForColumnIndex:0]];
+    
+    if ([[urActivityFKEncounters allKeys] count])
+    {
+        [currentUserStateDatabase open];
+        
+        NSMutableDictionary *urStateFKEncounters = [NSMutableDictionary dictionary];
+        rs = [currentUserStateDatabase executeQuery:@"SELECT * FROM FeatureKeys"];
+        while ([rs next])
+            [urStateFKEncounters setValue:[[rs stringForColumnIndex:1] objectFromJSONString] forKey:[rs stringForColumnIndex:0]];
+        
+        [currentUserStateDatabase beginTransaction];
+        
+        for (NSString *key in [urActivityFKEncounters allKeys])
+        {
+            if ([urStateFKEncounters objectForKey:key])
+            {
+                NSMutableArray *encounters = [urActivityFKEncounters objectForKey:key];
+                [encounters addObjectsFromArray:[urStateFKEncounters objectForKey:key]];
+                [currentUserStateDatabase executeUpdate:@"UPDATE FeatureKeys set encounters=? WHERE key=?;", [encounters JSONString], key];
+            }
+            else
+            {
+                [currentUserStateDatabase executeUpdate:@"INSERT INTO FeatureKeys (key,encounters) VALUES (?,?);", key, [urActivityFKEncounters objectForKey:key]];
+            }
+        }
+        
+        [currentUserStateDatabase commit];
+        [currentUserStateDatabase close];
+    }
     
     // delete update file
     [[NSFileManager defaultManager] removeItemAtPath:updateFilePath error:nil];

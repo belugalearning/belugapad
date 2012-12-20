@@ -957,8 +957,9 @@ typedef enum {
 
 -(BOOL) isPointInView:(CGPoint)testPoint
 {
-
-    return NO;
+    if(zoomedOut)return NO;
+    
+    return CGRectContainsPoint(CGRectMake(-mapLayer.position.x, -mapLayer.position.y, 1024, 768), testPoint);
 }
 
 

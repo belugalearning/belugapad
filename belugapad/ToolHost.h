@@ -177,7 +177,6 @@ typedef enum {
     
     //btxe for description
     SGGameWorld *descGw;
-    CCSprite *questionSeparatorSprite;
     SGBtxeRow *descRow;
     
     //ui

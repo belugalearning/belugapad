@@ -27,4 +27,5 @@
 #import "cocos2d.h"
 
 @interface LineDrawer : CCLayer
+-(void)clearSlate;
 @end

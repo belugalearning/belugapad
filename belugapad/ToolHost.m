@@ -1646,6 +1646,9 @@ static float kTimeToHintToolTray=7.0f;
     if(currentTool && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem)
         showCommit=YES;
     
+    if(trayPadShowing)
+        showCommit=NO;
+    
     if(hasTrayMq && trayMqShowing)
     {
         int countSelected=[self metaQuestionSelectedCount];
@@ -2419,6 +2422,21 @@ static float kTimeToHintToolTray=7.0f;
     //delegate touch handling for trays here
     if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing||trayPadShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
     {
+        if(trayPadShowing)
+        {
+            if(CGRectContainsPoint(trayPadClear.boundingBox, location))
+            {
+                [(LineDrawer*)lineDrawer clearSlate];
+            }
+            if(CGRectContainsPoint(trayPadClose.boundingBox, location))
+            {
+                [self removeAllTrays];
+            }
+            else
+            {
+                return;
+            }
+        }
         if (location.x < 100 && location.y > 688 && !isPaused)
         {
             [self showPauseMenu];
@@ -2442,17 +2460,6 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        if(trayPadShowing)
-        {
-            if(CGRectContainsPoint(traybtnPad.boundingBox, location))
-            {
-                [self removeAllTrays];
-            }
-            else
-            {
-                return;
-            }
-        }
         if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
             [self removeAllTrays];
             return;
@@ -2954,14 +2961,26 @@ static float kTimeToHintToolTray=7.0f;
     {
         //trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
         trayLayerPad=[[CCLayer alloc]init];
-        [trayLayerPad addChild:[LineDrawer node]];
-        [problemDefLayer addChild:trayLayerPad z:-1];
-        //trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
+        lineDrawer=[LineDrawer node];
         
-        CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Notepad" fontName:@"Source Sans Pro" fontSize:24.0f];
-        lbl.position=ccp(150,112.5f);
-        [trayLayerPad addChild:lbl];
+        CCSprite *bg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-background.png")];
+        [bg setPosition:ccp(1024 * 0.5f, 768 * 0.5f)];
+        [trayLayerPad addChild:bg z:-1];
+        
+        [trayLayerPad addChild:lineDrawer];
+        [problemDefLayer addChild:trayLayerPad z:10];
+        
+        trayPadClear=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-clear.png")];
+        [trayPadClear setPosition:ccp(lx-125,ly-50)];
+        [trayLayerPad addChild:trayPadClear];
+        
+        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];
+        [trayPadClose setPosition:ccp(lx-50,ly-50)];
+        [trayLayerPad addChild:trayPadClose];
+        
+        //trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
     }
+    
     [btxeDescLayer setVisible:NO];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;

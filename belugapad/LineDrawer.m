@@ -25,6 +25,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import "cocos2d.h"
 #import "LineDrawer.h"
+#import "global.h"
 #import "CCNode+SFGestureRecognizers.h"
 
 typedef struct _LineVertex {
@@ -78,16 +79,16 @@ typedef struct _LineVertex {
   self = [super init];
   if (self) {
     points = [[NSMutableArray alloc]init];
-    velocities = [NSMutableArray array];
-    circlesPoints = [NSMutableArray array];
+    velocities = [[NSMutableArray alloc]init];
+    circlesPoints = [[NSMutableArray alloc]init];
 
     shaderProgram_ = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionColor];
     overdraw = 3.0f;
-
     renderTexture = [[CCRenderTexture alloc] initWithWidth:(int)self.contentSize.width height:(int)self.contentSize.height pixelFormat:kCCTexture2DPixelFormat_RGBA8888];
     renderTexture.anchorPoint = ccp(0, 0);
     renderTexture.position = ccp(1024 * 0.5f, 768 * 0.5f);
-    [renderTexture clear:1.0f g:1.0f b:1.0f a:0];
+    //[renderTexture clear:1.0f g:1.0f b:1.0f a:0];
+      
     [self addChild:renderTexture];
 
     self.isTouchEnabled = YES;
@@ -428,7 +429,13 @@ typedef struct _LineVertex {
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-  [renderTexture beginWithClear:1.0 g:1.0 b:1.0 a:0];
-  [renderTexture end];
+//  [renderTexture beginWithClear:1.0 g:1.0 b:1.0 a:0];
+//  [renderTexture end];
+}
+
+-(void)clearSlate
+{
+    [renderTexture beginWithClear:0 g:0 b:0 a:0];
+    [renderTexture end];
 }
 @end

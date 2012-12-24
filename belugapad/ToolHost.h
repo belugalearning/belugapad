@@ -54,7 +54,7 @@ typedef enum {
     CCLayer *problemDefLayer;
     CCLayer *btxeDescLayer;
     CCLayer *pauseLayer;
-
+    
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
@@ -153,6 +153,9 @@ typedef enum {
     CCSprite *glossary2;
     CCSprite *glossaryPopup;
     
+    CCSprite *trayPadClear;
+    CCSprite *trayPadClose;
+    
     
     //scoring
     int pipelineScore;          //the total score accumulated in this pipeline
@@ -201,6 +204,7 @@ typedef enum {
     CCLayer *trayLayerWheel;
     CCLayer *trayLayerMq;
     CCLayer *trayLayerPad;
+    CCNode *lineDrawer;
     
     BOOL hasTrayWheel;
     BOOL hasTrayCalc;

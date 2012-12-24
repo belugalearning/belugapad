@@ -97,6 +97,8 @@
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		558ADA3616611B250000C448 /* tts-objects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA3516611B250000C448 /* tts-objects.plist */; };
 		558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */ = {isa = PBXBuildFile; fileRef = 558ADA48166515700000C448 /* SGBtxeLineBreak.m */; };
+		558D79E7168893F800048B01 /* LineDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79E6168893F800048B01 /* LineDrawer.m */; };
+		558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */; };
 		559846661627095B00554E8A /* MQDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 559846651627095B00554E8A /* MQDisplay.m */; };
 		5598466A162732CA00554E8A /* RatioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55984669162732CA00554E8A /* RatioTool.m */; };
 		559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A33D615DA382C00CA97E2 /* CountingTimer.m */; };
@@ -621,6 +623,10 @@
 		558ADA3516611B250000C448 /* tts-objects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-objects.plist"; sourceTree = "<group>"; };
 		558ADA47166515700000C448 /* SGBtxeLineBreak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeLineBreak.h; sourceTree = "<group>"; };
 		558ADA48166515700000C448 /* SGBtxeLineBreak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeLineBreak.m; sourceTree = "<group>"; };
+		558D79E5168893F800048B01 /* LineDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineDrawer.h; sourceTree = "<group>"; };
+		558D79E6168893F800048B01 /* LineDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDrawer.m; sourceTree = "<group>"; };
+		558D79EC1688950300048B01 /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
+		558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
 		559846641627095B00554E8A /* MQDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDisplay.h; sourceTree = "<group>"; };
 		559846651627095B00554E8A /* MQDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQDisplay.m; sourceTree = "<group>"; };
 		55984668162732CA00554E8A /* RatioTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatioTool.h; sourceTree = "<group>"; };
@@ -1596,6 +1602,16 @@
 			name = tts;
 			sourceTree = "<group>";
 		};
+		558D79EB1688950300048B01 /* CCNode+SFGestureRecognizers */ = {
+			isa = PBXGroup;
+			children = (
+				558D79EC1688950300048B01 /* CCNode+SFGestureRecognizers.h */,
+				558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */,
+			);
+			name = "CCNode+SFGestureRecognizers";
+			path = "libs/CCNode+SFGestureRecognizers";
+			sourceTree = "<group>";
+		};
 		55AFD6A715651A6800FF1886 /* TimesTables */ = {
 			isa = PBXGroup;
 			children = (
@@ -1831,6 +1847,8 @@
 			isa = PBXGroup;
 			children = (
 				7F96BE0916222B4300351CA0 /* Goo */,
+				558D79E5168893F800048B01 /* LineDrawer.h */,
+				558D79E6168893F800048B01 /* LineDrawer.m */,
 				7F268ADC14F28DE500F1F65F /* ToolHost.h */,
 				7F268ADD14F28DE500F1F65F /* ToolHost.m */,
 				7F268AE314F2A2A200F1F65F /* ToolScene.h */,
@@ -2084,6 +2102,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				558D79EB1688950300048B01 /* CCNode+SFGestureRecognizers */,
 				7F817B1A165A750E00B291DA /* cocos2d */,
 				7F98456C164E5F300081BE39 /* Acapela */,
 				7F358467162588FB004067A1 /* TestFlight */,
@@ -3569,6 +3588,8 @@
 				5526EEE0167A1314001A683D /* ClippingTest.m in Sources */,
 				55D08E6A16812AD60065895D /* SGJmapComingSoonNode.m in Sources */,
 				55D08E6E16812B0C0065895D /* SGJmapPaperPlane.m in Sources */,
+				558D79E7168893F800048B01 /* LineDrawer.m in Sources */,
+				558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

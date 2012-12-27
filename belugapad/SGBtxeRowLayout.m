@@ -118,6 +118,8 @@
             if(!thisMIo.enabled||!thisMIo.interactive)
             {
                 [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:ccc3(71,71,71)];
+                
+                if(tintingOn)colourIndex--;
             }
             
             if(colourIndex>7)colourIndex=0;

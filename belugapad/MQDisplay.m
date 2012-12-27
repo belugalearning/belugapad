@@ -134,11 +134,11 @@
         NSString *cS=[d objectForKey:STRING];
         
         CCLabelTTF *a=[CCLabelTTF labelWithString:s fontName:SOURCE fontSize:50.0f];
-        [a setPosition:ccp((i+0.5)*sectionWidth, 600)];
+        [a setPosition:ccp((i+0.5)*sectionWidth, 500)];
         [renderLayer addChild:a];
         
         CCLabelTTF *cL=[CCLabelTTF labelWithString:cS dimensions:CGSizeMake(sectionWidth*0.7, 100) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:SOURCE fontSize:80.0f];
-        [cL setPosition:ccp((i+0.5)*sectionWidth, 500)];
+        [cL setPosition:ccp((i+0.5)*sectionWidth, 400)];
         [renderLayer addChild:cL];
     }
 }

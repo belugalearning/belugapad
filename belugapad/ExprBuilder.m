@@ -172,7 +172,10 @@
         expressionRowsAreLarge=YES;
     }
     
-    numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    if([pdef objectForKey:@"NUMBER_MODE"])
+        numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    else
+        numberMode=@"numeral";
 }
 
 -(void)populateGW

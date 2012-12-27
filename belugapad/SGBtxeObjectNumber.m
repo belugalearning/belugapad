@@ -318,15 +318,15 @@
     
     renderBase=theRenderBase;
     
+    if(textBackgroundRenderComponent.backgroundNode)
+        [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
+    
     if(self.renderAsDots)
     {
         [renderBase addChild:numberDotRenderComponent.baseNode];
     }
     else
     {
-        if(textBackgroundRenderComponent.backgroundNode)
-            [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
-        
         [renderBase addChild:textRenderComponent.label0];
         [renderBase addChild:textRenderComponent.label];
     }

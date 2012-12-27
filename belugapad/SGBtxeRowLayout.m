@@ -115,6 +115,10 @@
                 [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
                 colourIndex++;
             }
+            if(!thisMIo.enabled||!thisMIo.interactive)
+            {
+                [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:ccc3(71,71,71)];
+            }
             
             if(colourIndex>7)colourIndex=0;
         }

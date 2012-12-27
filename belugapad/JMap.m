@@ -284,6 +284,9 @@ typedef enum {
     }
     
     [self buildSearchIndex];
+    
+    //any final node-based visual setup
+    [gw handleMessage:kSGsetVisualStateAfterBuildUp];
  
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;

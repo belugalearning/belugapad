@@ -155,6 +155,8 @@ typedef enum {
         
         [self setupMap];
         
+        [self setupContentRegions];
+        
         [self setupUI];
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
@@ -299,6 +301,17 @@ typedef enum {
     
 //    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0) andDestination:ccp(100,100)];
 //    [plane setup];
+}
+
+-(void)setupContentRegions
+{
+    CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ComingSoon_Island_1.png")];
+    [algebra setPosition:ccp(0,3500)];
+    [mapLayer addChild:algebra];
+    
+    CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ComingSoon_Island_1.png")];
+    [shape setPosition:ccp(4000,3500)];
+    [mapLayer addChild:shape];
 }
 
 -(void)getUserData

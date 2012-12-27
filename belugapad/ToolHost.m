@@ -1508,6 +1508,7 @@ static float kTimeToHintToolTray=7.0f;
             
             row.forceVAlignTop=NO;
             row.rowWidth=answerBtn.contentSize.width-10;
+            row.tintMyChildren=NO;
             [row parseXML:answerLabelString];
             [metaQuestionAnswerLabels addObject:row];
         }
@@ -1515,6 +1516,7 @@ static float kTimeToHintToolTray=7.0f;
         if(row)
         {
             row.position=answerBtn.position;
+            [row setupDraw];
         }
     
         // set a new value in the array so we can see that it's not currently selected

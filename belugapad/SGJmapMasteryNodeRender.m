@@ -757,7 +757,10 @@ static int shadowSteps=5;
 
 -(CGPoint) halvedSubCentre:(CGPoint)pos
 {
-    return ccpMult([self subCentre:pos], 0.5f);
+//    return ccpMult([self subCentre:pos], 1.0f);
+    
+    CGPoint sc=[self subCentre:pos];
+    return ccp(sc.x * 0.7f, sc.y * 0.5f);
 }
 
 #pragma mark - parse island data out of a single-island data template and cache

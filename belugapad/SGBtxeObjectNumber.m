@@ -175,7 +175,9 @@
     NSString *seek=@"0123456789";
     
     //strip commas
-    NSString *parse=[text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//    NSString *parse=[text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    NSString *parse=text;
     
     int nStart=0; // assume number starts at start
     int nEnd=[parse length]-1; //assume number end at end

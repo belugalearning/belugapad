@@ -1127,14 +1127,28 @@ typedef enum {
         {
             CGPoint newpos=[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]];
             
-            if(debugRestrictMovement)
+            
+//            //restrict movement generally
+            
+            
+            if(zoomedOut)
             {
-                if (newpos.x > 100) newpos.x=100;
-                if (newpos.y > 4000) newpos.y=4000;
-
-                if (newpos.x < -1400) newpos.x=-1400;
-                if (newpos.y < 2300) newpos.y=2300;
+                if (newpos.x > 400) newpos.x=400;
+                if (newpos.y < -666) newpos.y=-666;
+                if (newpos.y > 850) newpos.y=850;
+                if (newpos.x < -1050) newpos.x=-1050;
             }
+            else
+            {
+                if (newpos.x > 1120) newpos.x=1120;
+                if (newpos.y < -2800) newpos.y=-2800;
+                if (newpos.y > 4200) newpos.y=4200;
+                if (newpos.x < -5400) newpos.x=-5400;
+            }
+
+
+            NSLog(@"%@", NSStringFromCGPoint(mapLayer.position));
+            
             //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
             [mapLayer setPosition:newpos];
 

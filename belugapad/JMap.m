@@ -323,8 +323,8 @@ typedef enum {
 {
     underwaterLayer=[[CCLayer alloc] init];
     
-    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
-    [s setPosition:ccp(-5*cx,-5*cy)];
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 12*cx, 12*cy)];
+    [s setPosition:ccp(-6*cx,-6*cy)];
     [s setAnchorPoint:ccp(0,0)];
     ccTexParams params={GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
     [s.texture setTexParameters:&params];

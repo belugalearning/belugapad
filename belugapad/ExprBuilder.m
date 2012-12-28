@@ -230,7 +230,6 @@
             row.myAssetType = @"Large";
         
         
-        [row setupDraw];
         
         
         if(i==0)
@@ -315,6 +314,9 @@
             //distribute in available space
             row.position = ccp(cx, row0base - (i*rowSpace));
         }
+        
+        
+        [row setupDraw];
 
         
         [row release];

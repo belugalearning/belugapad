@@ -79,11 +79,28 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
                 
+                NSString *sepEndChar=@"?!.,:;";
+                NSString *newNextT=nil;
+                if([sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound)
+                {
+                    newNextT=[s substringFromIndex:s.length-1];
+                    s=[s substringToIndex:s.length-1];
+                }
+
                 on.text=s;
                 on.enabled=YES;
                 on.interactive=NO;
 
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
+                
+                
+                if(newNextT)
+                {
+                    //create text
+                    SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+                    t.text=newNextT;
+                    [ParentGO.containerMgrComponent addObjectToContainer:t];
+                }
             }
             else
             {

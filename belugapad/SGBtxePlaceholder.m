@@ -92,9 +92,9 @@
         self.size=thisSize;
         
         //    id<Containable>myMount=(id<Containable>)self.mount;
-//        SGBtxeRow *myRow=(SGBtxeRow*)self.container;
-//        SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
-//        [layoutComp layoutChildren];
+        SGBtxeRow *myRow=(SGBtxeRow*)self.container;
+        SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+        [layoutComp layoutChildren];
     }
 
 }

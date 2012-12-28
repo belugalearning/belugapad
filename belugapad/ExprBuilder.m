@@ -242,7 +242,7 @@
             [self.ForeLayer addChild:questionSeparatorSprite];
             [questionSeparatorSprite setVisible:NO];
             
-            sepYpos=row.position.y - row.size.height / 2.0f - QUESTION_SEPARATOR_PADDING;
+            sepYpos=row.position.y - row.size.height / 2.0f - (QUESTION_SEPARATOR_PADDING * 2.0f);
             
             row0base=sepYpos;
             rowSpace=row0base / (rowcount + 1);
@@ -258,7 +258,7 @@
 
         if(i==0)
         {
-            sepYpos=row.position.y - row.size.height / 2.0f - QUESTION_SEPARATOR_PADDING;
+            sepYpos=row.position.y - row.size.height - (QUESTION_SEPARATOR_PADDING * 2.0f);
             
             row0base=sepYpos;
             rowSpace=row0base / (rowcount + 1);
@@ -269,6 +269,7 @@
         if(presentNumberCardRow && i==0)
         {
             ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+            ncardRow.maxChildrenPerLine=10;
             
             if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
             {
@@ -319,7 +320,7 @@
             
             ncardRow.position=ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f);
             
-            sepYpos= ncardRow.position.y-ncardRow.size.height / 2.0f;
+            sepYpos= ncardRow.position.y-ncardRow.size.height / 2.0f - (QUESTION_SEPARATOR_PADDING * 3.0f);
             
             row0base=sepYpos-QUESTION_SEPARATOR_PADDING;
             rowSpace=row0base / (rowcount + 1);
@@ -341,7 +342,7 @@
 
 -(float)getDescriptionAreaHeight
 {
-    return (((cy*2) - 110) - sepYpos)*2;
+    return (((cy*2) - 110) - sepYpos);
 }
 
 -(void)readOutProblemDescription

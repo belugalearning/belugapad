@@ -62,7 +62,7 @@
     for(int i=0; i<count; i++)
     {
         CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(str)];
-        dot.position=[[positions objectAtIndex:i] CGPointValue];
+        dot.position=ccpAdd([[positions objectAtIndex:i] CGPointValue], ccp(0,5));
         [self.baseNode addChild:dot];
     }
 }
@@ -88,7 +88,10 @@
 
 -(void)updatePosition:(CGPoint)thePosition
 {
-    self.baseNode.position=ccpAdd(thePosition, ccp(self.size.width / 2.0f, self.size.height / 2.0f));
+//    self.baseNode.position=ccpAdd(thePosition, ccp(self.size.width / 2.0f, self.size.height / 2.0f));
+//    self.baseNode.position=ccpAdd(thePosition, ccp((self.size.width-40.0f) / 2.0f, self.size.height / 2.0f));
+        self.baseNode.position=ccpAdd(thePosition, ccp((self.size.width-40.0f) / 2.0f, 5));
+//    self.baseNode.position=thePosition;
 }
 
 -(void)dealloc

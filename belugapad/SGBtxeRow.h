@@ -18,6 +18,8 @@
 
 @property (retain) SGBtxeRowLayout *rowLayoutComponent;
 
+@property int maxChildrenPerLine;
+
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
 
 -(void)tagMyChildrenForIntro;

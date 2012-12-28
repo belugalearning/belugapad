@@ -9,6 +9,7 @@
 #import "SGBtxeRowLayout.h"
 #import "global.h"
 #import "ToolConsts.h"
+#import "SGBtxeRow.h"
 
 @implementation SGBtxeRowLayout
 
@@ -16,7 +17,7 @@
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
-        ParentGo=aGameObject;
+        ParentGo=(SGBtxeRow*)aGameObject;
     }
     return self;
 }
@@ -96,7 +97,8 @@
                 continue;
 
         //if this element takes the line past lineW, flow to next line (only if item W is < lineW -- else just stick it on)
-        if(((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW)
+        if((((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW ) ||
+           (ParentGo.maxChildrenPerLine>0 && centreBuffer.count==ParentGo.maxChildrenPerLine))
         {
             //centre objects in last line buffer
             [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];

@@ -242,11 +242,7 @@
             [self.ForeLayer addChild:questionSeparatorSprite];
             [questionSeparatorSprite setVisible:NO];
             
-//            sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
-            
             sepYpos=row.position.y - row.size.height / 2.0f - QUESTION_SEPARATOR_PADDING;
-            
-//            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
             
             row0base=sepYpos;
             rowSpace=row0base / (rowcount + 1);
@@ -260,6 +256,13 @@
         
         [row setupDraw];
 
+        if(i==0)
+        {
+            sepYpos=row.position.y - row.size.height / 2.0f - QUESTION_SEPARATOR_PADDING;
+            
+            row0base=sepYpos;
+            rowSpace=row0base / (rowcount + 1);
+        }
         
         
         //build the ncard row if we have one

@@ -425,7 +425,7 @@
         }
     }
     
-    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(680,500,344,308), location)){
+    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView)
             [toolHost disableWheel];
@@ -482,7 +482,8 @@
                     CGRect objRect=[pho returnBoundingBox];
                     
                     if(CGRectContainsPoint(objRect, location))
-                        [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                        if(!toolHost.CurrentBTXE)
+                            [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                     //mount the object on the place holder
                 }
             }

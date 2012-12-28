@@ -2297,7 +2297,7 @@ static float kTimeToHintToolTray=7.0f;
     //create row
     SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     descRow=row;
-    row.position=ccp(cx, (cy*2) - 110);
+    row.position=ccp(cx, (cy*2) - 100);
 
     NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     if(numberMode)
@@ -2335,16 +2335,14 @@ static float kTimeToHintToolTray=7.0f;
     qTrayTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Top.png")];
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
+
     
-    NSLog(@"dat row %f", row.size.height);
-    
-    [qTrayMid setPosition:ccp(row.position.x,row.position.y+190)];
-    
-    [qTrayMid setAnchorPoint:ccp(0.5,1)];
-    [qTrayMid setScaleY:(row.size.height-64)/12];
-    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
-    [qTrayTop setPosition:ccp(qTrayMid.position.x,5+qTrayMid.position.y-(qTrayMid.contentSize.height*qTrayMid.scaleY)+(qTrayMid.contentSize.height*qTrayMid.scaleY)/2)];
-    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-5+((qTrayMid.contentSize.height/2)*qTrayMid.scaleY))];
+    [qTrayMid setAnchorPoint:ccp(0.5,0)];
+    [qTrayMid setScaleY:(row.size.height-64)/14];
+    [qTrayMid setPosition:ccp(row.position.x,20+row.position.y-(qTrayMid.contentSize.height*qTrayMid.scaleY)/2)];
+//    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
+    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
     
     [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y*qTrayMid.scaleY-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))];
     

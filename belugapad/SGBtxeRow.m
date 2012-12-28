@@ -92,7 +92,10 @@
     for (id<Bounding, RenderObject> c in children) {
         
         if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
+        {
             ((id<MovingInteractive>)c).assetType=self.myAssetType;
+            ((id<MovingInteractive>)c).mount=self;
+        }
         
         if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
             ((SGBtxePlaceholder*)c).assetType=self.myAssetType;
@@ -102,6 +105,7 @@
         
         if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
             ((SGBtxePlaceholder*)c).backgroundType=self.backgroundType;
+        
         
         [c setupDraw];
         

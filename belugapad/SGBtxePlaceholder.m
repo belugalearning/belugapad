@@ -10,6 +10,7 @@
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRow.h"
+#import "SGBtxeRowLayout.h"
 #import "global.h"
 
 @implementation SGBtxePlaceholder
@@ -87,6 +88,13 @@
         CGSize thisSize=CGSizeMake(mountedObject.size.width-15, mountedObject.size.height);
         
         [textBackgroundComponent redrawBkgWithSize:thisSize];
+        
+        self.size=thisSize;
+        
+        //    id<Containable>myMount=(id<Containable>)self.mount;
+//        SGBtxeRow *myRow=(SGBtxeRow*)self.container;
+//        SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+//        [layoutComp layoutChildren];
     }
 
 }

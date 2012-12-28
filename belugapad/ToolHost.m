@@ -400,7 +400,6 @@ static float kTimeToHintToolTray=7.0f;
     {
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
-            hasTrayWheel=YES;
             [self showWheel];
         }
         else
@@ -2197,6 +2196,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)tearDownNumberPicker
 {
+    [self hideWheel];
     if(CurrentBTXE)CurrentBTXE=nil;
     toolCanEval=YES;
 //    if(traybtnWheel){

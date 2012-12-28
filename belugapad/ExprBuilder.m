@@ -341,7 +341,7 @@
 
 -(float)getDescriptionAreaHeight
 {
-    return (((cy*2) - 110) - sepYpos);
+    return (((cy*2) - 110) - sepYpos)*2;
 }
 
 -(void)readOutProblemDescription

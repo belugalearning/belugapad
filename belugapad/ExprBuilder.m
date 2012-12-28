@@ -244,8 +244,7 @@
             
             sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
             
-            
-            //questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
+            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
             
             row0base=questionSeparatorSprite.position.y-QUESTION_SEPARATOR_PADDING;
             rowSpace=row0base / (rowcount + 1);
@@ -315,7 +314,10 @@
             
             ncardRow.position=ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f);
             
-            sepYpos-=ncardRow.size.height - (QUESTION_SEPARATOR_PADDING*2);            
+            sepYpos= ncardRow.position.y-ncardRow.size.height / 2.0f;
+            
+            row0base=sepYpos-QUESTION_SEPARATOR_PADDING;
+            rowSpace=row0base / (rowcount + 1);
             
             [ncardRow release];
         }

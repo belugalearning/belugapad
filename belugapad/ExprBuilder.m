@@ -672,7 +672,7 @@
 
 -(BOOL)parseContainerToEqualityAndEval:(id<Container>)cont
 {
-    tokens=[[NSMutableArray alloc]init];
+    tokens=[[[NSMutableArray alloc]init] autorelease];
     
     curToken=nil;
     curTokenIdx=-1;
@@ -693,6 +693,11 @@
             if(vc.mountedObject)
             {
                 [self tokeniseObject:vc.mountedObject];
+            }
+            else
+            {
+                //fail the evaluation
+                return NO;
             }
         }
         else
@@ -722,7 +727,7 @@
         [q release];
     }
     
-    [tokens release];
+//    [tokens release];
     
     return ret;
 }

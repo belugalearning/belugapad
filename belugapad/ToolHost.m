@@ -1116,6 +1116,10 @@ static float kTimeToHintToolTray=7.0f;
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    traybtnCalc=nil;
+    traybtnMq=nil;
+    traybtnWheel=nil;
+    traybtnPad=nil;
     commitBtn=nil;
     [descGw release];
     descGw=nil;
@@ -2951,7 +2955,7 @@ static float kTimeToHintToolTray=7.0f;
     trayWheelShowing=NO;
 //    [traybtnWheel setColor:ccc3(255,255,255)];
     
-    if(hasTrayWheel)
+    if(hasTrayWheel && traybtnWheel)
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
     else
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];

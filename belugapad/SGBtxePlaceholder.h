@@ -14,9 +14,12 @@
 @interface SGBtxePlaceholder : SGGameObject <RenderObject, Bounding, Interactive, BtxeMount, Containable>
 {
     CCNode *renderBase;
+    CCDrawNode *drawNode;
+    BOOL debugBoundingBox;
 }
 
 -(void)setContainerVisible:(BOOL)visible;
+-(void)displayBoundingBox;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundComponent;
 @property (retain) NSString *targetTag;

@@ -84,6 +84,7 @@
 {
     if(valueOperator)[valueOperator release];
     valueOperator=theValueOperator;
+    [valueOperator retain];
     
     self.text=theValueOperator;
     if([theValueOperator isEqualToString:@"/"])

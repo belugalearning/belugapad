@@ -306,7 +306,7 @@ typedef enum {
 -(void)setupContentRegions
 {
     CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Algebra.png")];
-    [algebra setPosition:ccp(4000,3500)];
+    [algebra setPosition:ccp(4773,3500)];
     [mapLayer addChild:algebra];
     
     CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Geometry.png")];
@@ -1133,17 +1133,17 @@ typedef enum {
             
             if(zoomedOut)
             {
-                if (newpos.x > 400) newpos.x=400;
-                if (newpos.y < -666) newpos.y=-666;
-                if (newpos.y > 850) newpos.y=850;
-                if (newpos.x < -1050) newpos.x=-1050;
+                if (newpos.x > -282) newpos.x=-282;
+                if (newpos.y < -199) newpos.y=-199;
+                if (newpos.y > 260) newpos.y=260;
+                if (newpos.x < -282) newpos.x=-282;
             }
             else
             {
-                if (newpos.x > 1120) newpos.x=1120;
-                if (newpos.y < -2800) newpos.y=-2800;
+                if (newpos.x > 1022) newpos.x=1022;
+                if (newpos.y < -3200) newpos.y=-3200;
                 if (newpos.y > 4200) newpos.y=4200;
-                if (newpos.x < -5400) newpos.x=-5400;
+                if (newpos.x < -4772) newpos.x=-4772;
             }
 
 
@@ -1217,7 +1217,14 @@ typedef enum {
     CGPoint gestureDestOffset=[BLMath MultiplyVector:gestureLocalOffset byScalar:REGION_ZOOM_LEVEL];
     CGPoint gestureOffset=[BLMath AddVector:gestureLocalOffset toVector:gestureDestOffset];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:[BLMath MultiplyVector:[BLMath AddVector:mapLayer.position toVector:gestureOffset] byScalar:1.0f/REGION_ZOOM_LEVEL]] rate:2.0f]];
+    CGPoint newpos=[BLMath MultiplyVector:[BLMath AddVector:mapLayer.position toVector:gestureOffset] byScalar:1.0f/REGION_ZOOM_LEVEL];
+    
+    if(newpos.x<-4772)newpos=ccp(-4772, newpos.y);
+    if(newpos.x>1022)newpos=ccp(1022, newpos.y);
+    if(newpos.y<-3200)newpos=ccp(newpos.x, -3200);
+    
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
     
     [gw handleMessage:kSGzoomIn];
     
@@ -1239,7 +1246,11 @@ typedef enum {
     
     //mapLayer.position=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL]] rate:2.0f]];
+    CGPoint newpos=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
+    newpos=ccp(-282, newpos.y);
+    if(newpos.y<-199)newpos=ccp(newpos.x, -199);
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
     
     //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
 //    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-257, 212.5)] rate:2.0f]];

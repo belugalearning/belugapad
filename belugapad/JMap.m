@@ -155,6 +155,8 @@ typedef enum {
         
         [self setupMap];
         
+        [self setupContentRegions];
+        
         [self setupUI];
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
@@ -284,6 +286,9 @@ typedef enum {
     }
     
     [self buildSearchIndex];
+    
+    //any final node-based visual setup
+    [gw handleMessage:kSGsetVisualStateAfterBuildUp];
  
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;
@@ -296,6 +301,17 @@ typedef enum {
     
 //    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0) andDestination:ccp(100,100)];
 //    [plane setup];
+}
+
+-(void)setupContentRegions
+{
+    CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ComingSoon_Island_1.png")];
+    [algebra setPosition:ccp(0,3500)];
+    [mapLayer addChild:algebra];
+    
+    CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ComingSoon_Island_1.png")];
+    [shape setPosition:ccp(4000,3500)];
+    [mapLayer addChild:shape];
 }
 
 -(void)getUserData
@@ -1003,7 +1019,9 @@ typedef enum {
         [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         [usersService setCurrentUserToUserWithId:nil];
         
-        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
+        ac.lastJmapViewUState=nil;
+        [ac returnToLogin];
+        
         return;
     }
 

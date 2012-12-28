@@ -35,6 +35,7 @@
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
 #import "ExprBuilder.h"
+#import "LineDrawer.h"
 
 
 #define HD_HEADER_HEIGHT 65.0f
@@ -1507,6 +1508,7 @@ static float kTimeToHintToolTray=7.0f;
             
             row.forceVAlignTop=NO;
             row.rowWidth=answerBtn.contentSize.width-10;
+            row.tintMyChildren=NO;
             [row parseXML:answerLabelString];
             [metaQuestionAnswerLabels addObject:row];
         }
@@ -1514,6 +1516,7 @@ static float kTimeToHintToolTray=7.0f;
         if(row)
         {
             row.position=answerBtn.position;
+            [row setupDraw];
         }
     
         // set a new value in the array so we can see that it's not currently selected
@@ -1644,6 +1647,9 @@ static float kTimeToHintToolTray=7.0f;
     
     if(currentTool && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem)
         showCommit=YES;
+    
+    if(trayPadShowing)
+        showCommit=NO;
     
     if(hasTrayMq && trayMqShowing)
     {
@@ -2418,6 +2424,21 @@ static float kTimeToHintToolTray=7.0f;
     //delegate touch handling for trays here
     if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing||trayPadShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
     {
+        if(trayPadShowing)
+        {
+            if(CGRectContainsPoint(trayPadClear.boundingBox, location))
+            {
+                [(LineDrawer*)lineDrawer clearSlate];
+            }
+            if(CGRectContainsPoint(trayPadClose.boundingBox, location))
+            {
+                [self removeAllTrays];
+            }
+            else
+            {
+                return;
+            }
+        }
         if (location.x < 100 && location.y > 688 && !isPaused)
         {
             [self showPauseMenu];
@@ -2441,7 +2462,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
             [self removeAllTrays];
             return;
         }
@@ -2660,7 +2681,7 @@ static float kTimeToHintToolTray=7.0f;
         if(trayPadShowing)
         {
             [self hidePad];
-            [self hideCornerTray];
+            //[self hideCornerTray];
         }
         else
         {
@@ -2670,7 +2691,7 @@ static float kTimeToHintToolTray=7.0f;
             
             [self showPad];
             
-            [self showCornerTray];
+            //[self showCornerTray];
         }
     }
     
@@ -2940,14 +2961,29 @@ static float kTimeToHintToolTray=7.0f;
 {
     if(!trayLayerPad)
     {
-        trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
-        [problemDefLayer addChild:trayLayerPad z:2];
-        trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
+        //trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
+        trayLayerPad=[[CCLayer alloc]init];
+        lineDrawer=[LineDrawer node];
         
-        CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Notepad" fontName:@"Source Sans Pro" fontSize:24.0f];
-        lbl.position=ccp(150,112.5f);
-        [trayLayerPad addChild:lbl];
+        CCSprite *bg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-background.png")];
+        [bg setPosition:ccp(1024 * 0.5f, 768 * 0.5f)];
+        [trayLayerPad addChild:bg z:-1];
+        
+        [trayLayerPad addChild:lineDrawer];
+        [problemDefLayer addChild:trayLayerPad z:10];
+        
+        trayPadClear=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-clear.png")];
+        [trayPadClear setPosition:ccp(lx-125,ly-50)];
+        [trayLayerPad addChild:trayPadClear];
+        
+        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];
+        [trayPadClose setPosition:ccp(lx-50,ly-50)];
+        [trayLayerPad addChild:trayPadClose];
+        
+        //trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
     }
+    
+    [btxeDescLayer setVisible:NO];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
@@ -2964,6 +3000,7 @@ static float kTimeToHintToolTray=7.0f;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
+    //[btxeDescLayer setVisible:YES];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

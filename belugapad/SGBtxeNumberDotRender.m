@@ -49,11 +49,18 @@
 -(void)drawDotsOnBase
 {
     int count=[ParentGO.value intValue];
-    NSArray *positions=[NumberLayout physicalLayoutAcrossToNumber:count withSpacing:20.0f];
+    float spacing=20.0f;
+    id<MovingInteractive>pgo=(id<MovingInteractive>)ParentGO;
+    
+    if([pgo.assetType isEqualToString:@"Large"])
+        spacing=40.0f;
+    
+    NSArray *positions=[NumberLayout physicalLayoutAcrossToNumber:count withSpacing:spacing];
+    NSString *str=[NSString stringWithFormat:@"/images/btxe/Number_Dot_%@.png",pgo.assetType];
     
     for(int i=0; i<count; i++)
     {
-        CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/Number_Dot_Standard.png")];
+        CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(str)];
         dot.position=[[positions objectAtIndex:i] CGPointValue];
         [self.baseNode addChild:dot];
     }

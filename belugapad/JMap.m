@@ -1079,7 +1079,7 @@ typedef enum {
             id<Selectable>sgo=go;
             if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
             {
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];;
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
                 break;
             }
         }

@@ -190,6 +190,10 @@
     
     if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
         size.width=170;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
+        size.width=116;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Small"] && size.width<40)
+        size.width=40;
     
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];

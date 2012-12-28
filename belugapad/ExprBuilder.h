@@ -65,6 +65,8 @@
     NSString *numberMode;
     
     SGBtxeRow *ncardRow;
+    SGBtxeRow *descRow;
+    
     
     //excluded row evaluations
     NSArray *excludedEvalRows;

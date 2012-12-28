@@ -232,6 +232,7 @@
         
         if(i==0)
         {
+            descRow=row;
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 110);
             row.forceVAlignTop=YES;
@@ -322,6 +323,8 @@
         [row release];
     }
     
+    [descRow fadeInElementsFrom:1.0f andIncrement:0.1f];
+    [descRow tagMyChildrenForIntro];
     [self readOutProblemDescription];
     
     //if we have ncardrow, then add it to rows (at end for now?)

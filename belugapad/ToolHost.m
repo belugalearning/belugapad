@@ -957,7 +957,8 @@ static float kTimeToHintToolTray=7.0f;
     else evalMode=kProblemEvalAuto;
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
-        
+    
+
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
@@ -2347,7 +2348,12 @@ static float kTimeToHintToolTray=7.0f;
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
 
-    float rowHeight=row.size.height;
+    float rowHeight=0;
+    
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
+    else
+        rowHeight=row.size.height;
     
     if(rowHeight<75.0f)rowHeight=75.0f;
     

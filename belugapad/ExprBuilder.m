@@ -241,68 +241,10 @@
             [self.ForeLayer addChild:questionSeparatorSprite];
             [questionSeparatorSprite setVisible:NO];
             
-            //build the ncard row if we have one
-            if(presentNumberCardRow)
-            {
-                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
-                
-                if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
-                {
-                    ncardRow.backgroundType=@"Card";
-                    ncardRow.tintMyChildren=NO;
-                }
-                
-                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
-                
-                //add the cards
-                for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
-                {
-                    SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
-                    n.numberText=[NSString stringWithFormat:@"%d", icard];
-                    n.enabled=YES;
-                    
-                    [cardAddBuffer addObject:n];
-                    [n release];
-                }
-                
-                if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
-                {
-                    int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
-                    int added=0;
-                    
-                    while(cardAddBuffer.count>0 && added<selmax)
-                    {
-                        int i=(arc4random()%cardAddBuffer.count);
-                        [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
-                        [cardAddBuffer removeObjectAtIndex:i];
-                        
-                        added++;
-                    }
-                }
-                else
-                {
-                    for(SGBtxeObjectNumber *n in cardAddBuffer)
-                        [ncardRow.containerMgrComponent addObjectToContainer:n];
-                }
-                
-                //let go of the buffer
-                [cardAddBuffer release];
-                
-                [ncardRow setupDraw];
-                ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
-                
-                [ncardRow release];
-            }
+            sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
             
-            float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
             
-            //add extra padding if we're going to do a number card wheel
-            if(presentNumberCardRow)
-            {
-                sepYpos-=ncardRow.size.height - (QUESTION_SEPARATOR_PADDING*2);
-            }
-            
-            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
+            //questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
             
             row0base=questionSeparatorSprite.position.y-QUESTION_SEPARATOR_PADDING;
             rowSpace=row0base / (rowcount + 1);
@@ -317,6 +259,66 @@
         [row setupDraw];
 
         
+        
+        //build the ncard row if we have one
+        if(presentNumberCardRow && i==0)
+        {
+            ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+            
+            if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+            {
+                ncardRow.backgroundType=@"Card";
+                ncardRow.tintMyChildren=NO;
+            }
+            
+            NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
+            
+            //add the cards
+            for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
+            {
+                SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
+                n.numberText=[NSString stringWithFormat:@"%d", icard];
+                n.enabled=YES;
+                
+                [cardAddBuffer addObject:n];
+                [n release];
+            }
+            
+            if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
+            {
+                int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
+                int added=0;
+                
+                while(cardAddBuffer.count>0 && added<selmax)
+                {
+                    int i=(arc4random()%cardAddBuffer.count);
+                    [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
+                    [cardAddBuffer removeObjectAtIndex:i];
+                    
+                    added++;
+                }
+            }
+            else
+            {
+                for(SGBtxeObjectNumber *n in cardAddBuffer)
+                    [ncardRow.containerMgrComponent addObjectToContainer:n];
+            }
+            
+            //let go of the buffer
+            [cardAddBuffer release];
+            
+            [ncardRow setupDraw];
+            
+            id<Bounding> row0=[rows objectAtIndex:0];
+            float hoffset=row0.size.height;
+            
+            ncardRow.position=ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f);
+            
+            sepYpos-=ncardRow.size.height - (QUESTION_SEPARATOR_PADDING*2);            
+            
+            [ncardRow release];
+        }
+        
         [row release];
     }
     
@@ -325,6 +327,11 @@
     //if we have ncardrow, then add it to rows (at end for now?)
     if(ncardRow) [rows addObject:ncardRow];
     
+}
+
+-(float)getYMinPosition
+{
+    return sepYpos;
 }
 
 -(void)readOutProblemDescription

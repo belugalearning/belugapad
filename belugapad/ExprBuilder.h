@@ -76,9 +76,14 @@
     
     NSMutableArray *expressionStringCache;
     BOOL expressionRowsAreLarge;
+    
+    float sepYpos;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
+
+-(float)getYMinPosition;
+
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdate:(ccTime)delta;

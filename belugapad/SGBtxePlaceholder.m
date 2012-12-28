@@ -69,8 +69,12 @@
     else
         size=CGSizeMake(50, 0);
     
-    if([self.backgroundType isEqualToString:@"Card"])
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"])
         size.width=170;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"])
+        size.width=116;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Small"])
+        size.width=40;
     
 
     //background sprite to text (using same size)

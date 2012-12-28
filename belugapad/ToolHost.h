@@ -217,6 +217,8 @@ typedef enum {
     
     BOOL delayShowWheel;
     BOOL delayShowMeta;
+    BOOL animateQuestionBox;
+    float timeToQuestionBox;
     float timeToWheelStart;
     float timeToMetaStart;
     

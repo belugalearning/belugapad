@@ -89,7 +89,7 @@
     if([mountedObject conformsToProtocol:@protocol(Bounding)])
     {
         
-        CGSize thisSize=CGSizeMake(mountedObject.size.width-15, mountedObject.size.height);
+        CGSize thisSize=CGSizeMake(mountedObject.size.width, mountedObject.size.height);
         
         [textBackgroundComponent redrawBkgWithSize:thisSize];
         

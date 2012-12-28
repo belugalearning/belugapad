@@ -99,7 +99,7 @@
         if(((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW)
         {
             //centre objects in last line buffer
-            [self centreObjectsIn:centreBuffer withHeadXPos:headXPos+c.size.width-BTXE_HPAD inWidth:rowMaxWidth];
+            [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];
             [centreBuffer removeAllObjects];
             
             //flow onto next line

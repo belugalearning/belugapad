@@ -239,7 +239,7 @@
             //question separator bar -- flow with bottom of row 0
             CCSprite *questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
             [self.ForeLayer addChild:questionSeparatorSprite];
-            
+            [questionSeparatorSprite setVisible:NO];
             
             //build the ncard row if we have one
             if(presentNumberCardRow)

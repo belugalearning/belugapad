@@ -2347,11 +2347,14 @@ static float kTimeToHintToolTray=7.0f;
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
 
+    float rowHeight=row.size.height;
+    
+    if(rowHeight<75.0f)rowHeight=75.0f;
     
     [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
     [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
-    [qTrayMid setScaleY:(row.size.height-64)/14];
+    [qTrayMid setScaleY:(rowHeight-64)/14];
 //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];

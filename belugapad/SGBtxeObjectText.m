@@ -64,6 +64,12 @@
     
 }
 
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+    [textBackgroundRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+}
+
 -(id<MovingInteractive>)createADuplicate
 {
     return [self createADuplicateIntoGameWorld:gameWorld];

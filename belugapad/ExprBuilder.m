@@ -331,7 +331,6 @@
     }
     
     [descRow fadeInElementsFrom:1.0f andIncrement:0.1f];
-    [descRow tagMyChildrenForIntro];
     [self readOutProblemDescription];
     
     //if we have ncardrow, then add it to rows (at end for now?)

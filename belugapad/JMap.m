@@ -1145,9 +1145,6 @@ typedef enum {
                 if (newpos.y > 4200) newpos.y=4200;
                 if (newpos.x < -4772) newpos.x=-4772;
             }
-
-
-            NSLog(@"%@", NSStringFromCGPoint(mapLayer.position));
             
             //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
             [mapLayer setPosition:newpos];

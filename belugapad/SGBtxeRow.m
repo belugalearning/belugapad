@@ -94,7 +94,7 @@
         if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
         {
             ((id<MovingInteractive>)c).assetType=self.myAssetType;
-            ((id<MovingInteractive>)c).mount=self;
+            ((id<MovingInteractive>)c).mount=nil;
         }
         
         if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])

@@ -159,6 +159,15 @@
 //    [backgroundNode addChild:rh];
 }
 
+-(void)tagMyChildrenForIntro
+{
+    for(CCSprite *s in backgroundNode.children)
+    {
+        [s setTag:3];
+        [s setOpacity:0];
+    }
+}
+
 -(void)redrawBkgWithSize:(CGSize)size
 {
     CCSprite *lh=[backgroundNode.children objectAtIndex:0];

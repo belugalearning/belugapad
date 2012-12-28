@@ -64,6 +64,12 @@
     
 }
 
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+    [textBackgroundRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+}
+
 -(id<MovingInteractive>)createADuplicate
 {
     return [self createADuplicateIntoGameWorld:gameWorld];
@@ -162,6 +168,7 @@
     [textRenderComponent.label0 setTag:3];
     [textRenderComponent.label setOpacity:0];
     [textRenderComponent.label0 setOpacity:0];
+    [textBackgroundRenderComponent tagMyChildrenForIntro];
 }
 
 -(NSString*)returnMyText

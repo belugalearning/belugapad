@@ -344,7 +344,7 @@
     [textRenderComponent.label0 setTag:3];
     [textRenderComponent.label setOpacity:0];
     [textRenderComponent.label0 setOpacity:0];
-
+    [textBackgroundRenderComponent tagMyChildrenForIntro];
     
     for(CCSprite *s in self.numberDotRenderComponent.baseNode.children)
     {

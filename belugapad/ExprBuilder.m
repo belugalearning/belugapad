@@ -329,9 +329,9 @@
     
 }
 
--(float)getYMinPosition
+-(float)getDescriptionAreaHeight
 {
-    return sepYpos;
+    return (((cy*2) - 110) - sepYpos);
 }
 
 -(void)readOutProblemDescription

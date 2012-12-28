@@ -82,7 +82,7 @@
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 
--(float)getYMinPosition;
+-(float)getDescriptionAreaHeight;
 
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;

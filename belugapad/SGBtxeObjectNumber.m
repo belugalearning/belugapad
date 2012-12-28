@@ -169,6 +169,8 @@
 
 -(void)setText:(NSString *)text
 {
+    if(!text) return;
+    
     //split text into parts if passed to this method
     
     BOOL hadPoint=NO, hadStart=NO, hadEnd;

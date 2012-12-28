@@ -9,6 +9,8 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "SGBtxeRow.h"
+#import "SGBtxeRowLayout.h"
 #import "global.h"
 
 @implementation SGBtxeObjectText
@@ -199,6 +201,12 @@
     CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
     [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
+    
+//    id<Containable>myMount=(id<Containable>)self.mount;
+    SGBtxeRow *myRow=(SGBtxeRow*)self.mount;
+    SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+    
+    [layoutComp layoutChildren];
 }
 
 -(void)activate

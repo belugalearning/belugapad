@@ -10,6 +10,8 @@
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeNumberDotRender.h"
+#import "SGBtxeRow.h"
+#import "SGBtxeRowLayout.h"
 #import "global.h"
 
 
@@ -236,7 +238,9 @@
 -(void)updateDraw
 {
     [self.textRenderComponent updateLabel];
-    [self.numberDotRenderComponent updateDraw];
+    
+    if(self.renderAsDots)
+        [self.numberDotRenderComponent updateDraw];
 }
 
 -(NSString*)text
@@ -365,10 +369,10 @@
         textRenderComponent.label0.visible=NO;
     }
     
-    [self.numberDotRenderComponent setupDraw];
     
     if(self.renderAsDots)
     {
+        [self.numberDotRenderComponent setupDraw];
         self.size=self.numberDotRenderComponent.size;
     }
     else
@@ -392,7 +396,14 @@
 {
     CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
+    self.size=toThisSize;
+    
     [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
+//    id<Containable>myMount=(id<Containable>)self.mount;
+    SGBtxeRow *myRow=(SGBtxeRow*)self.mount;
+    SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+    
+    [layoutComp layoutChildren];
 }
 
 -(void)destroy

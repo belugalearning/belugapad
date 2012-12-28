@@ -44,6 +44,7 @@
     [self.baseNode removeAllChildrenWithCleanup:YES];
     
     [self drawDotsOnBase];
+
 }
 
 -(void)drawDotsOnBase

@@ -2353,7 +2353,7 @@ static float kTimeToHintToolTray=7.0f;
     if([currentTool isKindOfClass:[ExprBuilder class]])
         rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
     else
-        rowHeight=row.size.height;
+        rowHeight=row.size.height+20;
     
     if(rowHeight<75.0f)rowHeight=75.0f;
     

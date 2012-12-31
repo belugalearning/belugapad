@@ -9,6 +9,7 @@
 #import "ExprBuilder.h"
 
 #import "UsersService.h"
+#import "LoggingService.h"
 #import "ToolHost.h"
 
 #import "global.h"
@@ -383,12 +384,14 @@
             if(o.enabled && CGRectContainsPoint(hitbox, location))
             {
                 NSLog(@"this hitbox = %@", NSStringFromCGRect(hitbox));
+                [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_PICKUP_CARD withAdditionalData:nil];
                 heldObject=o;
                 isHoldingObject=YES;
                 
                 if([o conformsToProtocol:@protocol(NumberPicker)]) {
                 
                     if(opicker.usePicker){
+                        [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_START_PICKER withAdditionalData:nil];
                         gotPickerObject=YES;
                         
                         if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
@@ -427,8 +430,10 @@
     
     if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
-        if(toolHost.pickerView)
+        if(toolHost.pickerView){
             [toolHost disableWheel];
+            [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
+        }
     }
 }
 
@@ -445,6 +450,7 @@
     {
         //track that object's position
         heldObject.worldPosition=location;
+        hasMovedObject=YES;
     }
 }
 
@@ -460,6 +466,12 @@
     float pickupProximity=BTXE_PICKUP_PROXIMITY;
     
     if(expressionRowsAreLarge)pickupProximity*=3;
+    
+    if(hasMovedObject)
+    {
+        [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_MOVE_MOVED_CARD withAdditionalData:nil];
+        hasMovedObject=NO;
+    }
     
     if(heldObject)
     {
@@ -481,9 +493,12 @@
                     id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
                     CGRect objRect=[pho returnBoundingBox];
                     
-                    if(CGRectContainsPoint(objRect, location))
-                        if(!toolHost.CurrentBTXE)
+                    if(CGRectContainsPoint(objRect, location)){
+                        if(!toolHost.CurrentBTXE){
                             [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                            [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_PLACEHOLDER withAdditionalData:nil];
+                        }
+                    }
                     //mount the object on the place holder
                 }
             }
@@ -493,6 +508,7 @@
         {
             //[(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
             [heldObject destroy];
+            [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_EMPTY_SPACE withAdditionalData:nil];
         }
         else
         {
@@ -512,6 +528,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    hasMovedObject=NO;
     toolHost.CurrentBTXE=nil;
     // empty selected objects
     

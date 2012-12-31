@@ -61,6 +61,7 @@
     int numberCardRowInterval;
     BOOL numberCardRandomOrder;
     int numberCardRandomSelectionOf;
+    BOOL hasMovedObject;
 
     NSString *numberMode;
     

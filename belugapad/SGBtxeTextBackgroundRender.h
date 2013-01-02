@@ -22,6 +22,7 @@
 -(void)setupDrawWithSize:(CGSize)size;
 -(void)redrawBkgWithSize:(CGSize)size;
 -(void)updatePosition:(CGPoint)position;
+-(void)tagMyChildrenForIntro;
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
 
 @end

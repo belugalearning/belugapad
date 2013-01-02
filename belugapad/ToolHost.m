@@ -35,6 +35,7 @@
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
 #import "ExprBuilder.h"
+#import "LineDrawer.h"
 
 
 #define HD_HEADER_HEIGHT 65.0f
@@ -321,6 +322,17 @@ static float kTimeToHintToolTray=7.0f;
     if(showingProblemComplete) shownProblemStatusFor+=delta;
     if(showingProblemIncomplete) shownProblemStatusFor+=delta;
  
+    if(animateQuestionBox)
+    {
+        timeToQuestionBox+=delta;
+        if(timeToQuestionBox>1.0f)
+        {
+            [self animateQuestionBoxIn];
+            animateQuestionBox=NO;
+            timeToQuestionBox=0.0f;
+        }
+    }
+    
     if(shownProblemStatusFor>kTimeToShowProblemStatus)
     {
         if(showingProblemComplete)
@@ -342,7 +354,6 @@ static float kTimeToHintToolTray=7.0f;
         moveToNextProblemTime-=delta;
         if(moveToNextProblemTime<0)
         {
-            autoMoveToNextProblem=NO;
             
             [self gotoNewProblem];
         }
@@ -368,6 +379,15 @@ static float kTimeToHintToolTray=7.0f;
     
     if(delayShowMeta&&timeToMetaStart>2.0f){
         [self showMq];
+        
+        for(int i=0;i<[metaQuestionAnswerLabels count];i++)
+        {
+            SGBtxeRow *row=[metaQuestionAnswerLabels objectAtIndex:i];
+            
+            [row setupDraw];
+            [row inflateZindex];
+            [row tagMyChildrenForIntro];
+        }
         timeToMetaStart=0.0f;
         delayShowMeta=NO;
     }
@@ -391,7 +411,6 @@ static float kTimeToHintToolTray=7.0f;
     {
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
-            hasTrayWheel=YES;
             [self showWheel];
         }
         else
@@ -430,12 +449,13 @@ static float kTimeToHintToolTray=7.0f;
     //don't eval if we're in an auto move to next problem
     
     //if the problem is complete and we aren't already moving to the next one
-    if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
-    {   
+    if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem && !hasUpdatedScore)
+    {
+        autoMoveToNextProblem=YES;
+        hasUpdatedScore=YES;
         [self incrementScoreAndMultiplier];
         
         moveToNextProblemTime=kMoveToNextProblemTime;
-        autoMoveToNextProblem=YES;
     }
     
     //if the problem is to be skipped b/c of triggered insertion and we aren't already moving to the next one
@@ -700,6 +720,7 @@ static float kTimeToHintToolTray=7.0f;
     {
         countUpToJmap=YES;
     }
+    autoMoveToNextProblem=NO;
 }
 
 -(void)showCompleteAndReturnToMap
@@ -721,6 +742,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void) loadProblem
 {
+    hasUpdatedScore=NO;
     trayWheelShowing=NO;
     trayCornerShowing=NO;
     hasTrayWheel=NO;
@@ -935,7 +957,8 @@ static float kTimeToHintToolTray=7.0f;
     else evalMode=kProblemEvalAuto;
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
-        
+    
+
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
@@ -1105,6 +1128,10 @@ static float kTimeToHintToolTray=7.0f;
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    traybtnCalc=nil;
+    traybtnMq=nil;
+    traybtnWheel=nil;
+    traybtnPad=nil;
     commitBtn=nil;
     [descGw release];
     descGw=nil;
@@ -1469,12 +1496,22 @@ static float kTimeToHintToolTray=7.0f;
         }
         
         int s=fabsf(metaQuestionAnswerCount-5);
-        float adjLX=lx-(lx*((24*s)/lx));
+//        float adjLX=lx-(lx*((24*s)/lx));
         
         // render buttons
-        float sectionW=adjLX / metaQuestionAnswerCount;
+        //float sectionW=adjLX / metaQuestionAnswerCount;
+        float sectionW=(metaQuestionBanner.contentSize.width / metaQuestionAnswerCount)-8;
+        float startOffset=0;
         
-        [answerBtn setPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), answersY)];
+        if(metaQuestionAnswerCount==2)
+            startOffset=answerBtn.contentSize.width-19;
+        else if(metaQuestionAnswerCount==3)
+            startOffset=answerBtn.contentSize.width/2;
+        else if(metaQuestionAnswerCount==4)
+            startOffset=10;
+        
+        
+        [answerBtn setPosition:ccp(startOffset+((24*s)/2)+((i+0.5) * sectionW), answersY)];
         [answerBtn setTag:3];
         //[answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
@@ -1486,26 +1523,22 @@ static float kTimeToHintToolTray=7.0f;
             
             row.forceVAlignTop=NO;
             row.rowWidth=answerBtn.contentSize.width-10;
+            row.tintMyChildren=NO;
             [row parseXML:answerLabelString];
-            [row setupDraw];
-            [row inflateZindex];
-            [row tagMyChildrenForIntro];
+            [metaQuestionAnswerLabels addObject:row];
         }
         // check for text, render if nesc
         if(row)
         {
             row.position=answerBtn.position;
-//            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
-//            [answerLabel setColor:kMetaAnswerLabelColorSelected];
-//            [answerLabel setOpacity:0];
-//            [answerLabel setTag: 3];
-//            [answerBtn addChild:answerLabel];
-//            [metaQuestionAnswerLabels addObject:answerLabel];
+            [row setupDraw];
         }
     
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
+    
+    
 
     
 }
@@ -1629,6 +1662,9 @@ static float kTimeToHintToolTray=7.0f;
     
     if(currentTool && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem)
         showCommit=YES;
+    
+    if(trayPadShowing)
+        showCommit=NO;
     
     if(hasTrayMq && trayMqShowing)
     {
@@ -2176,6 +2212,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)tearDownNumberPicker
 {
+    [self hideWheel];
     if(CurrentBTXE)CurrentBTXE=nil;
     toolCanEval=YES;
 //    if(traybtnWheel){
@@ -2272,7 +2309,7 @@ static float kTimeToHintToolTray=7.0f;
     //create row
     SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     descRow=row;
-    row.position=ccp(cx, (cy*2) - 130);
+    row.position=ccp(cx, (cy*2) - 100);
 
     NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     if(numberMode)
@@ -2302,16 +2339,6 @@ static float kTimeToHintToolTray=7.0f;
     [row setupDraw];
     
     [row fadeInElementsFrom:1.0f andIncrement:0.1f];
-
-    
-    //question separator bar -- flow with bottom of btxe
-    if(!questionSeparatorSprite)
-    {
-        questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
-        [backgroundLayer addChild:questionSeparatorSprite];
-    }
-    
-    questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
     
     readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/Question_tray_play.png")];
 //    [readProblemDesc setOpacity:0];
@@ -2320,18 +2347,27 @@ static float kTimeToHintToolTray=7.0f;
     qTrayTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Top.png")];
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
+
+    float rowHeight=0;
     
-    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
+    else
+        rowHeight=row.size.height+20;
     
-    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
-    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
+    if(rowHeight<75.0f)rowHeight=75.0f;
     
-    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))];
+    [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
+    //[qTrayMid setPosition:ccp(cx,row.position.y)];
+    [qTrayMid setScaleY:(rowHeight-64)/14];
+//    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
+    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
     
-    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200)]];
-    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200)]];
-    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200)]];
-    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
+    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
+    
+    animateQuestionBox=YES;
     
     
     [backgroundLayer addChild:readProblemDesc];
@@ -2339,13 +2375,16 @@ static float kTimeToHintToolTray=7.0f;
     [backgroundLayer addChild:qTrayBot];
     [backgroundLayer addChild:qTrayMid];
     
-    
-    //show and hide separator for exprbuilder
-    questionSeparatorSprite.visible= ![currentTool isKindOfClass:[ExprBuilder class]];
-    
     descGw.Blackboard.inProblemSetup=NO;
 }
 
+-(void)animateQuestionBoxIn
+{
+    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+}
 -(void)setProblemDescriptionVisible:(BOOL)visible
 {
     //hide everything int he btxe gw
@@ -2417,6 +2456,21 @@ static float kTimeToHintToolTray=7.0f;
     //delegate touch handling for trays here
     if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing||trayPadShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
     {
+        if(trayPadShowing)
+        {
+            if(CGRectContainsPoint(trayPadClear.boundingBox, location))
+            {
+                [(LineDrawer*)lineDrawer clearSlate];
+            }
+            if(CGRectContainsPoint(trayPadClose.boundingBox, location))
+            {
+                [self removeAllTrays];
+            }
+            else
+            {
+                return;
+            }
+        }
         if (location.x < 100 && location.y > 688 && !isPaused)
         {
             [self showPauseMenu];
@@ -2440,7 +2494,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
             [self removeAllTrays];
             return;
         }
@@ -2659,7 +2713,7 @@ static float kTimeToHintToolTray=7.0f;
         if(trayPadShowing)
         {
             [self hidePad];
-            [self hideCornerTray];
+            //[self hideCornerTray];
         }
         else
         {
@@ -2669,7 +2723,7 @@ static float kTimeToHintToolTray=7.0f;
             
             [self showPad];
             
-            [self showCornerTray];
+            //[self showCornerTray];
         }
     }
     
@@ -2771,7 +2825,7 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2780,8 +2834,6 @@ static float kTimeToHintToolTray=7.0f;
 //        [qTrayTop setPosition:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)];
 //        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
 //        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
-        
-        [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
         
         trayCornerShowing=YES;
     }
@@ -2809,13 +2861,11 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
-        
-        [questionSeparatorSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
         
         trayCornerShowing=NO;
     }
@@ -2933,7 +2983,7 @@ static float kTimeToHintToolTray=7.0f;
     trayWheelShowing=NO;
 //    [traybtnWheel setColor:ccc3(255,255,255)];
     
-    if(hasTrayWheel)
+    if(hasTrayWheel && traybtnWheel)
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
     else
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
@@ -2943,14 +2993,29 @@ static float kTimeToHintToolTray=7.0f;
 {
     if(!trayLayerPad)
     {
-        trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
-        [problemDefLayer addChild:trayLayerPad z:2];
-        trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
+        //trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
+        trayLayerPad=[[CCLayer alloc]init];
+        lineDrawer=[LineDrawer node];
         
-        CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Notepad" fontName:@"Source Sans Pro" fontSize:24.0f];
-        lbl.position=ccp(150,112.5f);
-        [trayLayerPad addChild:lbl];
+        CCSprite *bg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-background.png")];
+        [bg setPosition:ccp(1024 * 0.5f, 768 * 0.5f)];
+        [trayLayerPad addChild:bg z:-1];
+        
+        [trayLayerPad addChild:lineDrawer];
+        [problemDefLayer addChild:trayLayerPad z:10];
+        
+        trayPadClear=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-clear.png")];
+        [trayPadClear setPosition:ccp(lx-125,ly-50)];
+        [trayLayerPad addChild:trayPadClear];
+        
+        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];
+        [trayPadClose setPosition:ccp(lx-50,ly-50)];
+        [trayLayerPad addChild:trayPadClose];
+        
+        //trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
     }
+    
+    [btxeDescLayer setVisible:NO];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
@@ -2967,6 +3032,7 @@ static float kTimeToHintToolTray=7.0f;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
+    [btxeDescLayer setVisible:YES];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

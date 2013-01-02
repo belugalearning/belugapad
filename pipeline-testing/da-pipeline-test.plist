@@ -2,13 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
+	<string>/Problems/tools-dev/da-dg/dg6.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
+	<string>/Problems/tools-dev/da-float/fb003.plist</string>
+	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
+	<string>/Problems/tools-dev/da-dg/dg-factorsof6.plist</string>
+	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt-evalareavalue.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt-tagging.plist</string>
 	<string>/Problems/tools-dev/issues/pdef_0.plist</string>
 	<string>/Problems/tools-dev/ExprBuilder/picker/picker1.plist</string>
 	<string>/Problems/tools-dev/gj-dev/gj-mq1.plist</string>
-	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
-	<string>/Problems/tools-dev/da-dg/dg6.plist</string>
 	<string>/Problems/tools-dev/ExprBuilder/cardsandseq/cards3.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt-evalcontainervalue.plist</string>
 	<string>/Problems/tools-dev/issues/pdef_2.plist</string>
@@ -23,9 +28,7 @@
 	<string>/Problems/tools-dev/da-dt/dt-numbervalues.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg6.plist</string>
-	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg-14x3gridmultiplication.plist</string>
-	<string>/Problems/tools-dev/da-dg/dg-factorsof6.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg-intro.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg-nonproportional.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg1-dimensions.plist</string>
@@ -42,9 +45,7 @@
 	<string>/Problems/tools-dev/da-dg/dg2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg-14x3gridmultiplication.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
-	<string>/Problems/tools-dev/da-float/fb003.plist</string>
 	<string>/Problems/issues/pdef_0.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt3.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg-factorsof6.plist</string>
 	<string>/Problems/tools-dev/da-tt/tt2.plist</string>
@@ -59,7 +60,6 @@
 	<string>/Problems/issues/pdef_2.plist</string>
 	<string>/Problems/issues/pdef_3.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
-	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
 	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
 	<string>/Problems/tools-dev/da-ct/ct003.plist</string>
 	<string>/Problems/tools-dev/da-ct/ct004.plist</string>

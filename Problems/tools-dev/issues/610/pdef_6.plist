@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>1</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:oi tag=&quot;{@thing_1}&quot;/&gt;&lt;b:t&gt;earns&lt;/b:t&gt;&lt;b:ot tag=&quot;a&quot;&gt;{$x}&lt;/b:ot&gt;&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt;per day. This is&lt;/b:t&gt;&lt;b:ot tag=&quot;b&quot;&gt;{$y}&lt;/b:ot&gt;&lt;b:t&gt;times more than&lt;/b:t&gt;&lt;b:oi tag=&quot;{@thing_2}&quot;/&gt;&lt;b:t&gt;. How many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt; does&lt;/b:t&gt;&lt;b:oi tag=&quot;{@thing_2}&quot;/&gt;&lt;b:t&gt;earn?&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;/&quot;/&gt;
+&lt;b:on number=&quot;{$y}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>VALUE</key>
+			<string>{$y*$z}</string>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@thing_1</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>thing_1</string>
+				<string>thing_2</string>
+				<string>thing_3</string>
+			</array>
+		</dict>
+		<key>@thing_2</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>thing_4</string>
+				<string>thing_5</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

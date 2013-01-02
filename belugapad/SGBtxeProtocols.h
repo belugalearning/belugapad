@@ -126,6 +126,7 @@
 -(id<MovingInteractive>)createADuplicate;
 -(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW;
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
+-(CGRect)returnBoundingBox;
 -(void)destroy;
 
 @end

@@ -9,6 +9,8 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "SGBtxeRow.h"
+#import "SGBtxeRowLayout.h"
 #import "global.h"
 
 @implementation SGBtxeObjectText
@@ -60,6 +62,12 @@
     
     return (id<MovingInteractive>)dupe;
     
+}
+
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+    [textBackgroundRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
 }
 
 -(id<MovingInteractive>)createADuplicate
@@ -160,6 +168,7 @@
     [textRenderComponent.label0 setTag:3];
     [textRenderComponent.label setOpacity:0];
     [textRenderComponent.label0 setOpacity:0];
+    [textBackgroundRenderComponent tagMyChildrenForIntro];
 }
 
 -(NSString*)returnMyText
@@ -188,6 +197,10 @@
     
     if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
         size.width=170;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
+        size.width=116;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Small"] && size.width<40)
+        size.width=40;
     
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
@@ -199,6 +212,12 @@
     CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
     [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
+    
+//    id<Containable>myMount=(id<Containable>)self.mount;
+    SGBtxeRow *myRow=(SGBtxeRow*)self.container;
+    SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+    
+    [layoutComp layoutChildren];
 }
 
 -(void)activate

@@ -221,7 +221,13 @@ static int shadowSteps=5;
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+    if(needToTransition)
+    {
+        if([gameWorld.Blackboard.jmapInstance isPointInView:ParentGO.Position])
+        {
+            [self transitionToNewState];
+        }
+    }
 }
 
 -(void)draw:(int)z
@@ -479,6 +485,8 @@ static int shadowSteps=5;
         CGPoint rawpos=[[f objectForKey:@"POS"] CGPointValue];
         
         CCSprite *basesprite=[CCSprite spriteWithSpriteFrameName:@"spacer.png"];
+        
+        
         basesprite.position=ccpAdd([self halvedSubCentre:rawpos], ParentGO.Position);
         [ParentGO.RenderBatch addChild:basesprite z:5];
         
@@ -496,6 +504,39 @@ static int shadowSteps=5;
     
 }
 
+-(void)transitionToNewState
+{
+    for(NSDictionary *f in [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURES"])
+    {
+        //CGPoint pos=[self subCentre:[[f objectForKey:@"POS"] CGPointValue]];
+        int size=[[f objectForKey:@"SIZE"] integerValue];
+        //int variant=[[f objectForKey:@"VARIANT"] integerValue];
+        int variant=(arc4random() %2) +1;
+        
+        int targetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:f];
+        CCSprite *base=[self.indexedBaseNodes objectAtIndex:targetIdx];
+        
+        if(size>2 || self.islandStage<3)
+        {
+            float stdTime = arc4random() % 11 * 0.1;
+            float actTime = 1.5f;
+            
+            
+            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+            
+            [oldNodeSprite runAction:[CCFadeOut actionWithDuration:actTime/2]];
+            
+            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
+            [base addChild:newfsprite];
+            newfsprite.opacity=0;
+            [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
+            
+            newfsprite.position=ccpAdd(base.position, ccp(0, -75));
+        }
+    }
+    needToTransition=NO;
+}
+
 -(void)readyNodeSpriteRender
 {
     //step over features, find and add to correct bases
@@ -511,37 +552,40 @@ static int shadowSteps=5;
         
         if(size>2 || self.islandStage<3)
         {
-            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+//            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
             NSString *fnameold=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.previousIslandStage, size, variant];
             
-            float stdTime = arc4random() % 11 * 0.1;
-            float actTime = 1.5f;
+//            float stdTime = arc4random() % 11 * 0.1;
+//            float actTime = 1.5f;
             
             //create random delay to go before all transitions
             //fade out needs to be 1.5s
             //fade in needs to be 1s, starting and 0.5s
             
             if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
-            {
-                CCSprite *oldfsprite=[CCSprite spriteWithSpriteFrameName:fnameold];
-                [base addChild:oldfsprite];
-                
-                [oldfsprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
-            }
+                needToTransition=YES;
             
-            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
-            [base addChild:newfsprite];
+//            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
+//            {
+                oldNodeSprite=[CCSprite spriteWithSpriteFrameName:fnameold];
+                [base addChild:oldNodeSprite];
+//
+//                [oldNodeSprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
+//            }
             
-            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
-            {
-                newfsprite.opacity=0;
-                [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
-            }
+//            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
+//            [base addChild:newfsprite];
             
-            if(size==5 && self.islandStage>4)
-            {
-                newfsprite.position=ccpAdd(base.position, ccp(0, -75));
-            }
+//            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
+//            {
+//                newfsprite.opacity=0;
+//                [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
+//            }
+//            
+//            if(size==5 && self.islandStage>4)
+//            {
+//                newfsprite.position=ccpAdd(base.position, ccp(0, -75));
+//            }
             
             // mod pos of old sprite if existing
             
@@ -713,7 +757,10 @@ static int shadowSteps=5;
 
 -(CGPoint) halvedSubCentre:(CGPoint)pos
 {
-    return ccpMult([self subCentre:pos], 0.5f);
+//    return ccpMult([self subCentre:pos], 1.0f);
+    
+    CGPoint sc=[self subCentre:pos];
+    return ccp(sc.x * 0.7f, sc.y * 0.5f);
 }
 
 #pragma mark - parse island data out of a single-island data template and cache

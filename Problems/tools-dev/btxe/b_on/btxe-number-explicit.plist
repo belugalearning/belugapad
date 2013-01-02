@@ -5,6 +5,6 @@
 	<key>NUMBER_MODE</key>
 	<string>numicon</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;this is a problem about&lt;/b:t&gt;&lt;b:on number=&quot;4&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:on number=&quot;5&quot; /&gt;</string>
+	<string>&lt;b:t&gt;this is a problem about&lt;/b:t&gt;&lt;b:on number=&quot;4&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:on number=&quot;5&quot; /&gt;&lt;b:t&gt;and some text that is a number 3 and 4! yes and 5? oh&lt;/b:t&gt;</string>
 </dict>
 </plist>

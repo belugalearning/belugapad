@@ -125,6 +125,8 @@
     
     
     m.scaleX=(size.width-BTXE_OTBKG_WIDTH_OVERDRAW_PAD) / m.contentSize.width;
+    
+    ParentGO.size=CGSizeMake(size.width, m.contentSize.height);
     //m.scaleY=size.height / m.contentSize.height;
     
     //lh.scaleY=size.height / m.contentSize.height;
@@ -157,12 +159,21 @@
 //    [backgroundNode addChild:rh];
 }
 
+-(void)tagMyChildrenForIntro
+{
+    for(CCSprite *s in backgroundNode.children)
+    {
+        [s setTag:3];
+        [s setOpacity:0];
+    }
+}
+
 -(void)redrawBkgWithSize:(CGSize)size
 {
     CCSprite *lh=[backgroundNode.children objectAtIndex:0];
     CCSprite *m=[backgroundNode.children objectAtIndex:1];
     CCSprite *rh=[backgroundNode.children objectAtIndex:2];
-    m.scaleX=size.width / m.contentSize.width;
+    m.scaleX=(size.width-BTXE_OTBKG_WIDTH_OVERDRAW_PAD) / m.contentSize.width;
     //m.scaleY=size.height / m.contentSize.height;
     
     //lh.scaleY=size.height / m.contentSize.height;

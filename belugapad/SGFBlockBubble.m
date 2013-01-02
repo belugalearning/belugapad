@@ -13,6 +13,14 @@
 
 @synthesize MySprite, Position, RenderLayer, GroupsInMe, Replacement, zIndex;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGFblockBubble"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
+
 -(SGFBlockBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andReplacement:(BOOL)isReplacement
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -108,6 +116,10 @@
     RenderLayer=nil;
     MySprite=nil;
     GroupsInMe=nil;
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+    
     [super dealloc];
 }
 

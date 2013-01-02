@@ -11,7 +11,7 @@
 
 @class SGBtxeTextBackgroundRender;
 
-@interface SGBtxeObjectText : SGGameObject <Text, MovingInteractive, NumberPicker, Containable>
+@interface SGBtxeObjectText : SGGameObject <Text, MovingInteractive, NumberPicker, Containable, FadeIn>
 {
     CCNode *renderBase;
 }

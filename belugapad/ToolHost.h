@@ -54,7 +54,7 @@ typedef enum {
     CCLayer *problemDefLayer;
     CCLayer *btxeDescLayer;
     CCLayer *pauseLayer;
-
+    
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
@@ -153,6 +153,9 @@ typedef enum {
     CCSprite *glossary2;
     CCSprite *glossaryPopup;
     
+    CCSprite *trayPadClear;
+    CCSprite *trayPadClose;
+    
     
     //scoring
     int pipelineScore;          //the total score accumulated in this pipeline
@@ -177,7 +180,6 @@ typedef enum {
     
     //btxe for description
     SGGameWorld *descGw;
-    CCSprite *questionSeparatorSprite;
     SGBtxeRow *descRow;
     
     //ui
@@ -202,6 +204,7 @@ typedef enum {
     CCLayer *trayLayerWheel;
     CCLayer *trayLayerMq;
     CCLayer *trayLayerPad;
+    CCNode *lineDrawer;
     
     BOOL hasTrayWheel;
     BOOL hasTrayCalc;
@@ -214,6 +217,8 @@ typedef enum {
     
     BOOL delayShowWheel;
     BOOL delayShowMeta;
+    BOOL animateQuestionBox;
+    float timeToQuestionBox;
     float timeToWheelStart;
     float timeToMetaStart;
     
@@ -222,6 +227,7 @@ typedef enum {
     BOOL countUpToJmap;
     BOOL hasShownComplete;
     BOOL doPlaySound;
+    BOOL hasUpdatedScore;
     float timeToReturnToJmap;
     
 }

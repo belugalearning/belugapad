@@ -18,6 +18,13 @@
 @synthesize Length;
 @synthesize BaseNode;
 @synthesize MyHeldValue;
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"DWNBondRowGameObject"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {

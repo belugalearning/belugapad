@@ -30,7 +30,9 @@
 
 @property (readwrite, retain) Problem *problem;
 
+#if !RELEASE_MODE
 -(void)updateClientScripts;
+#endif
 
 @end
 
@@ -52,8 +54,10 @@
         handlerInstance = [handler retain];
         endEditAndTest = endEditAndTestSel;
         
+#if !RELEASE_MODE
         // only web service serving client script updates is currently local to my machine, so comment out call below until updates available from zubi.me
         // [self updateClientScripts];
+#endif
         
         // if haven't been able to get latest client scripts from server at least once, will need to copy bundled scripts into library
         NSString *bundledEditPDefDir = BUNDLE_FULL_PATH(@"/edit-pdef-client-files");
@@ -172,7 +176,7 @@
     return NO;
 }
 
-
+#if !RELEASE_MODE
 -(void)updateClientScripts
 {
     NSURL *url = [NSURL URLWithString:@"http://23.23.23.23:1234"]; // TODO: Update url (relative to ContentService.kcmServerBaseURL) ********************************************************************
@@ -191,6 +195,7 @@
         [SSZipArchive unzipFileAtPath:zipPath toDestination:editPDefDir];
     }
 }
+#endif
 
 - (void)viewDidLoad
 {

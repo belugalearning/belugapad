@@ -3334,7 +3334,6 @@ static float kTimeToCageShake=7.0f;
                 // set a bool saying whether our dropobject is a cage or not
                 BOOL isCage;
                 BOOL doNotSwitchSelection=NO;
-                BOOL hasModifiedTestLocation=NO;
                 
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
@@ -3405,11 +3404,8 @@ static float kTimeToCageShake=7.0f;
                         
                         gw.Blackboard.DropObject=nil;
                         
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
-                        {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
-                            hasModifiedTestLocation=YES;
-                        }
+                        gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
+
                         
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];

@@ -40,7 +40,10 @@
 {
     self.MountedObjects=nil;
     self.BaseNode=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

@@ -446,7 +446,7 @@
     
     lastTouch=location;
 
-    if(isHoldingObject)
+    if(isHoldingObject && !toolHost.CurrentBTXE)
     {
         //track that object's position
         heldObject.worldPosition=location;

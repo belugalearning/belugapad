@@ -23,6 +23,14 @@
 @synthesize assetType;
 @synthesize backgroundType;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGBtxeObjectIcon"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.position; }
+
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -34,6 +42,10 @@
         enabled=YES;
         interactive=YES;
         assetType=@"Small";
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        [loggingService.logPoller registerPollee:(id<LogPolling>)self];
         
         //todo: init render
         iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
@@ -181,6 +193,7 @@
 
 -(void)destroy
 {
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
     [self detachFromRenderBase];
     
     [gameWorld delayRemoveGameObject:self];
@@ -192,6 +205,10 @@
     self.iconTag=nil;
     self.iconRenderComponent=nil;
     self.container=nil;
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     
     [super dealloc];
 }

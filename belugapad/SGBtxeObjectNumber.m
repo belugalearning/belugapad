@@ -39,6 +39,14 @@
 @synthesize numberMode;
 @synthesize backgroundType;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGBtxeObjectNumber"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.position; }
+
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -59,6 +67,10 @@
         backgroundType=@"Tile";
         
         renderAsDots=NO;
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        [loggingService.logPoller registerPollee:(id<LogPolling>)self];
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -416,6 +428,7 @@
 
 -(void)destroy
 {
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
     [self detachFromRenderBase];
     
     [gameWorld delayRemoveGameObject:self];
@@ -454,7 +467,10 @@
     self.suffixText=nil;
     self.numberValue=nil;
     self.container=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

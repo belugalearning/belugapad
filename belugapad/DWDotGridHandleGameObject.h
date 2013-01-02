@@ -8,13 +8,14 @@
 
 #import "DWGameObject.h"
 #import "DWDotGridShapeGameObject.h"
+#import "LogPollingProtocols.h"
 
 typedef enum {
     kMoveHandle=0,
     kResizeHandle=1
 } HandleType;
 
-@interface DWDotGridHandleGameObject : DWGameObject
+@interface DWDotGridHandleGameObject : DWGameObject <LogPolling, LogPollPositioning>
 
 @property HandleType handleType;
 @property CGPoint Position;

@@ -8,12 +8,17 @@
 
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
+#import "AppDelegate.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "LogPollingProtocols.h"
 
 @class SGBtxeIconRender;
 
-@interface SGBtxeObjectIcon : SGGameObject <MovingInteractive, Icon, FadeIn, Containable>
+@interface SGBtxeObjectIcon : SGGameObject <MovingInteractive, Icon, FadeIn, Containable, LogPolling, LogPollPositioning>
 {
     CCNode *renderBase;
+    LoggingService *loggingService;
 }
 
 @property (retain) SGBtxeIconRender *iconRenderComponent;

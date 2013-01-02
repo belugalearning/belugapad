@@ -13,6 +13,9 @@
 #import "BLMath.h"
 #import "DWGameObject.h"
 #import "DWGameWorld.h"
+#import "AppDelegate.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
 
 @implementation BDotGridAnchorObjectRender
 
@@ -23,6 +26,10 @@
     //init pos x & y in case they're not set elsewhere
     
     anch=(DWDotGridAnchorGameObject*)gameObject;
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller registerPollee:(id<LogPolling>)self];
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
@@ -111,6 +118,9 @@
 
 -(void) dealloc
 {
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
     [super dealloc];
 }
 

@@ -25,9 +25,22 @@
 @synthesize lastZIndex;
 @synthesize Disabled;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"DWPlaceValueBlock"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return [self Position]; }
+
 -(DWGameObject*)Mount
 {
     return Mount1;
+}
+
+-(CGPoint)Position
+{
+    return ccp(PosX,PosY);
 }
 
 -(void)setMount:(DWGameObject *)newMount
@@ -65,7 +78,10 @@
     self.PickupSprite=nil;
     self.mySprite=nil;
     self.SpriteFilename=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

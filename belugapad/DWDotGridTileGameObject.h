@@ -7,6 +7,10 @@
 //
 
 #import "DWGameObject.h"
+#import "AppDelegate.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "LogPollingProtocols.h"
 
 @class DWDotGridAnchorGameObject;
 @class DWDotGridShapeGameObject;
@@ -35,7 +39,7 @@ typedef struct {
     NSString *spriteFileName;
 } tileProperties;
 
-@interface DWDotGridTileGameObject : DWGameObject
+@interface DWDotGridTileGameObject : DWGameObject <LogPolling, LogPollPositioning>
 
 @property TileType tileType;
 @property (retain) CCSprite *mySprite;

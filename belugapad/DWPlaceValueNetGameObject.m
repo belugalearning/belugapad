@@ -47,7 +47,10 @@
     
     self.MountedObject=nil;
     self.mySprite=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

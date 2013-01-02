@@ -467,7 +467,10 @@
     self.suffixText=nil;
     self.numberValue=nil;
     self.container=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

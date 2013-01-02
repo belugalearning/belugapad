@@ -248,7 +248,10 @@
     self.textBackgroundRenderComponent=nil;
     self.container=nil;
     self.valueOperator=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

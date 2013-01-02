@@ -78,7 +78,10 @@
     self.PickupSprite=nil;
     self.mySprite=nil;
     self.SpriteFilename=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

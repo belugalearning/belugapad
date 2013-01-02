@@ -26,6 +26,14 @@
 @synthesize lastZIndex;
 @synthesize HintObject;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"DWNBondBlock"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
+
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {
     if( (self=[super initWithGameWorld:aGameWorld] )) 
@@ -40,7 +48,10 @@
     self.Mount=nil;
     self.BaseNode=nil;
     self.Label=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

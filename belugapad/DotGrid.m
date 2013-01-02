@@ -257,7 +257,7 @@
     
     if(isIntroPlist)
     {
-        spaceBetweenAnchors=74;
+        spaceBetweenAnchors=80;
         showCount=@"SHOW_FRACTION";
         useShapeGroups=NO;
         drawMode=kAnyStartAnchorValid;
@@ -2304,6 +2304,7 @@
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
 
+    [gw release];
     gw=nil;
 
     [super dealloc];

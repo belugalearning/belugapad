@@ -26,11 +26,14 @@
     ccColor4B stepColours[10];
     
     BOOL zoomedOut;
+    BOOL needToTransition;
     
     ccColor4B currentCol;
     
     CCSprite *islandSprite;
     CCSprite *islandShadowSprite;
+    
+    CCSprite *oldNodeSprite;
     
     NSMutableArray *featureSprites;
     

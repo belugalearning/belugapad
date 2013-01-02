@@ -18,6 +18,7 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "LogPoller.h"
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
@@ -113,6 +114,18 @@ static float kNBFontSizeLarge=35.0f;
         }
         timeSinceInteractionOrShake=0.0f;
         if(isWinning)[toolHost shakeCommitButton];
+    }
+    
+    for(int i=0;i<[mountedObjects count];i++)
+    {
+        if([[mountedObjects objectAtIndex:i]isKindOfClass:[NSNull class]])continue;
+        NSArray *a=[mountedObjects objectAtIndex:i];
+        
+        for(DWNBondObjectGameObject *pogo in a)
+        {
+            if(!CGPointEqualToPoint(pogo.BaseNode.position, pogo.MountPosition) && pogo.BaseNode.numberOfRunningActions==0)
+                pogo.BaseNode.position=pogo.MountPosition;
+        }
     }
     
     [self updateLabels];
@@ -261,6 +274,7 @@ static float kNBFontSizeLarge=35.0f;
         
         DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
         [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
+        [loggingService.logPoller registerPollee:(id<LogPolling>)prgo];
         prgo.Position=ccp(xStartPos,initBarStartYPos);
         prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
         prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
@@ -278,6 +292,7 @@ static float kNBFontSizeLarge=35.0f;
     {
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
+        [loggingService.logPoller registerPollee:(id<LogPolling>)pogo];
         pogo.IndexPos=i;
         pogo.HintObject=YES;
         pogo.Length=i+1;
@@ -307,15 +322,15 @@ static float kNBFontSizeLarge=35.0f;
         NSMutableArray *currentVal=[[NSMutableArray alloc]init];
 //        for (int ic=0;ic<qtyForThisStore;ic++)
 //        {
-            DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
-            [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
-            
-            //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
-            pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
-            pogo.IndexPos=pogo.Length-1;
-            thisLength=pogo.Length;
-            blocksForThisStore[pogo.IndexPos]=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
-            blocksUsedFromThisStore[pogo.IndexPos]=0;
+        DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
+        [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
+        [loggingService.logPoller registerPollee:(id<LogPolling>)pogo];
+        //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
+        pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+        pogo.IndexPos=pogo.Length-1;
+        thisLength=pogo.Length;
+        blocksForThisStore[pogo.IndexPos]=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
+        blocksUsedFromThisStore[pogo.IndexPos]=0;
         
         if(blocksForThisStore[pogo.IndexPos]==blocksUsedFromThisStore[pogo.IndexPos])
             storeCanCreate[pogo.IndexPos]=NO;
@@ -388,6 +403,7 @@ static float kNBFontSizeLarge=35.0f;
         //NSString *fillText=[[NSString alloc]init];
         DWNBondObjectGameObject *hint = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:hint withTemplateName:@"TnBondObject"];
+        [loggingService.logPoller registerPollee:(id<LogPolling>)hint];
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         hint.Length = insLength;
@@ -420,7 +436,7 @@ static float kNBFontSizeLarge=35.0f;
         NSString *fillText=[[NSString alloc]init];
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
-        
+        [loggingService.logPoller registerPollee:(id<LogPolling>)pogo];
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
         
@@ -843,7 +859,7 @@ static float kNBFontSizeLarge=35.0f;
 
             DWNBondObjectGameObject *newbar = [DWNBondObjectGameObject alloc];
             [gw populateAndAddGameObject:newbar withTemplateName:@"TnBondObject"];
-            
+            [loggingService.logPoller registerPollee:(id<LogPolling>)newbar];
             //newbar.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
             newbar.Length=pogo.Length;
             newbar.IndexPos=newbar.Length-1;
@@ -966,7 +982,7 @@ static float kNBFontSizeLarge=35.0f;
                         DWNBondObjectGameObject *no = [DWNBondObjectGameObject alloc];
                         [gw populateAndAddGameObject:no withTemplateName:@"TnBondObject"];
                         
-            
+                        [loggingService.logPoller registerPollee:(id<LogPolling>)no];
                         
                         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
                         if(i==0)
@@ -1393,6 +1409,16 @@ static float kNBFontSizeLarge=35.0f;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    
+    for(id<LogPolling,NSObject> go in gw.AllGameObjects)
+    {
+        if([go isKindOfClass:[DWNBondObjectGameObject class]])
+            [loggingService.logPoller unregisterPollee:go];
+        else if([go isKindOfClass:[DWNBondRowGameObject class]])
+            [loggingService.logPoller unregisterPollee:go];
+        else if([go isKindOfClass:[DWNBondStoreGameObject class]])
+            [loggingService.logPoller unregisterPollee:go];
+    }
     
     //removing manual releases here -- causing msg_send issue
 //    if(initBars) [initBars release];

@@ -9,9 +9,11 @@
 #import "SGComponent.h"
 #import "SGBtxeProtocols.h"
 
+@class SGBtxeRow;
+
 @interface SGBtxeRowLayout : SGComponent
 {
-    id<Bounding, Container, RenderContainer> ParentGo;
+    SGBtxeRow *ParentGo;
 }
 
 -(void)layoutChildren;

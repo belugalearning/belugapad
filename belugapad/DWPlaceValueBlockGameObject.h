@@ -7,8 +7,9 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
-@interface DWPlaceValueBlockGameObject : DWGameObject
+@interface DWPlaceValueBlockGameObject : DWGameObject <LogPolling,LogPollPositioning>
 {
     DWGameObject *Mount1;
     DWGameObject *LastMount1;

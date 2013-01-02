@@ -61,10 +61,13 @@
     int numberCardRowInterval;
     BOOL numberCardRandomOrder;
     int numberCardRandomSelectionOf;
+    BOOL hasMovedObject;
 
     NSString *numberMode;
     
     SGBtxeRow *ncardRow;
+    SGBtxeRow *descRow;
+    
     
     //excluded row evaluations
     NSArray *excludedEvalRows;
@@ -76,9 +79,14 @@
     
     NSMutableArray *expressionStringCache;
     BOOL expressionRowsAreLarge;
+    
+    float sepYpos;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
+
+-(float)getDescriptionAreaHeight;
+
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdate:(ccTime)delta;

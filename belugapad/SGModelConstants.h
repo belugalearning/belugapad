@@ -27,6 +27,8 @@ typedef enum {
     kSGtearDownRender,
     
     kSGdisableAuthorRender,
-    kSGenableAuthorRender
+    kSGenableAuthorRender,
+    
+    kSGsetVisualStateAfterBuildUp
         
 } SGMessageType;

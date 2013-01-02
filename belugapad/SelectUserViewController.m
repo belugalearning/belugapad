@@ -558,12 +558,6 @@
 
 -(void)handleLoadExistingUserClicked:(id)button
 {
-    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                 message:@"We could not find a match for those login details. Please double-check and try again."
-                                delegate:nil
-                       cancelButtonTitle:@"OK"
-                       otherButtonTitles:nil] autorelease];
-    
     if (freezeUI) return;
     
     __block typeof(self) bself = self;
@@ -573,9 +567,13 @@
         
         if (!ur)
         {
+            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
             [alertView show];
             return;
-
         }
         
         [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];        

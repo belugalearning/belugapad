@@ -44,17 +44,25 @@
     [self.baseNode removeAllChildrenWithCleanup:YES];
     
     [self drawDotsOnBase];
+
 }
 
 -(void)drawDotsOnBase
 {
     int count=[ParentGO.value intValue];
-    NSArray *positions=[NumberLayout physicalLayoutAcrossToNumber:count withSpacing:20.0f];
+    float spacing=20.0f;
+    id<MovingInteractive>pgo=(id<MovingInteractive>)ParentGO;
+    
+    if([pgo.assetType isEqualToString:@"Large"])
+        spacing=40.0f;
+    
+    NSArray *positions=[NumberLayout physicalLayoutAcrossToNumber:count withSpacing:spacing];
+    NSString *str=[NSString stringWithFormat:@"/images/btxe/Number_Dot_%@.png",pgo.assetType];
     
     for(int i=0; i<count; i++)
     {
-        CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/Number_Dot_Standard.png")];
-        dot.position=[[positions objectAtIndex:i] CGPointValue];
+        CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(str)];
+        dot.position=ccpAdd([[positions objectAtIndex:i] CGPointValue], ccp(0,5));
         [self.baseNode addChild:dot];
     }
 }
@@ -80,7 +88,10 @@
 
 -(void)updatePosition:(CGPoint)thePosition
 {
-    self.baseNode.position=ccpAdd(thePosition, ccp(self.size.width / 2.0f, self.size.height / 2.0f));
+//    self.baseNode.position=ccpAdd(thePosition, ccp(self.size.width / 2.0f, self.size.height / 2.0f));
+//    self.baseNode.position=ccpAdd(thePosition, ccp((self.size.width-40.0f) / 2.0f, self.size.height / 2.0f));
+        self.baseNode.position=ccpAdd(thePosition, ccp((self.size.width-40.0f) / 2.0f, 5));
+//    self.baseNode.position=thePosition;
 }
 
 -(void)dealloc

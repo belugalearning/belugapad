@@ -69,6 +69,10 @@
     {
         if(labelSprite)labelSprite.visible=NO;
     }
+    if(messageType==kSGsetVisualStateAfterBuildUp)
+    {
+        [self decideOnPinState];
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -121,6 +125,8 @@
     [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
+
+    
     if(((AppController*)[[UIApplication sharedApplication] delegate]).AuthoringMode)
     {
         labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Source Sans Pro" fontSize:14.0f];
@@ -129,6 +135,55 @@
         [ParentGO.RenderBatch.parent addChild:labelSprite z:99];
     }
     
+}
+
+-(void)decideOnPinState
+{
+    SGJmapNode *pn=(SGJmapNode*)ParentGO;
+    
+    //if the node is on a 100% prqc island but isn't complete, bounce it
+    NSLog(@"prqc of mastery is %f", pn.MasteryNode.PrereqPercentage);
+    
+    if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete)
+    {
+        NSLog(@"bouncing a pin");
+        [self boundThisPin:nodeSprite];
+    }
+}
+
+-(void)boundThisPin:(CCSprite*)sprite
+{
+    //pick it up
+    CCEaseInOut *ml1=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.25f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml2=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.95f] rate:2.0f];
+    
+    //pick it up
+    CCEaseInOut *ml3=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.15f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml4=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.97f] rate:2.0f];
+    
+    //pick it up
+    CCEaseInOut *ml5=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.05f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml6=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f] rate:2.0f];
+    
+    //delay -- random offset
+    float randOffset=arc4random() % 10;
+    
+    CCDelayTime *dt=[CCDelayTime actionWithDuration:1.0f + (0.1f * randOffset)];
+    
+    CCSequence *s=[CCSequence actions:ml1, ml2, ml3, ml4, ml5, ml6, dt, nil];
+    
+    CCEaseInOut *oe=[CCEaseInOut actionWithAction:s rate:2.0f];
+    
+    //repeat
+    CCRepeatForever *rf=[CCRepeatForever actionWithAction:oe];
+    
+    [sprite runAction:rf];
 }
 
 -(void)flipSprite

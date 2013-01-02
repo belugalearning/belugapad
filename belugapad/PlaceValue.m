@@ -9,6 +9,7 @@
 #import "PlaceValue.h"
 #import "global.h"
 #import "LoggingService.h"
+#import "LogPoller.h"
 #import "BLMath.h"
 #import "SimpleAudioEngine.h"
 #import "ToolConsts.h"
@@ -715,6 +716,8 @@ static float kTimeToCageShake=7.0f;
             cge.AllowMultipleMount=YES;
             cge.PosX=i*(kPropXColumnSpacing*lx);
             cge.PosY=(ly*kCageYOrigin);
+            
+            [loggingService.logPoller registerPollee:(id<LogPolling>)cge];
             
             cge.mySprite=cageContainer;
             

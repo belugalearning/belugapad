@@ -7,8 +7,9 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
-@interface DWNBondRowGameObject : DWGameObject
+@interface DWNBondRowGameObject : DWGameObject <LogPolling, LogPollPositioning>
 
 @property float MaximumValue;
 @property (retain) NSMutableArray *MountedObjects;

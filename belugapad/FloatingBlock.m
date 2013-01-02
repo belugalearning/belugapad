@@ -14,6 +14,7 @@
 #import "global.h"
 #import "BLMath.h"
 #import "LoggingService.h"
+#import "LogPoller.h"
 #import "AppDelegate.h"
 
 #import "NumberLayout.h"
@@ -213,8 +214,10 @@
     {
         float xPos=(lx/initBubbles)*(i+0.5);
         
-        id<Rendered> newbubble;
+        id<Rendered,LogPolling> newbubble;
         newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300) andReplacement:NO];
+        
+        [loggingService.logPoller registerPollee:newbubble];
         
         [newbubble setup];
     }
@@ -229,7 +232,7 @@
     
     // and our commit pipe
     commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_In.png")];
-    [commitPipe setPosition:ccp(cx,55)];
+    [commitPipe setPosition:ccp(cx,52)];
     [commitPipe setOpacity:0];
     [commitPipe setTag:1];
     [renderLayer addChild:commitPipe z:1000];
@@ -291,9 +294,11 @@
         CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
         thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
         
-        id<Rendered,Moveable> newblock;
+        id<Rendered,Moveable,LogPolling> newblock;
         newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos];
         newblock.MyGroup=(id)thisGroup;
+        
+        [loggingService.logPoller registerPollee:newblock];
         
         [newblock setup];
         
@@ -338,9 +343,13 @@
                     float xPos=((id<Rendered>)go).MySprite.position.x;
                     
                     // kill the existing bubble - create a new one
+                    [loggingService.logPoller unregisterPollee:go];
                     [go fadeAndDestroy];
-                    id<Rendered> newbubble;
+                    id<Rendered,LogPolling> newbubble;
                     newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
+                    
+                    [loggingService.logPoller registerPollee:newbubble];
+                    
                     [newbubble setup];
 
                     
@@ -375,8 +384,9 @@
     // if we're showing a bubble already and it's no longer valid - remove the operator bubble
     if(showingOperatorBubble && !isValid)
     {
-        id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
+        id<Operator,Rendered,LogPolling>curBubble=(id<Operator,Rendered,LogPolling>)opBubble;
         [curBubble fadeAndDestroy];
+        [loggingService.logPoller unregisterPollee:curBubble];
         curBubble=nil;
         opBubble=nil;
         showingOperatorBubble=NO;
@@ -385,7 +395,8 @@
     // or create it if need be
     else if(!showingOperatorBubble && isValid)
     {
-        id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375) andOperators:supportedOperators];
+        id<Operator,Rendered,LogPolling>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375) andOperators:supportedOperators];
+        [loggingService.logPoller registerPollee:op];
         [op setup];
         opBubble=op;
         showingOperatorBubble=YES;
@@ -496,10 +507,12 @@
             // kill the existing bubble - create a new one
             
             
-            id<Target> bubbleid=(id<Target>)bubble;
+            id<Target,LogPolling> bubbleid=(id<Target,LogPolling>)bubble;
+            [loggingService.logPoller unregisterPollee:bubbleid];
             [bubbleid fadeAndDestroy];
-            id<Rendered> newbubble;
+            id<Rendered,LogPolling> newbubble;
             newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
+            [loggingService.logPoller registerPollee:newbubble];
             [newbubble setup];
         }
     }
@@ -577,9 +590,11 @@
         
         NSLog(@"create existing at x %f y %f", xPos, yPos);
         
-        id<Rendered,Moveable> newblock;
+        id<Rendered,Moveable,LogPolling> newblock;
         newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,yPos)];
         newblock.MyGroup=(id)targetGroup;
+        
+        [loggingService.logPoller registerPollee:newblock];
         
         [newblock setup];
         
@@ -614,8 +629,9 @@
         for(int i=[blocks count]-1;i>=result;i--)
         {
             NSLog(@"remove block");
-            id<Rendered,Moveable> obj=[blocks objectAtIndex:i];
+            id<Rendered,Moveable,LogPolling> obj=[blocks objectAtIndex:i];
             [targetGroup removeObject:obj];
+            [loggingService.logPoller unregisterPollee:obj];
             [obj fadeAndDestroy];
         }
         
@@ -639,7 +655,8 @@
     
     
     if(outcome>0){
-        id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
+        id<Operator,Rendered,LogPolling>curBubble=(id<Operator,Rendered,LogPolling>)opBubble;
+        [loggingService.logPoller unregisterPollee:curBubble];
         [curBubble fadeAndDestroy];
         opBubble=nil;
         showingOperatorBubble=NO;
@@ -658,8 +675,9 @@
         for(int i=[blocks count]-1;i>=result;i--)
         {
             NSLog(@"remove block");
-            id<Rendered,Moveable> obj=[blocks objectAtIndex:i];
+            id<Rendered,Moveable,LogPolling> obj=[blocks objectAtIndex:i];
             [targetGroup removeObject:obj];
+            [loggingService.logPoller unregisterPollee:obj];
             [obj fadeAndDestroy];
         }
         

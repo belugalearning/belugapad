@@ -13,6 +13,13 @@
 
 @synthesize Position, MyGroup;
 @synthesize MySprite, RenderLayer, Replacement, zIndex;
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGFBlockBlock"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
 
 -(SGFBlockBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {
@@ -63,8 +70,11 @@
 
 -(void)dealloc
 {
-    MyGroup=nil;
-    MySprite=nil;
+    self.MyGroup=nil;
+    self.MySprite=nil;
+    self.logPollId=nil;
+    if(logPollId)[logPollId release];
+    logPollId=nil;
     [super dealloc];
 }
 

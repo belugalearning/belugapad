@@ -9,6 +9,7 @@
 #import "ExprBuilder.h"
 
 #import "UsersService.h"
+#import "LoggingService.h"
 #import "ToolHost.h"
 
 #import "global.h"
@@ -172,7 +173,10 @@
         expressionRowsAreLarge=YES;
     }
     
-    numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    if([pdef objectForKey:@"NUMBER_MODE"])
+        numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    else
+        numberMode=@"numeral";
 }
 
 -(void)populateGW
@@ -211,9 +215,6 @@
         if(numberMode)
             row.defaultNumbermode=numberMode;
         
-        if(i>0 && expressionRowsAreLarge)
-            row.myAssetType = @"Large";
-        
         if(i==0 || repeatRow2Count==0)
         {
             [row parseXML:[exprStages objectAtIndex:i]];
@@ -226,12 +227,13 @@
         if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
             row.myAssetType = @"Large";
         
-        
-        [row setupDraw];
+//        if(i>0 && expressionRowsAreLarge)
+//            row.myAssetType = @"Large";
         
         
         if(i==0)
         {
+            descRow=row;
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 110);
             row.forceVAlignTop=YES;
@@ -239,72 +241,11 @@
             //question separator bar -- flow with bottom of row 0
             CCSprite *questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
             [self.ForeLayer addChild:questionSeparatorSprite];
+            [questionSeparatorSprite setVisible:NO];
             
+            sepYpos=row.position.y - row.size.height / 2.0f - (QUESTION_SEPARATOR_PADDING * 2.0f);
             
-            //build the ncard row if we have one
-            if(presentNumberCardRow)
-            {
-                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
-                
-                if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
-                {
-                    ncardRow.backgroundType=@"Card";
-                    ncardRow.tintMyChildren=NO;
-                }
-                
-                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
-                
-                //add the cards
-                for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
-                {
-                    SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
-                    n.numberText=[NSString stringWithFormat:@"%d", icard];
-                    n.enabled=YES;
-                    
-                    [cardAddBuffer addObject:n];
-                    [n release];
-                }
-                
-                if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
-                {
-                    int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
-                    int added=0;
-                    
-                    while(cardAddBuffer.count>0 && added<selmax)
-                    {
-                        int i=(arc4random()%cardAddBuffer.count);
-                        [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
-                        [cardAddBuffer removeObjectAtIndex:i];
-                        
-                        added++;
-                    }
-                }
-                else
-                {
-                    for(SGBtxeObjectNumber *n in cardAddBuffer)
-                        [ncardRow.containerMgrComponent addObjectToContainer:n];
-                }
-                
-                //let go of the buffer
-                [cardAddBuffer release];
-                
-                [ncardRow setupDraw];
-                ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
-                
-                [ncardRow release];
-            }
-            
-            float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
-            
-            //add extra padding if we're going to do a number card wheel
-            if(presentNumberCardRow)
-            {
-                sepYpos-=ncardRow.size.height - (QUESTION_SEPARATOR_PADDING*2);
-            }
-            
-            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
-            
-            row0base=questionSeparatorSprite.position.y-QUESTION_SEPARATOR_PADDING;
+            row0base=sepYpos;
             rowSpace=row0base / (rowcount + 1);
         }
         else
@@ -312,16 +253,96 @@
             //distribute in available space
             row.position = ccp(cx, row0base - (i*rowSpace));
         }
+        
+        
+        [row setupDraw];
 
+        if(i==0)
+        {
+            sepYpos=row.position.y - row.size.height - (QUESTION_SEPARATOR_PADDING * 2.0f);
+            
+            row0base=sepYpos;
+            rowSpace=row0base / (rowcount + 1);
+        }
+        
+        
+        //build the ncard row if we have one
+        if(presentNumberCardRow && i==0)
+        {
+            ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+            ncardRow.maxChildrenPerLine=10;
+            
+            if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+            {
+                ncardRow.backgroundType=@"Card";
+                ncardRow.tintMyChildren=NO;
+            }
+            
+            NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
+            
+            //add the cards
+            for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
+            {
+                SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
+                n.numberText=[NSString stringWithFormat:@"%d", icard];
+                n.enabled=YES;
+                
+                [cardAddBuffer addObject:n];
+                [n release];
+            }
+            
+            if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
+            {
+                int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
+                int added=0;
+                
+                while(cardAddBuffer.count>0 && added<selmax)
+                {
+                    int i=(arc4random()%cardAddBuffer.count);
+                    [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
+                    [cardAddBuffer removeObjectAtIndex:i];
+                    
+                    added++;
+                }
+            }
+            else
+            {
+                for(SGBtxeObjectNumber *n in cardAddBuffer)
+                    [ncardRow.containerMgrComponent addObjectToContainer:n];
+            }
+            
+            //let go of the buffer
+            [cardAddBuffer release];
+            
+            [ncardRow setupDraw];
+            
+            id<Bounding> row0=[rows objectAtIndex:0];
+            float hoffset=row0.size.height;
+            
+            ncardRow.position=ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f);
+            
+            sepYpos= ncardRow.position.y-ncardRow.size.height / 2.0f - (QUESTION_SEPARATOR_PADDING * 3.0f);
+            
+            row0base=sepYpos-QUESTION_SEPARATOR_PADDING;
+            rowSpace=row0base / (rowcount + 1);
+            
+            [ncardRow release];
+        }
         
         [row release];
     }
     
+    [descRow fadeInElementsFrom:1.0f andIncrement:0.1f];
     [self readOutProblemDescription];
     
     //if we have ncardrow, then add it to rows (at end for now?)
     if(ncardRow) [rows addObject:ncardRow];
     
+}
+
+-(float)getDescriptionAreaHeight
+{
+    return (((cy*2) - 110) - sepYpos);
 }
 
 -(void)readOutProblemDescription
@@ -359,15 +380,18 @@
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
             
+            
             if(o.enabled && CGRectContainsPoint(hitbox, location))
             {
                 NSLog(@"this hitbox = %@", NSStringFromCGRect(hitbox));
+                [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_PICKUP_CARD withAdditionalData:nil];
                 heldObject=o;
                 isHoldingObject=YES;
                 
                 if([o conformsToProtocol:@protocol(NumberPicker)]) {
                 
                     if(opicker.usePicker){
+                        [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_START_PICKER withAdditionalData:nil];
                         gotPickerObject=YES;
                         
                         if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
@@ -404,10 +428,12 @@
         }
     }
     
-    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(680,500,344,308), location)){
+    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
-        if(toolHost.pickerView)
+        if(toolHost.pickerView){
             [toolHost disableWheel];
+            [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
+        }
     }
 }
 
@@ -424,6 +450,7 @@
     {
         //track that object's position
         heldObject.worldPosition=location;
+        hasMovedObject=YES;
     }
 }
 
@@ -439,6 +466,12 @@
     float pickupProximity=BTXE_PICKUP_PROXIMITY;
     
     if(expressionRowsAreLarge)pickupProximity*=3;
+    
+    if(hasMovedObject)
+    {
+        [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_MOVE_MOVED_CARD withAdditionalData:nil];
+        hasMovedObject=NO;
+    }
     
     if(heldObject)
     {
@@ -460,8 +493,12 @@
                     id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
                     CGRect objRect=[pho returnBoundingBox];
                     
-                    if(CGRectContainsPoint(objRect, location))
-                        [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                    if(CGRectContainsPoint(objRect, location)){
+                        if(!toolHost.CurrentBTXE){
+                            [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                            [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_PLACEHOLDER withAdditionalData:nil];
+                        }
+                    }
                     //mount the object on the place holder
                 }
             }
@@ -471,6 +508,7 @@
         {
             //[(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
             [heldObject destroy];
+            [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_EMPTY_SPACE withAdditionalData:nil];
         }
         else
         {
@@ -490,6 +528,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    hasMovedObject=NO;
     toolHost.CurrentBTXE=nil;
     // empty selected objects
     
@@ -651,7 +690,7 @@
 
 -(BOOL)parseContainerToEqualityAndEval:(id<Container>)cont
 {
-    tokens=[[NSMutableArray alloc]init];
+    tokens=[[[NSMutableArray alloc]init] autorelease];
     
     curToken=nil;
     curTokenIdx=-1;
@@ -672,6 +711,11 @@
             if(vc.mountedObject)
             {
                 [self tokeniseObject:vc.mountedObject];
+            }
+            else
+            {
+                //fail the evaluation
+                return NO;
             }
         }
         else
@@ -701,7 +745,7 @@
         [q release];
     }
     
-    [tokens release];
+//    [tokens release];
     
     return ret;
 }

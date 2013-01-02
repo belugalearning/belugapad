@@ -8,12 +8,17 @@
 
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
+#import "AppDelegate.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "LogPollingProtocols.h"
 
 @class SGBtxeTextBackgroundRender;
 
-@interface SGBtxeObjectText : SGGameObject <Text, MovingInteractive, NumberPicker, Containable, FadeIn>
+@interface SGBtxeObjectText : SGGameObject <Text, MovingInteractive, NumberPicker, Containable, FadeIn, LogPolling, LogPollPositioning>
 {
     CCNode *renderBase;
+    LoggingService *loggingService;
 }
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;

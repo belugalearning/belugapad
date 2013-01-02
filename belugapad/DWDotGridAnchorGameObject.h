@@ -7,8 +7,9 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
-@interface DWDotGridAnchorGameObject : DWGameObject
+@interface DWDotGridAnchorGameObject : DWGameObject <LogPolling, LogPollPositioning>
 
 @property CGPoint Position;
 @property BOOL StartAnchor;

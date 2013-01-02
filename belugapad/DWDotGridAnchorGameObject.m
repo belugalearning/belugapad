@@ -23,12 +23,24 @@
 @synthesize RenderLayer;
 @synthesize anchorSize;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"DWDotGridAnchor"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
+
+
+
 -(void)dealloc
 {
     self.mySprite=nil;
     self.tile=nil;
     self.RenderLayer=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
     [super dealloc];
 }
 

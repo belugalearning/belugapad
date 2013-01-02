@@ -518,7 +518,7 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
-                headerString = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:CHANGO fontSize:30.0f];
+                headerString = [currentColumnInfo objectForKey:COL_LABEL];
             }
             
             if(headerString.length<3)
@@ -540,11 +540,10 @@ static float kTimeToCageShake=7.0f;
             
             if(gw.Blackboard.inProblemSetup)
             {
-                
                 row.position=ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader);
                 
                 NSLog(@"this row position is %@", NSStringFromCGPoint(row.position));
-                //row.position=[self.ForeLayer convertToWorldSpace:ccp(i*(kPropXColumnSpacing*lx), 120)];
+                //row.position=[self.ForeLayer convertToWorldSpace:ccp(i*50, 120)];
                 [row parseXML:headerString];
                 [row setupDraw];
                 [row inflateZindex];

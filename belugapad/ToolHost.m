@@ -35,6 +35,7 @@
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
 #import "ExprBuilder.h"
+#import "LongDivision.h"
 #import "LineDrawer.h"
 
 
@@ -2376,6 +2377,12 @@ static float kTimeToHintToolTray=7.0f;
     [backgroundLayer addChild:qTrayMid];
     
     descGw.Blackboard.inProblemSetup=NO;
+    
+    if([currentTool isKindOfClass:[LongDivision class]])
+    {
+//        [self scheduleOnce:@selector(showCornerTray) delay:3.5f];
+        [self showCornerTray];
+    }
 }
 
 -(void)animateQuestionBoxIn
@@ -2464,7 +2471,7 @@ static float kTimeToHintToolTray=7.0f;
             }
             if(CGRectContainsPoint(trayPadClose.boundingBox, location))
             {
-                [self removeAllTrays];
+                [self hidePad];
             }
             else
             {
@@ -2814,18 +2821,18 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(350.0f, (cy*2)-95);
-        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-130)];
+        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
         
-        [descRow relayoutChildrenToWidth:625];
+        [descRow relayoutChildrenToWidth:500];
         
-        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayTop.scaleY]];
-        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayMid.scaleY]];
-        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayBot.scaleY]];
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2858,12 +2865,12 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
         [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
         
-        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 100)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
         
@@ -3025,6 +3032,11 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hidePad
 {
+    [trayPadClear removeFromParentAndCleanup:YES];
+    [trayPadClose removeFromParentAndCleanup:YES];
+    trayPadClear=nil;
+    trayPadClose=nil;
+    
     if(doPlaySound)
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
 

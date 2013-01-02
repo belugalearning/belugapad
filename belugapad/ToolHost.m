@@ -3032,7 +3032,7 @@ static float kTimeToHintToolTray=7.0f;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
-    //[btxeDescLayer setVisible:YES];
+    [btxeDescLayer setVisible:YES];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

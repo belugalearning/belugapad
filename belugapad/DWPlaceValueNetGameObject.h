@@ -7,10 +7,11 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
 @class CCSprite;
 
-@interface DWPlaceValueNetGameObject : DWGameObject
+@interface DWPlaceValueNetGameObject : DWGameObject <LogPolling,LogPollPositioning>
 
 @property float PosX;
 @property float PosY;

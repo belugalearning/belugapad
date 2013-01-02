@@ -25,6 +25,11 @@
 @synthesize mySprite;
 @synthesize cageType;
 
+-(CGPoint)Position
+{
+    return ccp(PosX,PosY);
+}
+
 -(void)dealloc
 {
     self.SpriteFilename=nil;

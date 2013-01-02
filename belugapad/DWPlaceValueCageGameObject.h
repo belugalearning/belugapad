@@ -7,8 +7,9 @@
 //
 
 #import "DWGameObject.h"
+#import "LogPollingProtocols.h"
 
-@interface DWPlaceValueCageGameObject : DWGameObject
+@interface DWPlaceValueCageGameObject : DWGameObject <LogPolling,LogPollPositioning>
 
 @property BOOL AllowMultipleMount;
 @property float PosX;

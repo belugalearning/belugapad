@@ -14,6 +14,9 @@
 #import "DWPlaceValueCageGameObject.h"
 #import "DWPlaceValueNetGameObject.h"
 #import "InteractionFeedback.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "AppDelegate.h"
 
 @implementation BPlaceValueObjectRender
 
@@ -27,6 +30,10 @@
     b.PosY=0.0f;
     
     amPickedUp=NO;
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller registerPollee:(id<LogPolling>)b];
+    
     
     return self;
 }
@@ -394,6 +401,10 @@
 
 -(void) dealloc
 {
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)b];
+    
     [super dealloc];
 }
 

@@ -25,9 +25,22 @@
 @synthesize lastZIndex;
 @synthesize Disabled;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"DWPlaceValueBlock"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return [self Position]; }
+
 -(DWGameObject*)Mount
 {
     return Mount1;
+}
+
+-(CGPoint)Position
+{
+    return ccp(PosX,PosY);
 }
 
 -(void)setMount:(DWGameObject *)newMount

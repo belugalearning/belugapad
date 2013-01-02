@@ -18,7 +18,7 @@
 @synthesize Length;
 // LogPolling properties
 @synthesize logPollId, logPollType;
--(NSString*)logPollType { return @"SGFBlockBlock"; }
+-(NSString*)logPollType { return @"DWNBondStoreObject"; }
 
 // LogPollPositioning properties
 @synthesize logPollPosition;

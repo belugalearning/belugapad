@@ -10,6 +10,8 @@
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeNumberDotRender.h"
+#import "SGBtxeRow.h"
+#import "SGBtxeRowLayout.h"
 #import "global.h"
 
 
@@ -37,6 +39,14 @@
 @synthesize numberMode;
 @synthesize backgroundType;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGBtxeObjectNumber"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.position; }
+
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -57,6 +67,10 @@
         backgroundType=@"Tile";
         
         renderAsDots=NO;
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        [loggingService.logPoller registerPollee:(id<LogPolling>)self];
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -167,13 +181,17 @@
 
 -(void)setText:(NSString *)text
 {
+    if(!text) return;
+    
     //split text into parts if passed to this method
     
     BOOL hadPoint=NO, hadStart=NO, hadEnd;
     NSString *seek=@"0123456789";
     
     //strip commas
-    NSString *parse=[text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//    NSString *parse=[text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    NSString *parse=text;
     
     int nStart=0; // assume number starts at start
     int nEnd=[parse length]-1; //assume number end at end
@@ -236,7 +254,9 @@
 -(void)updateDraw
 {
     [self.textRenderComponent updateLabel];
-    [self.numberDotRenderComponent updateDraw];
+    
+    if(self.renderAsDots)
+        [self.numberDotRenderComponent updateDraw];
 }
 
 -(NSString*)text
@@ -338,7 +358,7 @@
     [textRenderComponent.label0 setTag:3];
     [textRenderComponent.label setOpacity:0];
     [textRenderComponent.label0 setOpacity:0];
-
+    [textBackgroundRenderComponent tagMyChildrenForIntro];
     
     for(CCSprite *s in self.numberDotRenderComponent.baseNode.children)
     {
@@ -365,10 +385,10 @@
         textRenderComponent.label0.visible=NO;
     }
     
-    [self.numberDotRenderComponent setupDraw];
     
     if(self.renderAsDots)
     {
+        [self.numberDotRenderComponent setupDraw];
         self.size=self.numberDotRenderComponent.size;
     }
     else
@@ -383,6 +403,10 @@
     
     if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
         size.width=170;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
+        size.width=116;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Smaller"] && size.width<40)
+        size.width=40;
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
@@ -392,11 +416,19 @@
 {
     CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
+    self.size=toThisSize;
+    
     [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
+//    id<Containable>myMount=(id<Containable>)self.mount;
+    SGBtxeRow *myRow=(SGBtxeRow*)self.container;
+    SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+    
+    [layoutComp layoutChildren];
 }
 
 -(void)destroy
 {
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
     [self detachFromRenderBase];
     
     [gameWorld delayRemoveGameObject:self];
@@ -435,7 +467,10 @@
     self.suffixText=nil;
     self.numberValue=nil;
     self.container=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

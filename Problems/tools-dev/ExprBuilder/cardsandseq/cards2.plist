@@ -15,7 +15,7 @@
 	<key>NUMBER_CARD_ROW_MAX</key>
 	<integer>25</integer>
 	<key>NUMBER_CARD_INTERVAL</key>
-	<integer>3</integer>
+	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;</string>

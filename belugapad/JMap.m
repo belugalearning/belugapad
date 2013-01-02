@@ -305,12 +305,12 @@ typedef enum {
 
 -(void)setupContentRegions
 {
-    CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ComingSoon_Island_1.png")];
-    [algebra setPosition:ccp(0,3500)];
+    CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Algebra.png")];
+    [algebra setPosition:ccp(4773,3500)];
     [mapLayer addChild:algebra];
     
-    CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ComingSoon_Island_1.png")];
-    [shape setPosition:ccp(4000,3500)];
+    CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Geometry.png")];
+    [shape setPosition:ccp(0,3500)];
     [mapLayer addChild:shape];
 }
 
@@ -323,8 +323,8 @@ typedef enum {
 {
     underwaterLayer=[[CCLayer alloc] init];
     
-    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
-    [s setPosition:ccp(-5*cx,-5*cy)];
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 12*cx, 12*cy)];
+    [s setPosition:ccp(-6*cx,-6*cy)];
     [s setAnchorPoint:ccp(0,0)];
     ccTexParams params={GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
     [s.texture setTexParameters:&params];
@@ -1079,7 +1079,7 @@ typedef enum {
             id<Selectable>sgo=go;
             if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
             {
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];;
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
                 break;
             }
         }
@@ -1127,14 +1127,25 @@ typedef enum {
         {
             CGPoint newpos=[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]];
             
-            if(debugRestrictMovement)
+            
+//            //restrict movement generally
+            
+            
+            if(zoomedOut)
             {
-                if (newpos.x > 100) newpos.x=100;
-                if (newpos.y > 4000) newpos.y=4000;
-
-                if (newpos.x < -1400) newpos.x=-1400;
-                if (newpos.y < 2300) newpos.y=2300;
+                if (newpos.x > -282) newpos.x=-282;
+                if (newpos.y < -199) newpos.y=-199;
+                if (newpos.y > 260) newpos.y=260;
+                if (newpos.x < -282) newpos.x=-282;
             }
+            else
+            {
+                if (newpos.x > 1022) newpos.x=1022;
+                if (newpos.y < -3200) newpos.y=-3200;
+                if (newpos.y > 4200) newpos.y=4200;
+                if (newpos.x < -4772) newpos.x=-4772;
+            }
+            
             //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
             [mapLayer setPosition:newpos];
 
@@ -1203,7 +1214,14 @@ typedef enum {
     CGPoint gestureDestOffset=[BLMath MultiplyVector:gestureLocalOffset byScalar:REGION_ZOOM_LEVEL];
     CGPoint gestureOffset=[BLMath AddVector:gestureLocalOffset toVector:gestureDestOffset];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:[BLMath MultiplyVector:[BLMath AddVector:mapLayer.position toVector:gestureOffset] byScalar:1.0f/REGION_ZOOM_LEVEL]] rate:2.0f]];
+    CGPoint newpos=[BLMath MultiplyVector:[BLMath AddVector:mapLayer.position toVector:gestureOffset] byScalar:1.0f/REGION_ZOOM_LEVEL];
+    
+    if(newpos.x<-4772)newpos=ccp(-4772, newpos.y);
+    if(newpos.x>1022)newpos=ccp(1022, newpos.y);
+    if(newpos.y<-3200)newpos=ccp(newpos.x, -3200);
+    
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
     
     [gw handleMessage:kSGzoomIn];
     
@@ -1225,7 +1243,11 @@ typedef enum {
     
     //mapLayer.position=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL]] rate:2.0f]];
+    CGPoint newpos=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
+    newpos=ccp(-282, newpos.y);
+    if(newpos.y<-199)newpos=ccp(newpos.x, -199);
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
     
     //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
 //    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-257, 212.5)] rate:2.0f]];

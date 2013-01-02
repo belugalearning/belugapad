@@ -65,5 +65,9 @@
 	<true/>
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
+	<key>EVAL_EXCLUDE_ROWS</key>
+	<array>
+		<string>2</string>
+	</array>
 </dict>
 </plist>

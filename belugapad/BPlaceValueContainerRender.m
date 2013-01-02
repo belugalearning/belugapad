@@ -9,6 +9,9 @@
 #import "BPlaceValueContainerRender.h"
 #import "global.h"
 #import "DWPlaceValueNetGameObject.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "AppDelegate.h"
 
 @implementation BPlaceValueContainerRender
 
@@ -21,6 +24,10 @@
     //init pos x & y in case they're not set elsewhere
     n.PosX=0.0f;
     n.PosY=0.0f;
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller registerPollee:(id<LogPolling>)n];
     
     return self;
 }
@@ -74,6 +81,10 @@
 
 -(void) dealloc
 {
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)n];
+    
     [super dealloc];
 }
 

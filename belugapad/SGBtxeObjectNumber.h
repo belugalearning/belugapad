@@ -8,13 +8,18 @@
 
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
+#import "AppDelegate.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "LogPollingProtocols.h"
 
 @class SGBtxeTextBackgroundRender;
 @class SGBtxeNumberDotRender;
 
-@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive, Containable, Value, NumberPicker>
+@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive, Containable, Value, NumberPicker, LogPolling, LogPollPositioning>
 {
     CCNode *renderBase;
+    LoggingService *loggingService;
 }
 
 @property (retain) NSString *prefixText;

@@ -154,7 +154,7 @@
     }
     else if(!ParentGO.Selected)
     {
-        [ParentGO.mySprite setColor:ccc3(255,0,0)];
+        [ParentGO.mySprite setColor:ccc3(237,138,32)];
         ParentGO.Selected=YES;
     }
 }

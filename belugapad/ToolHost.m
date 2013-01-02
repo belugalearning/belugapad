@@ -322,6 +322,17 @@ static float kTimeToHintToolTray=7.0f;
     if(showingProblemComplete) shownProblemStatusFor+=delta;
     if(showingProblemIncomplete) shownProblemStatusFor+=delta;
  
+    if(animateQuestionBox)
+    {
+        timeToQuestionBox+=delta;
+        if(timeToQuestionBox>1.0f)
+        {
+            [self animateQuestionBoxIn];
+            animateQuestionBox=NO;
+            timeToQuestionBox=0.0f;
+        }
+    }
+    
     if(shownProblemStatusFor>kTimeToShowProblemStatus)
     {
         if(showingProblemComplete)
@@ -400,7 +411,6 @@ static float kTimeToHintToolTray=7.0f;
     {
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
-            hasTrayWheel=YES;
             [self showWheel];
         }
         else
@@ -947,7 +957,8 @@ static float kTimeToHintToolTray=7.0f;
     else evalMode=kProblemEvalAuto;
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
-        
+    
+
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
@@ -1117,6 +1128,10 @@ static float kTimeToHintToolTray=7.0f;
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    traybtnCalc=nil;
+    traybtnMq=nil;
+    traybtnWheel=nil;
+    traybtnPad=nil;
     commitBtn=nil;
     [descGw release];
     descGw=nil;
@@ -2197,6 +2212,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)tearDownNumberPicker
 {
+    [self hideWheel];
     if(CurrentBTXE)CurrentBTXE=nil;
     toolCanEval=YES;
 //    if(traybtnWheel){
@@ -2293,7 +2309,7 @@ static float kTimeToHintToolTray=7.0f;
     //create row
     SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     descRow=row;
-    row.position=ccp(cx, (cy*2) - 130);
+    row.position=ccp(cx, (cy*2) - 100);
 
     NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     if(numberMode)
@@ -2331,18 +2347,27 @@ static float kTimeToHintToolTray=7.0f;
     qTrayTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Top.png")];
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
+
+    float rowHeight=0;
     
-    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
+    else
+        rowHeight=row.size.height+20;
     
-    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
-    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
+    if(rowHeight<75.0f)rowHeight=75.0f;
     
-    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))];
+    [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
+    //[qTrayMid setPosition:ccp(cx,row.position.y)];
+    [qTrayMid setScaleY:(rowHeight-64)/14];
+//    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
+    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
     
-    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200)]];
-    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200)]];
-    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200)]];
-    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
+    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
+    
+    animateQuestionBox=YES;
     
     
     [backgroundLayer addChild:readProblemDesc];
@@ -2353,6 +2378,13 @@ static float kTimeToHintToolTray=7.0f;
     descGw.Blackboard.inProblemSetup=NO;
 }
 
+-(void)animateQuestionBoxIn
+{
+    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
+}
 -(void)setProblemDescriptionVisible:(BOOL)visible
 {
     //hide everything int he btxe gw
@@ -2951,7 +2983,7 @@ static float kTimeToHintToolTray=7.0f;
     trayWheelShowing=NO;
 //    [traybtnWheel setColor:ccc3(255,255,255)];
     
-    if(hasTrayWheel)
+    if(hasTrayWheel && traybtnWheel)
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
     else
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
@@ -3000,7 +3032,7 @@ static float kTimeToHintToolTray=7.0f;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
-    //[btxeDescLayer setVisible:YES];
+    [btxeDescLayer setVisible:YES];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

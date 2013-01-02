@@ -10,6 +10,7 @@
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRow.h"
+#import "SGBtxeRowLayout.h"
 #import "global.h"
 
 @implementation SGBtxePlaceholder
@@ -30,6 +31,7 @@
         position=CGPointZero;
         
         textBackgroundComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
+        debugBoundingBox=YES;
     }
     return self;
 }
@@ -41,7 +43,7 @@
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+
 }
 
 -(CGPoint)worldPosition
@@ -59,16 +61,20 @@
     //artifically set size
     
     if([self.assetType isEqualToString:@"Large"])
-        size=CGSizeMake(150, 85);
+        size=CGSizeMake(150, 0);
     
     else if([self.assetType isEqualToString:@"Medium"])
-        size=CGSizeMake(100, 57);
+        size=CGSizeMake(100, 0);
     
     else
-        size=CGSizeMake(50, 40);
+        size=CGSizeMake(50, 0);
     
-    if([self.backgroundType isEqualToString:@"Card"])
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"])
         size.width=170;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"])
+        size.width=116;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Small"])
+        size.width=40;
     
 
     //background sprite to text (using same size)
@@ -83,9 +89,16 @@
     if([mountedObject conformsToProtocol:@protocol(Bounding)])
     {
         
-        CGSize thisSize=CGSizeMake(mountedObject.size.width-15, mountedObject.size.height);
+        CGSize thisSize=CGSizeMake(mountedObject.size.width, mountedObject.size.height);
         
         [textBackgroundComponent redrawBkgWithSize:thisSize];
+        
+        self.size=thisSize;
+        
+        //    id<Containable>myMount=(id<Containable>)self.mount;
+        SGBtxeRow *myRow=(SGBtxeRow*)self.container;
+        SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
+        [layoutComp layoutChildren];
     }
 
 }
@@ -145,6 +158,35 @@
     
     //attach background to render, but stick behind other objects by default
     [renderBase addChild:textBackgroundComponent.backgroundNode z:-1];
+}
+
+-(void)displayBoundingBox
+{
+    if(!drawNode){
+        drawNode=[[CCDrawNode alloc]init];
+        [renderBase addChild:drawNode];
+    }
+    
+    if(debugBoundingBox)
+    {
+        CGRect myRect=[self returnBoundingBox];
+        
+        
+        CGPoint points[4];
+        
+        points[0]=ccp(myRect.origin.x, myRect.origin.y);
+        points[1]=ccp(myRect.origin.x, myRect.origin.y+myRect.size.height);
+        points[2]=ccp(myRect.origin.x+myRect.size.width, myRect.origin.y+myRect.size.height);
+        points[3]=ccp(myRect.origin.x+myRect.size.width, myRect.origin.y);
+        
+        for(int i=0;i<4;i++)
+        {
+            points[i]=[renderBase convertToNodeSpace:points[i]];
+        }
+        
+        [drawNode drawPolyWithVerts:points count:4 fillColor:ccc4f(1, 1, 1, 1) borderWidth:1 borderColor:ccc4f(1, 1, 1, 1)];
+    }
+
 }
 
 -(CGRect)returnBoundingBox

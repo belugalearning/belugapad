@@ -28,7 +28,7 @@
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
--(NSString*)logPollType { return @"SGFBlockBlock"; }
+-(NSString*)logPollType { return @"DWNBondBlock"; }
 
 // LogPollPositioning properties
 @synthesize logPollPosition;
@@ -48,7 +48,10 @@
     self.Mount=nil;
     self.BaseNode=nil;
     self.Label=nil;
-    
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
+
     [super dealloc];
 }
 

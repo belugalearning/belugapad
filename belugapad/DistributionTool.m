@@ -1433,7 +1433,7 @@ static float kDistanceBetweenBlocks=70.0f;
                 
                 if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]]){
                     
-                    if([dockType isEqualToString:@"Infinite"] || [dockType isEqualToString:@"Infinite-Random"] || [dockType isEqualToString:@"Infinite-Value"])
+                    if([dockType isEqualToString:@"Infinite"] || [dockType isEqualToString:@"Infinite-Random"] || [dockType isEqualToString:@"Infinite-Value"] || [dockType isEqualToString:@"Infinite-RandomValue"])
                         spawnedNewObj=NO;
                     else
                         spawnedNewObj=YES;
@@ -1716,7 +1716,7 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     [self setTouchVarsToOff];
-    
+    [self checkForOverlappingContainers];
     
     
 }
@@ -1777,27 +1777,41 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     
-    for(int i=0;i<[shapeObjects count];i++)
+    for(int o=0;o<[shapeRects count];o++)
     {
-        id<ShapeContainer>cont=[shapeObjects objectAtIndex:i];
-        CGRect contRect=[[shapeRects objectAtIndex:i]CGRectValue];
+        CGRect contRect=[[shapeRects objectAtIndex:o]CGRectValue];
         
-        for(int o=0;o<[shapeObjects count];o++)
+        for(int i=0;i<[shapeRects count];i++)
         {
             if(o==i)continue;
+            CGRect otherRect=[[shapeRects objectAtIndex:i]CGRectValue];
             
-            id<ShapeContainer>thisCont=[shapeObjects objectAtIndex:o];
-            
-            while(CGRectIntersectsRect(contRect, [self rectForThisShape:thisCont]))
+            if(CGRectIntersectsRect(contRect, otherRect))
             {
-                for(id<Moveable>thisBlock in thisCont.BlocksInShape)
+                SGDtoolContainer *co=nil;
+                SGDtoolBlock *bo=nil;
+                // contrect is further left than otherrect
+                if(contRect.origin.x<otherRect.origin.x)
                 {
-                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x-1,thisBlock.mySprite.position.y)];
+                    co=[shapeObjects objectAtIndex:i];
+                
+                    bo=[co.BlocksInShape objectAtIndex:0];
+                    
+                    bo.Position=ccp(bo.Position.x+otherRect.size.width-(contRect.size.width), bo.Position.y);
+
+
                 }
-                for(id<Moveable>thisBlock in cont.BlocksInShape)
+                else
                 {
-                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x+1,thisBlock.mySprite.position.y)];
+                    co=[shapeObjects objectAtIndex:o];
+                    bo=[co.BlocksInShape objectAtIndex:0];
+                    
+                    bo.Position=ccp(bo.Position.x+contRect.size.width-(otherRect.size.width), bo.Position.y);
+                    
                 }
+                
+                [co layoutMyBlocks];
+                break;
             }
         }
     }

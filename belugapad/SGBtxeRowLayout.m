@@ -9,6 +9,7 @@
 #import "SGBtxeRowLayout.h"
 #import "global.h"
 #import "ToolConsts.h"
+#import "SGBtxeRow.h"
 
 @implementation SGBtxeRowLayout
 
@@ -16,7 +17,7 @@
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
-        ParentGo=aGameObject;
+        ParentGo=(SGBtxeRow*)aGameObject;
     }
     return self;
 }
@@ -33,8 +34,13 @@
     BOOL tintingOn=ParentGo.tintMyChildren;
     
     //get max height, total width
-    for(id<Bounding> c in ParentGo.children)
+    for(id<Bounding, NSObject> c in ParentGo.children)
     {
+        //ignore objects that are mounted on other objects
+        if([c conformsToProtocol:@protocol(MovingInteractive)])
+            if(((id<MovingInteractive>)c).mount)
+                continue;
+        
         if(c.size.height > maxH)maxH=c.size.height;
         totalW+=c.size.width + BTXE_HPAD;
     }
@@ -83,13 +89,19 @@
     //step items
     for(id<Bounding, NSObject> c in ParentGo.children)
     {
-        NSLog(@"heady %f", headYPos);
+//        NSLog(@"heady %f", headYPos);
+        
+        //ignore objects that are mounted on other objects
+        if([c conformsToProtocol:@protocol(MovingInteractive)])
+            if(((id<MovingInteractive>)c).mount)
+                continue;
 
         //if this element takes the line past lineW, flow to next line (only if item W is < lineW -- else just stick it on)
-        if(((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW)
+        if((((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW ) ||
+           (ParentGo.maxChildrenPerLine>0 && centreBuffer.count==ParentGo.maxChildrenPerLine))
         {
             //centre objects in last line buffer
-            [self centreObjectsIn:centreBuffer withHeadXPos:headXPos+c.size.width-BTXE_HPAD inWidth:rowMaxWidth];
+            [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];
             [centreBuffer removeAllObjects];
             
             //flow onto next line
@@ -138,6 +150,18 @@
     
     //set size of parent
     ParentGo.size=CGSizeMake(totalW, actualLines*lineH);
+    
+    //put all the mounted objects on their mounts
+    for(id<Bounding, NSObject> c in ParentGo.children)
+    {
+        //ignore objects that are mounted on other objects
+        if([c conformsToProtocol:@protocol(MovingInteractive)])
+            if(((id<MovingInteractive>)c).mount)
+            {
+                id<Bounding> m=((id<MovingInteractive>)c).mount;
+                c.position=m.position;
+            }
+    }
 }
 
 -(void)centreObjectsIn:(NSMutableArray*)buffer withHeadXPos:(float)usedWidth inWidth:(float)width

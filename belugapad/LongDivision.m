@@ -399,6 +399,8 @@
     
     labelInfo=[[NSMutableDictionary alloc]init];
     
+    goodBadHighlight=NO;
+    
 }
 
 -(void)populateGW

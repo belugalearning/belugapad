@@ -3032,11 +3032,6 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hidePad
 {
-    [trayPadClear removeFromParentAndCleanup:YES];
-    [trayPadClose removeFromParentAndCleanup:YES];
-    trayPadClear=nil;
-    trayPadClose=nil;
-    
     if(doPlaySound)
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
 

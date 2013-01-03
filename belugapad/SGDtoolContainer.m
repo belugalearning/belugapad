@@ -205,7 +205,7 @@
     y=y/[BlocksInShape count];
     
     if(Label){
-        [Label setPosition:ccp(x,y+40)];
+        [Label setPosition:ccp(x,y+80)];
     }
     if(ShowCount)
     {

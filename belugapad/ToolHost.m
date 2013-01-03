@@ -2361,7 +2361,7 @@ static float kTimeToHintToolTray=7.0f;
     [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
     [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
-    [qTrayMid setScaleY:(rowHeight-64)/14];
+    [qTrayMid setScaleY:(rowHeight-64)/16];
 //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];

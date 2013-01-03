@@ -35,6 +35,7 @@
 
 -(void)spawnObject
 {
+    if(c.MountedObject)return;
     if(c.DisableAdd && c.ObjectValue>0)return;
     if(c.DisableAddNeg && c.ObjectValue<0)return;
     

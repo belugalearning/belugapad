@@ -1596,7 +1596,14 @@ static float kTimeToCageShake=7.0f;
         [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
         [l setColor:ccc3(234,137,31)];
         [renderLayer addChild:l z:10000];
-        [l runAction:[CCFadeOut actionWithDuration:1.0]];
+        
+        CCFadeOut *fo=[CCFadeOut actionWithDuration:1.0f];
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:1.0f];
+        CCCallBlock *bl=[CCCallBlock actionWithBlock:^{[l removeFromParentAndCleanup:YES];}];
+        
+        CCSequence *sq=[CCSequence actions:fo, dt, bl, nil];
+        
+        [l runAction:sq];
         
         if(amountAdded>0 && shouldUpdateLabels)
         {

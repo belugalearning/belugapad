@@ -2829,6 +2829,7 @@ static float kTimeToCageShake=7.0f;
         }
         else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
+            ((DWPlaceValueCageGameObject*)pickupObject.Mount).MountedObject=nil;
             [pickupObject.Mount handleMessage:kDWsetupStuff];
             pickupObject.LastMount=pickupObject.Mount;
         }
@@ -3610,11 +3611,12 @@ static float kTimeToCageShake=7.0f;
                     blocksToDestroy=nil;
                 }
                 
-                if(!isCage)
+                if(!isCage){
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
-                else
+                }else{
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
-                
+                    [gw.Blackboard.PickupObject handleMessage:kDWdestroy];
+                }
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now
                 [self problemStateChanged];

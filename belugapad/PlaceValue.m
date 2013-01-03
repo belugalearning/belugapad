@@ -1406,8 +1406,11 @@ static float kTimeToCageShake=7.0f;
     if(allowMulching)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_ALLOW_MULCHING"];
     
-    if(showMultipleControls||multipleBlockPickup)
-        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+    if(showMultipleControls||multipleBlockPickup){
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK_1"];
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK_2"];
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK_3"];
+    }
     
     if(isNegativeProblem)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_NEGATIVE_PROBLEM"];

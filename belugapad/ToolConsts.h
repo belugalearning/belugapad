@@ -94,3 +94,4 @@ extern const float kShapeValue01;
 extern const float kShapeValue1;
 extern const float kShapeValue10;
 extern const float kShapeValue100;
+extern const float kDistanceBetweenBlocks;

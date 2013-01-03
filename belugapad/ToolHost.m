@@ -602,6 +602,8 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)scoreProblemSuccess
 {
+    if(breakOutIntroProblemFK)return;
+    
     int newScore = ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseScore);
     newScore = min(newScore, SCORE_EPISODE_MAX - pipelineScore);
     
@@ -662,6 +664,10 @@ static float kTimeToHintToolTray=7.0f;
     
     hasResetMultiplier=NO;
     
+    //manually reset any intro problem state
+    breakOutIntroProblemFK=nil;
+    breakOutIntroProblemHasLoaded=NO;
+    
     [self resetTriggerData];
     
     [contentService gotoNextProblemInPipelineWithSkip:skipby];
@@ -708,19 +714,29 @@ static float kTimeToHintToolTray=7.0f;
     //reset trigger data -- a fresh view on user progress in this problem
     [self resetTriggerData];
     
-    //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
-    [contentService gotoNextProblemInPipeline];
-    
-    
-    //check that the content service found a pdef (this will be the raw dynamic one)
-    if(contentService.currentPDef)
+    if(!breakOutIntroProblemFK)
     {
-        [self loadProblem];
+        //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
+        [contentService gotoNextProblemInPipeline];
+        
+        
+        //check that the content service found a pdef (this will be the raw dynamic one)
+        if(contentService.currentPDef)
+        {
+            [self loadProblem];
+        }
+        else
+        {
+            countUpToJmap=YES;
+        }
     }
     else
     {
-        countUpToJmap=YES;
+        //just load the next problem -- which will actually be the last problem before the intro problem (e.g. the last real problem encountered)
+        [self loadProblem];
     }
+    
+        
     autoMoveToNextProblem=NO;
 }
 
@@ -739,6 +755,14 @@ static float kTimeToHintToolTray=7.0f;
     contentService.lightUpProgressFromLastNode=YES;
     
     [self returnToMap];
+}
+
+-(NSDictionary*)loadIntroProblemFromFK
+{
+    NSString *problemPath=[NSString stringWithFormat:@"/intro-problems/%@.plist", breakOutIntroProblemFK];
+    problemPath=BUNDLE_FULL_PATH(problemPath);
+    
+    return [NSDictionary dictionaryWithContentsOfFile:problemPath];
 }
 
 -(void) loadProblem
@@ -765,22 +789,47 @@ static float kTimeToHintToolTray=7.0f;
     // ---------------- END TEAR DOWN --------------------------------
     
     
-    //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
-    [self.DynProblemParser startNewProblemWithPDef:contentService.currentPDef];
     
-    //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
-    pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+    if(breakOutIntroProblemFK && !breakOutIntroProblemHasLoaded)
+    {
+        NSLog(@"loading breakout problem %@", breakOutIntroProblemFK);
+        
+        //do not query content service, just load a static intro problem via dynamic parser
+        NSDictionary *introProblem=[self loadIntroProblemFromFK];
+        
+        [self.DynProblemParser startNewProblemWithPDef:introProblem];
+        
+        pdef=[self.DynProblemParser createStaticPdefFromPdef:introProblem];
+        
+        //we've loaded this now, indicate as such so we don't get stuck in a loop
+        breakOutIntroProblemHasLoaded=YES;
+    }
+    else
+    {
+        if(breakOutIntroProblemFK && breakOutIntroProblemHasLoaded)
+        {
+            [usersService addEncounterWithFeatureKey:breakOutIntroProblemFK date:[NSDate date]];
+        }
+        
+        //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
+        [self.DynProblemParser startNewProblemWithPDef:contentService.currentPDef];
+        
+        //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
+        pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+        
+        //keep reference to the current static definition on the content service -- for logging etc
+        contentService.currentStaticPdef=pdef;
+        
+        // TODO: maybe this, and dynamic pdef generation above, should really be coming from ContentService I think? Check with G
+        // TODO: moreover is it writing this out to plist better than storing as json?
+        
+        NSArray *docsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *tempPDefPath = [[docsPaths objectAtIndex:0] stringByAppendingPathComponent:@"temp-pdef.plist"];
+        [pdef writeToFile:tempPDefPath atomically:YES];
+        NSString *pdefString = [[[NSString alloc] initWithContentsOfFile:tempPDefPath encoding:NSUTF8StringEncoding error:nil] autorelease];
+        [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
+    }
     
-    //keep reference to the current static definition on the content service -- for logging etc
-    contentService.currentStaticPdef=pdef;
-    
-    // TODO: maybe this, and dynamic pdef generation above, should really be coming from ContentService I think? Check with G
-    // TODO: moreover is it writing this out to plist better than storing as json?
-    NSArray *docsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *tempPDefPath = [[docsPaths objectAtIndex:0] stringByAppendingPathComponent:@"temp-pdef.plist"];
-    [pdef writeToFile:tempPDefPath atomically:YES];
-    NSString *pdefString = [[[NSString alloc] initWithContentsOfFile:tempPDefPath encoding:NSUTF8StringEncoding error:nil] autorelease];
-    [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -824,11 +873,32 @@ static float kTimeToHintToolTray=7.0f;
         scale=1.0f;
     
     
+    //purge potential feature key cache
+    [usersService purgePotentialFeatureKeys];
+    
     if(toolKey)
     {
         //initialize tool scene
         currentTool=[NSClassFromString(toolKey) alloc];
         [currentTool initWithToolHost:self andProblemDef:pdef];
+    }
+    
+    NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
+    if(breakOutToFK)
+    {
+        NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
+        
+        //re-load with an FK problem, then resume on episode / pipeline
+        breakOutIntroProblemFK=breakOutToFK;
+        breakOutIntroProblemHasLoaded=NO;
+        
+        [self loadProblem];
+    }
+    else
+    {
+        //continue normal load, nilling any previous breakout problem
+        breakOutIntroProblemFK=nil;
+        breakOutIntroProblemHasLoaded=NO;
     }
     
     //read our tool specific options
@@ -2258,7 +2328,7 @@ static float kTimeToHintToolTray=7.0f;
         //check commit threshold for insertion
         
         //only assess triggers if the insertion mode is enabled, and if we're at the episode head (e.g. don't nest insertions)
-        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead && ![contentService isUsingTestPipeline])
+        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead && ![contentService isUsingTestPipeline] && !breakOutIntroProblemFK)
         {
             //increment the number of commits
             commitCount++;

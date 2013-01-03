@@ -230,6 +230,9 @@ typedef enum {
     BOOL hasUpdatedScore;
     float timeToReturnToJmap;
     
+    NSString *breakOutIntroProblemFK;
+    BOOL breakOutIntroProblemHasLoaded;
+    
 }
 
 @property (retain) Daemon *Zubi;

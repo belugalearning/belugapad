@@ -454,7 +454,9 @@ static float kTimeToHintToolTray=7.0f;
     {
         autoMoveToNextProblem=YES;
         hasUpdatedScore=YES;
-        [self incrementScoreAndMultiplier];
+        
+        if(!breakOutIntroProblemFK)
+            [self incrementScoreAndMultiplier];
         
         moveToNextProblemTime=kMoveToNextProblemTime;
     }
@@ -698,7 +700,7 @@ static float kTimeToHintToolTray=7.0f;
     //this problem will award multiplier if not subsequently reset
     hasResetMultiplier=NO;
     
-    NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
+//    NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
     
     if(adpSkipProblemAndInsert)
     {
@@ -809,6 +811,10 @@ static float kTimeToHintToolTray=7.0f;
         if(breakOutIntroProblemFK && breakOutIntroProblemHasLoaded)
         {
             [usersService addEncounterWithFeatureKey:breakOutIntroProblemFK date:[NSDate date]];
+            
+            //reset state -- we've loaded, play and logged the breakout problem
+            breakOutIntroProblemFK=nil;
+            breakOutIntroProblemHasLoaded=NO;
         }
         
         //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
@@ -884,7 +890,8 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
-    if(breakOutToFK)
+    //if were not already in a breakout, break out
+    if(!breakOutIntroProblemFK && breakOutToFK)
     {
         NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
         
@@ -894,12 +901,12 @@ static float kTimeToHintToolTray=7.0f;
         
         [self loadProblem];
     }
-    else
-    {
-        //continue normal load, nilling any previous breakout problem
-        breakOutIntroProblemFK=nil;
-        breakOutIntroProblemHasLoaded=NO;
-    }
+//    else
+//    {
+//        //continue normal load, nilling any previous breakout problem
+//        breakOutIntroProblemFK=nil;
+//        breakOutIntroProblemHasLoaded=NO;
+//    }
     
     //read our tool specific options
     [self readToolOptions:toolKey];

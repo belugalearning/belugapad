@@ -555,7 +555,7 @@ static float kTimeToCageShake=7.0f;
         
         NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
         
-        DLog(@"Reset current column value to %f", currentColumnValue);
+//        DLog(@"Reset current column value to %f", currentColumnValue);
         
         NSMutableArray *newCol = [[NSMutableArray alloc] init];
         

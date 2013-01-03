@@ -210,12 +210,12 @@
     if(ShowCount)
     {
         [CountLabel setString:[NSString stringWithFormat:@"%g", [self updateValue]]];
-        [CountLabel setPosition:ccp(x,y-50)];
+        [CountLabel setPosition:ccp(x,y-80)];
     }
     
     if(BTXERow)
     {
-        BTXERow.position=ccp(x,y+50);
+        BTXERow.position=ccp(x,y+80);
         
     }
 

@@ -65,7 +65,7 @@
 	<key>30_DT_Shape_House</key>
 	<string>houses</string>
 	<key>30_DT_Shape_Diamond</key>
-	<string>diamonds</string>
+	<string>octagon</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
 	<key>30_TT_25</key>

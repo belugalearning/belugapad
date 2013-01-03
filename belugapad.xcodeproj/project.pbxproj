@@ -87,6 +87,7 @@
 		553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BD150FC78E00263473 /* DWSelectorGameObject.m */; };
 		553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80C0150FD3FD00263473 /* NLineConsts.m */; };
 		5542D678162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5542D677162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m */; };
+		55435F1F1696273C00C39926 /* intro-problems in Resources */ = {isa = PBXBuildFile; fileRef = 55435F1E1696273C00C39926 /* intro-problems */; };
 		554EA4A7160777F900A68BFF /* DWDotGridShapeGroupGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 554EA4A6160777F900A68BFF /* DWDotGridShapeGroupGameObject.m */; };
 		554FB01515F4A805006F6D3A /* FloatingBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01415F4A805006F6D3A /* FloatingBlock.m */; };
 		554FB01A15F4AD59006F6D3A /* SGFBlockBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01915F4AD59006F6D3A /* SGFBlockBlock.m */; };
@@ -602,6 +603,7 @@
 		553E80C0150FD3FD00263473 /* NLineConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLineConsts.m; sourceTree = "<group>"; };
 		5542D676162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridShapeGroupObjectRender.h; sourceTree = "<group>"; };
 		5542D677162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeGroupObjectRender.m; sourceTree = "<group>"; };
+		55435F1E1696273C00C39926 /* intro-problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "intro-problems"; sourceTree = "<group>"; };
 		554EA4A5160777F900A68BFF /* DWDotGridShapeGroupGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridShapeGroupGameObject.h; sourceTree = "<group>"; };
 		554EA4A6160777F900A68BFF /* DWDotGridShapeGroupGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDotGridShapeGroupGameObject.m; sourceTree = "<group>"; };
 		554FB01315F4A805006F6D3A /* FloatingBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingBlock.h; sourceTree = "<group>"; };
@@ -2071,6 +2073,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55435F1E1696273C00C39926 /* intro-problems */,
 				7F43B0F91661616000CD9B8D /* hqm-ref-USEnglish-WillLittleCreature-22khz */,
 				558ADA3516611B250000C448 /* tts-objects.plist */,
 				558ADA3216611AD10000C448 /* tts */,
@@ -3159,6 +3162,7 @@
 				33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */,
 				7F43B0FA1661616000CD9B8D /* hqm-ref-USEnglish-WillLittleCreature-22khz in Resources */,
 				0CA32F11166506DD00FC5423 /* NumpadInputController.xib in Resources */,
+				55435F1F1696273C00C39926 /* intro-problems in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

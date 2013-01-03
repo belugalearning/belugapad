@@ -338,6 +338,36 @@
     //if we have ncardrow, then add it to rows (at end for now?)
     if(ncardRow) [rows addObject:ncardRow];
     
+    if([evalType isEqualToString:@"SEQUENCE_ASC"]||[evalType isEqualToString:@"SEQUENCE_DESC"])
+        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_SEQUENCING"];
+    else
+        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_SENTENCEBUILDER"];
+    
+    
+    
+    for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
+    {
+        if([o conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            
+            if(o.enabled)
+            {
+                if([o conformsToProtocol:@protocol(NumberPicker)]) {
+                    
+                    id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
+                    
+                    if(opicker.usePicker){
+                        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_NUMBERPICKER"];
+                        break;
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+
+    
 }
 
 -(float)getDescriptionAreaHeight

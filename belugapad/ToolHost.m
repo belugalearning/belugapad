@@ -2891,9 +2891,49 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(350.0f, (cy*2)-95);
-        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+
+        /*
+        [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+        [qTrayMid setPosition:ccp(descRow.position.x,descRow.position.y+205)];
+        //[qTrayMid setPosition:ccp(cx,row.position.y)];
+        [qTrayMid setScaleY:(rowHeight-64)/16];
+        //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+        [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
+        [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
         
-        [descRow relayoutChildrenToWidth:500];
+        [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
+        */
+
+        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
+        
+        float rowHeight=0;
+        
+        
+        if([currentTool isKindOfClass:[ExprBuilder class]])
+            rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
+        else
+            rowHeight=descRow.size.height;
+        
+        if(rowHeight<68.0f)rowHeight=68.0f;
+        
+        
+        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+
+        [qTrayTop setAnchorPoint:ccp(0.5f,0.0f)];
+        [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+        [qTrayBot setAnchorPoint:ccp(0.5f,0.0f)];
+        
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:descRow.position]];
+        
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
+        
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
+        
+        /***** ORIGINAL LAYOUT STUFF *****
         
         [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
         [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
@@ -2903,6 +2943,8 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
         [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
+        ***** END ORIGINAL LAYOUT *****/
+        
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];

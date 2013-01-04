@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Press&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counting_Start&quot;/&gt;&lt;b:t&gt;then press&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counting_Stop&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Press&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Start&quot;/&gt;&lt;b:t&gt;then press&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Stop&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>

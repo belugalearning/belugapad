@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Tap the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pipe_out&quot;/&gt;&lt;b:t&gt;, and place the block in the bottom&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pipe_in&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Place the block in the bottom&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pipe_out&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
@@ -15,7 +15,12 @@
 	<key>INIT_BUBBLES</key>
 	<integer>0</integer>
 	<key>INIT_OBJECTS</key>
-	<array/>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>
 	<false/>
 	<key>SUPPORTED_OPERATORS</key>

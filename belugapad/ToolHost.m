@@ -2912,7 +2912,9 @@ static float kTimeToHintToolTray=7.0f;
         */
 
         [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
+        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
         
+        /*
         float rowHeight=0;
         
         
@@ -2924,7 +2926,7 @@ static float kTimeToHintToolTray=7.0f;
         if(rowHeight<68.0f)rowHeight=68.0f;
         
         
-        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+
 
         [qTrayTop setAnchorPoint:ccp(0.5f,0.0f)];
         [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
@@ -2940,7 +2942,8 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)]];
         [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
         
-        /***** ORIGINAL LAYOUT STUFF *****
+        NEW FUCKED STUFF */
+        
         
         [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
         [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
@@ -2950,16 +2953,6 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
         [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
         [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
-        ***** END ORIGINAL LAYOUT *****/
-        
-        
-//        [qTrayTop setScaleX:0.7];
-//        [qTrayMid setScaleX:0.7];
-//        [qTrayBot setScaleX:0.7];
-        
-//        [qTrayTop setPosition:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)];
-//        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
-//        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
         
         trayCornerShowing=YES;
     }

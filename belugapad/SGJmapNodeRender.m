@@ -142,11 +142,8 @@
     SGJmapNode *pn=(SGJmapNode*)ParentGO;
     
     //if the node is on a 100% prqc island but isn't complete, bounce it
-    NSLog(@"prqc of mastery is %f", pn.MasteryNode.PrereqPercentage);
-    
     if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete)
     {
-        NSLog(@"bouncing a pin");
         [self boundThisPin:nodeSprite];
     }
 }

@@ -45,6 +45,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     BOOL processingDownloadedState;
     BOOL applyingDownloadedState;
+    
+    NSMutableArray *potentiallyExposedFeatureKeys;
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
@@ -69,6 +71,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         loggingService = ls;
         
         isSyncing = NO;
+        
+        potentiallyExposedFeatureKeys =[[NSMutableArray alloc] init];
         
         // check that we've got an all-users database
         NSFileManager *fm = [NSFileManager defaultManager];
@@ -754,11 +758,37 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)notifyStartingFeatureKey:(NSString*)featureKey
 {
+    //add this to the list of potentially exposed feature keys
+    [potentiallyExposedFeatureKeys addObject:featureKey];
+}
+
+-(void)purgePotentialFeatureKeys
+{
+    //to be used between problems
+    [potentiallyExposedFeatureKeys removeAllObjects];
+}
+
+-(NSString*)shouldInsertWhatFeatureKey
+{
+    //tool host is ready to run, check to see if all of the potential feature keys have been exposed
+    // if not, return the key that should be used to run an inserter
+    // that key will also be written here at the end of that inserter -- using addEncounterWithFeatureKey
     
+    for (NSString *fkpot in potentiallyExposedFeatureKeys) {
+        if(![self hasEncounteredFeatureKey:fkpot])
+        {
+            return fkpot;
+        }
+    }
+    
+    //no potential feature that hasn't been encountered found, so return nil
+    return nil;
 }
 
 -(void)dealloc
 {
+    [potentiallyExposedFeatureKeys release];
+    
     if (currentUser) [currentUser release];
     if (allUsersDatabase)
     {

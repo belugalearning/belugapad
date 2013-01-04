@@ -81,7 +81,9 @@
     NSLog(@"cage currentobject? %@", self.CurrentObject?@"YES":@"NO");
     if(self.CurrentObject)return;
     
-    float totalLength=MySprite.contentSize.width-(73*2);
+    float spacer=66.0f;
+    
+    float totalLength=MySprite.contentSize.width-(spacer*2);
 
     int skipCount=0;
     int numberOfFreeSpaces=0;
@@ -103,7 +105,7 @@
     else
         sectionW=totalLength / 15;
     
-    float startPosX=MySprite.position.x+74-(MySprite.contentSize.width/2);
+    float startPosX=MySprite.position.x+(spacer+1)-(MySprite.contentSize.width/2);
     int totalCount=0;
     int createCount=0;
     int posCount=0;
@@ -166,7 +168,7 @@
         else if(InitialObjects>1&&InitialObjects<=15)
             yPos=55.0f;
         else
-            yPos=107-((totalCount/(int)15)*50);
+            yPos=120-((totalCount/(int)15)*60);
         
         id<Configurable,Selectable,Pairable,Moveable> newblock;
         newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:ccp(xPos, yPos) andType:newBlockType] autorelease];

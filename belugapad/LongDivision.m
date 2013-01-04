@@ -30,6 +30,14 @@
 
 @implementation LongDivision
 
+enum {
+    kTagTitleLabel = 1,
+    kTagSubtitleLabel = 2,
+    kTagStencilNode = 100,
+    kTagClipperNode = 101,
+    kTagContentNode = 102,
+};
+
 #pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
@@ -70,7 +78,7 @@
         [self readPlist:pdef];
         [self populateGW];
         
-//        [self setupClippingNode];
+        [self setupClippingNode];
         
         renderingChanges=YES;
         
@@ -88,34 +96,31 @@
 
 -(void)setupClippingNode
 {
-    enum {
-        kTagTitleLabel = 1,
-        kTagSubtitleLabel = 2,
-        kTagStencilNode = 100,
-        kTagClipperNode = 101,
-        kTagContentNode = 102,
-    };
+
+//    CCDrawNode *clipMaskDrawNode=[CCDrawNode node];
     
-    CCDrawNode *clipMaskDrawNode=[CCDrawNode node];
+//    CGPoint rectangle[] = {{100, 100}, {200, 100}, {200, 200}, {100, 200}};
+//    ccColor4F white = {1, 1, 1, 1};
+//    [clipMaskDrawNode drawPolyWithVerts:rectangle count:4 fillColor:white borderWidth:1 borderColor:white];
     
-    CGPoint rectangle[] = {{100, 100}, {200, 100}, {200, 200}, {100, 200}};
-    ccColor4F white = {1, 1, 1, 1};
-    [clipMaskDrawNode drawPolyWithVerts:rectangle count:4 fillColor:white borderWidth:1 borderColor:white];
+//    clipMaskDrawNode.tag=kTagStencilNode;
     
-    clipMaskDrawNode.tag=kTagStencilNode;
+//    [clipMaskDrawNode drawDot:ccp(cx, cy) radius:200 color:ccc4f(1, 1, 1, 1)];
+//    clipMaskDrawNode.visible=YES;
     
-//    [clipMaskDrawNode drawDot:ccp(cx, cy) radius:200 color:ccc4f(0, 1, 0, 1)];
-    clipMaskDrawNode.visible=YES;
+    
+    CCSprite *spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
     
     CCClippingNode *clippingNode=[CCClippingNode clippingNode];
     clippingNode.contentSize=CGSizeMake(2*cx, 2*cy);
     clippingNode.anchorPoint=ccp(0.5f,0.5f);
     clippingNode.position=ccp(cx,cy);
-    clippingNode.stencil=clipMaskDrawNode;
+    clippingNode.stencil=spriteMask;
+    clippingNode.alphaThreshold=0.05f;
     
-    clippingNode.tag=kTagClipperNode;
+//    clippingNode.tag=kTagClipperNode;
     
-    [clippingNode addChild:clipMaskDrawNode];
+    [clippingNode addChild:spriteMask];
     
     [self.ForeLayer addChild:clippingNode];
     
@@ -126,6 +131,82 @@
     
     [clippingNode addChild:drawTests];
 }
+
+//-(void)setupClippingNode2
+//{
+//    CGSize s = [[CCDirector sharedDirector] winSize];
+//    
+//    
+//    
+//    CCNode *stencil = [self stencil];
+//    stencil.tag = kTagStencilNode;
+//    stencil.position = ccp(50, 50);
+//    
+//    CCClippingNode *clipper = [self clipper];
+//    clipper.tag = kTagClipperNode;
+//    clipper.anchorPoint = ccp(0.5, 0.5);
+//    clipper.position = ccp(s.width / 2 - 50, s.height / 2 - 50);
+//    clipper.stencil = stencil;
+//    [self.ForeLayer addChild:clipper];
+//    
+//    CCNode *content = [self content];
+//    content.position = ccp(50, 50);
+//    [clipper addChild:content];
+//    
+//    
+//    CCDrawNode *dn=[[CCDrawNode alloc] init];
+//    [dn drawDot:ccp(200,200) radius:200.0f color:ccc4f(1, 1, 1, 0.5f)];
+//    [dn drawDot:ccp(200,200) radius:100.0f color:ccc4f(1, 1, 1, 1)];
+//    [clipper addChild:dn];
+//    NSLog(@"logging out clipper ad drawnode");
+//}
+//
+//- (CCAction *)actionRotate
+//{
+//    return [CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:1 angle:90]];
+//}
+//
+//- (CCAction *)actionScale
+//{
+//    CCScaleBy *scale = [CCScaleBy actionWithDuration:1.33 scale:1.5];
+//    return [CCRepeatForever actionWithAction:[CCSequence actions:scale, [scale reverse], nil]];
+//}
+//
+//- (CCDrawNode *)shape
+//{
+//    CCDrawNode *shape = [CCDrawNode node];
+//    static CGPoint triangle[] = {{-100, -100}, {100, -100}, {0, 100}};
+//    static ccColor4F green = {0, 1, 0, 1};
+//    [shape drawPolyWithVerts:triangle count:3 fillColor:green borderWidth:0 borderColor:green];
+//    return shape;
+//}
+//
+//- (CCSprite *)grossini
+//{
+//    CCSprite *grossini = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/Number_Dot_Large.png")];
+//    grossini.scale = 1.5;
+//    return grossini;
+//}
+//
+//- (CCNode *)stencil
+//{
+//    CCNode *node = [self shape];
+//    [node runAction:[self actionRotate]];
+//    return node;
+//}
+//
+//- (CCNode *)content
+//{
+//    CCNode *node = [self grossini];
+//    [node runAction:[self actionScale]];
+//    return node;
+//}
+//
+//- (CCClippingNode *)clipper
+//{
+//    return [CCClippingNode clippingNode];
+//}
+
 
 -(void)doUpdateOnTick:(ccTime)delta
 {

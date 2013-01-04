@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Press the right arrow 9 times. Add 10&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Press the right arrow on the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_cage-variable&quot;/&gt;&lt;b:t&gt;9 times. Add 10&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

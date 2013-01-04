@@ -878,6 +878,11 @@ float timerIgnoreFrog;
                 writeText=[NSString stringWithFormat:fmt, multDisplayNum];
             }
             
+            if(readNumber>0)
+                writeText=[NSString stringWithFormat:@"plus %@", writeText];
+            
+            
+            
             AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
             [ac speakString:writeText];
         }

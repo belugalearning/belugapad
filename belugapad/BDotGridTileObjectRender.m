@@ -30,7 +30,7 @@
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller registerPollee:(id<LogPolling>)self];
+    [loggingService.logPoller registerPollee:(id<LogPolling>)tile];
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
@@ -355,7 +355,7 @@
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)tile];
     [super dealloc];
 }
 

@@ -2525,6 +2525,15 @@ static float kTimeToCageShake=7.0f;
         
         DWPlaceValueCageGameObject *c=nil;
         DWPlaceValueBlockGameObject *cM=nil;
+        
+        CCLabelTTF *l=nil;
+        
+        if(multipleBlockPickup)
+            l=[multipleLabels objectAtIndex:currentColumnIndex];
+        else if(isNegativeProblem)
+            l=[blockLabels objectAtIndex:currentColumnIndex];
+        
+        
         if([[allCages objectAtIndex:currentColumnIndex]isKindOfClass:[DWPlaceValueCageGameObject class]])
             c=[allCages objectAtIndex:currentColumnIndex];
         
@@ -2536,9 +2545,11 @@ static float kTimeToCageShake=7.0f;
         
         [c.mySprite setPosition:ccp(c.PosX, c.PosY)];
         [cM.mySprite setPosition:ccp(c.PosX, c.PosY+20)];
+        [l setPosition:ccp(c.PosX, c.PosY+20)];
         
         [c.mySprite setOpacity:255];
         [cM.mySprite setOpacity:255];
+        [l setOpacity:255];
 
 //        [c.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
 //        [cM.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
@@ -3016,9 +3027,22 @@ static float kTimeToCageShake=7.0f;
             
             if(distFromBlockToCage<(distFromNetBottomToCage/2) && !cageHasDropped)
             {
+                
+                
+                CCLabelTTF *l=nil;
+                
+                if(multipleBlockPickup)
+                    l=[multipleLabels objectAtIndex:currentColumnIndex];
+                else if(isNegativeProblem)
+                    l=[blockLabels objectAtIndex:currentColumnIndex];
+                
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_disappearing.wav")];
+                [l runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-200)] rate:2.0f]];
+                [l runAction:[CCFadeOut actionWithDuration:0.5f]];
+                
                 [c.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-200)] rate:2.0f]];
                 [c.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
+                
                 [cM.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-220)] rate:2.0f]];
                 [cM.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
                 
@@ -3622,7 +3646,7 @@ static float kTimeToCageShake=7.0f;
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
                 }else{
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
-                    [gw.Blackboard.PickupObject handleMessage:kDWdestroy];
+                    [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPositionAndDestroy];
                 }
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now

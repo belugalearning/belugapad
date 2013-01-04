@@ -52,7 +52,7 @@
 	<true/>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>2</string>
 	</array>
 	<key>MARKER_POSITIONS</key>
 	<array>

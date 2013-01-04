@@ -90,14 +90,6 @@ static float kTimeToHintToolTray=7.0f;
 
 #pragma mark - init and setup
 
-enum {
-    kTagTitleLabel = 1,
-    kTagSubtitleLabel = 2,
-    kTagStencilNode = 100,
-    kTagClipperNode = 101,
-    kTagContentNode = 102,
-};
-
 +(CCScene *) scene
 {
     CCScene *scene=[CCScene node];
@@ -205,91 +197,10 @@ enum {
         [TestFlight passCheckpoint:@"STARTED_TOOLHOST"];
     
         doPlaySound=YES;
-        
-//        [self setupClippingNode2];
     }
     
     return self;
 }
-
-
-#pragma mark - clipping test
-
--(void)setupClippingNode2
-{
-    CGSize s = [[CCDirector sharedDirector] winSize];
-    
-    
-    
-    CCNode *stencil = [self stencil];
-    stencil.tag = kTagStencilNode;
-    stencil.position = ccp(50, 50);
-    
-    CCClippingNode *clipper = [self clipper];
-    clipper.tag = kTagClipperNode;
-    clipper.anchorPoint = ccp(0.5, 0.5);
-    clipper.position = ccp(s.width / 2 - 50, s.height / 2 - 50);
-    clipper.stencil = stencil;
-    [self addChild:clipper];
-    
-    CCNode *content = [self content];
-    content.position = ccp(50, 50);
-    [clipper addChild:content];
-    
-    
-    CCDrawNode *dn=[[CCDrawNode alloc] init];
-    [dn drawDot:ccp(200,200) radius:200.0f color:ccc4f(1, 1, 1, 0.5f)];
-    [dn drawDot:ccp(200,200) radius:100.0f color:ccc4f(1, 1, 1, 1)];
-    [clipper addChild:dn];
-    NSLog(@"logging out clipper ad drawnode");
-}
-
-- (CCAction *)actionRotate
-{
-    return [CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:1 angle:90]];
-}
-
-- (CCAction *)actionScale
-{
-    CCScaleBy *scale = [CCScaleBy actionWithDuration:1.33 scale:1.5];
-    return [CCRepeatForever actionWithAction:[CCSequence actions:scale, [scale reverse], nil]];
-}
-
-- (CCDrawNode *)shape
-{
-    CCDrawNode *shape = [CCDrawNode node];
-    static CGPoint triangle[] = {{-100, -100}, {100, -100}, {0, 100}};
-    static ccColor4F green = {0, 1, 0, 1};
-    [shape drawPolyWithVerts:triangle count:3 fillColor:green borderWidth:0 borderColor:green];
-    return shape;
-}
-
-- (CCSprite *)grossini
-{
-    CCSprite *grossini = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/Number_Dot_Large.png")];
-    grossini.scale = 1.5;
-    return grossini;
-}
-
-- (CCNode *)stencil
-{
-    CCNode *node = [self shape];
-    [node runAction:[self actionRotate]];
-    return node;
-}
-
-- (CCNode *)content
-{
-    CCNode *node = [self grossini];
-    [node runAction:[self actionScale]];
-    return node;
-}
-
-- (CCClippingNode *)clipper
-{
-    return [CCClippingNode clippingNode];
-}
-
 
 #pragma mark animation and transisitons
 

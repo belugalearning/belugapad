@@ -70,6 +70,8 @@
         [self readPlist:pdef];
         [self populateGW];
         
+//        [self setupClippingNode];
+        
         renderingChanges=YES;
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
@@ -82,6 +84,47 @@
     }
     
     return self;
+}
+
+-(void)setupClippingNode
+{
+    enum {
+        kTagTitleLabel = 1,
+        kTagSubtitleLabel = 2,
+        kTagStencilNode = 100,
+        kTagClipperNode = 101,
+        kTagContentNode = 102,
+    };
+    
+    CCDrawNode *clipMaskDrawNode=[CCDrawNode node];
+    
+    CGPoint rectangle[] = {{100, 100}, {200, 100}, {200, 200}, {100, 200}};
+    ccColor4F white = {1, 1, 1, 1};
+    [clipMaskDrawNode drawPolyWithVerts:rectangle count:4 fillColor:white borderWidth:1 borderColor:white];
+    
+    clipMaskDrawNode.tag=kTagStencilNode;
+    
+//    [clipMaskDrawNode drawDot:ccp(cx, cy) radius:200 color:ccc4f(0, 1, 0, 1)];
+    clipMaskDrawNode.visible=YES;
+    
+    CCClippingNode *clippingNode=[CCClippingNode clippingNode];
+    clippingNode.contentSize=CGSizeMake(2*cx, 2*cy);
+    clippingNode.anchorPoint=ccp(0.5f,0.5f);
+    clippingNode.position=ccp(cx,cy);
+    clippingNode.stencil=clipMaskDrawNode;
+    
+    clippingNode.tag=kTagClipperNode;
+    
+    [clippingNode addChild:clipMaskDrawNode];
+    
+    [self.ForeLayer addChild:clippingNode];
+    
+    //test for clipping
+    CCDrawNode *drawTests=[CCDrawNode node];
+    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
+    drawTests.tag=kTagContentNode;
+    
+    [clippingNode addChild:drawTests];
 }
 
 -(void)doUpdateOnTick:(ccTime)delta

@@ -888,19 +888,7 @@ static float kTimeToHintToolTray=7.0f;
         currentTool=[NSClassFromString(toolKey) alloc];
         [currentTool initWithToolHost:self andProblemDef:pdef];
     }
-    
-    NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
-    //if were not already in a breakout, break out
-    if(!breakOutIntroProblemFK && breakOutToFK && !contentService.isUsingTestPipeline)
-    {
-        NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
-        
-        //re-load with an FK problem, then resume on episode / pipeline
-        breakOutIntroProblemFK=breakOutToFK;
-        breakOutIntroProblemHasLoaded=NO;
-        
-        [self loadProblem];
-    }
+
 //    else
 //    {
 //        //continue normal load, nilling any previous breakout problem
@@ -947,6 +935,20 @@ static float kTimeToHintToolTray=7.0f;
     }
     else {
         [self setupProblemOnToolHost:pdef];
+    }
+    
+    NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
+    //if were not already in a breakout, break out
+    if(!breakOutIntroProblemFK && breakOutToFK && !contentService.isUsingTestPipeline)
+    {
+        NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
+        
+        //re-load with an FK problem, then resume on episode / pipeline
+        breakOutIntroProblemFK=breakOutToFK;
+        breakOutIntroProblemHasLoaded=NO;
+        
+        
+        [self loadProblem];
     }
     
     // set scale using the value we got earlier

@@ -32,7 +32,9 @@
             [b.Mount handleMessage:kDWunsetMountedObject];
             b.Mount=gameWorld.Blackboard.DropObject;
         }
-            
+        
+        b.LastMount=b.Mount;
+        
         DWPlaceValueCageGameObject *newMountC=nil;
         DWPlaceValueNetGameObject *newMountN=nil;
         

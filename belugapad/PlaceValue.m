@@ -3622,7 +3622,7 @@ static float kTimeToCageShake=7.0f;
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
                 }else{
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
-                    [gw.Blackboard.PickupObject handleMessage:kDWdestroy];
+                    [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPositionAndDestroy];
                 }
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now

@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Press the right arrow 2 times. Add 3&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block&quot;/&gt;&lt;b:t&gt;&apos;s and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;</string>
+	<string>&lt;b:t&gt;Press the right arrow 2 times. Add 3&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_p&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Press the right arrow 2 times. Add 3 blocks. </string>
 	<key>TOOL_KEY</key>

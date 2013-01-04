@@ -891,7 +891,7 @@ static float kTimeToHintToolTray=7.0f;
     
     NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
     //if were not already in a breakout, break out
-    if(!breakOutIntroProblemFK && breakOutToFK)
+    if(!breakOutIntroProblemFK && breakOutToFK && !contentService.isUsingTestPipeline)
     {
         NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
         

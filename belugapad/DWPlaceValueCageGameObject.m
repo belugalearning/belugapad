@@ -25,6 +25,14 @@
 @synthesize mySprite;
 @synthesize cageType;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"DWPlaceValueCage"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return [self Position]; }
+
 -(CGPoint)Position
 {
     return ccp(PosX,PosY);

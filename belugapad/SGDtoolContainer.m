@@ -151,7 +151,7 @@
 -(void)layoutMyBlocks
 {
     if([BlocksInShape count]==0)return;
-    NSArray *blockPos=[NumberLayout physicalLayoutAcrossToNumber:[BlocksInShape count] withSpacing:52.0f];
+    NSArray *blockPos=[NumberLayout physicalLayoutAcrossToNumber:[BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
     id<Moveable> firstBlock=[BlocksInShape objectAtIndex:0];
     float posX=firstBlock.Position.x;
@@ -205,17 +205,17 @@
     y=y/[BlocksInShape count];
     
     if(Label){
-        [Label setPosition:ccp(x,y+40)];
+        [Label setPosition:ccp(x,y+80)];
     }
     if(ShowCount)
     {
         [CountLabel setString:[NSString stringWithFormat:@"%g", [self updateValue]]];
-        [CountLabel setPosition:ccp(x,y-50)];
+        [CountLabel setPosition:ccp(x,y-80)];
     }
     
     if(BTXERow)
     {
-        BTXERow.position=ccp(x,y+50);
+        BTXERow.position=ccp(x,y+80);
         
     }
 

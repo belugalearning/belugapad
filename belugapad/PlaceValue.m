@@ -555,7 +555,7 @@ static float kTimeToCageShake=7.0f;
         
         NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
         
-        DLog(@"Reset current column value to %f", currentColumnValue);
+//        DLog(@"Reset current column value to %f", currentColumnValue);
         
         NSMutableArray *newCol = [[NSMutableArray alloc] init];
         
@@ -1406,8 +1406,11 @@ static float kTimeToCageShake=7.0f;
     if(allowMulching)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_ALLOW_MULCHING"];
     
-    if(showMultipleControls||multipleBlockPickup)
-        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+    if(showMultipleControls||multipleBlockPickup){
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK_1"];
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK_2"];
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK_3"];
+    }
     
     if(isNegativeProblem)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_NEGATIVE_PROBLEM"];
@@ -1596,7 +1599,14 @@ static float kTimeToCageShake=7.0f;
         [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
         [l setColor:ccc3(234,137,31)];
         [renderLayer addChild:l z:10000];
-        [l runAction:[CCFadeOut actionWithDuration:1.0]];
+        
+        CCFadeOut *fo=[CCFadeOut actionWithDuration:1.0f];
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:1.0f];
+        CCCallBlock *bl=[CCCallBlock actionWithBlock:^{[l removeFromParentAndCleanup:YES];}];
+        
+        CCSequence *sq=[CCSequence actions:fo, dt, bl, nil];
+        
+        [l runAction:sq];
         
         if(amountAdded>0 && shouldUpdateLabels)
         {
@@ -2822,6 +2832,7 @@ static float kTimeToCageShake=7.0f;
         }
         else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
+            ((DWPlaceValueCageGameObject*)pickupObject.Mount).MountedObject=nil;
             [pickupObject.Mount handleMessage:kDWsetupStuff];
             pickupObject.LastMount=pickupObject.Mount;
         }
@@ -3334,7 +3345,6 @@ static float kTimeToCageShake=7.0f;
                 // set a bool saying whether our dropobject is a cage or not
                 BOOL isCage;
                 BOOL doNotSwitchSelection=NO;
-                BOOL hasModifiedTestLocation=NO;
                 
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
@@ -3405,11 +3415,8 @@ static float kTimeToCageShake=7.0f;
                         
                         gw.Blackboard.DropObject=nil;
                         
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
-                        {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
-                            hasModifiedTestLocation=YES;
-                        }
+                        gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
+
                         
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
@@ -3607,11 +3614,12 @@ static float kTimeToCageShake=7.0f;
                     blocksToDestroy=nil;
                 }
                 
-                if(!isCage)
+                if(!isCage){
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
-                else
+                }else{
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
-                
+                    [gw.Blackboard.PickupObject handleMessage:kDWdestroy];
+                }
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now
                 [self problemStateChanged];

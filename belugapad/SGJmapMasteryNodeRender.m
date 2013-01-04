@@ -284,7 +284,7 @@ static int shadowSteps=5;
 
 -(void)setup
 {
-    NSLog(@"new island setup");
+//    NSLog(@"new island setup");
     
     int iCount=ParentGO.ChildNodes.count;
     if(iCount==0)iCount=1; // handle islands with no nodes
@@ -334,7 +334,7 @@ static int shadowSteps=5;
     //all nodes with data
     NSArray *fnodes= [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"NODES"];
     
-    NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
+//    NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
     
     //step all children -- layout and attach artefact positions
     NSArray *artefacts=[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"ARTEFACTS"];
@@ -362,7 +362,7 @@ static int shadowSteps=5;
         
         [child flipSprite];
         
-        NSLog(@"child flip? %@", child.flip? @"YES":@"NO");
+//        NSLog(@"child flip? %@", child.flip? @"YES":@"NO");
         
         //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
         
@@ -593,11 +593,11 @@ static int shadowSteps=5;
             base.position=ccpAdd(base.position, ccp(50,-25));
 
             
-            NSLog(@"island state -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
+//            NSLog(@"island state -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
             
             if(ParentGO.FreshlyCompleted)
             {
-                NSLog(@"is fresh! -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
+//                NSLog(@"is fresh! -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
                 
             }
             
@@ -665,7 +665,7 @@ static int shadowSteps=5;
 
 -(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2 andOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
 {
-    NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
+//    NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
     
     //assumed picking from random selection of three of each
     
@@ -696,7 +696,7 @@ static int shadowSteps=5;
     
     CGRect box=CGRectMake(-islandSprite.contentSize.width / 2.0f, -islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
     
-    NSLog(@"before mod %@", NSStringFromCGRect(box));
+//    NSLog(@"before mod %@", NSStringFromCGRect(box));
     
     //position * scale
     //box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)*scale.x, (box.origin.y + box.origin.y * offsetPos.y)*scale.y, box.size.width * scale.x, box.size.height * scale.y);
@@ -705,7 +705,7 @@ static int shadowSteps=5;
     
     //box=CGRectMake(box.origin.x+offsetPos.x, box.origin.y+offsetPos.y, box.size.width, box.size.height);
     
-    NSLog(@"after mod %@", NSStringFromCGRect(box));
+//    NSLog(@"after mod %@", NSStringFromCGRect(box));
     
     
     //float y=islandSprite.boundingBox.size.height;

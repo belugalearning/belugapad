@@ -48,4 +48,7 @@ typedef enum {
 -(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date;
 -(void)notifyStartingFeatureKey:(NSString*)featureKey;
 
+-(void)purgePotentialFeatureKeys;
+-(NSString*)shouldInsertWhatFeatureKey;
+
 @end

@@ -448,7 +448,7 @@
     for(int i=0;i<nWheel.Components;i++)
     {
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
-        [s setPosition:ccp(963.5-(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing))),538)];
+        [s setPosition:ccp(963.5-(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing))),568)];
         [s setColor:kBTXEColour[i]];
         [renderLayer addChild:s z:50];
     }
@@ -467,7 +467,7 @@
     w.ComponentHeight=62;
     w.ComponentWidth=71;
     w.ComponentSpacing=6;
-    w.Position=ccp(lx-w.ComponentSpacing-(s.contentSize.width/2),ly-180);
+    w.Position=ccp(lx-w.ComponentSpacing-(s.contentSize.width/2),ly-150);
     w.RenderLayer=renderLayer;
     w.HasDecimals=YES;
     w.HasNegative=YES;

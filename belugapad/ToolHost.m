@@ -35,6 +35,7 @@
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
 #import "ExprBuilder.h"
+#import "LongDivision.h"
 #import "LineDrawer.h"
 
 
@@ -453,7 +454,9 @@ static float kTimeToHintToolTray=7.0f;
     {
         autoMoveToNextProblem=YES;
         hasUpdatedScore=YES;
-        [self incrementScoreAndMultiplier];
+        
+        if(!breakOutIntroProblemFK)
+            [self incrementScoreAndMultiplier];
         
         moveToNextProblemTime=kMoveToNextProblemTime;
     }
@@ -601,6 +604,8 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)scoreProblemSuccess
 {
+    if(breakOutIntroProblemFK)return;
+    
     int newScore = ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseScore);
     newScore = min(newScore, SCORE_EPISODE_MAX - pipelineScore);
     
@@ -661,6 +666,10 @@ static float kTimeToHintToolTray=7.0f;
     
     hasResetMultiplier=NO;
     
+    //manually reset any intro problem state
+    breakOutIntroProblemFK=nil;
+    breakOutIntroProblemHasLoaded=NO;
+    
     [self resetTriggerData];
     
     [contentService gotoNextProblemInPipelineWithSkip:skipby];
@@ -691,7 +700,7 @@ static float kTimeToHintToolTray=7.0f;
     //this problem will award multiplier if not subsequently reset
     hasResetMultiplier=NO;
     
-    NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
+//    NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
     
     if(adpSkipProblemAndInsert)
     {
@@ -707,19 +716,29 @@ static float kTimeToHintToolTray=7.0f;
     //reset trigger data -- a fresh view on user progress in this problem
     [self resetTriggerData];
     
-    //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
-    [contentService gotoNextProblemInPipeline];
-    
-    
-    //check that the content service found a pdef (this will be the raw dynamic one)
-    if(contentService.currentPDef)
+    if(!breakOutIntroProblemFK)
     {
-        [self loadProblem];
+        //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
+        [contentService gotoNextProblemInPipeline];
+        
+        
+        //check that the content service found a pdef (this will be the raw dynamic one)
+        if(contentService.currentPDef)
+        {
+            [self loadProblem];
+        }
+        else
+        {
+            countUpToJmap=YES;
+        }
     }
     else
     {
-        countUpToJmap=YES;
+        //just load the next problem -- which will actually be the last problem before the intro problem (e.g. the last real problem encountered)
+        [self loadProblem];
     }
+    
+        
     autoMoveToNextProblem=NO;
 }
 
@@ -738,6 +757,14 @@ static float kTimeToHintToolTray=7.0f;
     contentService.lightUpProgressFromLastNode=YES;
     
     [self returnToMap];
+}
+
+-(NSDictionary*)loadIntroProblemFromFK
+{
+    NSString *problemPath=[NSString stringWithFormat:@"/intro-problems/%@.plist", breakOutIntroProblemFK];
+    problemPath=BUNDLE_FULL_PATH(problemPath);
+    
+    return [NSDictionary dictionaryWithContentsOfFile:problemPath];
 }
 
 -(void) loadProblem
@@ -764,22 +791,51 @@ static float kTimeToHintToolTray=7.0f;
     // ---------------- END TEAR DOWN --------------------------------
     
     
-    //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
-    [self.DynProblemParser startNewProblemWithPDef:contentService.currentPDef];
     
-    //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
-    pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+    if(breakOutIntroProblemFK && !breakOutIntroProblemHasLoaded)
+    {
+        NSLog(@"loading breakout problem %@", breakOutIntroProblemFK);
+        
+        //do not query content service, just load a static intro problem via dynamic parser
+        NSDictionary *introProblem=[self loadIntroProblemFromFK];
+        
+        [self.DynProblemParser startNewProblemWithPDef:introProblem];
+        
+        pdef=[self.DynProblemParser createStaticPdefFromPdef:introProblem];
+        
+        //we've loaded this now, indicate as such so we don't get stuck in a loop
+        breakOutIntroProblemHasLoaded=YES;
+    }
+    else
+    {
+        if(breakOutIntroProblemFK && breakOutIntroProblemHasLoaded)
+        {
+            [usersService addEncounterWithFeatureKey:breakOutIntroProblemFK date:[NSDate date]];
+            
+            //reset state -- we've loaded, play and logged the breakout problem
+            breakOutIntroProblemFK=nil;
+            breakOutIntroProblemHasLoaded=NO;
+        }
+        
+        //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
+        [self.DynProblemParser startNewProblemWithPDef:contentService.currentPDef];
+        
+        //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
+        pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+        
+        //keep reference to the current static definition on the content service -- for logging etc
+        contentService.currentStaticPdef=pdef;
+        
+        // TODO: maybe this, and dynamic pdef generation above, should really be coming from ContentService I think? Check with G
+        // TODO: moreover is it writing this out to plist better than storing as json?
+        
+        NSArray *docsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *tempPDefPath = [[docsPaths objectAtIndex:0] stringByAppendingPathComponent:@"temp-pdef.plist"];
+        [pdef writeToFile:tempPDefPath atomically:YES];
+        NSString *pdefString = [[[NSString alloc] initWithContentsOfFile:tempPDefPath encoding:NSUTF8StringEncoding error:nil] autorelease];
+        [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
+    }
     
-    //keep reference to the current static definition on the content service -- for logging etc
-    contentService.currentStaticPdef=pdef;
-    
-    // TODO: maybe this, and dynamic pdef generation above, should really be coming from ContentService I think? Check with G
-    // TODO: moreover is it writing this out to plist better than storing as json?
-    NSArray *docsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *tempPDefPath = [[docsPaths objectAtIndex:0] stringByAppendingPathComponent:@"temp-pdef.plist"];
-    [pdef writeToFile:tempPDefPath atomically:YES];
-    NSString *pdefString = [[[NSString alloc] initWithContentsOfFile:tempPDefPath encoding:NSUTF8StringEncoding error:nil] autorelease];
-    [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -823,12 +879,34 @@ static float kTimeToHintToolTray=7.0f;
         scale=1.0f;
     
     
+    //purge potential feature key cache
+    [usersService purgePotentialFeatureKeys];
+    
     if(toolKey)
     {
         //initialize tool scene
         currentTool=[NSClassFromString(toolKey) alloc];
         [currentTool initWithToolHost:self andProblemDef:pdef];
     }
+    
+    NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
+    //if were not already in a breakout, break out
+    if(!breakOutIntroProblemFK && breakOutToFK)
+    {
+        NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
+        
+        //re-load with an FK problem, then resume on episode / pipeline
+        breakOutIntroProblemFK=breakOutToFK;
+        breakOutIntroProblemHasLoaded=NO;
+        
+        [self loadProblem];
+    }
+//    else
+//    {
+//        //continue normal load, nilling any previous breakout problem
+//        breakOutIntroProblemFK=nil;
+//        breakOutIntroProblemHasLoaded=NO;
+//    }
     
     //read our tool specific options
     [self readToolOptions:toolKey];
@@ -2257,7 +2335,7 @@ static float kTimeToHintToolTray=7.0f;
         //check commit threshold for insertion
         
         //only assess triggers if the insertion mode is enabled, and if we're at the episode head (e.g. don't nest insertions)
-        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead && ![contentService isUsingTestPipeline])
+        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead && ![contentService isUsingTestPipeline] && !breakOutIntroProblemFK)
         {
             //increment the number of commits
             commitCount++;
@@ -2353,14 +2431,14 @@ static float kTimeToHintToolTray=7.0f;
     if([currentTool isKindOfClass:[ExprBuilder class]])
         rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
     else
-        rowHeight=row.size.height+20;
+        rowHeight=row.size.height;
     
-    if(rowHeight<75.0f)rowHeight=75.0f;
+    if(rowHeight<68.0f)rowHeight=68.0f;
     
     [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
     [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
-    [qTrayMid setScaleY:(rowHeight-64)/14];
+    [qTrayMid setScaleY:(rowHeight-64)/16];
 //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
@@ -2376,6 +2454,12 @@ static float kTimeToHintToolTray=7.0f;
     [backgroundLayer addChild:qTrayMid];
     
     descGw.Blackboard.inProblemSetup=NO;
+    
+    if([currentTool isKindOfClass:[LongDivision class]])
+    {
+//        [self scheduleOnce:@selector(showCornerTray) delay:3.5f];
+        [self showCornerTray];
+    }
 }
 
 -(void)animateQuestionBoxIn
@@ -2464,7 +2548,7 @@ static float kTimeToHintToolTray=7.0f;
             }
             if(CGRectContainsPoint(trayPadClose.boundingBox, location))
             {
-                [self removeAllTrays];
+                [self hidePad];
             }
             else
             {
@@ -2814,18 +2898,60 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(350.0f, (cy*2)-95);
-        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-130)];
+
+        /*
+        [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+        [qTrayMid setPosition:ccp(descRow.position.x,descRow.position.y+205)];
+        //[qTrayMid setPosition:ccp(cx,row.position.y)];
+        [qTrayMid setScaleY:(rowHeight-64)/16];
+        //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+        [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
+        [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
         
-        [descRow relayoutChildrenToWidth:625];
+        [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
+        */
+
+        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
         
-        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayTop.scaleY]];
-        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayMid.scaleY]];
-        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayBot.scaleY]];
+        float rowHeight=0;
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
+        
+        if([currentTool isKindOfClass:[ExprBuilder class]])
+            rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
+        else
+            rowHeight=descRow.size.height;
+        
+        if(rowHeight<68.0f)rowHeight=68.0f;
+        
+        
+        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+
+        [qTrayTop setAnchorPoint:ccp(0.5f,0.0f)];
+        [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+        [qTrayBot setAnchorPoint:ccp(0.5f,0.0f)];
+        
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:descRow.position]];
+        
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
+        
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
+        
+        /***** ORIGINAL LAYOUT STUFF *****
+        
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
+        
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
+        ***** END ORIGINAL LAYOUT *****/
+        
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2858,12 +2984,12 @@ static float kTimeToHintToolTray=7.0f;
         [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
         [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.65), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2))]];
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3), qTrayBot.position.y)]];
+        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
         
-        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 100)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
         

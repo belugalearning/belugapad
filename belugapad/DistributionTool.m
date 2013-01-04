@@ -32,7 +32,6 @@
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
-static float kDistanceBetweenBlocks=70.0f;
 
 
 @interface DistributionTool()
@@ -321,9 +320,9 @@ static float kDistanceBetweenBlocks=70.0f;
     showTotalValue=[[pdef objectForKey:SHOW_TOTAL_VALUE]boolValue];
     
     if(bondAllObjects)
-        gw.Blackboard.MaxObjectDistance=1024.0f;
+        gw.Blackboard.MaxObjectDistance=2048.0f;
     else
-        gw.Blackboard.MaxObjectDistance=100.0f;
+        gw.Blackboard.MaxObjectDistance=150.0f;
     
 
     if([pdef objectForKey:DOCK_TYPE])
@@ -587,14 +586,14 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(BOOL)isPointInActiveRects:(CGPoint)thisPosition andThisManyOthers:(int)thisMany
 {
-    NSArray *thesePositions=[NumberLayout physicalLayoutAcrossToNumber:thisMany withSpacing:52.0f];
+    NSArray *thesePositions=[NumberLayout physicalLayoutAcrossToNumber:thisMany withSpacing:kDistanceBetweenBlocks];
     
     CGRect thisRect=CGRectNull;
     
     for(int i=0;i<thisMany;i++)
     {
         CGPoint point=[[thesePositions objectAtIndex:i]CGPointValue];
-        CGRect rect=CGRectMake((thisPosition.x+point.x)-30,(thisPosition.y+point.y)-30,60,60);
+        CGRect rect=CGRectMake((thisPosition.x+point.x)-(kDistanceBetweenBlocks/2),(thisPosition.y+point.y)-(kDistanceBetweenBlocks/2),kDistanceBetweenBlocks,kDistanceBetweenBlocks);
         thisRect=CGRectUnion(thisRect, rect);
     }
     

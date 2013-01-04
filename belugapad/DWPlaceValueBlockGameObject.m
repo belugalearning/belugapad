@@ -73,14 +73,14 @@
 
 -(void)dealloc
 {
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
     self.Mount=nil;
     self.LastMount=nil;
     self.PickupSprite=nil;
     self.mySprite=nil;
     self.SpriteFilename=nil;
-    self.logPollId = nil;
-    if (logPollId) [logPollId release];
-    logPollId = nil;
 
     [super dealloc];
 }

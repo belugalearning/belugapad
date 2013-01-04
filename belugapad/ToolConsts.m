@@ -82,3 +82,4 @@ const float kShapeValue01=0.1f;
 const float kShapeValue1=1.0f;
 const float kShapeValue10=10.0f;
 const float kShapeValue100=100.0f;
+const float kDistanceBetweenBlocks=62.0f;

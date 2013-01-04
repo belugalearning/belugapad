@@ -129,6 +129,7 @@
     }
     if(messageType==kDWresetToMountPositionAndDestroy)
     {
+        [self unregisterLogger];
         [self resetSpriteToMountAndDestroy];
     }
     if(messageType==kDWswitchBaseSelection)
@@ -141,10 +142,12 @@
     }
     if(messageType==kDWdestroy)
     {
+        [self unregisterLogger];
         [self destroy];
     }
     if(messageType==kDWfadeAndDestroy)
     {
+        [self unregisterLogger];
         [self fadeAndDestroy];
     }
     if(messageType==kDWdismantle)
@@ -294,6 +297,13 @@
     }
 }
 
+-(void)unregisterLogger
+{
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)b];
+}
+
 -(void)destroy
 {
     CCSprite *curSprite = b.mySprite;
@@ -401,10 +411,6 @@
 
 -(void) dealloc
 {
-    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-    LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller unregisterPollee:(id<LogPolling>)b];
-    
     [super dealloc];
 }
 

@@ -592,7 +592,7 @@ typedef enum {
 
             if(mgo.PrereqPercentage>0 && mgo.PrereqPercentage < 100)
             {
-                NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
+//                NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
             }
             
 
@@ -865,7 +865,7 @@ typedef enum {
     }
     
     NSNumber *res=[NSNumber numberWithBool:(set<0)];
-    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
+//    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
     return res;
 }
 

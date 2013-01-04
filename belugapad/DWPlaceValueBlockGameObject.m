@@ -63,11 +63,6 @@
     {
         [LastMount1 release];
         LastMount1=[newLastMount retain];
-        
-        if(newLastMount==nil)
-        {
-            NSLog(@"nil mount");
-        }
     }
 }
 

@@ -306,6 +306,9 @@
 
 -(void)destroy
 {
+    if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+        ((DWPlaceValueCageGameObject*)b.Mount).MountedObject=nil;
+    
     CCSprite *curSprite = b.mySprite;
     CCMoveTo *fadeOut=[CCFadeOut actionWithDuration:0.01f];
     CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];

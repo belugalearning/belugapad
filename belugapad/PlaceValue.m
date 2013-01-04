@@ -2935,9 +2935,13 @@ static float kTimeToCageShake=7.0f;
         if(debugLogging)
             NSLog(@"(touchbegan-end) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
     }
-    
 
-    
+
+    if(showValue){
+        toolHost.toolCanEval=NO;
+        [self problemStateChanged];
+        toolHost.toolCanEval=YES;
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -3410,7 +3414,7 @@ static float kTimeToCageShake=7.0f;
                 if((multipleBlockPickup||showMultipleControls||isNegativeProblem) && !isBasePickup)
                 {
                     
-                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
+                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count] && [pickupObjects count]>1)
                     {
                         
                         gw.Blackboard.DropObject=nil;

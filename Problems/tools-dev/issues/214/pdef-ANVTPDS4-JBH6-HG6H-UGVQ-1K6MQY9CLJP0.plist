@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>1 to 10</string>
+	<key>EVAL_TYPE</key>
+	<string>SEQUENCE_ASC</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>NUMBER_CARD_ROW_MIN</key>
+	<integer>2</integer>
+	<key>NUMBER_CARD_ROW_MAX</key>
+	<integer>9</integer>
+	<key>NUMBER_CARD_INTERVAL</key>
+	<integer>1</integer>
+	<key>NUMBER_CARD_RANDOMISE</key>
+	<true/>
+	<key>NUMBER_MODE</key>
+	<string>numicon</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Sort&lt;/b:t&gt;&lt;b:oi tag=&quot;1&quot;/&gt;&lt;b:t&gt;to&lt;/b:t&gt;&lt;b:oi tag=&quot;10&quot;/&gt;&lt;b:t&gt;in the correct order.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;1&quot;/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:on number=&quot;10&quot;/&gt;</string>
+	</array>
+</dict>
+</plist>

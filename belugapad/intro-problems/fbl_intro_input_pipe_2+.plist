@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Put the block of 5 in the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pipe_out&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Put the block of 5 in the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Pipe_In&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
@@ -33,5 +33,7 @@
 	<true/>
 	<key>MAX_BLOCKS_FROM_PIPE</key>
 	<string>5</string>
+	<key>SHOW_INPUT_PIPE</key>
+	<false/>
 </dict>
 </plist>

@@ -307,7 +307,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         }
         
         [bself->allUsersDatabase open];
-        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password) values(?,?,?)", urId, nickName, password];
+        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash) values(?,?,?,1)", urId, nickName, password];
         [bself->allUsersDatabase close];
         
         if (!successInsert)

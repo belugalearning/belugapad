@@ -433,7 +433,7 @@ static float kNBFontSizeLarge=35.0f;
         //pogo.Position=ccp(512,284);
         int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
         int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
-        NSString *fillText=[[NSString alloc]init];
+        NSString *fillText=@"";
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
         [loggingService.logPoller registerPollee:(id<LogPolling>)pogo];

@@ -141,7 +141,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         TFLog(@"logged in with beluga user id: %@", urId);
         
         [allUsersDatabase open];
-        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password FROM users WHERE id = ?", urId];
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [allUsersDatabase close];
         
@@ -206,7 +206,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableArray *users = [NSMutableArray array];
     
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
@@ -705,6 +705,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
     [user setValue:[rs stringForColumn:@"password"] forKey:@"password"];
+    [user setValue:@([rs intForColumn:@"nick_clash"]) forKey:@"nickClash"];
     return user;
 }
 

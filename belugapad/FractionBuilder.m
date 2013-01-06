@@ -605,14 +605,21 @@
         }
     }
     
+    BOOL isCorrect=NO;
+    
     if(solutionsFound==[solutionsDef count])
     {
-        return YES;
+        isCorrect=YES;
     }
     else
     {
-        return NO;
+        isCorrect=NO;
     }
+    
+    [solvedFractions release];
+    [foundSolution release];
+    
+    return isCorrect;
 }
 
 -(void)evalProblem

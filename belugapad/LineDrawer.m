@@ -78,9 +78,9 @@ typedef struct _LineVertex {
 {
   self = [super init];
   if (self) {
-    points = [[NSMutableArray alloc]init];
-    velocities = [[NSMutableArray alloc]init];
-    circlesPoints = [[NSMutableArray alloc]init];
+    points = [[[NSMutableArray alloc]init] autorelease];
+    velocities = [[[NSMutableArray alloc]init] autorelease];
+    circlesPoints = [[[NSMutableArray alloc]init] autorelease];
 
     shaderProgram_ = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionColor];
     overdraw = 3.0f;
@@ -93,11 +93,11 @@ typedef struct _LineVertex {
 
     self.touchEnabled = YES;
 
-    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)] autorelease];
     panGestureRecognizer.maximumNumberOfTouches = 1;
     [self addGestureRecognizer:panGestureRecognizer];
 
-    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)] autorelease];
     [self addGestureRecognizer:longPressGestureRecognizer];
       [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
   }
@@ -119,7 +119,7 @@ typedef struct _LineVertex {
 
 - (void)addPoint:(CGPoint)newPoint withSize:(CGFloat)size
 {
-  LinePoint *point = [[LinePoint alloc] init];
+  LinePoint *point = [[[LinePoint alloc] init] autorelease];
   point.pos = newPoint;
   point.width = size;
   [points addObject:point];
@@ -341,14 +341,14 @@ typedef struct _LineVertex {
       float t = 0.0f;
       float step = 1.0f / numberOfSegments;
       for (NSUInteger j = 0; j < numberOfSegments; j++) {
-        LinePoint *newPoint = [[LinePoint alloc] init];
+        LinePoint *newPoint = [[[LinePoint alloc] init] autorelease];
         newPoint.pos = ccpAdd(ccpAdd(ccpMult(midPoint1, powf(1 - t, 2)), ccpMult(prev1.pos, 2.0f * (1 - t) * t)), ccpMult(midPoint2, t * t));
         newPoint.width = powf(1 - t, 2) * ((prev1.width + prev2.width) * 0.5f) + 2.0f * (1 - t) * t * prev1.width + t * t * ((cur.width + prev1.width) * 0.5f);
 
         [smoothedPoints addObject:newPoint];
         t += step;
       }
-      LinePoint *finalPoint = [[LinePoint alloc] init];
+      LinePoint *finalPoint = [[[LinePoint alloc] init] autorelease];
       finalPoint.pos = midPoint2;
       finalPoint.width = (cur.width + prev1.width) * 0.5f;
       [smoothedPoints addObject:finalPoint];

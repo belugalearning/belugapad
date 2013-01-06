@@ -31,6 +31,7 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "SimpleAudioEngine.h"
 
 #define AUTO_LARGE_ROW_X_MAX 5
 #define AUTO_LARGE_ROW_Y_MAX 3
@@ -141,6 +142,11 @@
     {
         @throw [NSException exceptionWithName:@"expr plist read exception" reason:@"EXPR_STAGES not found" userInfo:nil];
     }
+    
+    if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+        isSequencing=YES;
+    else
+        isSequencing=NO;
     
     NSNumber *rrow2=[pdef objectForKey:@"REPEAT_ROW2_X"];
     if(rrow2)repeatRow2Count=[rrow2 intValue];
@@ -417,7 +423,11 @@
                 [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_PICKUP_CARD withAdditionalData:nil];
                 heldObject=o;
                 isHoldingObject=YES;
-                
+                if(isSequencing)
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sequencing_card_picked_up.wav")];
+                else
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sentence_builder_object_picked_up.wav")];
+
                 if([o conformsToProtocol:@protocol(NumberPicker)]) {
                 
                     if(opicker.usePicker){
@@ -526,6 +536,10 @@
                     if(CGRectContainsPoint(objRect, location)){
                         if(!toolHost.CurrentBTXE){
                             [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                            if(isSequencing)
+                                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sentence_builder_object_dropped.wav")];
+                            else
+                                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sequencing_card_dropped.wav")];
                             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_PLACEHOLDER withAdditionalData:nil];
                         }
                     }
@@ -538,6 +552,12 @@
         {
             //[(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
             [heldObject destroy];
+            
+            if(isSequencing)
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sentence_builder_object_fly_back.wav")];
+            else
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sequencing_card_flying_back_(on_replacement).wav")];
+            
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_EMPTY_SPACE withAdditionalData:nil];
         }
         else

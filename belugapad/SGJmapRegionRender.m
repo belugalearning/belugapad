@@ -69,7 +69,7 @@
     float cumx=0.0f, cumy=0.0f;
     
     //crate avg node using node positions relative to first node -- then offset the original by the same amount
-    CGPoint firstPos;
+    CGPoint firstPos=ccp(0,0);
     if(ParentGO.MasteryNodes.count>0) firstPos=((SGJmapMasteryNode*)[ParentGO.MasteryNodes objectAtIndex:0]).Position;
 
     for(SGJmapMasteryNode *mnode in ParentGO.MasteryNodes)

@@ -290,7 +290,7 @@
     // TEMP
     // N.B. Next few lines are a temp way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
     NSDictionary *ur = deviceUsers[ip.row];
-    NSRegularExpression *m = [[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil];
+    NSRegularExpression *m = [[[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil] autorelease];
     if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
     {
         [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(loginUser:) userInfo:@{ @"urId":ur[@"id"] } repeats:NO];

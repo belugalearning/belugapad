@@ -78,9 +78,9 @@ typedef struct _LineVertex {
 {
   self = [super init];
   if (self) {
-    points = [[[NSMutableArray alloc]init] autorelease];
-    velocities = [[[NSMutableArray alloc]init] autorelease];
-    circlesPoints = [[[NSMutableArray alloc]init] autorelease];
+    points = [[NSMutableArray alloc]init] ;
+    velocities = [[NSMutableArray alloc]init];
+    circlesPoints = [[NSMutableArray alloc]init];
 
     shaderProgram_ = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionColor];
     overdraw = 3.0f;
@@ -438,4 +438,13 @@ typedef struct _LineVertex {
     [renderTexture beginWithClear:0 g:0 b:0 a:0];
     [renderTexture end];
 }
+-(void)dealloc
+{
+    [points release];
+    [velocities release];
+    [circlesPoints release];
+    
+    [super dealloc];
+}
+
 @end

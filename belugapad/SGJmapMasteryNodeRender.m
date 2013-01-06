@@ -13,6 +13,7 @@
 #import "BLMath.h"
 #import "global.h"
 #import "SGJmapPaperPlane.h"
+#import "SimpleAudioEngine.h"
 
 #import "TouchXML.h"
 
@@ -534,6 +535,8 @@ static int shadowSteps=5;
             newfsprite.position=ccpAdd(base.position, ccp(0, -75));
         }
     }
+    NSString *audio=[NSString stringWithFormat:@"/sfx/go/sfx_journey_map_map_progress_island_state_change_%d.wav", self.islandStage];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(audio)];
     needToTransition=NO;
 }
 

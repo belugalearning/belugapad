@@ -1664,7 +1664,6 @@ static float kTimeToHintToolTray=0.0f;
     
     if (CGRectContainsPoint(commitBtn.boundingBox, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible && !autoMoveToNextProblem)
     {
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
@@ -1718,6 +1717,7 @@ static float kTimeToHintToolTray=0.0f;
                         //[answerLabel setColor:kMetaAnswerLabelColorSelected];
                         //                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+                        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_selected.wav")];
                     }
                     return;
                 }
@@ -1728,6 +1728,7 @@ static float kTimeToHintToolTray=0.0f;
                     //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
                     //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_deselected.wav")];
                 }
             }
             else
@@ -2337,6 +2338,7 @@ static float kTimeToHintToolTray=0.0f;
 
 - (void)checkUserCommit
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
     //effective user commit
     [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
     
@@ -2564,6 +2566,7 @@ static float kTimeToHintToolTray=0.0f;
             if(CGRectContainsPoint(trayPadClear.boundingBox, location))
             {
                 [(LineDrawer*)lineDrawer clearSlate];
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_cleared.wav")];
             }
             if(CGRectContainsPoint(trayPadClose.boundingBox, location))
             {
@@ -2637,6 +2640,7 @@ static float kTimeToHintToolTray=0.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
+
     
     [currentTool ccTouchesBegan:touches withEvent:event];
 }

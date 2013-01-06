@@ -11,6 +11,7 @@
 #import "ToolConsts.h"
 #import "BLMath.h"
 #import "DWNBondObjectGameObject.h"
+#import "SimpleAudioEngine.h"
 
 @implementation BNBondObjectRender
 
@@ -219,6 +220,7 @@
 }
 -(void)moveSpriteHome
 {
+//    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/")];
     CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;

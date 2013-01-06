@@ -289,7 +289,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             return;
         }
         
-        NSString *resultString = [[NSString alloc] initWithBytes:[res bytes] length:[res length] encoding:NSUTF8StringEncoding];
+        NSString *resultString = [[[NSString alloc] initWithBytes:[res bytes] length:[res length] encoding:NSUTF8StringEncoding] autorelease];
         NSDictionary *user = [resultString objectFromJSONString];
         
         if (!user)
@@ -793,7 +793,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     if (allUsersDatabase)
     {
         [self.allUsersDatabase close];
-        [self.allUsersDatabase release];
+        [allUsersDatabase release];
     }
     if (currentUserStateDatabase)
     {

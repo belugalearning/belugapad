@@ -13,11 +13,14 @@
 
 -(id)init
 {
-    dVars=[[NSMutableDictionary alloc] init];
-    dStrings=[[NSMutableDictionary alloc] init];
-    retainedVars=[[NSMutableDictionary alloc] init];
-    retainedStrings=[[NSMutableDictionary alloc] init];
-    randomKeyCaches=[[NSMutableDictionary alloc] init];
+    if(self=[super init])
+    {
+        dVars=[[NSMutableDictionary alloc] init];
+        dStrings=[[NSMutableDictionary alloc] init];
+        retainedVars=[[NSMutableDictionary alloc] init];
+        retainedStrings=[[NSMutableDictionary alloc] init];
+        randomKeyCaches=[[NSMutableDictionary alloc] init];
+    }
     
     return self;
 }

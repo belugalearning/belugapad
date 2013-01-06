@@ -235,6 +235,7 @@
         w.OutputValue=w.InputValue;
         [w handleMessage:kDWupdateObjectData];
         [numberWheels addObject:w];
+        [w release];
     }
     
 }

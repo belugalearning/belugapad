@@ -494,6 +494,8 @@ float timerIgnoreFrog;
     evalType=[pdef objectForKey:EVAL_TYPE];
     if(!evalType)evalType=@"TARGET";
     
+    [evalType retain];
+    
     NSNumber *abseval=[pdef objectForKey:@"EVAL_TARGET_AS_ABSOLUTE_VALUE"];
     if(abseval) evalAbsTarget=[abseval boolValue];
     
@@ -972,6 +974,7 @@ float timerIgnoreFrog;
     [bubbleTexSelected release];
     [rambler release];
     [selector release];
+    [evalType release];
     
     [gw release];
 

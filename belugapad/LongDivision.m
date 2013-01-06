@@ -479,9 +479,9 @@
     [renderLayer addChild:expectedLabel];
 
     
-    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-    [lblCurrentTotal setPosition:ccp(cx,50)];
-    [renderLayer addChild:lblCurrentTotal];
+//    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+//    [lblCurrentTotal setPosition:ccp(cx,50)];
+//    [renderLayer addChild:lblCurrentTotal];
 
 //    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 //    [questionLabel setAnchorPoint:ccp(0,0.5)];

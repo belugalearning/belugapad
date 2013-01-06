@@ -875,7 +875,7 @@ static float kTimeSinceAction=7.0f;
 {
     int solutionsFound=0;
     NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
-    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+//    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
     NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
     
 

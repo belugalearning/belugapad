@@ -19,9 +19,9 @@
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
 
+#import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
-#import "AcapelaSpeech.h"
 
 #import "babbelu.lic.h"
 #import "libs/Acapela/api/babbelu.lic.0166883f.password"
@@ -257,7 +257,9 @@
 
 -(void)stopAllSpeaking
 {
+#if !(TARGET_IPHONE_SIMULATOR)
     [self.acaSpeech stopSpeaking];
+#endif
 }
 
 -(void)tearDownUI

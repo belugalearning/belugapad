@@ -14,6 +14,8 @@
 @synthesize size, position;
 @synthesize text, textRenderComponent;
 @synthesize enabled, tag;
+@synthesize hidden, rowWidth, worldPosition;
+@synthesize interactive;
 
 -(SGBtxeMissingVar*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -43,6 +45,36 @@
 -(void)calculateSize
 {
     
+}
+
+-(void)setupDraw
+{
+    return;
+}
+
+-(NSString*)returnMyText
+{
+    return self.text;
+}
+
+-(void)activate
+{
+    return;
+}
+
+-(void)inflateZIndex
+{
+    return;
+}
+
+-(void)deflateZindex
+{
+    return;
+}
+
+-(void)destroy
+{
+    return;
 }
 
 -(void)dealloc

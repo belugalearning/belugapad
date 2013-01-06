@@ -26,6 +26,8 @@
 @synthesize assetType;
 @synthesize container;
 @synthesize backgroundType;
+@synthesize rowWidth;
+@synthesize targetNumber;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -245,6 +247,16 @@
 -(void)returnToBase
 {
     self.position=self.originalPosition;
+}
+
+-(CGRect)returnBoundingBox
+{
+    return CGRectZero;
+}
+
+-(void)actOnTap
+{
+    return;
 }
 
 -(void)dealloc

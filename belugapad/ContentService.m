@@ -913,6 +913,11 @@
     return [NSString stringWithFormat:@"%@ -- %@", tool, title];
 }
 
+-(NSDictionary*)saveChangesToCurrentProblemPDef:(NSDictionary*)pdef
+{
+    return nil;
+}
+
 #pragma mark - tear down
 
 - (void)dealloc

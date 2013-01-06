@@ -54,9 +54,6 @@
             [self setSprite];
         }
         
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
     }
     if(messageType==kDWdismantle)
     {
@@ -75,7 +72,7 @@
 {    
     if(!anch.Hidden)
     {
-        NSString *spriteFileName=[[NSString alloc]init];
+        NSString *spriteFileName=@"";
         //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
             

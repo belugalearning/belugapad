@@ -185,7 +185,7 @@
 
 -(void) dealloc
 {
-    [pogo.BaseNode release];
+    pogo.BaseNode=nil;
     
     [super dealloc];
 }

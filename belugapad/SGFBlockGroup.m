@@ -18,7 +18,7 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.MyBlocks=[[NSMutableArray alloc]init];
+        self.MyBlocks=[[[NSMutableArray alloc]init]autorelease];
     }
     
     return self;

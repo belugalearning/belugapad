@@ -94,10 +94,10 @@
 
 -(void)setSprite
 {
-    pogo.BaseNode = [[CCNode alloc]init];
+    pogo.BaseNode = [[[CCNode alloc]init] autorelease];
     if(!pogo.Length) pogo.Length=1;
     
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=@"";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
     
     for(int i=0;i<pogo.Length+1;i++) {
@@ -243,7 +243,7 @@
 
 -(void) dealloc
 {
-    [pogo.BaseNode release];
+    pogo.BaseNode=nil;
     
     [super dealloc];
 }

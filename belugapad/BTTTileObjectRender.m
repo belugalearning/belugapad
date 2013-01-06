@@ -65,9 +65,6 @@
         if(!tile.mySprite) { 
             [self setSprite];
         }
-
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
     }
     if(messageType==kDWdismantle)
@@ -105,16 +102,9 @@
 -(void)setSprite
 {    
 
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=@"";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
-    
-    if(tile.isEndXPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_row.png", tile.Size];
-    else if(tile.isEndYPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_col.png", tile.Size];
-    else if(tile.isCornerPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_corner.png", tile.Size];
-
-    else spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d.png", tile.Size];
-    
     spriteFileName=@"/images/timestables/TT_Grid_Block.png";
     
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];

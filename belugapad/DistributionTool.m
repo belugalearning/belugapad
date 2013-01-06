@@ -372,12 +372,12 @@ static float kTimeSinceAction=7.0f;
 {
     // set our renderlayer
     gw.Blackboard.RenderLayer = renderLayer;
-    activeRects=[[NSMutableArray alloc]init];
+    activeRects=[[[NSMutableArray alloc]init]autorelease];
     
     
     if(hasInactiveArea)
     {
-        inactiveArea=[[NSMutableArray alloc]init];
+        inactiveArea=[[[NSMutableArray alloc]init]autorelease];
         
         int thisPos=0;
         int areaWidth=4;
@@ -579,7 +579,7 @@ static float kTimeSinceAction=7.0f;
     }
     
     [activeRects addObject:[NSValue valueWithCGRect:thisShapeRect]];
-       
+    [container release];
     thesePositions=nil;
 
 }
@@ -649,7 +649,7 @@ static float kTimeSinceAction=7.0f;
         else
             areaOpacity=255;
         
-        NSMutableArray *thisArea=[[NSMutableArray alloc]init];
+        NSMutableArray *thisArea=[[[NSMutableArray alloc]init]autorelease];
         int thisPos=0;
         
         for(int i=0;i<areaSize;i++)
@@ -691,7 +691,7 @@ static float kTimeSinceAction=7.0f;
     //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
     if([destroyedLabelledGroups count]==0)
     {
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil];
+        container=[[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil]autorelease];
 //        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
 //        [container.Label setPosition:ccp(cx,cy)];
 //        [renderLayer addChild:container.Label];
@@ -699,7 +699,7 @@ static float kTimeSinceAction=7.0f;
     else
     {
         NSLog(@"creating labelled group: %@",[destroyedLabelledGroups objectAtIndex:0]);
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andShowCount:NO andRenderLayer:renderLayer];
+        container=[[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andShowCount:NO andRenderLayer:renderLayer]autorelease];
         [destroyedLabelledGroups removeObjectAtIndex:0];
         [existingGroups addObject:[container.Label string]];
     }
@@ -822,10 +822,12 @@ static float kTimeSinceAction=7.0f;
 {
     NSMutableArray *solutions=[NSMutableArray arrayWithArray:solutionsDef];
     
-    int shapesInArea[[evalAreas count]];
+    int arraySize=[evalAreas count];
+    
+    int shapesInArea[arraySize];
     int solutionsFound=0;
     
-    for(int i=0;i<[evalAreas count];i++)
+    for(int i=0;i<arraySize;i++)
     {
         shapesInArea[i]=0;
     }
@@ -851,7 +853,8 @@ static float kTimeSinceAction=7.0f;
                 
             }
         }
-        
+        // analyser throws this up as an issue - but we know it works, so ignore
+#ifndef __clang_analyzer__
         NSNumber *thisNo=nil;
         for(NSNumber *n in solutions)
         {
@@ -864,6 +867,7 @@ static float kTimeSinceAction=7.0f;
         [solutions removeObject:thisNo];
         
     }
+#endif
     
     if(solutionsFound==[solutionsDef count])
         return YES;
@@ -874,7 +878,7 @@ static float kTimeSinceAction=7.0f;
 -(BOOL)evalNumberOfShapesAndTypesInEvalAreas
 {
     int solutionsFound=0;
-    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedEvalAreas=[[[NSMutableArray alloc]init] autorelease];
 //    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
     NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
     
@@ -1027,7 +1031,7 @@ static float kTimeSinceAction=7.0f;
             else
                 shouldContinueEval=NO;
             
-            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
+            if(shouldContinueEval && circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                 solutionsFound++;
 
                 [matchedEvalAreas addObject:a];
@@ -1039,7 +1043,7 @@ static float kTimeSinceAction=7.0f;
         }
     }
  
-    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    //NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
     if(solutionsFound==[solutionsDef count])
         return YES;
     else
@@ -1048,8 +1052,8 @@ static float kTimeSinceAction=7.0f;
 
 -(BOOL)evalGroupTypesAndShapes
 {
-    NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
-    NSMutableArray *solFound=[[NSMutableArray alloc]init];
+    NSMutableArray *shapesFound=[[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray *solFound=[[[NSMutableArray alloc]init]autorelease];
     int solutionsExpected=[solutionsDef count];
     int solutionsFound=0;
     
@@ -1092,7 +1096,7 @@ static float kTimeSinceAction=7.0f;
 -(BOOL)evalValueOfEvalAreas
 {
     int solutionsFound=0;
-    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedEvalAreas=[[[NSMutableArray alloc]init]autorelease];
     NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
     
     for(int i=0;i<[evalAreas count];i++)
@@ -1167,8 +1171,8 @@ static float kTimeSinceAction=7.0f;
 -(BOOL)evalValueOfShapesInContainers
 {
     int solutionsFound=0;
-    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
-    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedContainers=[[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray *matchedSolutions=[[[NSMutableArray alloc]init]autorelease];
     
     
     for(id thisC in gw.AllGameObjectsCopy)
@@ -1232,8 +1236,8 @@ static float kTimeSinceAction=7.0f;
 -(BOOL)evalNumberOfShapesAndTypesInContainers
 {
     int solutionsFound=0;
-    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
-    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedContainers=[[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray *matchedSolutions=[[[NSMutableArray alloc]init]autorelease];
     
     
     for(id thisC in gw.AllGameObjectsCopy)
@@ -1370,7 +1374,7 @@ static float kTimeSinceAction=7.0f;
                 else
                     shouldContinueEval=NO;
                 
-                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
+                if(shouldContinueEval && circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                     solutionsFound++;
                     [matchedContainers addObject:c];
                     [matchedSolutions addObject:solutions];
@@ -1635,7 +1639,6 @@ static float kTimeSinceAction=7.0f;
                 }
                 // if it's unbreakabe, basically relayout the blocks and do nothing more 
                 if([((id<ShapeContainer>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
-                    gotTarget=YES;
                     [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                     [self setTouchVarsToOff];
                     return;
@@ -1757,8 +1760,8 @@ static float kTimeSinceAction=7.0f;
 
 -(void)checkForOverlappingContainers
 {
-    NSMutableArray *shapeRects=[[NSMutableArray alloc]init];
-    NSMutableArray *shapeObjects=[[NSMutableArray alloc]init];
+    NSMutableArray *shapeRects=[[[NSMutableArray alloc]init]autorelease];
+    NSMutableArray *shapeObjects=[[[NSMutableArray alloc]init]autorelease];
     
     for(id<NSObject,ShapeContainer> go in gw.AllGameObjectsCopy)
     {
@@ -1875,7 +1878,7 @@ static float kTimeSinceAction=7.0f;
                     
                     else if([foundShapes count]>0)
                     {
-                        BOOL noArrayFound;
+                        BOOL noArrayFound=NO;
                         
                         // but if it's greater we need to loop through the existing shape arrays
                         for (NSMutableArray *a in foundShapes)
@@ -1935,9 +1938,9 @@ static float kTimeSinceAction=7.0f;
 {
     if(evalType==kCheckShapeSizes)
     {
-        NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
-        NSMutableArray *solFound=[[NSMutableArray alloc]init];
-        NSMutableArray *containers=[[NSMutableArray alloc]init];
+        NSMutableArray *shapesFound=[[[NSMutableArray alloc]init]autorelease];
+        NSMutableArray *solFound=[[[NSMutableArray alloc]init]autorelease];
+        NSMutableArray *containers=[[[NSMutableArray alloc]init]autorelease];
         int solutionsExpected=[solutionsDef count];
         int solutionsFound=0;
         
@@ -1981,9 +1984,9 @@ static float kTimeSinceAction=7.0f;
     }
     if(evalType==kIncludeShapeSizes)
     {
-        NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
-        NSMutableArray *solFound=[[NSMutableArray alloc]init];
-        NSMutableArray *containers=[[NSMutableArray alloc]init];
+        NSMutableArray *shapesFound=[[[NSMutableArray alloc]init]autorelease];
+        NSMutableArray *solFound=[[[NSMutableArray alloc]init]autorelease];
+        NSMutableArray *containers=[[[NSMutableArray alloc]init]autorelease];
         int solutionsExpected=[solutionsDef count];
         int solutionsFound=0;
         

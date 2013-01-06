@@ -195,7 +195,7 @@
     float barW=824.0f;
     float barH=60.0f;
     float startBarPos=xInset;
-    float endBarPos=startBarPos;
+    float endBarPos;
     float lblStartYPos=yInset-80;
     float labelFontSize=26.0f;
     float lineSize=0.0f;
@@ -323,7 +323,7 @@
             //}
             
             CGPoint *firstCo=&block[0];
-            ccColor3B curCol=ccc3(0,0,0);
+            ccColor3B curCol;
             ccColor3B sepLine=ccc3(68,71,72);
             
             

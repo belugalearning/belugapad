@@ -135,7 +135,6 @@
     if(ParentGO.MyContainer)[(id<ShapeContainer>)ParentGO.MyContainer removeBlockFromMe:ParentGO];
     if(ParentGO.Label)[ParentGO.Label removeFromParentAndCleanup:YES];
     if(ParentGO.mySprite)[ParentGO.mySprite removeFromParentAndCleanup:YES];
-    if(ParentGO.PairedObjects)[ParentGO.PairedObjects release];
     ParentGO.mySprite=nil;
     ParentGO.PairedObjects=nil;
     ParentGO.Label=nil;

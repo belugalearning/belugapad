@@ -1505,7 +1505,7 @@ static float kTimeToHintToolTray=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        SGBtxeRow *row;
+        SGBtxeRow *row=nil;
 //        CCLabelTTF *answerLabel;
         NSString *raw=nil;
         NSString *answerLabelString=nil;
@@ -1615,6 +1615,8 @@ static float kTimeToHintToolTray=7.0f;
             [row setupDraw];
         }
     
+        if(row)[row release];
+        
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }

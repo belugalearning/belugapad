@@ -38,6 +38,7 @@
 @synthesize renderAsDots;
 @synthesize numberMode;
 @synthesize backgroundType;
+@synthesize rowWidth;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -410,6 +411,21 @@
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(NSString*)returnMyText
+{
+    return self.text;
+}
+
+-(CGRect)returnBoundingBox
+{
+    return CGRectZero;
+}
+
+-(void)actOnTap
+{
+    return;
 }
 
 -(void)redrawBkg

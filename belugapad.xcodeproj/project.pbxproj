@@ -30,7 +30,7 @@
 		0C692E54157F9794009307DB /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4F157F9794009307DB /* FMResultSet.m */; };
 		0C692E571580BCF4009307DB /* CouchDBDerivedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E561580BCF4009307DB /* CouchDBDerivedDocument.m */; };
 		0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C091580C392004B716F /* CHANGELOG.md */; };
-		0C712C0E1580C392004B716F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C0B1580C392004B716F /* JSONKit.m */; };
+		0C712C0E1580C392004B716F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C0B1580C392004B716F /* JSONKit.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		0C712C0F1580C392004B716F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C0C1580C392004B716F /* README.md */; };
 		0C712C131580EDEE004B716F /* Problem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C121580EDED004B716F /* Problem.m */; };
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };

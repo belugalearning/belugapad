@@ -93,6 +93,7 @@
     BOOL expressionIsEqual;
     
     CCDrawNode *drawNode;
+    CCDrawNode *scaleDrawNode;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

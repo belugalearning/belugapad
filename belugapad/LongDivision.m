@@ -77,7 +77,9 @@
         gw.Blackboard.inProblemSetup = NO;
         
         drawNode=[[CCDrawNode alloc] init];
+        scaleDrawNode=[[CCDrawNode alloc] init];
         [self.ForeLayer addChild:drawNode];
+        [self.ForeLayer addChild:scaleDrawNode];
         //[self createClippingNode];
     }
     
@@ -174,6 +176,8 @@
 //    float lineRad=3.0f;
     
     [drawNode clear];
+    [scaleDrawNode clear];
+    [scaleDrawNode setPosition:ccp(0,-700)];
     
 //    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
     
@@ -298,10 +302,13 @@
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
             
+            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
+            
             // and all of it's separators
             for(int i=0;i<[c intValue]-1;i++)
             {
                 [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
+                [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
                 sectionStartPos+=sectionSize;
             }
 
@@ -355,6 +362,7 @@
         
         CGPoint *firstVert=&verts[0];
         [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
     }
 //    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
 //    [l setPosition:ccp(startBarPos,yInset-27)];
@@ -376,6 +384,10 @@
         [renderLayer addChild:lTot];
         [allLabels addObject:lTot];
     }
+    
+
+    scaleDrawNode.scale=2.0f;
+    
     renderingChanges=NO;
 }
 

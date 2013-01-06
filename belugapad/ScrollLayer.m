@@ -39,24 +39,26 @@
 
 - (void)onEnter {
 //	CCLOG(@"onEnter");
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:NO];
+    
+    [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:NO];
+    
 	[super onEnter];
 }
 
 - (void)onExit {
 //	CCLOG(@"onEnter");
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+	[[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
 	[super onExit];
 }
 
 -(void)stopTouching
 {
-    [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
 }
 
 -(void)startTouching
 {
-    [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+    [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
 }
 
 -(void)makePages {

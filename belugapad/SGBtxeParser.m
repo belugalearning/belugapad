@@ -76,7 +76,7 @@ const NSString *matchNumbers=@"0123456789";
             if([self doesStringContainNumber:s])
             {
                 //create object number, have it parsed
-                SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
+                SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
                 
                 NSString *sepEndChar=@"?!.,:;";
                 NSString *newNextT=nil;
@@ -96,7 +96,7 @@ const NSString *matchNumbers=@"0123456789";
                 if(newNextT)
                 {
                     //create text
-                    SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+                    SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
                     t.text=newNextT;
                     [ParentGO.containerMgrComponent addObjectToContainer:t];
                 }
@@ -104,7 +104,7 @@ const NSString *matchNumbers=@"0123456789";
             else
             {
                 //create text
-                SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+                SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
                 t.text=s;
                 [ParentGO.containerMgrComponent addObjectToContainer:t];
             }
@@ -112,7 +112,7 @@ const NSString *matchNumbers=@"0123456789";
     }
     else if([element.name isEqualToString:BTXE_OT])
     {
-        SGBtxeObjectText *ot=[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld];
+        SGBtxeObjectText *ot=[[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld] autorelease];
         ot.text=[element stringValue];
         CXMLNode *tagNode=[element attributeForName:@"tag"];
         if(tagNode)ot.tag=tagNode.stringValue;
@@ -131,7 +131,7 @@ const NSString *matchNumbers=@"0123456789";
     else if([element.name isEqualToString:BTXE_OBJ])
     {
         //create text
-        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+        SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
         t.text=@"object";
         
         CXMLNode *count=[element attributeForName:@"count"];
@@ -146,7 +146,7 @@ const NSString *matchNumbers=@"0123456789";
     
     else if([element.name isEqualToString:BTXE_OO])
     {
-        SGBtxeObjectOperator *oo=[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld];
+        SGBtxeObjectOperator *oo=[[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld] autorelease];
         CXMLNode *opNode=[element attributeForName:@"value"];
         if(opNode)oo.valueOperator=opNode.stringValue;
         
@@ -159,7 +159,7 @@ const NSString *matchNumbers=@"0123456789";
     
     else if([element.name isEqualToString:BTXE_OI])
     {
-        SGBtxeObjectIcon *oi=[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld];
+        SGBtxeObjectIcon *oi=[[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld] autorelease];
         CXMLNode *tagNode=[element attributeForName:@"tag"];
         if(tagNode)oi.tag=tagNode.stringValue;
         CXMLNode *iconTagNode=[element attributeForName:@"icontag"];
@@ -177,7 +177,7 @@ const NSString *matchNumbers=@"0123456789";
     {
         //for now parse commot to a regular ot, using the sample text and the preference tag
         
-        SGBtxeObjectText *ot=[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld];
+        SGBtxeObjectText *ot=[[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld] autorelease];
         ot.text=[[element attributeForName:@"sample"] stringValue];
         
         CXMLNode *hidden=[element attributeForName:@"hidden"];
@@ -193,7 +193,7 @@ const NSString *matchNumbers=@"0123456789";
     
     else if ([element.name isEqualToString:BTXE_ON])
     {
-        SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
+        SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
         on.numberText=[[element attributeForName:@"number"] stringValue];
         on.prefixText=[[element attributeForName:@"prefix"] stringValue];
         on.suffixText=[[element attributeForName:@"suffix"] stringValue];
@@ -219,7 +219,7 @@ const NSString *matchNumbers=@"0123456789";
     
     else if([element.name isEqualToString:BTXE_PH])
     {
-        SGBtxePlaceholder *ph=[[SGBtxePlaceholder alloc] initWithGameWorld:gameWorld];
+        SGBtxePlaceholder *ph=[[[SGBtxePlaceholder alloc] initWithGameWorld:gameWorld] autorelease];
         
         ph.targetTag=[[element attributeForName:@"targetTag"] stringValue];
         

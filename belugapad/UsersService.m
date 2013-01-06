@@ -84,9 +84,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
         }
         allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
-        [allUsersDatabase open];
-        [allUsersDatabase executeUpdate:@"UPDATE users SET password = 'winning troll'"];
-        [allUsersDatabase close];
+        
         NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
         if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
         {
@@ -141,7 +139,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         TFLog(@"logged in with beluga user id: %@", urId);
         
         [allUsersDatabase open];
-        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password FROM users WHERE id = ?", urId];
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [allUsersDatabase close];
         
@@ -206,7 +204,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableArray *users = [NSMutableArray array];
     
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
@@ -307,7 +305,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         }
         
         [bself->allUsersDatabase open];
-        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password) values(?,?,?)", urId, nickName, password];
+        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash) values(?,?,?,1)", urId, nickName, password];
         [bself->allUsersDatabase close];
         
         if (!successInsert)
@@ -641,12 +639,13 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     // get users date from on-device db
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove, nick_clash FROM users"];
     while([rs next]) [users addObject:@{
-                          @"id":[rs stringForColumn:@"id"],
-                          @"nick":[rs stringForColumn:@"nick"],
-                          @"password":[rs stringForColumn:@"password"],
-                          @"flagRemove":@([rs intForColumn:@"flag_remove"]) }];
+                          @"id":[rs stringForColumnIndex:0],
+                          @"nick":[rs stringForColumnIndex:1],
+                          @"password":[rs stringForColumnIndex:2],
+                          @"flagRemove":@([rs intForColumnIndex:3]),
+                          @"nickClash":@([rs intForColumnIndex:4]) }];
     [allUsersDatabase close];
     
     if (![users count]) return;
@@ -654,6 +653,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSSyncUsersPath
                                                   parameters:[NSDictionary dictionaryWithObject:[users JSONString] forKey:@"users"]];
+    [req addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
     __block typeof(self) bself = self;
     
     void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
@@ -667,27 +668,36 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             [bself->allUsersDatabase open];
             for (NSDictionary *serverUr in serverUsers)
             {
-                // remove users flagged for removal (getting list of these users so that we can log them)
-                NSArray *usersToRemove = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"flagRemove == 1"]] valueForKey:@"id"];
-                if ([usersToRemove count])
+                NSArray *clientUrArr = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"id == %@", serverUr[@"id"]]]];
+                if ([clientUrArr count]) /*there should be exactly 1!*/
                 {
-                    [bself->loggingService logEvent:BL_APP_REMOVE_USERS withAdditionalData:[NSDictionary dictionaryWithObject:usersToRemove forKey:@"userIds"]];
-                    
-                    NSString *sql = [NSString stringWithFormat:@"DELETE FROM users WEHERE id IN ('%@')", [usersToRemove componentsJoinedByString:@"','"]];
-                    BOOL updateSuccess = [bself->allUsersDatabase executeUpdate:sql];
-                    
-                    if (!updateSuccess)
+                    NSDictionary *clientUr = clientUrArr[0];
+                    if ([serverUr[@"nickClash"] intValue] != [clientUr[@"nickClash"] intValue])
                     {
-                        // log failure to remove users
-                        NSMutableDictionary *d = [NSMutableDictionary dictionary];
-                        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
-                        [d setValue:CODE_LOCATION() forKey:@"codeLocation"];
-                        [d setValue:sql forKey:@"statement"];
-                        [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
+                        [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nickClash = ? WHERE id = ?", serverUr[@"nickClash"], serverUr[@"id"]];
                     }
-                    
-                    // TODO: delete from tables other than users - NodePlays, ActivityFeed, FeatureKeys
                 }
+            }
+            
+            // remove users flagged for removal (getting list of these users so that we can log them)
+            NSArray *usersToRemove = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"flagRemove == 1"]] valueForKey:@"id"];
+            if ([usersToRemove count])
+            {
+                [bself->loggingService logEvent:BL_APP_REMOVE_USERS withAdditionalData:[NSDictionary dictionaryWithObject:usersToRemove forKey:@"userIds"]];
+                
+                NSString *sql = [NSString stringWithFormat:@"DELETE FROM users WEHERE id IN ('%@')", [usersToRemove componentsJoinedByString:@"','"]];
+                BOOL updateSuccess = [bself->allUsersDatabase executeUpdate:sql];
+                
+                if (!updateSuccess)
+                {
+                    // log failure to remove users
+                    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+                    [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
+                    [d setValue:CODE_LOCATION() forKey:@"codeLocation"];
+                    [d setValue:sql forKey:@"statement"];
+                    [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
+                }
+                // TODO: delete from tables other than users - NodePlays, ActivityFeed, FeatureKeys
             }
             [bself->allUsersDatabase close];
             bself->isSyncing = NO;
@@ -705,6 +715,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
     [user setValue:[rs stringForColumn:@"password"] forKey:@"password"];
+    [user setValue:@([rs intForColumn:@"nick_clash"]) forKey:@"nickClash"];
     return user;
 }
 

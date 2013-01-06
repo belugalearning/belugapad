@@ -186,7 +186,7 @@
     
     //split text into parts if passed to this method
     
-    BOOL hadPoint=NO, hadStart=NO, hadEnd;
+    BOOL hadPoint=NO, hadStart=NO, hadEnd=NO;
     NSString *seek=@"0123456789";
     
     //strip commas

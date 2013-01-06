@@ -114,7 +114,7 @@ const uint labelSpacing = 67;
     // what's closest slot to touch?
     CGPoint touchPos = [(UITouch*)[touches anyObject] locationInView:self];
     float closestDistance = NSUIntegerMax;
-    uint labelIx;
+    uint labelIx=0;
     
     for (uint i=0; i<[labels count]; i++)
     {

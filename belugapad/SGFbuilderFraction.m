@@ -30,9 +30,9 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
-        self.BaseNode=[[CCNode alloc]init];
-        self.Chunks=[[NSMutableArray alloc]init];
-        self.GhostChunks=[[NSMutableArray alloc]init];
+        self.BaseNode=[[[CCNode alloc]init]autorelease];
+        self.Chunks=[[[NSMutableArray alloc]init]autorelease];
+        self.GhostChunks=[[[NSMutableArray alloc]init]autorelease];
 
     }
     RenderComponent=[[SGFractionBuilderRender alloc] initWithGameObject:self];

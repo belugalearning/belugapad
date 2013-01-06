@@ -1302,6 +1302,8 @@ static float kNBFontSizeLarge=35.0f;
             
         }
         
+        [usedGOs release];
+        
         if(foundSolutions==[solutionsDef count])
             return YES;
         else 

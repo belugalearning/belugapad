@@ -67,7 +67,7 @@
         
         [p.slicesInMe removeObject:slice];
         
-        BOOL GotPlaceInNode;
+        BOOL GotPlaceInNode=NO;
         
         if(!c.Nodes)c.Nodes=[[[NSMutableArray alloc]init] autorelease];
         if([c.Nodes count]==0)

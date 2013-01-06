@@ -27,7 +27,7 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
-        self.GroupsInMe=[[NSMutableArray alloc]init];
+        self.GroupsInMe=[[[NSMutableArray alloc]init]autorelease];
         self.Replacement=isReplacement;
     }
     

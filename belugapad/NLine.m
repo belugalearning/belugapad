@@ -438,7 +438,7 @@ float timerIgnoreFrog;
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
     
     //jump sections
-    rambler.UserJumps=[[NSMutableArray alloc]init];
+    rambler.UserJumps=[[[NSMutableArray alloc]init] autorelease];
     
     //positioning
     rambler.DefaultSegmentSize=115;

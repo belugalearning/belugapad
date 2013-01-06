@@ -81,8 +81,8 @@
         drawNode=[[CCDrawNode alloc] init];
         scaleDrawNode=[[CCDrawNode alloc] init];
         [self.ForeLayer addChild:drawNode];
-        [self.ForeLayer addChild:scaleDrawNode];
-        //[self createClippingNode];
+        [clippingNode addChild:scaleDrawNode];
+//        [self createClippingNode];
     }
     
     return self;
@@ -90,24 +90,33 @@
 
 -(void)setupClippingNode
 {
-    CCSprite *spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
+    CCSprite *spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Mask.png")];
+    CCSprite *maskOuter=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
     
-    CCClippingNode *clippingNode=[CCClippingNode clippingNode];
+    magnifyBar=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Bar_Full.png")];
+
+    
+    clippingNode=[CCClippingNode clippingNode];
     clippingNode.contentSize=CGSizeMake(2*cx, 2*cy);
     clippingNode.anchorPoint=ccp(0.5f,0.5f);
     clippingNode.position=ccp(cx,cy);
     clippingNode.stencil=spriteMask;
-    clippingNode.alphaThreshold=0.05f;
-    
+    //clippingNode.alphaThreshold=0.05f;
+
+    spriteMask.position=ccp(800,130);
+    maskOuter.position=ccp(800,150);
+    [magnifyBar setPosition:ccp(150,70)];
+    [clippingNode addChild:magnifyBar];
     [clippingNode addChild:spriteMask];
-    
+
     [self.ForeLayer addChild:clippingNode];
+    [self.ForeLayer addChild:maskOuter];
     
     //test for clipping
-    CCDrawNode *drawTests=[CCDrawNode node];
-    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
-    
-    [clippingNode addChild:drawTests];
+//    CCDrawNode *drawTests=[CCDrawNode node];
+//    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
+//    
+//    [clippingNode addChild:drawTests];
 }
 
 -(void)doUpdateOnTick:(ccTime)delta
@@ -201,7 +210,7 @@
     
     [drawNode clear];
     [scaleDrawNode clear];
-    [scaleDrawNode setPosition:ccp(0,-700)];
+    [scaleDrawNode setPosition:ccp(-760,-570)];
     
 //    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
     
@@ -410,7 +419,7 @@
     }
     
 
-    scaleDrawNode.scale=2.0f;
+    scaleDrawNode.scale=1.8f;
     
     renderingChanges=NO;
 }

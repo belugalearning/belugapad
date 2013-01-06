@@ -106,7 +106,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     if(self=[super init])
     {
-        self.isTouchEnabled=YES;
+        self.touchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;

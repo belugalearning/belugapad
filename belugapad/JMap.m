@@ -120,7 +120,7 @@ typedef enum {
 {
     if(self=[super init])
     {
-        self.isTouchEnabled=YES;
+        self.touchEnabled=YES;
         [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];

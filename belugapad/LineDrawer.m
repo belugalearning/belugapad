@@ -91,7 +91,7 @@ typedef struct _LineVertex {
       
     [self addChild:renderTexture];
 
-    self.isTouchEnabled = YES;
+    self.touchEnabled = YES;
 
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.maximumNumberOfTouches = 1;

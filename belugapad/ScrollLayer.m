@@ -30,7 +30,7 @@
 
 -(id) init {
 	if ((self=[super init])) {
-		self.isTouchEnabled = YES;
+		self.touchEnabled = YES;
 		isTouching = NO;
 	}
     

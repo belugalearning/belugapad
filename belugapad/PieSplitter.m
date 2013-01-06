@@ -243,7 +243,7 @@ static float kTimeToPieShake=7.0f;
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *cont=[activeCon objectAtIndex:i];
-        NSString *thisConVal=[NSString alloc];
+        NSString *thisConVal=@"";
         int slicesInCont=[cont.mySlices count];
         float thisVal=(float)slicesInCont/(float)[activeCon count];
         if(labelType==kLabelShowDecimal) thisConVal=[NSString stringWithFormat:@"%.02g", thisVal];
@@ -508,8 +508,7 @@ static float kTimeToPieShake=7.0f;
 {
     //int maxPXtoMove=100;
     int stepper=20;
-    BOOL isGreater;
-    BOOL isLess;
+    BOOL isLess=NO;
 
     
     // loop through containers
@@ -546,7 +545,7 @@ static float kTimeToPieShake=7.0f;
         else
             [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset)]];        
         
-        isGreater=NO;
+
         isLess=NO;
     }
 }

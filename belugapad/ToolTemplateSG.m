@@ -170,6 +170,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
+    NSLog(@"touchendloc=%@", NSStringFromCGPoint(location));
     
     // if we were moving the marker
     

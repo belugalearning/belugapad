@@ -70,6 +70,8 @@
         [self readPlist:pdef];
         [self populateGW];
         
+        [self setupClippingNode];
+        
         renderingChanges=YES;
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
@@ -84,6 +86,28 @@
     }
     
     return self;
+}
+
+-(void)setupClippingNode
+{
+    CCSprite *spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
+    
+    CCClippingNode *clippingNode=[CCClippingNode clippingNode];
+    clippingNode.contentSize=CGSizeMake(2*cx, 2*cy);
+    clippingNode.anchorPoint=ccp(0.5f,0.5f);
+    clippingNode.position=ccp(cx,cy);
+    clippingNode.stencil=spriteMask;
+    clippingNode.alphaThreshold=0.05f;
+    
+    [clippingNode addChild:spriteMask];
+    
+    [self.ForeLayer addChild:clippingNode];
+    
+    //test for clipping
+    CCDrawNode *drawTests=[CCDrawNode node];
+    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
+    
+    [clippingNode addChild:drawTests];
 }
 
 -(void)doUpdateOnTick:(ccTime)delta

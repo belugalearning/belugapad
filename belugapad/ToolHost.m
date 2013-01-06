@@ -943,10 +943,11 @@ static float kTimeToHintToolTray=7.0f;
     {
         NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
         
+        [loggingService logEvent:BL_PA_POSTPONE_FOR_INTRO_PROBLEM withAdditionalData:nil];
+        
         //re-load with an FK problem, then resume on episode / pipeline
         breakOutIntroProblemFK=breakOutToFK;
         breakOutIntroProblemHasLoaded=NO;
-        
         
         [self loadProblem];
     }

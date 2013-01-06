@@ -97,7 +97,11 @@
 
 -(void)setSprite
 {
+<<<<<<< HEAD
     pogo.BaseNode = [[CCNode alloc]init];
+=======
+    pogo.BaseNode = [[[CCNode alloc]init] autorelease];
+>>>>>>> ada9ea687a3aa7243a0f9dc830067fb90a783957
     NSString *spriteFileName=@"";
     int lengthWithStops=pogo.Length+2;
     
@@ -185,7 +189,7 @@
 
 -(void) dealloc
 {
-    [pogo.BaseNode release];
+    pogo.BaseNode=nil;
     
     [super dealloc];
 }

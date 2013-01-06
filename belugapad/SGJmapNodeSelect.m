@@ -161,7 +161,8 @@
 
             if([thisNumber floatValue]>0)
             {
-                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore fontName:@"Source Sans Pro" fontSize:15.0f dimensions:CGSizeMake(180,100) hAlignment:UITextAlignmentLeft];
+                
                 [score setPosition:ccp(100, 85)];
                 [score setColor:ccc3(255, 255, 255)];
                 [signSprite addChild:score];
@@ -171,7 +172,10 @@
             [signSprite addChild:newSprite];
 
             
-            CCLabelTTF *days=[CCLabelTTF labelWithString:splayed dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+            CCLabelTTF *days=[CCLabelTTF labelWithString:splayed
+                                              fontName:@"Source Sans Pro"
+                                                fontSize:14.0f
+                                              dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft ];
             [days setPosition:ccp(100, 50)];
             [days setColor:ccc3(200, 200, 200)];
             [signSprite addChild:days];
@@ -190,7 +194,7 @@
             if(ParentGO.EnabledAndComplete)
             {
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" fontName:@"Source Sans Pro" fontSize:14.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
                 [days setPosition:ccp(100, 45)];
                 [days setColor:ccc3(200, 200, 200)];
                 [signSprite addChild:days];
@@ -199,7 +203,7 @@
                 playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
                 [playSprite addChild:playlabel];
                 
-                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,418" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,418" fontName:@"Source Sans Pro" fontSize:15.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
                 [score setPosition:ccp(100, 85)];
                 [score setColor:ccc3(255, 255, 255)];
                 [signSprite addChild:score];
@@ -219,7 +223,7 @@
                 [signSprite addChild:newSprite];
         
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" fontName:@"Source Sans Pro" fontSize:14.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
                 [days setPosition:ccp(100, 45)];
                 [days setColor:ccc3(255, 255, 255)];
                 [signSprite addChild:days];

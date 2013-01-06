@@ -857,7 +857,7 @@ static float kNBFontSizeLarge=35.0f;
             NSLog(@"blocksUsedFromThisStore = %d, blocksForThisStore = %d", blocksUsedFromThisStore[pogo.IndexPos],blocksForThisStore[pogo.IndexPos]);
             
 
-            DWNBondObjectGameObject *newbar = [DWNBondObjectGameObject alloc];
+            DWNBondObjectGameObject *newbar = [[DWNBondObjectGameObject alloc] autorelease];
             [gw populateAndAddGameObject:newbar withTemplateName:@"TnBondObject"];
             [loggingService.logPoller registerPollee:(id<LogPolling>)newbar];
             //newbar.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
@@ -1235,9 +1235,9 @@ static float kNBFontSizeLarge=35.0f;
     else if(solutionMode==kSolutionRowMatch)
     {
         int foundSolutions=0;
-        NSMutableArray *correctRows=[[NSMutableArray alloc]init];
-        NSMutableArray *usedSolutions=[[NSMutableArray alloc]init];
-        NSMutableArray *usedGOs=[[NSMutableArray alloc] init];
+        NSMutableArray *correctRows=[[[NSMutableArray alloc]init] autorelease];
+        NSMutableArray *usedSolutions=[[[NSMutableArray alloc]init] autorelease];
+        NSMutableArray *usedGOs=[[[NSMutableArray alloc] init] autorelease];
         
 //        NSMutableArray *solCopy=[NSMutableArray arrayWithArray:solutionsDef
         
@@ -1301,9 +1301,6 @@ static float kNBFontSizeLarge=35.0f;
             }
             
         }
-        
-        [usedSolutions release];
-        [correctRows release];
         
         if(foundSolutions==[solutionsDef count])
             return YES;

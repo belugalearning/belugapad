@@ -97,7 +97,7 @@
 {
     tileProperties thisTile;
     
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=@"";
     float reqRotation=0.0f;
     
     

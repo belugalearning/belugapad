@@ -75,7 +75,7 @@
 
 -(void)setSprite
 {    
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=@"";
 
     
     if(handle.handleType==kMoveHandle) spriteFileName=@"/images/dotgrid/move.png";

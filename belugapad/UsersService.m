@@ -84,9 +84,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
         }
         allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
-        [allUsersDatabase open];
-        [allUsersDatabase executeUpdate:@"UPDATE users SET password = 'winning troll'"];
-        [allUsersDatabase close];
+        
         NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
         if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
         {

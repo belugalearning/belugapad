@@ -341,7 +341,7 @@ static float kTimeSinceAction=7.0f;
     
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
     if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
-    if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
+    if([pdef objectForKey:SOLUTION])solutionsDef=[[pdef objectForKey:SOLUTION]retain];
     
     if(evalType==kCheckGroupTypeAndNumber)
         bondDifferentTypes=NO;

@@ -91,7 +91,7 @@ typedef struct _LineVertex {
       
     [self addChild:renderTexture];
 
-    self.isTouchEnabled = YES;
+    self.touchEnabled = YES;
 
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.maximumNumberOfTouches = 1;
@@ -271,7 +271,7 @@ typedef struct _LineVertex {
 - (void)fillLineTriangles:(LineVertex *)vertices count:(NSUInteger)count withColor:(ccColor4F)color
 {
   [shaderProgram_ use];
-  [shaderProgram_ setUniformForModelViewProjectionMatrix];
+  [shaderProgram_ setUniformsForBuiltins];
 
   ccGLEnableVertexAttribs(kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color);
 

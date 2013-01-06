@@ -106,7 +106,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     if(self=[super init])
     {
-        self.isTouchEnabled=YES;
+        self.touchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -3522,7 +3522,8 @@ static float kTimeToHintToolTray=7.0f;
         currentTool=nil;
     }
     
-    if(self.pickerView)[self.pickerView release];
+    if(self.pickerView)self.pickerView=nil;
+    
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];

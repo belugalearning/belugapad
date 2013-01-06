@@ -19,7 +19,7 @@
 @synthesize textBackgroundRenderComponent;
 @synthesize container;
 @synthesize mount;
-@synthesize hidden;
+@synthesize hidden, rowWidth;
 @synthesize assetType;
 @synthesize backgroundType;
 
@@ -197,6 +197,11 @@
     [self detachFromRenderBase];
     
     [gameWorld delayRemoveGameObject:self];
+}
+
+-(CGRect)returnBoundingBox
+{
+    return CGRectZero;
 }
 
 -(void)dealloc

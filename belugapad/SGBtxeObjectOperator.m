@@ -22,7 +22,7 @@
 @synthesize valueOperator;
 
 @synthesize mount;
-@synthesize hidden;
+@synthesize hidden, rowWidth;
 
 @synthesize assetType;
 @synthesize backgroundType;
@@ -238,6 +238,16 @@
 -(void)returnToBase
 {
     self.position=self.originalPosition;
+}
+
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    return;
+}
+
+-(CGRect)returnBoundingBox
+{
+    return CGRectZero;
 }
 
 -(void)dealloc

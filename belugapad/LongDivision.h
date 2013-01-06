@@ -93,6 +93,10 @@
     BOOL expressionIsEqual;
     
     CCDrawNode *drawNode;
+    CCDrawNode *scaleDrawNode;
+    CCClippingNode *clippingNode;
+    
+    CCSprite *magnifyBar;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

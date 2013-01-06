@@ -19,6 +19,7 @@
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
 
+#import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
 
@@ -256,7 +257,9 @@
 
 -(void)stopAllSpeaking
 {
+#if !(TARGET_IPHONE_SIMULATOR)
     [self.acaSpeech stopSpeaking];
+#endif
 }
 
 -(void)tearDownUI

@@ -22,7 +22,7 @@ static ccColor4B userCol2={120, 168, 221, 255};
 //static ccColor4B userCol={0, 51, 98, 255};
 //static ccColor4B userCol={150,90,200,255};
 //static ccColor4B userCol={150,90,200,255};
-static ccColor4B userHighCol={255, 255, 255, 50};
+//static ccColor4B userHighCol={255, 255, 255, 50};
 //static ccColor4B userHighCol={239,119,82,255};
 static int shadowSteps=5;
 
@@ -1239,7 +1239,7 @@ static int shadowSteps=5;
     //perim polys -- overlapping
     for(int ip=0; ip<shadowSteps; ip++)
     {
-        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*renderParent.sortedChildren.count)-1];
+//        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*renderParent.sortedChildren.count)-1];
         
         //ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
 

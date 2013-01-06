@@ -377,8 +377,8 @@
 
 -(void)readOutProblemDescription
 {
-    SGBtxeRow *descRow=[rows objectAtIndex:0];
-    toolHost.thisProblemDescription=[descRow returnRowStringForSpeech];
+    SGBtxeRow *descRow2=[rows objectAtIndex:0];
+    toolHost.thisProblemDescription=[descRow2 returnRowStringForSpeech];
     
 //    [toolHost readOutProblemDescription];
 }

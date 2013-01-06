@@ -33,7 +33,7 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.BaseNode=[[CCNode alloc]init];
+        self.BaseNode=[[[CCNode alloc]init]autorelease];
         [aRenderLayer addChild:self.BaseNode z:500];
         self.ShowCount=showValue;
         self.RenderLayer=aRenderLayer;
@@ -84,7 +84,7 @@
             [self.BaseNode addChild:CountLabel];
             [self repositionLabel];
         }
-            self.BlocksInShape=[[NSMutableArray alloc]init];
+            self.BlocksInShape=[[[NSMutableArray alloc]init]autorelease];
     }
     return self;
 }
@@ -172,7 +172,7 @@
 
 -(float)updateValue
 {
-    float totalValue;
+    float totalValue=0;
     for(SGDtoolBlock *b in BlocksInShape)
     {
         if([b.blockType isEqualToString:@"Value_001"])

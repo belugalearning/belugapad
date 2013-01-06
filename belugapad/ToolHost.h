@@ -192,6 +192,7 @@ typedef enum {
     CCSprite *traybtnMq;
     CCSprite *traybtnCalc;
     CCSprite *traybtnPad;
+    CCSprite *introProblemSprite;
     
     BOOL trayWheelShowing;
     BOOL trayMqShowing;
@@ -229,6 +230,7 @@ typedef enum {
     BOOL doPlaySound;
     BOOL hasUpdatedScore;
     float timeToReturnToJmap;
+    BOOL hasRunInteractionFeedback;
     
     NSString *breakOutIntroProblemFK;
     BOOL breakOutIntroProblemHasLoaded;

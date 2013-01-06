@@ -86,7 +86,7 @@
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
-static float kTimeToHintToolTray=7.0f;
+static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - init and setup
 
@@ -397,14 +397,19 @@ static float kTimeToHintToolTray=7.0f;
     
     if(timeSinceInteractionOrShake>kTimeToHintToolTray)
     {
-        
-        if(numberPickerForThisProblem && !hasUsedWheelTray){
+        if(numberPickerForThisProblem && !hasUsedWheelTray && !hasRunInteractionFeedback && [traybtnWheel numberOfRunningActions]==0){
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
+            hasRunInteractionFeedback=YES;
         }
-        if(metaQuestionForThisProblem && !hasUsedMetaTray){
-            [metaArrow runAction:[InteractionFeedback dropAndBounceAction]];
+        if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0){
+            [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+            hasRunInteractionFeedback=YES;
         }
-        timeSinceInteractionOrShake=0.0f;
+        
+        if(hasRunInteractionFeedback && timeSinceInteractionOrShake>kTimeToHintToolTray+2.0f && [traybtnMq numberOfRunningActions]==0 && [traybtnWheel numberOfRunningActions]==0){
+            hasRunInteractionFeedback=NO;
+            timeSinceInteractionOrShake=0.0f;
+        }
     }
     
 
@@ -776,7 +781,9 @@ static float kTimeToHintToolTray=7.0f;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
     self.thisProblemDescription=nil;
+    introProblemSprite=nil;
 
+    
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
     [self tearDownMetaQuestion];
@@ -805,6 +812,10 @@ static float kTimeToHintToolTray=7.0f;
         
         //we've loaded this now, indicate as such so we don't get stuck in a loop
         breakOutIntroProblemHasLoaded=YES;
+        
+        introProblemSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_tutorial.png")];
+        [introProblemSprite setPosition:ccp(cx,((cy*2)-introProblemSprite.contentSize.height/2))];
+        [problemDefLayer addChild:introProblemSprite];
     }
     else
     {
@@ -1630,6 +1641,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
+    [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_NotAvailable.png")]];
     toolCanEval=YES;
 //    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
     metaArrow=nil;
@@ -2298,6 +2310,8 @@ static float kTimeToHintToolTray=7.0f;
     [self hideWheel];
     if(CurrentBTXE)CurrentBTXE=nil;
     toolCanEval=YES;
+    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+    
 //    if(traybtnWheel){
 //        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
 //        [traybtnWheel setColor:ccc3(255,255,255)];

@@ -286,7 +286,7 @@
 {
     if(self.Label)[self.Label removeFromParentAndCleanup:YES];
     if(self.BaseNode)[self.BaseNode removeFromParentAndCleanup:YES];
-    if(self.BlocksInShape)[self.BlocksInShape release];
+    if(self.BlocksInShape) self.BlocksInShape=nil;
     if(self.BTXERow){
         for(id o in BTXERow.children)
         {

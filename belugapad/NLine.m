@@ -550,9 +550,9 @@ float timerIgnoreFrog;
     NSNumber *countFromInitVal=[pdef objectForKey:@"COUNT_OUT_LOUD_FROM_START_VALUE"];
     if(countFromInitVal) countOutLoudFromInitStartVal=[countFromInitVal boolValue];
     
-    if([evalType isEqualToString:@"EVAL_TARGET"] && evalTarget<0)
+    if([evalType isEqualToString:@"TARGET"] && evalTarget<0)
         [usersService notifyStartingFeatureKey:@"NLINE_TARGET_LESS_0"];
-    if([evalType isEqualToString:@"EVAL_TARGET"] && evalTarget>=0)
+    if([evalType isEqualToString:@"TARGET"] && evalTarget>=0)
         [usersService notifyStartingFeatureKey:@"NLINE_TARGET_GREATER_EQUAL_0"];
     
     if(frogMode)

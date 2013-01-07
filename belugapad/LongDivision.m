@@ -189,7 +189,6 @@
     
 //    [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
-    
     float xInset=100.0f;
     float yInset=362.0f;
     float barW=824.0f;
@@ -228,12 +227,13 @@
     int magOrder=[self magnitudeOf:(int)currentTotal];
     int sigFigs=0;
     float magMult=pow(10, magOrder-1);
-    NSString *digits=[NSString stringWithFormat:@"%f", currentTotal];
+    NSString *digits=[NSString stringWithFormat:@"%g", currentTotal];
     BOOL gotZeroRow=NO;
     BOOL drawShadow=NO;
     for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
     {
         NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
+        NSLog(@"colIndex %d, curNum=%@, i=%d", colIndex, c, i);
         if([c isEqualToString:@"0"])
         {
             if(currentTotal==0 && !gotZeroRow)
@@ -326,11 +326,10 @@
             ccColor3B curCol;
             ccColor3B sepLine=ccc3(68,71,72);
             
-            
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
             else
-                curCol=kBTXEColour[colIndex];
+                curCol=kBTXEColour[i];
             
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
@@ -479,9 +478,6 @@
     [renderLayer addChild:expectedLabel];
 
     
-//    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-//    [lblCurrentTotal setPosition:ccp(cx,50)];
-//    [renderLayer addChild:lblCurrentTotal];
 
 //    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 //    [questionLabel setAnchorPoint:ccp(0,0.5)];

@@ -356,6 +356,7 @@
     selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
     selectUserPassCodeModalView.delegate = self;
     [self.view addSubview:selectUserPassCodeModalView];
+    [selectUserPassCodeModalView becomeFirstResponder];
     
     backToSelectUserButton = [[[UIButton alloc] init] autorelease];
     backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);

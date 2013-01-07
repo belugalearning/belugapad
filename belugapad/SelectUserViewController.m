@@ -408,7 +408,7 @@
     newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 288.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
-    newUserNameTF.placeholder = @"Name";
+    newUserNameTF.placeholder = @"Username";
     newUserNameTF.clearButtonMode = UITextFieldViewModeNever;
     newUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     newUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;

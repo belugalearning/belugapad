@@ -132,7 +132,7 @@
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
-    evalType=[pdef objectForKey:EVAL_TYPE];
+    evalType=[[pdef objectForKey:EVAL_TYPE]retain];
     
     if([pdef objectForKey:@"EXPR_STAGES"])
     {
@@ -1040,6 +1040,7 @@
 -(void) dealloc
 {
     [exprStages release];
+    [evalType release];
     if(ncardRow)[ncardRow release];
     [rows release];
     

@@ -289,7 +289,7 @@
     introCommit=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"You stopped the timer at %d. Press the commit button to continue.", lastNumber] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     
-    [introCommit setPosition:ccp(2*cx-40, 2*cy - 30)];
+    [introCommit setPosition:ccp(2*cx-65, 2*cy - 30)];
     
     [l setPosition:ccp(cx,cy)];
     [introOverlay setPosition:ccp(cx,cy)];

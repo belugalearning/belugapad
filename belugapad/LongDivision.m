@@ -329,7 +329,7 @@
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
             else
-                curCol=kBTXEColour[i];
+                curCol=kBTXEColour[(digits.length-i)-1];
             
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];

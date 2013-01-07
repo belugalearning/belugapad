@@ -960,6 +960,7 @@ static float kTimeToHintToolTray=0.0f;
         breakOutIntroProblemFK=breakOutToFK;
         breakOutIntroProblemHasLoaded=NO;
         
+        [self tearDownProblemDef];
         [self loadProblem];
     }
     

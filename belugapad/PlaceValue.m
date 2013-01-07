@@ -3502,6 +3502,7 @@ static float kTimeToCageShake=7.0f;
                     {
                         if([[userAddedBlocks objectAtIndex:currentColumnIndex] containsObject:b])
                             [[userAddedBlocks objectAtIndex:currentColumnIndex] removeObject:b];
+                        [b handleMessage:kDWresetToMountPositionAndDestroy];
                     }
                     
                     if(b.ObjectValue==0)

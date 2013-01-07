@@ -772,6 +772,9 @@ static float kTimeSinceAction=7.0f;
     {
         for(id<Cage>cge in addedCages)
         {
+            if(cge.CurrentObject==currentPickupObject)
+                cge.CurrentObject=nil;
+                
             if([cge.BlockType isEqualToString:currentPickupObject.blockType])
                 cage=cge;
         }
@@ -783,7 +786,7 @@ static float kTimeSinceAction=7.0f;
         CCSprite *s=currentPickupObject.mySprite;
         [s setZOrder:100];
         
-        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(cage.MySprite.position.x,cage.MySprite.position.y+10)];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
         CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[thisGO destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
@@ -1443,6 +1446,10 @@ static float kTimeSinceAction=7.0f;
                     
                     hasMovedCagedBlock=YES;
                     ((id<Cage>)currentPickupObject.MyContainer).CurrentObject=nil;
+
+                    if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]])
+                        cage=currentPickupObject.MyContainer;
+                    
                     currentPickupObject.MyContainer=nil;
                 }
                 
@@ -1469,11 +1476,8 @@ static float kTimeSinceAction=7.0f;
     {
         for(id<Cage>thisCage in addedCages)
         {
-            if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
-            {
-                [thisCage spawnNewBlock];
-                spawnedNewObj=YES;
-            }
+            [thisCage spawnNewBlock];
+            spawnedNewObj=YES;
         }
         
         pickupPos=CGPointZero;
@@ -1558,8 +1562,10 @@ static float kTimeSinceAction=7.0f;
         [self removeBlockByCage];
         
         [self setTouchVarsToOff];
+        
         return;
     }
+
     
     if(currentPickupObject)
     {

@@ -25,6 +25,7 @@ NSString * const kUsersWSBaseURL = @"http://u.zubi.me:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
+NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
 
 
 @interface UsersService()
@@ -262,6 +263,60 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         }
         callback(status);
     };
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
+}
+
+-(void)changeCurrentUserNick:(NSString*)newNick
+                    callback:(void(^)(BL_USER_NICK_CHANGE_RESULT))callback
+{
+    if (!currentUser)
+    {
+        callback(BL_USER_NICK_CHANGE_ERROR);
+        return;
+    }
+    
+    [allUsersDatabase open];
+    
+    // ensure no other users on device with nick = newNick
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick = ?", newNick];
+    if ([rs next])
+    {
+        callback(BL_USER_NICK_CHANGE_CONFLICT);
+        [allUsersDatabase close];
+        return;
+    }
+    
+    NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
+                                                        path:kUsersWSChangeNickPath
+                                                  parameters:@{ @"id":currentUserId, @"password":currentUser[@"password"], @"newNick":newNick }];
+    [req addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    __block typeof(self) bself = self;
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res) {
+        BL_USER_NICK_CHANGE_RESULT result;
+        switch (op.response ? [op.response statusCode] : 500)
+        {
+            case 201:
+                result = BL_USER_NICK_CHANGE_SUCCESS;
+                break;
+            case 409:
+                result = BL_USER_NICK_CHANGE_CONFLICT;
+                break;
+            default:
+                result = BL_USER_NICK_CHANGE_ERROR;
+                break;
+        }        
+        if (result == BL_USER_NICK_CHANGE_SUCCESS)
+        {
+            bself->currentUser[@"nick"] = newNick;
+            [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nick=? WHERE id=?", newNick, bself->currentUserId];
+        }
+        [bself->allUsersDatabase close];
+        callback(result);
+    };
+    
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];

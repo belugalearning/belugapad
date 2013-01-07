@@ -400,7 +400,11 @@ static int shadowSteps=5;
 -(void)readyIslandRender
 {
 
-    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", self.islandShapeIdx];
+    int shapeIndex=self.islandShapeIdx;
+    
+    if(shapeIndex==0)shapeIndex=1;
+    
+    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", shapeIndex];
 
     if(self.islandStage>2)
     {

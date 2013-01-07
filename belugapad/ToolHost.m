@@ -162,7 +162,7 @@ static float kTimeToHintToolTray=0.0f;
         [self populatePerstLayer];
         
         pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
-        pbtn.position=ccp(HD_BUTTON_INSET-30, 2*cy - 30);
+        pbtn.position=ccp(HD_BUTTON_INSET, 2*cy - 30);
         pbtn.tag=3;
         pbtn.opacity=0;
         [perstLayer addChild:pbtn z:3];
@@ -2578,7 +2578,7 @@ static float kTimeToHintToolTray=0.0f;
                 return;
             }
         }
-        if (location.x < 100 && location.y > 688 && !isPaused)
+        if (location.x < 120 && location.y > 688 && !isPaused)
         {
             [self showPauseMenu];
             return;

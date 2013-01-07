@@ -233,7 +233,7 @@
     for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
     {
         NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
-        NSLog(@"colIndex %d, curNum=%@, i=%d", colIndex, c, i);
+        NSLog(@"colIndex %d, curNum=%@, i=%d digitsL=%d comp=%d", colIndex, c, i, digits.length, digits.length-i);
         if([c isEqualToString:@"0"])
         {
             if(currentTotal==0 && !gotZeroRow)

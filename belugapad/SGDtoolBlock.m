@@ -45,7 +45,7 @@
         self.Selected=NO;
         self.Visible=YES;
         self.blockType=thisType;
-        self.PairedObjects=[[NSMutableArray alloc]init];
+        self.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
         BlockRenderComponent=[[SGDtoolBlockRender alloc] initWithGameObject:self];
         BlockPairComponent=[[SGDtoolBlockPairing alloc] initWithGameObject:self];
     }

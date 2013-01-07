@@ -215,7 +215,7 @@
         float xPos=(lx/initBubbles)*(i+0.5);
         
         id<Rendered,LogPolling> newbubble;
-        newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300) andReplacement:NO];
+        newbubble=[[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300) andReplacement:NO] autorelease];
         
         [loggingService.logPoller registerPollee:newbubble];
         
@@ -276,7 +276,7 @@
 {
     
     int numberInShape=[[theseSettings objectForKey:NUMBER]intValue];
-    id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
+    id<Group> thisGroup=[[[SGFBlockGroup alloc]initWithGameWorld:gw] autorelease];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
     int farLeft=100;
@@ -295,7 +295,7 @@
         thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
         
         id<Rendered,Moveable,LogPolling> newblock;
-        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos];
+        newblock=[[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos] autorelease];
         newblock.MyGroup=(id)thisGroup;
         
         [loggingService.logPoller registerPollee:newblock];
@@ -464,7 +464,7 @@
 
 -(NSMutableArray*)returnCurrentValidGroups
 {
-    NSMutableArray *groups=[[NSMutableArray alloc]init];
+    NSMutableArray *groups=[[[NSMutableArray alloc]init] autorelease];
     
     float xPos=lx;
     
@@ -591,7 +591,7 @@
         NSLog(@"create existing at x %f y %f", xPos, yPos);
         
         id<Rendered,Moveable,LogPolling> newblock;
-        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,yPos)];
+        newblock=[[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,yPos)] autorelease];
         newblock.MyGroup=(id)targetGroup;
         
         [loggingService.logPoller registerPollee:newblock];

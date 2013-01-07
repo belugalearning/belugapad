@@ -30,14 +30,14 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
-        self.BaseNode=[[CCNode alloc]init];
-        self.Chunks=[[NSMutableArray alloc]init];
-        self.GhostChunks=[[NSMutableArray alloc]init];
+        self.BaseNode=[[[CCNode alloc]init]autorelease];
+        self.Chunks=[[[NSMutableArray alloc]init]autorelease];
+        self.GhostChunks=[[[NSMutableArray alloc]init]autorelease];
 
     }
-    RenderComponent=[[SGFractionBuilderRender alloc] initWithGameObject:self];
-    MarkerComponent=[[SGFractionBuilderMarker alloc] initWithGameObject:self];
-    ChunkComponent=[[SGFractionBuilderChunkManager alloc] initWithGameObject:self];
+    self.RenderComponent=[[[SGFractionBuilderRender alloc] initWithGameObject:self] autorelease];
+    self.MarkerComponent=[[[SGFractionBuilderMarker alloc] initWithGameObject:self] autorelease];
+    self.ChunkComponent=[[[SGFractionBuilderChunkManager alloc] initWithGameObject:self] autorelease];
     return self;
 }
 

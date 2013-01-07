@@ -24,7 +24,7 @@
     //init pos x & y in case they're not set elsewhere
     
     sg=(DWDotGridShapeGroupGameObject*)gameObject;
-    sg.shapesInMe=[[NSMutableArray alloc]init];
+    sg.shapesInMe=[[[NSMutableArray alloc]init] autorelease];
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];

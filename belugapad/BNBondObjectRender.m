@@ -11,6 +11,7 @@
 #import "ToolConsts.h"
 #import "BLMath.h"
 #import "DWNBondObjectGameObject.h"
+#import "SimpleAudioEngine.h"
 
 @implementation BNBondObjectRender
 
@@ -94,10 +95,10 @@
 
 -(void)setSprite
 {
-    pogo.BaseNode = [[CCNode alloc]init];
+    pogo.BaseNode = [[[CCNode alloc]init] autorelease];
     if(!pogo.Length) pogo.Length=1;
     
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=@"";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
     
     for(int i=0;i<pogo.Length+1;i++) {
@@ -219,6 +220,7 @@
 }
 -(void)moveSpriteHome
 {
+//    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/")];
     CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
@@ -243,7 +245,7 @@
 
 -(void) dealloc
 {
-    [pogo.BaseNode release];
+    pogo.BaseNode=nil;
     
     [super dealloc];
 }

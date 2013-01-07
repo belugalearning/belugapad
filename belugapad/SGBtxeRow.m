@@ -32,6 +32,7 @@
 @synthesize tintMyChildren;
 @synthesize backgroundType;
 @synthesize maxChildrenPerLine;
+@synthesize hidden;
 
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget

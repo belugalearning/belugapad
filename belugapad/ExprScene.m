@@ -110,13 +110,13 @@
         [exprLabel setString:text];
     }
 
-    NSString *mml=[toolHost.PpExpr xmlStringValue];
-    labelExprMathML=[CCLabelTTF labelWithString:mml dimensions:CGSizeMake(lx, ly) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:24];
-    //        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
-    [labelExprMathML setOpacity:100];
-    [labelExprMathML setPosition:ccp(cx, 384)];
-    [self.ForeLayer addChild:labelExprMathML];
-    
+//    NSString *mml=[toolHost.PpExpr xmlStringValue];
+//    labelExprMathML=[CCLabelTTF labelWithString:mml dimensions:CGSizeMake(lx, ly) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:24];
+//    //        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
+//    [labelExprMathML setOpacity:100];
+//    [labelExprMathML setPosition:ccp(cx, 384)];
+//    [self.ForeLayer addChild:labelExprMathML];
+//    
 }
 
 -(void)updateExpr

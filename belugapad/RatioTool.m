@@ -235,6 +235,7 @@
         w.OutputValue=w.InputValue;
         [w handleMessage:kDWupdateObjectData];
         [numberWheels addObject:w];
+        [w release];
     }
     
 }
@@ -279,13 +280,6 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
-    
- 
-    
     // if we were moving the marker
     
 

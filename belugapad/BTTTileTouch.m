@@ -84,7 +84,7 @@
         //[tile.mySprite.parent addChild:tile.ansSprite z:9999];
         [tile.mySprite.parent addChild:tile.ansSprite z:9999];
         
-        CCLabelTTF *myText=[CCLabelTTF alloc];
+        CCLabelTTF *myText=nil;
         
         
         if(tile.operatorType==kOperatorAdd)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d+%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:15.0f];

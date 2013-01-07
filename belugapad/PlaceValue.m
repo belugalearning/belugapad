@@ -41,7 +41,6 @@ static float kPropXNetSpace=0.0625f;
 static float kPropYColumnOrigin=0.63f;
 static float kCageYOrigin=0.05f;
 static float kPropYColumnHeader=0.7f;
-static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 static float kTimeToCageShake=7.0f;
 
@@ -70,9 +69,19 @@ static float kTimeToCageShake=7.0f;
         gw = [[DWGameWorld alloc] initWithGameScene:self];
         gw.Blackboard.inProblemSetup = YES;
         
-        self.BkgLayer=[[[CCLayer alloc]init] autorelease];
-        self.ForeLayer=[[[CCLayer alloc]init] autorelease];
-        self.NoScaleLayer=[[CCLayer alloc]init];
+        CCLayer *bl=[[CCLayer alloc] init];
+        self.BkgLayer=bl;
+        [bl release];
+        
+        CCLayer *fl=[[CCLayer alloc] init];
+        self.ForeLayer=fl;
+        [fl release];
+
+        CCLayer *nsl=[[CCLayer alloc] init];
+        self.NoScaleLayer=nsl;
+        [nsl release];
+        
+
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
@@ -843,13 +852,13 @@ static float kTimeToCageShake=7.0f;
             
             if(![multipleBlockMax objectForKey:currentColumnValueKey])
                 [multipleBlockMax setValue:[NSNumber numberWithInt:maxBlocks] forKey:currentColumnValueKey];
-            else
-                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
+//            else
+//                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
             
             if(![multipleBlockMin objectForKey:currentColumnValueKey])
                 [multipleBlockMin setValue:[NSNumber numberWithInt:minBlocks] forKey:currentColumnValueKey];
-            else
-                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
+//            else
+//                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
@@ -1787,7 +1796,7 @@ static float kTimeToCageShake=7.0f;
 {
     int freeSpace=0;
 //    int curNum=[[blocksToCreate objectAtIndex:thisGrid]intValue];
-    int curBlockValue=[[currentBlockValues objectAtIndex:thisGrid]intValue];
+//    int curBlockValue=[[currentBlockValues objectAtIndex:thisGrid]intValue];
     DWPlaceValueCageGameObject *cage=[allCages objectAtIndex:thisGrid];
     
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
@@ -3372,7 +3381,6 @@ static float kTimeToCageShake=7.0f;
                 
                 // set a bool saying whether our dropobject is a cage or not
                 BOOL isCage;
-                BOOL doNotSwitchSelection=NO;
                 
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
@@ -3399,7 +3407,6 @@ static float kTimeToCageShake=7.0f;
                         
                         [go handleMessage:kDWputdown];
                     }
-                    doNotSwitchSelection=YES;
                     [loggingService logEvent:BL_PA_PV_TOUCH_END_DROPPED_BASE_PICKUP_ON_NET withAdditionalData:nil];
                     [self setTouchVarsToOff];
                     return;
@@ -3427,7 +3434,6 @@ static float kTimeToCageShake=7.0f;
                         
                         //[go handleMessage:kDWputdown];
                     }
-                    doNotSwitchSelection=YES;
                     [self setTouchVarsToOff];
                     [loggingService logEvent:BL_PA_PV_TOUCH_END_DROPPED_BASE_PICKUP_ON_CAGE withAdditionalData:nil];
                     return;
@@ -3612,17 +3618,6 @@ static float kTimeToCageShake=7.0f;
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
                     withAdditionalData:nil];
                 
-
-                if(pickupSprite){
-                    
-                    if(isCage && doNotSwitchSelection)
-                    {
-                        //deselect the object if selected
-                        // check whether it's selected and we can deselect - or that it's deselected
-//                        if(b.Selected)
-//                            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-                    }
-                }
                 if(blocksToDestroy)
                 {
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_exploding.wav")];
@@ -3738,7 +3733,7 @@ static float kTimeToCageShake=7.0f;
 -(void) dealloc
 {
     [renderLayer release];
-    [self.NoScaleLayer release];
+    [self.NoScaleLayer removeAllChildrenWithCleanup:YES];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

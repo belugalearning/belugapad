@@ -72,7 +72,7 @@
 -(void)showOtherOperators
 {
     if(!self.ChildOperators)
-        self.ChildOperators=[[NSMutableArray alloc]init];
+        self.ChildOperators=[[[NSMutableArray alloc]init] autorelease];
     
     if([self.ChildOperators count]==0)
     {
@@ -80,7 +80,7 @@
         for(NSString *s in SupportedOperators)
         {
             NSArray *a=[NSArray arrayWithObject:s];
-            id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y+100+([SupportedOperators indexOfObject:s]*80)) andOperators:a];
+            id<Operator,Rendered>op=[[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y+100+([SupportedOperators indexOfObject:s]*80)) andOperators:a] autorelease];
             
             [self.ChildOperators addObject:op];
             

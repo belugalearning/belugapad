@@ -38,6 +38,7 @@
 @synthesize renderAsDots;
 @synthesize numberMode;
 @synthesize backgroundType;
+@synthesize rowWidth;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -185,7 +186,7 @@
     
     //split text into parts if passed to this method
     
-    BOOL hadPoint=NO, hadStart=NO, hadEnd;
+    BOOL hadPoint=NO, hadStart=NO, hadEnd=NO;
     NSString *seek=@"0123456789";
     
     //strip commas
@@ -410,6 +411,21 @@
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(NSString*)returnMyText
+{
+    return self.text;
+}
+
+-(CGRect)returnBoundingBox
+{
+    return CGRectZero;
+}
+
+-(void)actOnTap
+{
+    return;
 }
 
 -(void)redrawBkg

@@ -99,7 +99,7 @@
 -(void)setSprite
 {    
     
-    NSString *spriteFileName=[[[NSString alloc]init] autorelease];
+    NSString *spriteFileName=@"";
     spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/pie.png"];
     
     pie.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
@@ -114,7 +114,7 @@
         }
     
     if(!pie.HasSplit) {
-        NSString *overlayFileName=[[[NSString alloc]init] autorelease];
+        NSString *overlayFileName=@"";
         overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/pie-split-overlay.png"];
         pie.touchOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(overlayFileName)];
         [pie.touchOverlay setPosition:ccp(50,50)];

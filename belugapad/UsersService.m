@@ -707,8 +707,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSSyncUsersPath
-                                                  parameters:[NSDictionary dictionaryWithObject:users forKey:@"users"]];
-    [req addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+                                                  parameters:[NSDictionary dictionaryWithObject:[users JSONString] forKey:@"users"]];
     
     __block typeof(self) bself = self;
     

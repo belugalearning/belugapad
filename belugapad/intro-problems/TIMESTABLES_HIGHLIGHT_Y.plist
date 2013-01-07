@@ -37,7 +37,9 @@
 		<integer>5</integer>
 	</array>
 	<key>REVEAL_ROWS</key>
-	<array/>
+	<array>
+		<string>5</string>
+	</array>
 	<key>REVEAL_COLS</key>
 	<array/>
 	<key>REVEAL_TILES</key>

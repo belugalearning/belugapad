@@ -203,12 +203,12 @@ static float kTimeToHeaderBounce=7.0f;
     [revealTiles retain];
     [solutionsDef retain];
 
-    [usersService notifyStartingFeatureKey:@"TIMESTABLES_SELECT_TILE"];
+    [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_X"];
     
     if(showXAxis)
-        [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_X"];
-    if(showYAxis)
         [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_Y"];
+    if(showYAxis)
+        [usersService notifyStartingFeatureKey:@"TIMESTABLES_SELECT_TILE"];
 }
 
 -(void)populateGW

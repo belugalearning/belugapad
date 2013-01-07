@@ -2886,8 +2886,10 @@ static float kTimeToCageShake=7.0f;
                         
                         //this is just a signal for the GO to us, pickup object is retained on the blackboard
                         [cge.MountedObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+                        cge.MountedObject=nil;
                     }
                 }
+                [cge handleMessage:kDWsetupStuff];
             }
             else
             {
@@ -2919,6 +2921,7 @@ static float kTimeToCageShake=7.0f;
                         cge.MountedObject=nil;
                     }
                 }
+                [cge handleMessage:kDWsetupStuff];
             }
             else
             {

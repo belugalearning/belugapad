@@ -652,7 +652,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSSyncUsersPath
-                                                  parameters:[NSDictionary dictionaryWithObject:[users JSONString] forKey:@"users"]];
+                                                  parameters:[NSDictionary dictionaryWithObject:users forKey:@"users"]];
     [req addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     __block typeof(self) bself = self;

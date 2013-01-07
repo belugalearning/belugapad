@@ -311,7 +311,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         if (result == BL_USER_NICK_CHANGE_SUCCESS)
         {
             bself->currentUser[@"nick"] = newNick;
-            [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nick=? WHERE id=?", newNick, bself->currentUserId];
+            [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nick=?, nick_clash=1 WHERE id=?", newNick, bself->currentUserId];
         }
         [bself->allUsersDatabase close];
         callback(result);

@@ -30,10 +30,6 @@
     b.PosY=0.0f;
     
     amPickedUp=NO;
-    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-    LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller registerPollee:(id<LogPolling>)b];
-    
     
     return self;
 }
@@ -42,6 +38,12 @@
 {
     if(messageType==kDWsetupStuff)
     {
+//        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+//        LoggingService *loggingService = ac.loggingService;
+//        [loggingService.logPoller registerPollee:(id<LogPolling>)b];
+//        NSLog(@"added logging for %d", (int)b);
+        
+        
         CCSprite *mySprite=b.mySprite;
         if(!mySprite) 
         {
@@ -152,6 +154,7 @@
     }
     if(messageType==kDWdismantle)
     {
+        [self unregisterLogger];
         CCSprite *s=b.mySprite;
         [[s parent] removeChild:s cleanup:YES];
     }
@@ -299,9 +302,8 @@
 
 -(void)unregisterLogger
 {
-    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-    LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller unregisterPollee:(id<LogPolling>)b];
+    b.logPollId=nil;
+    NSLog(@"object %d unreg", (int)b);
 }
 
 -(void)destroy
@@ -414,6 +416,10 @@
 
 -(void) dealloc
 {
+//    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+//    LoggingService *loggingService = ac.loggingService;
+//    [loggingService.logPoller unregisterPollee:(id<LogPolling>)b];
+//    NSLog(@"removed logging for %d", (int)b);
     [super dealloc];
 }
 

@@ -190,14 +190,23 @@
 
 -(void)setupArtefact
 {
-    NSString *an=nil;
-    if(ParentGO.ustate.artifact1LastAchieved)an=@"Crystal_1.png";
-    if(ParentGO.ustate.artifact2LastAchieved)an=@"Crystal_2.png";
-    if(ParentGO.ustate.artifact3LastAchieved)an=@"Crystal_3.png";
-    if(ParentGO.ustate.artifact4LastAchieved)an=@"Crystal_4.png";
-    if(ParentGO.ustate.artifact5LastAchieved)an=@"Crystal_5.png";
+    NSString *an=@"star_holder_0.png";
+    if(ParentGO.ustate.artifact1LastAchieved)an=@"star_holder_1.png";
+    if(ParentGO.ustate.artifact2LastAchieved)an=@"star_holder_2.png";
+    if(ParentGO.ustate.artifact3LastAchieved)an=@"star_holder_3.png";
+    if(ParentGO.ustate.artifact4LastAchieved)an=@"star_holder_3.png";
+    if(ParentGO.ustate.artifact5LastAchieved)an=@"star_holder_3.png";
     
-    if(an) [ParentGO.artefactSpriteBase setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:an]];
+//    if(an) [ParentGO.artefactSpriteBase setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:an]];
+    
+    if(an)
+    {
+        CCSprite *stars=[CCSprite spriteWithSpriteFrameName:an];
+        stars.position=ccpAdd(ParentGO.Position, ccp(0, 50));
+        
+        [ParentGO.RenderBatch addChild:stars z:7];
+    }
+    
 }
 
 

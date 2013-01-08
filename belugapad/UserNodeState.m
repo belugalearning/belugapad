@@ -100,23 +100,23 @@
         if (!self.firstCompleted) self.firstCompleted = self.lastPlayed;
         self.lastCompleted = self.lastPlayed;
     
-        if (self.lastScore >= SCORE_ARTIFACT_1)
+        if (self.lastScore > SCORE_ARTIFACT_1)
         {
             self.artifact1LastAchieved = self.lastPlayed;
-            if (self.lastScore >= SCORE_ARTIFACT_2)
+            if (self.lastScore > SCORE_ARTIFACT_2)
             {
                 self.artifact2LastAchieved = self.lastPlayed;
-                if (self.lastScore >= SCORE_ARTIFACT_3)
+                if (self.lastScore > SCORE_ARTIFACT_3)
                 {
                     self.artifact3LastAchieved = self.lastPlayed;
-                    if (self.lastScore >= SCORE_ARTIFACT_4)
-                    {
-                        self.artifact4LastAchieved = self.lastPlayed;
-                        if (self.lastScore >= SCORE_ARTIFACT_5)
-                        {
-                            self.artifact5LastAchieved = self.lastPlayed;
-                        }
-                    }
+//                    if (self.lastScore > SCORE_ARTIFACT_4)
+//                    {
+//                        self.artifact4LastAchieved = self.lastPlayed;
+//                        if (self.lastScore > SCORE_ARTIFACT_5)
+//                        {
+//                            self.artifact5LastAchieved = self.lastPlayed;
+//                        }
+//                    }
                 }
             }
         }

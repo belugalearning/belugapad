@@ -62,6 +62,7 @@
     BOOL numberCardRandomOrder;
     int numberCardRandomSelectionOf;
     BOOL hasMovedObject;
+    BOOL isSequencing;
 
     NSString *numberMode;
     

@@ -181,7 +181,7 @@
 
 -(void)setupNumberWheel
 {
-    if(!w.pickerViewSelection)w.pickerViewSelection=[[[NSMutableArray alloc]init]retain];
+    if(!w.pickerViewSelection)w.pickerViewSelection=[[[NSMutableArray alloc]init] autorelease];
     
     if(pickerView) return;
     

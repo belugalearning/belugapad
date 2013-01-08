@@ -979,7 +979,7 @@
     
     if(shapeBaseSize>0){
         
-        DWDotGridShapeGroupGameObject *sGroup=[DWDotGridShapeGroupGameObject alloc];
+        DWDotGridShapeGroupGameObject *sGroup=[[DWDotGridShapeGroupGameObject alloc]  autorelease];
         [gw populateAndAddGameObject:sGroup withTemplateName:@"TdotgridShapeGroup"];
         
         DWDotGridAnchorGameObject *sAnch=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
@@ -1164,7 +1164,7 @@
         
         for(int i=0;i<(int)shapesRequired;i++)
         {
-            NSMutableArray *shape=[[NSMutableArray alloc]init];
+            NSMutableArray *shape=[[[NSMutableArray alloc]init] autorelease];
             [shapeAnchors addObject:shape];
         }
         
@@ -1176,7 +1176,7 @@
             [[shapeAnchors objectAtIndex:thisArray] addObject:a];
         }
         
-        DWDotGridShapeGroupGameObject *shapegrp=[DWDotGridShapeGroupGameObject alloc];
+        DWDotGridShapeGroupGameObject *shapegrp=[[DWDotGridShapeGroupGameObject alloc] autorelease];
         [gw populateAndAddGameObject:shapegrp withTemplateName:@"TdotgridShapeGroup"];
         
         for(NSMutableArray *a in shapeAnchors)
@@ -1207,7 +1207,7 @@
     
     OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
     
-    DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];
+    DWDotGridShapeGameObject *shape=[[DWDotGridShapeGameObject alloc] autorelease];
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.Disabled=Disabled;
     shape.RenderLayer=anchorLayer;
@@ -1215,7 +1215,7 @@
     shape.lastAnchor=orderedAnchs.lastAnchor;
     //shape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
     //shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
-    shape.tiles=[[NSMutableArray alloc]init];
+    shape.tiles=[[[NSMutableArray alloc]init] autorelease];
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
     shape.countLabelType=showCount;
@@ -1297,7 +1297,7 @@
 
             }
             
-            [curAnch release];
+
             [tile release];
         }
     
@@ -1314,8 +1314,8 @@
 
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors
 {
-    NSMutableArray *removeObjects=[[NSMutableArray alloc]init];
-    DWDotGridAnchorGameObject *rsAnchor=[DWDotGridAnchorGameObject alloc];
+    NSMutableArray *removeObjects=[[[NSMutableArray alloc]init] autorelease];
+//    DWDotGridAnchorGameObject *rsAnchor=nil;
     int dupeAnchors=0;
     
     
@@ -1335,7 +1335,7 @@
         {
             DWDotGridTileGameObject *tile=[thisShape.tiles objectAtIndex:c];
             if ([anchors containsObject:tile.myAnchor])dupeAnchors++;
-            if(tile.myAnchor.resizeHandle)rsAnchor=tile.myAnchor;
+//            if(tile.myAnchor.resizeHandle)rsAnchor=tile.myAnchor;
         }
     }
     
@@ -1488,7 +1488,7 @@
             DWDotGridShapeGameObject *s=[gw.AllGameObjects objectAtIndex:i];
             if(!s.MyNumberWheel)
             {
-                DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+                DWNWheelGameObject *w=[[DWNWheelGameObject alloc] autorelease];
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
                 w.RenderLayer=renderLayer;
@@ -1653,8 +1653,8 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
-    CGPoint prevLoc = [touch previousLocationInView:[touch view]];
-    prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
+//    CGPoint prevLoc = [touch previousLocationInView:[touch view]];
+//    prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
     
     lastTouch=location;
     
@@ -2013,7 +2013,7 @@
             BAAdditionOperator *rightadd=[BAAdditionOperator operator];
             [toolHost.PpExpr.root addChild:rightadd];
             
-            for (int i; i<[tileCounts count]; i++) {
+            for (int i=0; i<[tileCounts count]; i++) {
                 if([[selectedCounts objectAtIndex:i] intValue]==0)
                 {
                     [rightadd addChild:[BAInteger integerWithIntValue:0]];
@@ -2051,7 +2051,7 @@
     else if(evalType==kProblemSingleShapeSize)
     {
         NSMutableArray *solutions=[NSMutableArray arrayWithArray:solutionsDef];
-        NSMutableArray *matchedGOs=[[NSMutableArray alloc]init];
+        NSMutableArray *matchedGOs=[[[NSMutableArray alloc]init] autorelease];
         
         
         for(DWGameObject *go in gw.AllGameObjects)
@@ -2179,8 +2179,8 @@
 {
     int correctShapes=0;
     int shapesOnGrid=0;
-    NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
-    NSMutableArray *matchObjects=[[NSMutableArray alloc]init];
+    NSMutableArray *matchShapes=[[[NSMutableArray alloc]init] autorelease];
+    NSMutableArray *matchObjects=[[[NSMutableArray alloc] init] autorelease];
     //for each object that conforms to being a shapegroup
     for(int i=0;i<[gw.AllGameObjects count];i++)
     {

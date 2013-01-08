@@ -30,7 +30,7 @@
 		0C692E54157F9794009307DB /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4F157F9794009307DB /* FMResultSet.m */; };
 		0C692E571580BCF4009307DB /* CouchDBDerivedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E561580BCF4009307DB /* CouchDBDerivedDocument.m */; };
 		0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C091580C392004B716F /* CHANGELOG.md */; };
-		0C712C0E1580C392004B716F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C0B1580C392004B716F /* JSONKit.m */; };
+		0C712C0E1580C392004B716F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C0B1580C392004B716F /* JSONKit.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		0C712C0F1580C392004B716F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C0C1580C392004B716F /* README.md */; };
 		0C712C131580EDEE004B716F /* Problem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C121580EDED004B716F /* Problem.m */; };
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
@@ -345,11 +345,6 @@
 		7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */; };
 		7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BD871620A8F800351CA0 /* DebugViewController.m */; };
 		7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F96BDE2162178D100351CA0 /* libChipmunkPro-iPhone.a */; };
-		7F96BDEF1621886E00351CA0 /* GooTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BDEE1621886E00351CA0 /* GooTool.m */; };
-		7F96BE0C16222BD100351CA0 /* GooDrawBatchNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */; };
-		7F96BE2016237A5D00351CA0 /* GooSingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE1F16237A5D00351CA0 /* GooSingle.m */; };
-		7F96BE2416238C2D00351CA0 /* WaterSingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE2316238C2C00351CA0 /* WaterSingle.m */; };
-		7F96BE2A1623E91600351CA0 /* GooSingleSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE291623E91600351CA0 /* GooSingleSquare.m */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
 		7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F984570164E5F300081BE39 /* AcapelaSetup.m */; };
 		7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F984572164E5F300081BE39 /* force_cpp.cpp */; };
@@ -1171,17 +1166,6 @@
 		7F96BDE1162178D100351CA0 /* cpPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpPolyline.h; sourceTree = "<group>"; };
 		7F96BDE2162178D100351CA0 /* libChipmunkPro-iPhone.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libChipmunkPro-iPhone.a"; sourceTree = "<group>"; };
 		7F96BDE3162178D100351CA0 /* ObjectiveChipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveChipmunk.h; sourceTree = "<group>"; };
-		7F96BDED1621886E00351CA0 /* GooTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooTool.h; sourceTree = "<group>"; };
-		7F96BDEE1621886E00351CA0 /* GooTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooTool.m; sourceTree = "<group>"; };
-		7F96BE0A16222BD100351CA0 /* GooDrawBatchNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooDrawBatchNode.h; sourceTree = "<group>"; };
-		7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooDrawBatchNode.m; sourceTree = "<group>"; };
-		7F96BE1E16237A5D00351CA0 /* GooSingle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooSingle.h; sourceTree = "<group>"; };
-		7F96BE1F16237A5D00351CA0 /* GooSingle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooSingle.m; sourceTree = "<group>"; };
-		7F96BE2216238C2C00351CA0 /* WaterSingle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterSingle.h; sourceTree = "<group>"; };
-		7F96BE2316238C2C00351CA0 /* WaterSingle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterSingle.m; sourceTree = "<group>"; };
-		7F96BE2516238CDE00351CA0 /* GooProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooProtocols.h; sourceTree = "<group>"; };
-		7F96BE281623E91600351CA0 /* GooSingleSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooSingleSquare.h; sourceTree = "<group>"; };
-		7F96BE291623E91600351CA0 /* GooSingleSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooSingleSquare.m; sourceTree = "<group>"; };
 		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
 		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
 		7F98456E164E5F300081BE39 /* AcapelaLicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaLicense.h; sourceTree = "<group>"; };
@@ -1804,8 +1788,6 @@
 			children = (
 				55CD0505165AC11F0040630A /* LongDivision.h */,
 				55CD0506165AC1200040630A /* LongDivision.m */,
-				7F96BDED1621886E00351CA0 /* GooTool.h */,
-				7F96BDEE1621886E00351CA0 /* GooTool.m */,
 				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
 				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
 				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
@@ -1845,7 +1827,6 @@
 		7F2317CD1572B28000E2C941 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				7F96BE0916222B4300351CA0 /* Goo */,
 				558D79E5168893F800048B01 /* LineDrawer.h */,
 				558D79E6168893F800048B01 /* LineDrawer.m */,
 				7F268ADC14F28DE500F1F65F /* ToolHost.h */,
@@ -2710,22 +2691,6 @@
 			path = constraints;
 			sourceTree = "<group>";
 		};
-		7F96BE0916222B4300351CA0 /* Goo */ = {
-			isa = PBXGroup;
-			children = (
-				7F96BE2516238CDE00351CA0 /* GooProtocols.h */,
-				7F96BE0A16222BD100351CA0 /* GooDrawBatchNode.h */,
-				7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */,
-				7F96BE2216238C2C00351CA0 /* WaterSingle.h */,
-				7F96BE2316238C2C00351CA0 /* WaterSingle.m */,
-				7F96BE1E16237A5D00351CA0 /* GooSingle.h */,
-				7F96BE1F16237A5D00351CA0 /* GooSingle.m */,
-				7F96BE281623E91600351CA0 /* GooSingleSquare.h */,
-				7F96BE291623E91600351CA0 /* GooSingleSquare.m */,
-			);
-			name = Goo;
-			sourceTree = "<group>";
-		};
 		7F98456C164E5F300081BE39 /* Acapela */ = {
 			isa = PBXGroup;
 			children = (
@@ -3089,7 +3054,7 @@
 		7F5113B514A9EE62001AF372 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 7F5113B814A9EE62001AF372 /* Build configuration list for PBXProject "belugapad" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3473,11 +3438,6 @@
 				7F5F4D6E1619E6B9005F6311 /* SGBtxeObjectIcon.m in Sources */,
 				7F5F4D721619E714005F6311 /* SGBtxeIconRender.m in Sources */,
 				7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */,
-				7F96BDEF1621886E00351CA0 /* GooTool.m in Sources */,
-				7F96BE0C16222BD100351CA0 /* GooDrawBatchNode.m in Sources */,
-				7F96BE2016237A5D00351CA0 /* GooSingle.m in Sources */,
-				7F96BE2416238C2D00351CA0 /* WaterSingle.m in Sources */,
-				7F96BE2A1623E91600351CA0 /* GooSingleSquare.m in Sources */,
 				559846661627095B00554E8A /* MQDisplay.m in Sources */,
 				5598466A162732CA00554E8A /* RatioTool.m in Sources */,
 				55B2C4221627518000E0E2C7 /* BNWheelObjectRender.m in Sources */,

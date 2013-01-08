@@ -70,6 +70,8 @@
         [self readPlist:pdef];
         [self populateGW];
         
+        [self setupClippingNode];
+        
         renderingChanges=YES;
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
@@ -77,11 +79,44 @@
         gw.Blackboard.inProblemSetup = NO;
         
         drawNode=[[CCDrawNode alloc] init];
+        scaleDrawNode=[[CCDrawNode alloc] init];
         [self.ForeLayer addChild:drawNode];
-        //[self createClippingNode];
+        [clippingNode addChild:scaleDrawNode];
+//        [self createClippingNode];
     }
     
     return self;
+}
+
+-(void)setupClippingNode
+{
+    CCSprite *spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Mask.png")];
+    CCSprite *maskOuter=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
+    
+    magnifyBar=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Bar_Full.png")];
+
+    
+    clippingNode=[CCClippingNode clippingNode];
+    clippingNode.contentSize=CGSizeMake(2*cx, 2*cy);
+    clippingNode.anchorPoint=ccp(0.5f,0.5f);
+    clippingNode.position=ccp(cx,cy);
+    clippingNode.stencil=spriteMask;
+    //clippingNode.alphaThreshold=0.05f;
+
+    spriteMask.position=ccp(800,130);
+    maskOuter.position=ccp(800,150);
+    [magnifyBar setPosition:ccp(150,70)];
+    [clippingNode addChild:magnifyBar];
+    [clippingNode addChild:spriteMask];
+
+    [self.ForeLayer addChild:clippingNode];
+    [self.ForeLayer addChild:maskOuter];
+    
+    //test for clipping
+//    CCDrawNode *drawTests=[CCDrawNode node];
+//    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
+//    
+//    [clippingNode addChild:drawTests];
 }
 
 -(void)doUpdateOnTick:(ccTime)delta
@@ -154,13 +189,12 @@
     
 //    [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
-    
     float xInset=100.0f;
     float yInset=362.0f;
     float barW=824.0f;
     float barH=60.0f;
     float startBarPos=xInset;
-    float endBarPos=startBarPos;
+    float endBarPos;
     float lblStartYPos=yInset-80;
     float labelFontSize=26.0f;
     float lineSize=0.0f;
@@ -174,6 +208,8 @@
 //    float lineRad=3.0f;
     
     [drawNode clear];
+    [scaleDrawNode clear];
+    [scaleDrawNode setPosition:ccp(-760,-570)];
     
 //    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
     
@@ -191,12 +227,13 @@
     int magOrder=[self magnitudeOf:(int)currentTotal];
     int sigFigs=0;
     float magMult=pow(10, magOrder-1);
-    NSString *digits=[NSString stringWithFormat:@"%f", currentTotal];
+    NSString *digits=[NSString stringWithFormat:@"%g", currentTotal];
     BOOL gotZeroRow=NO;
     BOOL drawShadow=NO;
     for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
     {
         NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
+        NSLog(@"colIndex %d, curNum=%@, i=%d digitsL=%d comp=%d", colIndex, c, i, digits.length, digits.length-i);
         if([c isEqualToString:@"0"])
         {
             if(currentTotal==0 && !gotZeroRow)
@@ -286,22 +323,24 @@
             //}
             
             CGPoint *firstCo=&block[0];
-            ccColor3B curCol=ccc3(0,0,0);
+            ccColor3B curCol;
             ccColor3B sepLine=ccc3(68,71,72);
-            
             
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
             else
-                curCol=kBTXEColour[colIndex];
+                curCol=kBTXEColour[(digits.length-i)-1];
             
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
+            
+            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
             
             // and all of it's separators
             for(int i=0;i<[c intValue]-1;i++)
             {
                 [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
+                [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
                 sectionStartPos+=sectionSize;
             }
 
@@ -355,6 +394,7 @@
         
         CGPoint *firstVert=&verts[0];
         [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
     }
 //    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
 //    [l setPosition:ccp(startBarPos,yInset-27)];
@@ -376,6 +416,10 @@
         [renderLayer addChild:lTot];
         [allLabels addObject:lTot];
     }
+    
+
+    scaleDrawNode.scale=1.8f;
+    
     renderingChanges=NO;
 }
 
@@ -434,9 +478,6 @@
     [renderLayer addChild:expectedLabel];
 
     
-    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-    [lblCurrentTotal setPosition:ccp(cx,50)];
-    [renderLayer addChild:lblCurrentTotal];
 
 //    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 //    [questionLabel setAnchorPoint:ccp(0,0.5)];

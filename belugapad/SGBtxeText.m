@@ -15,6 +15,7 @@
 @synthesize size, position;
 @synthesize text, textRenderComponent;
 @synthesize container;
+@synthesize hidden, rowWidth, worldPosition;
 
 -(SGBtxeText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {

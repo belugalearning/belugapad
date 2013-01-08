@@ -22,6 +22,8 @@
 @synthesize assetType;
 @synthesize mountedObject;
 @synthesize backgroundType;
+@synthesize interactive;
+@synthesize hidden, rowWidth;
 
 -(SGBtxePlaceholder*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {

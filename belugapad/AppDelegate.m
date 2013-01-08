@@ -19,6 +19,7 @@
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
 
+#import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
 
@@ -146,7 +147,8 @@
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
 								   pixelFormat:kEAGLColorFormatRGB565	//kEAGLColorFormatRGBA8
-								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
+//								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
+								   depthFormat:GL_DEPTH24_STENCIL8_OES
 							preserveBackbuffer:NO
 									sharegroup:nil
 								 multiSampling:!self.IsIpad1
@@ -255,7 +257,9 @@
 
 -(void)stopAllSpeaking
 {
+#if !(TARGET_IPHONE_SIMULATOR)
     [self.acaSpeech stopSpeaking];
+#endif
 }
 
 -(void)tearDownUI

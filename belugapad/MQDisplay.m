@@ -137,7 +137,7 @@
         [a setPosition:ccp((i+0.5)*sectionWidth, 500)];
         [renderLayer addChild:a];
         
-        CCLabelTTF *cL=[CCLabelTTF labelWithString:cS dimensions:CGSizeMake(sectionWidth*0.7, 100) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:SOURCE fontSize:80.0f];
+        CCLabelTTF *cL=[CCLabelTTF labelWithString:cS fontName:SOURCE fontSize:80.0f dimensions:CGSizeMake(sectionWidth*0.7, 100) hAlignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap];
         [cL setPosition:ccp((i+0.5)*sectionWidth, 400)];
         [renderLayer addChild:cL];
     }

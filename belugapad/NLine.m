@@ -438,7 +438,7 @@ float timerIgnoreFrog;
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
     
     //jump sections
-    rambler.UserJumps=[[NSMutableArray alloc]init];
+    rambler.UserJumps=[[[NSMutableArray alloc]init] autorelease];
     
     //positioning
     rambler.DefaultSegmentSize=115;
@@ -493,6 +493,8 @@ float timerIgnoreFrog;
     
     evalType=[pdef objectForKey:EVAL_TYPE];
     if(!evalType)evalType=@"TARGET";
+    
+    [evalType retain];
     
     NSNumber *abseval=[pdef objectForKey:@"EVAL_TARGET_AS_ABSOLUTE_VALUE"];
     if(abseval) evalAbsTarget=[abseval boolValue];
@@ -550,9 +552,9 @@ float timerIgnoreFrog;
     NSNumber *countFromInitVal=[pdef objectForKey:@"COUNT_OUT_LOUD_FROM_START_VALUE"];
     if(countFromInitVal) countOutLoudFromInitStartVal=[countFromInitVal boolValue];
     
-    if([evalType isEqualToString:@"EVAL_TARGET"] && evalTarget<0)
+    if([evalType isEqualToString:@"TARGET"] && evalTarget<0)
         [usersService notifyStartingFeatureKey:@"NLINE_TARGET_LESS_0"];
-    if([evalType isEqualToString:@"EVAL_TARGET"] && evalTarget>=0)
+    if([evalType isEqualToString:@"TARGET"] && evalTarget>=0)
         [usersService notifyStartingFeatureKey:@"NLINE_TARGET_GREATER_EQUAL_0"];
     
     if(frogMode)
@@ -878,6 +880,11 @@ float timerIgnoreFrog;
                 writeText=[NSString stringWithFormat:fmt, multDisplayNum];
             }
             
+            if(readNumber>0)
+                writeText=[NSString stringWithFormat:@"plus %@", writeText];
+            
+            
+            
             AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
             [ac speakString:writeText];
         }
@@ -967,6 +974,7 @@ float timerIgnoreFrog;
     [bubbleTexSelected release];
     [rambler release];
     [selector release];
+    [evalType release];
     
     [gw release];
 

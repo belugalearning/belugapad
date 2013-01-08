@@ -47,7 +47,7 @@
 
 -(void)setSprite
 {
-    NSString *sname=[[NSString alloc]init];
+    NSString *sname=@"";
     
     if(n.renderType==0)
         sname=@"/images/placevalue/grid-middle.png";

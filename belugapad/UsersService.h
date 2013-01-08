@@ -17,6 +17,12 @@ typedef enum {
     BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE
 } BL_USER_CREATION_STATUS;
 
+typedef enum {
+    BL_USER_NICK_CHANGE_ERROR,
+    BL_USER_NICK_CHANGE_CONFLICT,
+    BL_USER_NICK_CHANGE_SUCCESS
+} BL_USER_NICK_CHANGE_RESULT;
+
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (readonly) NSDictionary *currentUserClone;
 @property (readonly) FMDatabase *allUsersDatabase;
@@ -30,6 +36,9 @@ typedef enum {
 -(void)createNewUserWithNick:(NSString*)nick
                  andPassword:(NSString*)password
                     callback:(void (^)(BL_USER_CREATION_STATUS))callback;
+
+-(void)changeCurrentUserNick:(NSString*)newNick
+                    callback:(void(^)(BL_USER_NICK_CHANGE_RESULT))callback;
 
 -(NSMutableArray*)deviceUsersByNickName;
 

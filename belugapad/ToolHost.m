@@ -86,7 +86,7 @@
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
-static float kTimeToHintToolTray=7.0f;
+static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - init and setup
 
@@ -106,7 +106,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     if(self=[super init])
     {
-        self.isTouchEnabled=YES;
+        self.touchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -162,7 +162,7 @@ static float kTimeToHintToolTray=7.0f;
         [self populatePerstLayer];
         
         pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
-        pbtn.position=ccp(HD_BUTTON_INSET-30, 2*cy - 30);
+        pbtn.position=ccp(HD_BUTTON_INSET, 2*cy - 30);
         pbtn.tag=3;
         pbtn.opacity=0;
         [perstLayer addChild:pbtn z:3];
@@ -397,14 +397,19 @@ static float kTimeToHintToolTray=7.0f;
     
     if(timeSinceInteractionOrShake>kTimeToHintToolTray)
     {
-        
-        if(numberPickerForThisProblem && !hasUsedWheelTray){
+        if(numberPickerForThisProblem && !hasUsedWheelTray && !hasRunInteractionFeedback && [traybtnWheel numberOfRunningActions]==0){
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
+            hasRunInteractionFeedback=YES;
         }
-        if(metaQuestionForThisProblem && !hasUsedMetaTray){
-            [metaArrow runAction:[InteractionFeedback dropAndBounceAction]];
+        if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0){
+            [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+            hasRunInteractionFeedback=YES;
         }
-        timeSinceInteractionOrShake=0.0f;
+        
+        if(hasRunInteractionFeedback && timeSinceInteractionOrShake>kTimeToHintToolTray+2.0f && [traybtnMq numberOfRunningActions]==0 && [traybtnWheel numberOfRunningActions]==0){
+            hasRunInteractionFeedback=NO;
+            timeSinceInteractionOrShake=0.0f;
+        }
     }
     
 
@@ -776,7 +781,9 @@ static float kTimeToHintToolTray=7.0f;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
     self.thisProblemDescription=nil;
+    introProblemSprite=nil;
 
+    
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
     [self tearDownMetaQuestion];
@@ -805,6 +812,10 @@ static float kTimeToHintToolTray=7.0f;
         
         //we've loaded this now, indicate as such so we don't get stuck in a loop
         breakOutIntroProblemHasLoaded=YES;
+        
+        introProblemSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_tutorial.png")];
+        [introProblemSprite setPosition:ccp(cx,((cy*2)-introProblemSprite.contentSize.height/2))];
+        [problemDefLayer addChild:introProblemSprite];
     }
     else
     {
@@ -888,19 +899,7 @@ static float kTimeToHintToolTray=7.0f;
         currentTool=[NSClassFromString(toolKey) alloc];
         [currentTool initWithToolHost:self andProblemDef:pdef];
     }
-    
-    NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
-    //if were not already in a breakout, break out
-    if(!breakOutIntroProblemFK && breakOutToFK && !contentService.isUsingTestPipeline)
-    {
-        NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
-        
-        //re-load with an FK problem, then resume on episode / pipeline
-        breakOutIntroProblemFK=breakOutToFK;
-        breakOutIntroProblemHasLoaded=NO;
-        
-        [self loadProblem];
-    }
+
 //    else
 //    {
 //        //continue normal load, nilling any previous breakout problem
@@ -947,6 +946,22 @@ static float kTimeToHintToolTray=7.0f;
     }
     else {
         [self setupProblemOnToolHost:pdef];
+    }
+    
+    NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
+    //if were not already in a breakout, break out
+    if(!breakOutIntroProblemFK && breakOutToFK && !contentService.isUsingTestPipeline)
+    {
+        NSLog(@"breaking out into intro problem with key %@", breakOutToFK);
+        
+        [loggingService logEvent:BL_PA_POSTPONE_FOR_INTRO_PROBLEM withAdditionalData:nil];
+        
+        //re-load with an FK problem, then resume on episode / pipeline
+        breakOutIntroProblemFK=breakOutToFK;
+        breakOutIntroProblemHasLoaded=NO;
+        
+        [self tearDownProblemDef];
+        [self loadProblem];
     }
     
     // set scale using the value we got earlier
@@ -1502,7 +1517,7 @@ static float kTimeToHintToolTray=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        SGBtxeRow *row;
+        SGBtxeRow *row=nil;
 //        CCLabelTTF *answerLabel;
         NSString *raw=nil;
         NSString *answerLabelString=nil;
@@ -1612,6 +1627,8 @@ static float kTimeToHintToolTray=7.0f;
             [row setupDraw];
         }
     
+        if(row)[row release];
+        
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
@@ -1625,6 +1642,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
+    [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_NotAvailable.png")]];
     toolCanEval=YES;
 //    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
     metaArrow=nil;
@@ -1647,7 +1665,6 @@ static float kTimeToHintToolTray=7.0f;
     
     if (CGRectContainsPoint(commitBtn.boundingBox, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible && !autoMoveToNextProblem)
     {
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
@@ -1701,6 +1718,7 @@ static float kTimeToHintToolTray=7.0f;
                         //[answerLabel setColor:kMetaAnswerLabelColorSelected];
                         //                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+                        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_selected.wav")];
                     }
                     return;
                 }
@@ -1711,6 +1729,7 @@ static float kTimeToHintToolTray=7.0f;
                     //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
                     //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_deselected.wav")];
                 }
             }
             else
@@ -2293,6 +2312,8 @@ static float kTimeToHintToolTray=7.0f;
     [self hideWheel];
     if(CurrentBTXE)CurrentBTXE=nil;
     toolCanEval=YES;
+    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+    
 //    if(traybtnWheel){
 //        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
 //        [traybtnWheel setColor:ccc3(255,255,255)];
@@ -2318,6 +2339,7 @@ static float kTimeToHintToolTray=7.0f;
 
 - (void)checkUserCommit
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
     //effective user commit
     [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
     
@@ -2545,6 +2567,7 @@ static float kTimeToHintToolTray=7.0f;
             if(CGRectContainsPoint(trayPadClear.boundingBox, location))
             {
                 [(LineDrawer*)lineDrawer clearSlate];
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_cleared.wav")];
             }
             if(CGRectContainsPoint(trayPadClose.boundingBox, location))
             {
@@ -2555,7 +2578,7 @@ static float kTimeToHintToolTray=7.0f;
                 return;
             }
         }
-        if (location.x < 100 && location.y > 688 && !isPaused)
+        if (location.x < 120 && location.y > 688 && !isPaused)
         {
             [self showPauseMenu];
             return;
@@ -2618,6 +2641,7 @@ static float kTimeToHintToolTray=7.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
+
     
     [currentTool ccTouchesBegan:touches withEvent:event];
 }
@@ -3519,7 +3543,8 @@ static float kTimeToHintToolTray=7.0f;
         currentTool=nil;
     }
     
-    if(self.pickerView)[self.pickerView release];
+    if(self.pickerView)self.pickerView=nil;
+    
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];

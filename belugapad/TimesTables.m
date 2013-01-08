@@ -203,12 +203,12 @@ static float kTimeToHeaderBounce=7.0f;
     [revealTiles retain];
     [solutionsDef retain];
 
-    [usersService notifyStartingFeatureKey:@"TIMESTABLES_SELECT_TILE"];
-    
     if(showXAxis)
         [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_X"];
     if(showYAxis)
         [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_Y"];
+
+    [usersService notifyStartingFeatureKey:@"TIMESTABLES_SELECT_TILE"];
 }
 
 -(void)populateGW
@@ -707,11 +707,10 @@ static float kTimeToHeaderBounce=7.0f;
     if([gw.Blackboard.SelectedObjects count]<[solutionsDef count] && solutionType==kMatrixMatch)return NO;
     
     int answersFound=0;
-    NSMutableArray *selectedTiles=[[NSMutableArray alloc]init];
     
     if(solutionType==kMatrixMatch)
     {
-        
+        NSMutableArray *selectedTiles=[[NSMutableArray alloc]init];
         
         for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
         {
@@ -738,9 +737,16 @@ static float kTimeToHeaderBounce=7.0f;
             }
         }
         
+        BOOL isCorrect=NO;
         
-        if(answersFound==[solutionsDef count] && answersFound==[selectedTiles count])return YES;
-        else return NO;
+        if(answersFound==[solutionsDef count] && answersFound==[selectedTiles count])
+            isCorrect=YES;
+        else
+            isCorrect=NO;
+        
+        [selectedTiles release];
+        
+        return isCorrect;
     }
     
     if(solutionType==kSolutionVal)

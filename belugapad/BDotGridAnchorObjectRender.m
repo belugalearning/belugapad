@@ -29,7 +29,7 @@
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller registerPollee:(id<LogPolling>)self];
+    [loggingService.logPoller registerPollee:(id<LogPolling>)anch];
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
@@ -54,9 +54,6 @@
             [self setSprite];
         }
         
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
     }
     if(messageType==kDWdismantle)
     {
@@ -75,7 +72,7 @@
 {    
     if(!anch.Hidden)
     {
-        NSString *spriteFileName=[[NSString alloc]init];
+        NSString *spriteFileName=@"";
         //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
             
@@ -120,7 +117,7 @@
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)anch];
     [super dealloc];
 }
 

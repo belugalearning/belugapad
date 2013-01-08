@@ -15,13 +15,15 @@
 
 -(id)init
 {
-    AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
-    contentService=ac.contentService;
-    adplineSettings=ac.AdplineSettings;
-    
-    _viableInserts=[[NSMutableArray alloc] init];
-    _decisionInformation=[[NSMutableDictionary alloc] init];
-    
+    if(self=[super init])
+    {
+        AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
+        contentService=ac.contentService;
+        adplineSettings=ac.AdplineSettings;
+        
+        _viableInserts=[[NSMutableArray alloc] init];
+        _decisionInformation=[[NSMutableDictionary alloc] init];
+    }
     return self;
 }
     

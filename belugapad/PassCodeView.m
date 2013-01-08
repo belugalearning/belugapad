@@ -48,7 +48,8 @@ const uint labelSpacing = 67;
         
         cursor = [[UIView alloc] init];
         cursor.userInteractionEnabled = NO;
-        cursor.backgroundColor = [UIColor colorWithRed:0.26f green:0.42f blue:0.95f alpha:1]; // this is the colour of the iOS cursor (insertion point) for white text on clear bg.
+        cursor.backgroundColor = [UIColor whiteColor];
+        //cursor.backgroundColor = [UIColor colorWithRed:0.26f green:0.42f blue:0.95f alpha:1]; // this is the colour of the iOS cursor (insertion point) for white text on clear bg.
         [self addSubview:cursor];
         
         text = [[NSMutableString alloc] init];
@@ -114,7 +115,7 @@ const uint labelSpacing = 67;
     // what's closest slot to touch?
     CGPoint touchPos = [(UITouch*)[touches anyObject] locationInView:self];
     float closestDistance = NSUIntegerMax;
-    uint labelIx;
+    uint labelIx=0;
     
     for (uint i=0; i<[labels count]; i++)
     {

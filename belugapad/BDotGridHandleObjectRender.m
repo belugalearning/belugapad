@@ -27,7 +27,7 @@
    
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller registerPollee:(id<LogPolling>)self];
+    [loggingService.logPoller registerPollee:(id<LogPolling>)handle];
     
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
@@ -75,7 +75,7 @@
 
 -(void)setSprite
 {    
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=@"";
 
     
     if(handle.handleType==kMoveHandle) spriteFileName=@"/images/dotgrid/move.png";
@@ -108,7 +108,7 @@
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     LoggingService *loggingService = ac.loggingService;
-    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)handle];
     [super dealloc];
 }
 

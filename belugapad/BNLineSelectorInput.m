@@ -51,7 +51,7 @@
 {
     if(selectorVarPos < [selector.PopulateVariableNames count] && selector.WatchRambler.Value!=oldSelection)
     {
-        if(!gameWorld.Blackboard.ProblemVariableSubstitutions) gameWorld.Blackboard.ProblemVariableSubstitutions=[[NSMutableDictionary alloc] init];
+        if(!gameWorld.Blackboard.ProblemVariableSubstitutions) gameWorld.Blackboard.ProblemVariableSubstitutions=[[[NSMutableDictionary alloc] init] autorelease];
         
         //create a k/v pair on the gw's var sub list using the rambler's current value and the current populate var
         [gameWorld.Blackboard.ProblemVariableSubstitutions setObject:[NSNumber numberWithInt:selector.WatchRambler.Value] forKey:[selector.PopulateVariableNames objectAtIndex:selectorVarPos]]; 

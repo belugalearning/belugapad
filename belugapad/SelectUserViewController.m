@@ -23,6 +23,7 @@
     
     // select user
     UIView *selectUserView;
+    UIImageView *selectUserBG;
     UITableView *selectUserTableView;
     UIButton *playButton;
     UIButton *joinClassButton;
@@ -49,6 +50,13 @@
     PassCodeView *downloadUserPassCodeView;
     UIButton *cancelExistingUserButton;
     UIButton *loadExistingUserButton;
+    
+    // change nick
+    UILabel *nickTakenLabel;
+    UIView *changeNickView;
+    UITextField *changeNickTF;
+    UIButton *cancelChangeNickButton;
+    UIButton *saveChangeNickButton;
     
     UIImageView *loadingImg;
     
@@ -149,9 +157,9 @@
 
 -(void)buildSelectUserView
 {
-    UIImageView *panel = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
-    [panel setCenter:CGPointMake(511.0f, 377.0f)];
-    [selectUserView addSubview:panel];
+    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
+    [selectUserBG setCenter:CGPointMake(511.0f, 377.0f)];
+    [selectUserView addSubview:selectUserBG];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];
     selectUserTableView.backgroundColor = [UIColor clearColor];
@@ -194,6 +202,44 @@
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateHighlighted];
     [selectUserView addSubview:joinClassButton];
+    
+    changeNickView = [[UIView alloc]  initWithFrame:CGRectMake(0, 0, 699, 459)];
+    [changeNickView setCenter:CGPointMake(511.0f, 377.0f)];
+    UIImageView *changeNickBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/change_username_bg.png"]] autorelease];
+    [changeNickView addSubview:changeNickBG];
+    
+    nickTakenLabel = [[[UILabel alloc] initWithFrame:CGRectMake(56, 113, 360.0f, 42.0f)] autorelease];
+    nickTakenLabel.font = [UIFont fontWithName:@"Chango" size:24];
+    nickTakenLabel.text = @"Name Taken!";
+    [nickTakenLabel setTextColor:[UIColor whiteColor]];
+    [nickTakenLabel setBackgroundColor:[UIColor clearColor]];
+    [changeNickView addSubview:nickTakenLabel];
+    
+    changeNickTF = [[[UITextField alloc] initWithFrame:CGRectMake(56, 163, 360.0f, 42.0f)] autorelease];
+    changeNickTF.delegate = self;
+    changeNickTF.font = [UIFont fontWithName:@"Chango" size:24];
+    changeNickTF.clearButtonMode = UITextFieldViewModeNever;
+    changeNickTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    changeNickTF.autocorrectionType = UITextAutocorrectionTypeNo;
+    changeNickTF.keyboardType = UIKeyboardTypeNamePhonePad;
+    changeNickTF.returnKeyType = UIReturnKeyDone;
+    [changeNickTF setTextColor:[UIColor whiteColor]];
+    [changeNickTF setBorderStyle:UITextBorderStyleLine];
+    [changeNickView addSubview:changeNickTF];
+    
+    cancelChangeNickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelChangeNickButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
+    cancelChangeNickButton.frame = CGRectMake(57, 246, 131, 51);
+    [cancelChangeNickButton addTarget:self action:@selector(handleCancelChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [changeNickView addSubview:cancelChangeNickButton];
+    
+    saveChangeNickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [saveChangeNickButton setImage:[UIImage imageNamed:@"/login-images/change_button.png"] forState:UIControlStateNormal];
+    saveChangeNickButton.frame = CGRectMake(289, 246, 131, 51);
+    [saveChangeNickButton addTarget:self action:@selector(handleSaveChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [changeNickView addSubview:saveChangeNickButton];
+    [saveChangeNickButton registerForDragAndLog];
+    
 }
 
 -(void)enablePlayButton
@@ -290,10 +336,10 @@
     // TEMP
     // N.B. Next few lines are a temp way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
     NSDictionary *ur = deviceUsers[ip.row];
-    NSRegularExpression *m = [[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil];
+    NSRegularExpression *m = [[[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil] autorelease];
     if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
     {
-        [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(loginUser:) userInfo:@{ @"urId":ur[@"id"] } repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:ur repeats:NO];
         return;
     }
     
@@ -310,6 +356,7 @@
     selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
     selectUserPassCodeModalView.delegate = self;
     [self.view addSubview:selectUserPassCodeModalView];
+    [selectUserPassCodeModalView becomeFirstResponder];
     
     backToSelectUserButton = [[[UIButton alloc] init] autorelease];
     backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);
@@ -365,7 +412,7 @@
     {
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/correct_tick.png"]];
         tickCrossImg.alpha = 1;
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:@{ @"urId":ur[@"id"] } repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:ur repeats:NO];
         [backToSelectUserButton removeTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
         [loginButton removeTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -379,7 +426,88 @@
 
 -(void)loginUser:(NSTimer*)timer
 {
-    [usersService setCurrentUserToUserWithId:[timer userInfo][@"urId"]];
+    NSDictionary *ur = [timer userInfo];
+    
+    [usersService setCurrentUserToUserWithId:ur[@"id"]];
+    
+    // does user need to change their nick
+    if ([ur[@"nickClash"] integerValue] == 2)
+    {
+        [selectUserModalUnderlay removeFromSuperview];
+        [selectUserPassCodeModalView removeFromSuperview];
+        [selectUserModalBgView removeFromSuperview];
+        [loginButton removeFromSuperview];
+        [backToSelectUserButton removeFromSuperview];
+        [playButton removeFromSuperview];
+        tickCrossImg.alpha = 0;
+        [tickCrossImg setCenter:CGPointMake(595, 331)];
+        
+        [loadingImg registerForDragAndLog];
+        [loadingImg setCenter:CGPointMake(596, 415)];
+        changeNickTF.text = ur[@"nickName"];
+        [selectUserView addSubview:changeNickView];
+    }
+    else
+    {
+        [self.view removeFromSuperview];
+        [app proceedFromLoginViaIntro:NO];
+    }
+}
+
+-(void)handleCancelChangeNickClicked:(id)button
+{
+    if (freezeUI) return;
+    freezeUI = YES;
+    [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
+}
+
+-(void)handleSaveChangeNickClicked:(id)button
+{
+    if (freezeUI) return;
+    freezeUI = YES;
+    
+    loadingImg.alpha = 1;
+    nickTakenLabel.alpha = 0;
+    tickCrossImg.alpha = 0;
+    
+    SEL proceed = @selector(proceedAfterPause:);
+    
+    __block typeof(self) bself = self;
+    void (^changeNickCallback)() = ^(BL_USER_NICK_CHANGE_RESULT result) {
+        bself->loadingImg.alpha = 0;
+        UIAlertView *alertView;
+        
+        switch (result) {
+            case BL_USER_NICK_CHANGE_SUCCESS:
+                [bself->tickCrossImg setImage:[UIImage imageNamed:@"/login-images/correct_tick.png"]];
+                bself->tickCrossImg.alpha = 1;
+                [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:proceed userInfo:nil repeats:NO];
+                break;
+            case BL_USER_NICK_CHANGE_CONFLICT:
+                freezeUI = NO;
+                [bself->tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
+                bself->tickCrossImg.alpha = 1;
+                bself->loadingImg.alpha = 0;
+                bself->nickTakenLabel.alpha = 1;
+                break;
+            case BL_USER_NICK_CHANGE_ERROR:
+                bself->loadingImg.alpha = 0;
+                alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                        message:@"There was a problem connecting to the server. You can change your username next time you log in."
+                                                       delegate:bself
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil] autorelease];
+                alertView.tag = 999;
+                [alertView show];
+                break;
+        }
+    };
+    [usersService changeCurrentUserNick:changeNickTF.text callback:changeNickCallback];
+}
+
+-(void)proceedAfterPause:(NSTimer*)timer
+{
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
 }
@@ -408,7 +536,7 @@
     newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 288.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
-    newUserNameTF.placeholder = @"Name";
+    newUserNameTF.placeholder = @"Username";
     newUserNameTF.clearButtonMode = UITextFieldViewModeNever;
     newUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     newUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -421,7 +549,6 @@
     newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(389.0f, 341.0f, 245.0f, 46.0f)] autorelease];
     newUserPassCodeView.delegate = self;
     [editUserView addSubview:newUserPassCodeView];
-    [newUserPassCodeView registerForDragAndLog];
     
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelNewUserButton.frame = CGRectMake(330.0f, 407.0f, 103.0f, 49.0f);
@@ -601,6 +728,15 @@
                                       callback:callback];
 }
 
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 999)
+    {
+        [app proceedFromLoginViaIntro:NO];
+    }
+}
 
 #pragma mark -
 #pragma mark PassCodeViewDelegate
@@ -645,6 +781,7 @@
 -(void)dealloc
 {
     if (deviceUsers)[deviceUsers release];
+    if (changeNickView)[changeNickView release];
     [super dealloc];
 }
 @end

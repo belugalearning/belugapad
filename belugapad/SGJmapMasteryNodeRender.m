@@ -13,6 +13,7 @@
 #import "BLMath.h"
 #import "global.h"
 #import "SGJmapPaperPlane.h"
+#import "SimpleAudioEngine.h"
 
 #import "TouchXML.h"
 
@@ -22,7 +23,7 @@ static ccColor4B userCol2={120, 168, 221, 255};
 //static ccColor4B userCol={0, 51, 98, 255};
 //static ccColor4B userCol={150,90,200,255};
 //static ccColor4B userCol={150,90,200,255};
-static ccColor4B userHighCol={255, 255, 255, 50};
+//static ccColor4B userHighCol={255, 255, 255, 50};
 //static ccColor4B userHighCol={239,119,82,255};
 static int shadowSteps=5;
 
@@ -200,16 +201,16 @@ static int shadowSteps=5;
 
     //NSLog(@"avgp pre  %@", NSStringFromCGPoint(avgp));
     
-    if(countx>0)avgp=ccp(avgp.x / (float)countx, avgp.y);
-    if(county>0)avgp=ccp(avgp.x, avgp.y / (float)county);
+//    if(countx>0)avgp=ccp(avgp.x / (float)countx, avgp.y);
+//    if(county>0)avgp=ccp(avgp.x, avgp.y / (float)county);
     
     //NSLog(@"avgp post %@", NSStringFromCGPoint(avgp));
     
     //root of those squared
-    avgp=ccp(sqrtf(avgp.x), sqrtf(avgp.y));
+//    avgp=ccp(sqrtf(avgp.x), sqrtf(avgp.y));
     
     //inverse and multiply
-    avgp=ccp(avgp.x * 0.01f, avgp.y*0.02f);
+//    avgp=ccp(avgp.x * 0.01f, avgp.y*0.02f);
     
     //NSLog(@"avgp adj  %@", NSStringFromCGPoint(avgp));
     
@@ -286,8 +287,8 @@ static int shadowSteps=5;
 {
 //    NSLog(@"new island setup");
     
-    int iCount=ParentGO.ChildNodes.count;
-    if(iCount==0)iCount=1; // handle islands with no nodes
+//    int iCount=ParentGO.ChildNodes.count;
+//    if(iCount==0)iCount=1; // handle islands with no nodes
 
     //get an island selection base
     //self.islandShapeIdx=(arc4random()%10) + 1;
@@ -388,7 +389,7 @@ static int shadowSteps=5;
         CGPoint path=[BLMath SubtractVector:ParentGO.Position from:othermn.Position];
         CGPoint startpos=[BLMath AddVector:ParentGO.Position toVector:[BLMath MultiplyVector:path byScalar:0.2f]];
         
-        SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:startpos andDestination:othermn.Position];
+        SGJmapPaperPlane *plane=[[[SGJmapPaperPlane alloc]initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:startpos andDestination:othermn.Position] autorelease];
         
         [plane setup];
         
@@ -399,7 +400,11 @@ static int shadowSteps=5;
 -(void)readyIslandRender
 {
 
-    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", self.islandShapeIdx];
+    int shapeIndex=self.islandShapeIdx;
+    
+    if(shapeIndex==0)shapeIndex=1;
+    
+    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", shapeIndex];
 
     if(self.islandStage>2)
     {
@@ -478,7 +483,7 @@ static int shadowSteps=5;
 {
     //step through the nodes for the selected island and position them, linking feature/artefact/node arrays to nodes
     self.indexedBaseNodes=nil;
-    self.indexedBaseNodes=[[NSMutableArray alloc] init];
+    self.indexedBaseNodes=[[[NSMutableArray alloc] init] autorelease];
     
     for (NSDictionary *f in [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"])
     {
@@ -534,6 +539,8 @@ static int shadowSteps=5;
             newfsprite.position=ccpAdd(base.position, ccp(0, -75));
         }
     }
+    NSString *audio=[NSString stringWithFormat:@"/sfx/go/sfx_journey_map_map_progress_island_state_change_%d.wav", self.islandStage];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(audio)];
     needToTransition=NO;
 }
 
@@ -658,96 +665,96 @@ static int shadowSteps=5;
 
 #pragma mark - random feature placement / scatter & calculations
 
--(void)scatterThing:(NSString*)thing withOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
-{
-    [self scatterThing1:thing andThing2:thing withRatio1:50 andRatio2:50 andOffset:offsetPos andScale:scale];
-}
+//-(void)scatterThing:(NSString*)thing withOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
+//{
+//    [self scatterThing1:thing andThing2:thing withRatio1:50 andRatio2:50 andOffset:offsetPos andScale:scale];
+//}
 
--(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2 andOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
-{
-//    NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
-    
-    //assumed picking from random selection of three of each
-    
-    NSMutableArray *masks=[islandData objectForKey:ISLAND_FEATURE_SPACES];
-    if(!masks) return;
-    int maskCount=masks.count;
-    
-    CGPoint centres[maskCount];
-    float radii[maskCount];
-    
-    int i=0;
-    for (NSMutableDictionary *fs in masks) {
-        radii[i]=[[fs objectForKey:ISLAND_RADIUS] floatValue];
-        
-        CGPoint dataCentre=[[fs objectForKey:ISLAND_POS] CGPointValue];
-        //CGPoint centreCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f) from:dataCentre];
-        
-        centres[i]=dataCentre;
-        
-        //centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
-
-        //NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
-        
-        i++;
-    }
-    
-    //CGRect box=CGRectMake(islandSprite.position.x-islandSprite.contentSize.width / 2.0f, islandSprite.position.y - islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
-    
-    CGRect box=CGRectMake(-islandSprite.contentSize.width / 2.0f, -islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
-    
-//    NSLog(@"before mod %@", NSStringFromCGRect(box));
-    
-    //position * scale
-    //box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)*scale.x, (box.origin.y + box.origin.y * offsetPos.y)*scale.y, box.size.width * scale.x, box.size.height * scale.y);
-    
-    box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)+(scale.x*box.size.width*0.5f), (box.origin.y + box.origin.y * offsetPos.y)+(scale.y*box.size.height*0.5f), box.size.width * scale.x, box.size.height * scale.y);
-    
-    //box=CGRectMake(box.origin.x+offsetPos.x, box.origin.y+offsetPos.y, box.size.width, box.size.height);
-    
-//    NSLog(@"after mod %@", NSStringFromCGRect(box));
-    
-    
-    //float y=islandSprite.boundingBox.size.height;
-    float y=box.size.height + box.origin.y;
-    while (y>box.origin.y) {
-        //float x=arc4random() % (int)islandSprite.boundingBox.size.width;
-        float x=(arc4random() % (int)box.size.width) + box.origin.x;
-
-        BOOL pass=NO;
-        //test if x, y valid
-        for(int i=0; i<maskCount; i++)
-        {
-            //CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
-            CGPoint pCentre=ccp(x,y);
-            
-            if ([BLMath DistanceBetween:pCentre and:centres[i]]<radii[i])
-            {
-                pass=YES;
-                break;
-            }
-        }
-        
-        //draw at x, y
-        if(pass)
-        {
-            int rver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
-            int type=1+arc4random()%100;
-            NSString *typeName=thing1;
-            if(type>ratio1) typeName=thing2;
-            NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
-            CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
-            [featureSprites addObject:fsprite];
-            fsprite.position=ccpAdd(ccp(x,y-40), islandSprite.position);
-            fsprite.visible=ParentGO.Visible;
-            [ParentGO.RenderBatch addChild:fsprite z:3];
-        }
-        
-        //y-=arc4random()%3;
-        y-=arc4random()%5;
-    }
-    
-}
+//-(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2 andOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
+//{
+////    NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
+//    
+//    //assumed picking from random selection of three of each
+//    
+//    NSMutableArray *masks=[islandData objectForKey:ISLAND_FEATURE_SPACES];
+//    if(!masks) return;
+//    int maskCount=masks.count;
+//    
+//    CGPoint centres[maskCount];
+//    float radii[maskCount];
+//    
+//    int i=0;
+//    for (NSMutableDictionary *fs in masks) {
+//        radii[i]=[[fs objectForKey:ISLAND_RADIUS] floatValue];
+//        
+//        CGPoint dataCentre=[[fs objectForKey:ISLAND_POS] CGPointValue];
+//        //CGPoint centreCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f) from:dataCentre];
+//        
+//        centres[i]=dataCentre;
+//        
+//        //centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
+//
+//        //NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
+//        
+//        i++;
+//    }
+//    
+//    //CGRect box=CGRectMake(islandSprite.position.x-islandSprite.contentSize.width / 2.0f, islandSprite.position.y - islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
+//    
+//    CGRect box=CGRectMake(-islandSprite.contentSize.width / 2.0f, -islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
+//    
+////    NSLog(@"before mod %@", NSStringFromCGRect(box));
+//    
+//    //position * scale
+//    //box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)*scale.x, (box.origin.y + box.origin.y * offsetPos.y)*scale.y, box.size.width * scale.x, box.size.height * scale.y);
+//    
+//    box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)+(scale.x*box.size.width*0.5f), (box.origin.y + box.origin.y * offsetPos.y)+(scale.y*box.size.height*0.5f), box.size.width * scale.x, box.size.height * scale.y);
+//    
+//    //box=CGRectMake(box.origin.x+offsetPos.x, box.origin.y+offsetPos.y, box.size.width, box.size.height);
+//    
+////    NSLog(@"after mod %@", NSStringFromCGRect(box));
+//    
+//    
+//    //float y=islandSprite.boundingBox.size.height;
+//    float y=box.size.height + box.origin.y;
+//    while (y>box.origin.y) {
+//        //float x=arc4random() % (int)islandSprite.boundingBox.size.width;
+//        float x=(arc4random() % (int)box.size.width) + box.origin.x;
+//
+//        BOOL pass=NO;
+//        //test if x, y valid
+//        for(int i=0; i<maskCount; i++)
+//        {
+//            //CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
+//            CGPoint pCentre=ccp(x,y);
+//            
+//            if ([BLMath DistanceBetween:pCentre and:centres[i]]<radii[i])
+//            {
+//                pass=YES;
+//                break;
+//            }
+//        }
+//        
+//        //draw at x, y
+//        if(pass)
+//        {
+//            int rver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
+//            int type=1+arc4random()%100;
+//            NSString *typeName=thing1;
+//            if(type>ratio1) typeName=thing2;
+//            NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
+//            CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
+//            [featureSprites addObject:fsprite];
+//            fsprite.position=ccpAdd(ccp(x,y-40), islandSprite.position);
+//            fsprite.visible=ParentGO.Visible;
+//            [ParentGO.RenderBatch addChild:fsprite z:3];
+//        }
+//        
+//        //y-=arc4random()%3;
+//        y-=arc4random()%5;
+//    }
+//    
+//}
 
 
 -(CGPoint) subCentre:(CGPoint)pos
@@ -960,7 +967,7 @@ static int shadowSteps=5;
         if(l>avgL)
         {
             //the point is past the average, multiply it's length (for the point) by the distance over the 
-            l = l/avgL;
+//            l = l/avgL;
             
             //add to that an amount
             CGPoint add=[BLMath ProjectMovementWithX:0 andY:50 forRotation:[BLMath angleForVector:diff]];
@@ -1239,7 +1246,7 @@ static int shadowSteps=5;
     //perim polys -- overlapping
     for(int ip=0; ip<shadowSteps; ip++)
     {
-        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*renderParent.sortedChildren.count)-1];
+//        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*renderParent.sortedChildren.count)-1];
         
         //ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
 

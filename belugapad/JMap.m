@@ -120,7 +120,7 @@ typedef enum {
 {
     if(self=[super init])
     {
-        self.isTouchEnabled=YES;
+        self.touchEnabled=YES;
         [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
@@ -770,22 +770,24 @@ typedef enum {
     
     //step over each group that includes a data-features and create a dictionary for it
     NSArray *nodes=[doc nodesForXPath:@"//svg:g[starts-with(@id, 'data-features')]" namespaceMappings:nsMappings error:nil];
+    
+    
     for (CXMLElement *node in nodes) {
         //this is a node
         //NSLog(@"parsing island group %@", [[node attributeForName:@"id"] stringValue]);
         
         //create dict for this island
-        NSMutableDictionary *idata=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *idata=[[[NSMutableDictionary alloc] init] autorelease];
         [gw.Blackboard.islandData addObject:idata];
         
         //create the arrays of node and artefact dicts, as well as the master index dict
-        NSMutableArray *featureindex=[[NSMutableArray alloc] init];
+        NSMutableArray *featureindex=[[[NSMutableArray alloc] init] autorelease];
         [idata setValue:featureindex forKey:@"FEATURE_INDEX"];
-        NSMutableArray *artefacts=[[NSMutableArray alloc] init];
+        NSMutableArray *artefacts=[[[NSMutableArray alloc] init] autorelease];
         [idata setValue:artefacts forKey:@"ARTEFACTS"];
-        NSMutableArray *nodes=[[NSMutableArray alloc] init];
+        NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];
         [idata setValue:nodes forKey:@"NODES"];
-        NSMutableArray *features=[[NSMutableArray alloc] init];
+        NSMutableArray *features=[[[NSMutableArray alloc] init] autorelease];
         [idata setValue:features forKey:@"FEATURES"];
         
         //step over all of the images in the group to infer types
@@ -833,6 +835,7 @@ typedef enum {
             }
         }
     }
+    
 }
 
 -(NSValue*)getBoxedPosFromTransformString:(NSString*)t
@@ -1295,7 +1298,7 @@ typedef enum {
 
 -(void)setupUI
 {
-    ac.searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)];
+    ac.searchBar=[[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)] autorelease];
     ac.searchBar.barStyle=UIBarStyleBlackTranslucent;
     [[[ac.searchBar subviews] objectAtIndex:0] removeFromSuperview];
     ac.searchBar.backgroundColor=[UIColor clearColor];
@@ -1305,7 +1308,7 @@ typedef enum {
     [[CCDirector sharedDirector].view addSubview:ac.searchBar];
     
     
-    ac.searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)];
+    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)] autorelease];
     ac.searchList.delegate=self;
     ac.searchList.dataSource=self;
 }

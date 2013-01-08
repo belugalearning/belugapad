@@ -44,9 +44,8 @@
 @property BOOL HideAllNotches;
 @property (retain) NSArray *ShowNotchesAtIntervals;
 
-@property NSMutableArray *MarkerValuePositions;
-
-@property NSMutableArray *UserJumps;
+@property (retain) NSMutableArray *MarkerValuePositions;
+@property (retain) NSMutableArray *UserJumps;
 
 @property int DisplayNumberOffset;
 @property float DisplayNumberMultiplier;

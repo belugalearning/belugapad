@@ -422,10 +422,10 @@
     return mFullEvaluate;
 }
 
-- (void)setFullEvaluate:(BOOL)fullEvaluate
-{
-    mFullEvaluate = fullEvaluate;
-}
+//- (void)setFullEvaluate:(BOOL)fullEvaluate
+//{
+//    mFullEvaluate = fullEvaluate;
+//}
 
 - (NSInteger)childBalance
 {

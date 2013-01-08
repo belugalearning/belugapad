@@ -797,7 +797,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     // ---------------- END TEAR DOWN --------------------------------
     
-    
+    if(multiplierStage>0)
+        [multiplierBadge setVisible:YES];
     
     if(breakOutIntroProblemFK && !breakOutIntroProblemHasLoaded)
     {
@@ -959,6 +960,9 @@ static float kTimeToHintToolTray=0.0f;
         //re-load with an FK problem, then resume on episode / pipeline
         breakOutIntroProblemFK=breakOutToFK;
         breakOutIntroProblemHasLoaded=NO;
+        
+        if(multiplierStage>0)
+            [multiplierBadge setVisible:NO];
         
         [self tearDownProblemDef];
         [self loadProblem];

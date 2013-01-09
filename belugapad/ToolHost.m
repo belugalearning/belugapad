@@ -595,6 +595,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)resetScoreMultiplier
 {
+    if(breakOutIntroProblemFK)return;
     scoreMultiplier=1;
     multiplierStage=1;
     hasResetMultiplier=YES;
@@ -797,7 +798,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     // ---------------- END TEAR DOWN --------------------------------
     
-    
+    if(multiplierStage>0 && breakOutIntroProblemFK)
+        [multiplierBadge setVisible:NO];
     
     if(breakOutIntroProblemFK && !breakOutIntroProblemHasLoaded)
     {
@@ -822,7 +824,9 @@ static float kTimeToHintToolTray=0.0f;
         if(breakOutIntroProblemFK && breakOutIntroProblemHasLoaded)
         {
             [usersService addEncounterWithFeatureKey:breakOutIntroProblemFK date:[NSDate date]];
-            
+
+            if(multiplierStage>0)
+                [multiplierBadge setVisible:YES];
             //reset state -- we've loaded, play and logged the breakout problem
             breakOutIntroProblemFK=nil;
             breakOutIntroProblemHasLoaded=NO;

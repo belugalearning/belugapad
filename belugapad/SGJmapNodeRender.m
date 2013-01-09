@@ -202,7 +202,11 @@
     if(an)
     {
         CCSprite *stars=[CCSprite spriteWithSpriteFrameName:an];
-        stars.position=ccpAdd(ParentGO.Position, ccp(0, 50));
+        
+        if(nodeSprite.flipX)
+            stars.position=ccpAdd(ParentGO.Position, ccp(-6, 50));
+        else
+            stars.position=ccpAdd(ParentGO.Position, ccp(6, 50));
         
         [ParentGO.RenderBatch addChild:stars z:7];
     }

@@ -41,8 +41,6 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{1023, -100}, {222, 300}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -56,7 +54,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{21, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="915232800"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -87,7 +84,7 @@
 							<int key="traits">2</int>
 							<double key="pointSize">32</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="441353416">
+						<object class="NSFont" key="IBUIFont" id="563265533">
 							<string key="NSName">Arial-BoldMT</string>
 							<double key="NSSize">32</double>
 							<int key="NSfFlags">16</int>
@@ -98,7 +95,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{112, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="119022528"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -114,14 +110,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_1.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="119022528">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{204, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="328042391"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -137,14 +132,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_2.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="328042391">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{295, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="933801991"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -160,14 +154,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_3.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="933801991">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{386, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="72548851"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -183,14 +176,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_4.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="72548851">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{477, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="897479491"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -206,14 +198,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_5.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="897479491">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{568, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="814631459"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -229,14 +220,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_6.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="814631459">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{659, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1030777888"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -252,14 +242,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_7.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="1030777888">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{751, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="798126622"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -275,14 +264,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_8.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="798126622">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{842, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="260021593"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -298,14 +286,13 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_9.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 					<object class="IBUIButton" id="260021593">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{934, 105}, {70, 70}}</string>
+						<string key="NSFrame">{{933, 105}, {70, 70}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="224583452"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -321,12 +308,11 @@
 							<string key="NSResourceName">/images/numberpad/number_pad_delete.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="124702970"/>
-						<reference key="IBUIFont" ref="441353416"/>
+						<reference key="IBUIFont" ref="563265533"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{1024, 200}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1010175475"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>

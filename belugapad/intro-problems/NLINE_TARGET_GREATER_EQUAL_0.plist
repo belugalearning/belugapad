@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Move the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_bubble&quot;/&gt;&lt;b:t&gt;to 2 and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Move the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_bubble&quot;/&gt;&lt;b:t&gt;to&lt;/b:t&gt;&lt;b:oi tag=&quot;30_NL_2&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Move the bubble to 2. </string>
 	<key>TOOL_KEY</key>

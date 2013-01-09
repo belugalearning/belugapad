@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;You have 9&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block&quot;/&gt;&lt;b:t&gt;. Add 1 from the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_dock_with_block&quot;/&gt;&lt;b:t&gt;and drag the yellow block to the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;You have 9&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block&quot;/&gt;&lt;b:t&gt;. Add&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit1&quot;/&gt;&lt;b:t&gt;from the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_dock_with_block&quot;/&gt;&lt;b:t&gt;and drag the yellow set to the left&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Tap 10 ones and move to the left column to make 1 ten. </string>
 	<key>TOOL_KEY</key>
@@ -35,7 +35,7 @@
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COL_HEADER</key>
-	<false/>
+	<true/>
 	<key>SHOW_VALUE</key>
 	<true/>
 	<key>SHOW_BASE_SELECTION</key>
@@ -45,7 +45,12 @@
 	<key>PROXIMITY_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-pos.png</string>
 	<key>CUSTOM_COLUMN_HEADERS</key>
-	<dict/>
+	<dict>
+		<key>10</key>
+		<string>Tens</string>
+		<key>1</key>
+		<string>Ones</string>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -82,6 +87,13 @@
 		<key>10</key>
 		<false/>
 		<key>1</key>
+		<false/>
+	</dict>
+	<key>COLUMN_CAGES</key>
+	<dict>
+		<key>1</key>
+		<true/>
+		<key>10</key>
 		<false/>
 	</dict>
 </dict>

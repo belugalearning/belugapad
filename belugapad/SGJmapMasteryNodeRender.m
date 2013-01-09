@@ -384,6 +384,9 @@ static int shadowSteps=5;
 
 -(void)setupPlaneRender
 {
+    //only show them if enabeld for this mastery node / island
+    if(!ParentGO.shouldShowPaperPlanes) return;
+    
     for(SGJmapMasteryNode *othermn in ParentGO.EffectedPathDestinationNodes)
     {
         CGPoint path=[BLMath SubtractVector:ParentGO.Position from:othermn.Position];

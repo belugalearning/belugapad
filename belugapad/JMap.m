@@ -272,7 +272,7 @@ typedef enum {
     [gw handleMessage:kSGreadyRender];
 
     // position map so that bottom-most included node in view, bottom-left
-    if (!contentService.resetPositionAfterTH)
+    if (!contentService.resetPositionAfterTH && !mapPositionSet)
     {
         CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
         for (id go in [gw AllGameObjects]) {
@@ -410,6 +410,11 @@ typedef enum {
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
         id<CouchDerived, Configurable, Selectable, Transform> newnode;
+        
+        if([n._id isEqualToString:ac.lastViewedNodeId])
+        {
+            lastPlayedNode=newnode;
+        }
         
         //create a node go
         
@@ -654,6 +659,61 @@ typedef enum {
         }
     }
 
+    //check if last mastery has been completed, and
+    // - bounce nodes on other islands
+    // - fly planes
+    //always
+    // - centre map on that mastery
+    // - bounce that node
+    
+    if(lastPlayedNode)
+    {
+        NSLog(@"identified last played mastery node");
+        
+        if([lastPlayedNode isKindOfClass:[SGJmapMasteryNode class]])
+            lastPlayedMasteryNode=(SGJmapMasteryNode*)lastPlayedNode;
+        else
+            lastPlayedMasteryNode=((SGJmapNode*)lastPlayedNode).MasteryNode;
+        
+        BOOL allComplete=YES;
+        NSLog(@"assuming all children complete... testing");
+        for(SGJmapNode *n in lastPlayedMasteryNode.ChildNodes)
+        {
+            if(n.ustate.lastScore==0)
+            {
+                NSLog(@"children not complete, reverting assumption");
+                allComplete=NO;
+                break;
+            }
+        }
+        
+        if(allComplete)
+        {
+            NSLog(@"bouncing all other applicable nodes / islands; enabling planes");
+            //bounce all other mastery node
+            for(id go in [gw AllGameObjects])
+            {
+                if([go isKindOfClass:[SGJmapMasteryNode class]])
+                {
+                    SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+                    mgo.shouldBouncePins=YES;
+                }
+            }
+            
+            //enable paper planes on this node/island
+            lastPlayedMasteryNode.shouldShowPaperPlanes=YES;
+        }
+        
+        //always
+        lastPlayedMasteryNode.shouldBouncePins=YES;
+        
+        //centre on this node
+        CGPoint p = lastPlayedMasteryNode.Position;
+        [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
+        
+        mapPositionSet=YES;
+    }
+    
 }
 
 -(void)buildSearchIndex
@@ -1023,6 +1083,7 @@ typedef enum {
         [usersService setCurrentUserToUserWithId:nil];
         
         ac.lastJmapViewUState=nil;
+        ac.lastViewedNodeId=nil;
         [ac returnToLogin];
         
         return;

@@ -40,6 +40,9 @@
 
 @synthesize EffectedPathDestinationNodes;
 
+@synthesize shouldBouncePins;
+@synthesize shouldShowPaperPlanes;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -47,6 +50,9 @@
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
         self.Visible=NO;
+        
+        self.shouldBouncePins=NO;
+        self.shouldShowPaperPlanes=NO;
         
         EffectedPathDestinationNodes=[NSMutableArray array];
         

@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 
 @class Daemon;
+@class SGJmapMasteryNode;
 
 @interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
@@ -51,6 +52,10 @@
     
     BOOL playTransitionAudio;
     id lastSelectedNode;
+    
+    id lastPlayedNode;
+    SGJmapMasteryNode *lastPlayedMasteryNode;
+    bool mapPositionSet;
 }
 
 +(CCScene *)scene;

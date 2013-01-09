@@ -82,6 +82,8 @@
 	<string>octagon</string>
 	<key>30_DT_Shape_Value_10</key>
 	<string>ten circle</string>
+	<key>30_DT_2Circles</key>
+	<string>two circles</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
 	<key>30_TT_25</key>

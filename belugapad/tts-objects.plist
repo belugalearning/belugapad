@@ -62,6 +62,8 @@
 	<string>stop button</string>
 	<key>30_DG_sq</key>
 	<string>square</string>
+	<key>30_DG_Handle</key>
+	<string>handle</string>
 	<key>30_NW_2col</key>
 	<string>number wheel</string>
 	<key>30_pause</key>

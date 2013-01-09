@@ -50,6 +50,7 @@
     float lastTapTime;
     
     BOOL playTransitionAudio;
+    id lastSelectedNode;
 }
 
 +(CCScene *)scene;

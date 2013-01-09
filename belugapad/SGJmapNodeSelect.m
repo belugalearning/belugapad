@@ -132,6 +132,8 @@
                 displayString=[NSString stringWithFormat:@"%d DAY AGO", numberOfDays];
             else if(numberOfDays>1 && numberOfWeeks==0)
                 displayString=[NSString stringWithFormat:@"%d DAYS AGO", numberOfDays];
+            else if(numberOfDays>0 && numberOfWeeks==0)
+                displayString=[NSString stringWithFormat:@"%d WEEK AGO", numberOfWeeks];
             else if(numberOfDays>0 && numberOfWeeks>0)
                 displayString=[NSString stringWithFormat:@"%d WEEKS AGO", numberOfWeeks];
             
@@ -239,6 +241,7 @@
     CGPoint placePos=ParentGO.Position;
     if([((NSObject*)ParentGO) isKindOfClass:[SGJmapMasteryNode class]])
         placePos=((SGJmapMasteryNode*)ParentGO).MasteryPinPosition;
+
 
     [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
     

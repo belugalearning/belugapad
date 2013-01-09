@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Press&lt;/b:t&gt;&lt;b:oi tag=&quot;30_TT_5&quot;/&gt;&lt;b:t&gt;along the side to highlight a row.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Press&lt;/b:t&gt;&lt;b:oi tag=&quot;30_TT_5&quot;/&gt;&lt;b:t&gt;along the left side to highlight a row.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>

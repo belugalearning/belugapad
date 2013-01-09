@@ -90,11 +90,13 @@
 	<string>square</string>
 	<key>30_TT_25</key>
 	<string>25 square</string>
+	<key>30_TT_5</key>
+	<string>circle labelled five</string>
 	<key>30_nl_jump_forward</key>
 	<string>jump forward button</string>
 	<key>30_NL_MoveButtonBack</key>
 	<string>jump back button</string>
-	<key>30_Pipe_In</key>
+	<key>30_FB_Pipe_In</key>
 	<string>pipe at the bottom</string>
 	<key>30_pipe_out</key>
 	<string>output pipe</string>

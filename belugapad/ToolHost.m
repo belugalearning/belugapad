@@ -3081,6 +3081,11 @@ static float kTimeToHintToolTray=0.0f;
     if(metaArrow && [self metaQuestionSelectedCount]==0)
         //[metaArrow setVisible:YES];
         [metaArrow setVisible:NO];
+    
+    if(metaQuestionForThisProblem){
+        timeSinceInteractionOrShake=0.0f;
+        hasUsedMetaTray=NO;
+    }
 }
 
 -(void)disableWheel
@@ -3134,6 +3139,11 @@ static float kTimeToHintToolTray=0.0f;
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
     else
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+    
+    if(numberPickerForThisProblem){
+        timeSinceInteractionOrShake=0.0f;
+        hasUsedWheelTray=NO;
+    }
 }
 
 -(void)showPad

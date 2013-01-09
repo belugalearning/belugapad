@@ -306,11 +306,11 @@ typedef enum {
 -(void)setupContentRegions
 {
     CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Algebra.png")];
-    [algebra setPosition:ccp(4773,3500)];
+    [algebra setPosition:ccp(5285,3585)];
     [mapLayer addChild:algebra];
     
     CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Geometry.png")];
-    [shape setPosition:ccp(0,3500)];
+    [shape setPosition:ccp(-512,3585)];
     [mapLayer addChild:shape];
 }
 

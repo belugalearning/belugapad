@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tap the squares in the shape to count. </string>
+	<string>&lt;b:t&gt;Tap the squares in the shape to count, then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Count.</string>
 	<key>TOOL_KEY</key>

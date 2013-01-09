@@ -1076,14 +1076,44 @@ typedef enum {
 
 -(void)testForNodeTouchAt:(CGPoint)lOnMap
 {
+    id selected=nil;
+    float bestDistance=0;
+    BOOL first=YES;
+    
+    for (id go in [gw AllGameObjects]) {
+        if([go conformsToProtocol:@protocol(Selectable)] && [go conformsToProtocol:@protocol(Transform)])
+        {
+            id<Transform>tgo=go;
+            float thisDistance=[BLMath DistanceBetween:lOnMap and:tgo.Position];
+            
+            if(first||thisDistance<bestDistance)
+            {
+                first=NO;
+                bestDistance=thisDistance;
+                selected=tgo;
+            }
+            
+//            id<Selectable>sgo=go;
+//            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+//            {
+//                selected=sgo;
+//                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
+//                break;
+//            }
+        }
+        
+    }
+    
+    if(selected)
+        [((id<Selectable>)selected).NodeSelectComponent trySelectionForPosition:lOnMap];
+    
     for (id go in [gw AllGameObjects]) {
         if([go conformsToProtocol:@protocol(Selectable)])
         {
             id<Selectable>sgo=go;
-            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+            if(selected!=sgo)
             {
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
-                break;
+                [((id<Selectable>)sgo).NodeSelectComponent removeSign];
             }
         }
         

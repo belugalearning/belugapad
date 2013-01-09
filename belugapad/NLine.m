@@ -896,6 +896,11 @@ float timerIgnoreFrog;
         //determine whether or not to show the frog target
         if(lastBubbleLoc!=lastFrogLoc)
         {
+            if(lastBubbleLoc>logLastBubblePos)
+                [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")]];
+            else if(lastBubbleLoc<logLastBubblePos)
+                [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButtonBack.png")]];
+            
             [self showFrogTarget];
         }
         else

@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>You have a 2 x 1 shape. Drag the handle down one dot to make a 2 x 2 shape.</string>
+	<string>&lt;b:t&gt;You have a 2 x 1 shape. Drag the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DG_Handle&quot;/&gt;&lt;b:t&gt;down one dot to make a 2 x 2 shape, and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>
@@ -28,13 +28,13 @@
 			<key>SHOW_RESIZE</key>
 			<true/>
 			<key>START_X</key>
-			<string>1</string>
-			<key>START_Y</key>
-			<string>1</string>
-			<key>END_X</key>
-			<string>3</string>
-			<key>END_Y</key>
 			<string>2</string>
+			<key>START_Y</key>
+			<string>3</string>
+			<key>END_X</key>
+			<string>4</string>
+			<key>END_Y</key>
+			<string>4</string>
 		</dict>
 	</array>
 </dict>

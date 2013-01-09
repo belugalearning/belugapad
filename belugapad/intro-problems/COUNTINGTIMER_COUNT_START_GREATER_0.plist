@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Start&quot;/&gt;&lt;b:t&gt;then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Stop&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Start&quot;/&gt;&lt;b:t&gt;to start counting, then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Stop&quot;/&gt;&lt;b:t&gt;to select a number.&lt;/b:t&gt;</string>
 	<key>IS_INTRO_PLIST</key>
 	<true/>
 	<key>TOOL_KEY</key>

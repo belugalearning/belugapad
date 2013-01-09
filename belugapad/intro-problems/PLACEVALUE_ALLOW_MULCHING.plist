@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Move 1 ten&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_s&quot;/&gt;&lt;b:t&gt;to the ones&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;to make 10 ones. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Drag 1&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit10&quot;/&gt;&lt;b:t&gt;to the ones&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;to make 10&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit1&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Move 1 ten to the ones grid to make 10 ones. Press the green button.</string>
 	<key>TOOL_KEY</key>
@@ -35,7 +35,7 @@
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COL_HEADER</key>
-	<false/>
+	<true/>
 	<key>SHOW_VALUE</key>
 	<true/>
 	<key>SHOW_BASE_SELECTION</key>
@@ -45,7 +45,12 @@
 	<key>PROXIMITY_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-pos.png</string>
 	<key>CUSTOM_COLUMN_HEADERS</key>
-	<dict/>
+	<dict>
+		<key>10</key>
+		<string>Tens</string>
+		<key>1</key>
+		<string>Ones</string>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -83,6 +88,13 @@
 		<false/>
 		<key>1</key>
 		<false/>
+	</dict>
+	<key>COLUMN_CAGES</key>
+	<dict>
+		<key>1</key>
+		<false/>
+		<key>10</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

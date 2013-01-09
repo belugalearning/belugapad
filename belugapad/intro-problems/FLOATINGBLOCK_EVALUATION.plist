@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Drag the block to the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Pipe_In&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Drag the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Block&quot;/&gt;&lt;b:t&gt;into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Pipe_In&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Drag the block to the bottom pipe.</string>
 	<key>TOOL_KEY</key>

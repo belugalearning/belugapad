@@ -311,15 +311,37 @@
             
             //if(fabsf([c intValue]-([c floatValue]*magMult))==0)
             //{
+            float thisVal=([c floatValue]*divisor)*magMult;
+            
+            float rem=thisVal-(int)thisVal;
+            if(rem==0)
+            {
                 CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
                 [m setPosition:ccp(endBarPos,yInset+barH+15)];
                 [renderLayer addChild:m];
                 [allSprites addObject:m];
-                
-                CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:labelFontSize*0.9];
+        
+
+                CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", thisVal] fontName:CHANGO fontSize:labelFontSize*0.9];
                 [u setPosition:ccp(endBarPos,yInset+barH+m.contentSize.height+15)];
                 [renderLayer addChild:u];
                 [allLabels addObject:u];
+            }
+            else if(rem>0)
+            {
+                float barStart=magnifyBar.position.x-((magnifyBar.contentSize.width*magnifyBar.scale)/2);
+                
+                CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
+                [m setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height)];
+                [clippingNode addChild:m];
+                [allSprites addObject:m];
+                
+                
+                CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", thisVal] fontName:CHANGO fontSize:labelFontSize*0.9];
+                [u setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height+15)];
+                [clippingNode addChild:u];
+                [allLabels addObject:u];
+            }
             //}
             
             CGPoint *firstCo=&block[0];

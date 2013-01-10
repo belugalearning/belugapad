@@ -30,6 +30,7 @@
     NSMutableArray *markerSprites;
     
     NSMutableArray *jumpSprites;
+    NSMutableArray *jumpLabels;
     
     CGPoint circleOffsetsFwd[STEPS];
     CGPoint circleOffsetsBwd[STEPS];

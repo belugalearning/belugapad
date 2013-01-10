@@ -56,6 +56,7 @@
 @synthesize searchBar, searchList;
 
 @synthesize lastJmapViewUState;
+@synthesize lastViewedNodeId;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

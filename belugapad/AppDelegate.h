@@ -55,6 +55,7 @@
 @property (retain) NSDictionary *lastJmapViewUState;
 
 @property (retain) AcapelaSpeech *acaSpeech;
+@property (retain) NSString *lastViewedNodeId;
 
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;

@@ -142,7 +142,7 @@
     SGJmapNode *pn=(SGJmapNode*)ParentGO;
     
     //if the node is on a 100% prqc island but isn't complete, bounce it
-    if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete)
+    if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete && pn.MasteryNode.shouldBouncePins)
     {
         [self boundThisPin:nodeSprite];
     }

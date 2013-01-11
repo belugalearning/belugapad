@@ -13,7 +13,7 @@
 #import "Daemon.h"
 #import "global.h"
 #import "BLMath.h"
-
+#import "JMap.h"
 #import "AppDelegate.h"
 #import "ToolHost.h"
 #import "SimpleAudioEngine.h"
@@ -26,7 +26,7 @@
 +(CCScene *)scene
 {
     CCScene *scene=[CCScene node];
-    CCLayer *stars=[CCLayer node];
+    CCLayer *stars=[RewardStars node];
     [scene addChild:stars];
     return scene;
 }
@@ -63,8 +63,16 @@
     CCSprite *s2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_2.png")];
     CCSprite *s3=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_3.png")];
     
+    replayNode=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_replay.png")];
+    [replayNode setPosition:ccp(762,227)];
+    [self addChild:replayNode];
+    
+    returnToMap=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_map.png")];
+    [returnToMap setPosition:ccp(351,227)];
+    [self addChild:returnToMap];
+    
     [s1 setPosition:ccp(376,411)];
-    [s2 setPosition:ccp(510,444)];
+    [s2 setPosition:ccp(510,443)];
     [s3 setPosition:ccp(643,411)];
     
     if(stars==1)
@@ -85,7 +93,23 @@
     
 }
 
+#pragma mark - touches
 
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    if(CGRectContainsPoint(returnToMap.boundingBox, location))
+    {
+        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+    }
+    else if(CGRectContainsPoint(replayNode.boundingBox, location))
+    {
+        NSLog(@"replay");
+    }
+}
 
 
 #pragma mark - tear down

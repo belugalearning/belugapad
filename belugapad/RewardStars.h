@@ -13,6 +13,8 @@
 {
     float lx, ly, cx, cy;
     CCLayer *starLayer;
+    CCSprite *returnToMap;
+    CCSprite *replayNode;
 }
 
 +(CCScene *)scene;

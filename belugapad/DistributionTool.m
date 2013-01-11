@@ -531,7 +531,7 @@ static float kTimeSinceAction=7.0f;
     if(!hasInactiveArea)
     {
         
-        int farLeft=(numBlocks/2)*60;
+        int farLeft=(numBlocks/2)*kDistanceBetweenBlocks;
         int farRight=lx-30;
         int topMost=ly-200;
         int botMost=180;

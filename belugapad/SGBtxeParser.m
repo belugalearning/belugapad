@@ -95,6 +95,9 @@ const NSString *matchNumbers=@"0123456789";
                 
                 if(newNextT)
                 {
+                    //set no trailing space on number
+                    on.disableTrailingPadding=YES;
+                    
                     //create text
                     SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
                     t.text=newNextT;

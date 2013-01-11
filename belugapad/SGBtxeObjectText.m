@@ -28,6 +28,7 @@
 @synthesize backgroundType;
 @synthesize rowWidth;
 @synthesize targetNumber;
+@synthesize disableTrailingPadding;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;

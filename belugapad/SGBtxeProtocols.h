@@ -74,6 +74,8 @@
 
 @property (retain) SGBtxeTextRender *textRenderComponent;
 
+@property BOOL disableTrailingPadding;
+
 -(NSString*)returnMyText;
 
 @end

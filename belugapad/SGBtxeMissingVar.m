@@ -16,6 +16,7 @@
 @synthesize enabled, tag;
 @synthesize hidden, rowWidth, worldPosition;
 @synthesize interactive;
+@synthesize disableTrailingPadding;
 
 -(SGBtxeMissingVar*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {

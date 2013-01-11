@@ -138,8 +138,7 @@
         }
         
         //  increment cum width (w/ width + spacer)
-        headXPos+=c.size.width;
-//        headXPos+=c.size.width + BTXE_HPAD;
+        headXPos+=c.size.width + BTXE_HPAD;
         
         //add to central buffer
         [centreBuffer addObject:c];

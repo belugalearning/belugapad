@@ -99,8 +99,6 @@ const NSString *matchNumbers=@"0123456789";
                     SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
                     t.text=newNextT;
                     [ParentGO.containerMgrComponent addObjectToContainer:t];
-                    
-                    NSLog(@"creating new text with string |%@|", newNextT);
                 }
             }
             else

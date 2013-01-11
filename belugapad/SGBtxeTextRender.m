@@ -41,7 +41,7 @@
 {
     NSString *fontName=@"Source Sans Pro";
     float fontSize=24.0f;
-    if(self.useAlternateFont) fontName=@"Chango";
+//    if(self.useAlternateFont) fontName=@"Chango";
     if([self.useTheseAssets isEqualToString:@"Medium"])
         fontSize=36.0f;
     else if([self.useTheseAssets isEqualToString:@"Large"])

@@ -282,7 +282,7 @@ typedef enum {
                 if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
             }
         }
-        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
+        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
     }
     
     [self buildSearchIndex];
@@ -709,7 +709,7 @@ typedef enum {
         
         //centre on this node
         CGPoint p = lastPlayedMasteryNode.Position;
-        [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
+        [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
         
         mapPositionSet=YES;
     }

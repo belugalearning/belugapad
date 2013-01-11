@@ -21,6 +21,7 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "JMap.h"
+#import "RewardStars.h"
 #import "DProblemParser.h"
 #import "Problem.h"
 #import "Pipeline.h"
@@ -762,7 +763,10 @@ static float kTimeToHintToolTray=0.0f;
     contentService.fullRedraw=YES;
     contentService.lightUpProgressFromLastNode=YES;
     
-    [self returnToMap];
+    [self stopAllSpeaking];
+    [contentService quitPipelineTracking];
+    [self unscheduleAllSelectors];
+    [[CCDirector sharedDirector] replaceScene:[RewardStars scene]];
 }
 
 -(NSDictionary*)loadIntroProblemFromFK

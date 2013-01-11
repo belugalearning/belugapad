@@ -39,6 +39,7 @@
 @synthesize numberMode;
 @synthesize backgroundType;
 @synthesize rowWidth;
+@synthesize disableTrailingPadding;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -431,7 +432,7 @@
 
 -(void)redrawBkg
 {
-    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
+    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     
     self.size=toThisSize;
     

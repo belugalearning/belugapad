@@ -137,9 +137,18 @@
             if(colourIndex>7)colourIndex=0;
         }
         
+        BOOL doTrailingPadding=YES;
+        if([c conformsToProtocol:@protocol(Text)])
+        {
+            id<Text>ctext=(id<Text>)c;
+            doTrailingPadding=!ctext.disableTrailingPadding;
+        }
+        
         //  increment cum width (w/ width + spacer)
         headXPos+=c.size.width;
-//        headXPos+=c.size.width + BTXE_HPAD;
+        
+        // add more padding unless disabled
+        if(doTrailingPadding) headXPos+=BTXE_HPAD;
         
         //add to central buffer
         [centreBuffer addObject:c];

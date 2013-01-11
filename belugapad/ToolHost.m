@@ -1317,7 +1317,6 @@ static float kTimeToHintToolTray=0.0f;
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self stopAllSpeaking];
         [self returnToMap];
     }
     if(CGRectContainsPoint(muteBtn.boundingBox, location))
@@ -1377,6 +1376,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)returnToMap
 {
+    [self stopAllSpeaking];
     [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
     [contentService quitPipelineTracking];
     [self unscheduleAllSelectors];

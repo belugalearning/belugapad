@@ -90,8 +90,8 @@
 
 -(void)setupClippingNode
 {
-    CCSprite *spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Mask.png")];
-    CCSprite *maskOuter=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
+    spriteMask=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Mask.png")];
+    maskOuter=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
     
     magnifyBar=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Bar_Full.png")];
 
@@ -185,7 +185,29 @@
 
 -(void)drawState
 {
-    
+    float expTotal=(dividend/divisor);
+    float visTrigger=expTotal*0.8;
+    if(!clippingNode.visible && currentTotal>=visTrigger)
+    {
+        [magnifyBar setOpacity:0];
+        [spriteMask setOpacity:0];
+        [maskOuter setOpacity:0];
+        [clippingNode setVisible:YES];
+        [magnifyBar runAction:[CCFadeIn actionWithDuration:1.0f]];
+        [spriteMask runAction:[CCFadeIn actionWithDuration:1.0f]];
+        [maskOuter runAction:[CCFadeIn actionWithDuration:1.0f]];
+//        [spriteMask setVisible:YES];
+//        [maskOuter setVisible:YES];
+    }
+    else if(clippingNode.visible && currentTotal<visTrigger)
+    {
+        [clippingNode setVisible:NO];
+        [magnifyBar runAction:[CCFadeOut actionWithDuration:1.0f]];
+        [spriteMask runAction:[CCFadeOut actionWithDuration:1.0f]];
+        [maskOuter runAction:[CCFadeOut actionWithDuration:1.0f]];
+//        [spriteMask setVisible:NO];
+//        [maskOuter setVisible:NO];
+    }
     
 //    [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];

@@ -97,6 +97,8 @@
     CCClippingNode *clippingNode;
     
     CCSprite *magnifyBar;
+    CCSprite *maskOuter;
+    CCSprite *spriteMask;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

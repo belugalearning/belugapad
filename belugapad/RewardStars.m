@@ -54,7 +54,7 @@
 
 -(void) setupStars;
 {
-    int stars=1;
+    int stars=3;
     CCSprite *starBkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_bg.png")];
     [starBkg setPosition:ccp(cx,cy)];
     [self addChild:starBkg];
@@ -63,17 +63,24 @@
     CCSprite *s2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_2.png")];
     CCSprite *s3=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_3.png")];
     
+    [s1 setPosition:ccp(376,411)];
+    [s2 setPosition:ccp(510,444)];
+    [s3 setPosition:ccp(643,411)];
+    
     if(stars==1)
     {
-        
+        [self addChild:s1];
     }
     else if(stars==2)
     {
-        
+        [self addChild:s1];
+        [self addChild:s2];
     }
     else if(stars==3)
     {
-        
+        [self addChild:s1];
+        [self addChild:s2];
+        [self addChild:s3];
     }
     
 }

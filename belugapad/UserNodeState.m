@@ -11,6 +11,7 @@
 #import "FMDatabase.h"
 #import "global.h"
 #import "UsersService.h"
+#import "AppDelegate.h"
 
 @interface UserNodeState()
 {
@@ -91,7 +92,8 @@
     self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
     self.lastScore = [nodePlay.score intValue];
     
-    UsersService *us=(UsersService*)[UIApplication sharedApplication].delegate;
+    UsersService *us=((AppController*)[UIApplication sharedApplication].delegate).usersService;
+    
     
     if (self.lastScore)
     {

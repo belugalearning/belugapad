@@ -655,7 +655,7 @@ typedef enum {
             [rightgo.ConnectToMasteryNodes addObject:leftgo];
         }
         else {
-            NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+            //NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
         }
     }
 

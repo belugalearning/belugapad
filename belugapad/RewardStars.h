@@ -19,17 +19,18 @@
     
     float timeSinceStar1;
     float timeSinceStar2;
+    float timeSinceStar3;
     
     BOOL fireStar1;
     BOOL countStar2;
     BOOL countStar3;
+    BOOL shownStar3;
     
     int stars;
     
     CCSprite *s1;
     CCSprite *s2;
     CCSprite *s3;
-    
 }
 
 +(CCScene *)scene;

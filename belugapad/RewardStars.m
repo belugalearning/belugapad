@@ -76,6 +76,7 @@
     
     if(countStar2 && timeSinceStar1>0.5f)
     {
+        [self setupParticleAt:ccp(376,411)];
         [s2 setVisible:YES];
         [s2 runAction:[self scaleTo1x]];
         [s2 runAction:[self rotateTo0]];
@@ -89,11 +90,22 @@
     
     if(countStar3 && timeSinceStar2>0.5f)
     {
+        [self setupParticleAt:ccp(510,446)];
         [s3 setVisible:YES];
         [s3 runAction:[self scaleTo1x]];
         [s3 runAction:[self rotateTo0]];
-        [s3 runAction:[self moveTo:ccp(510,446)]];
+        [s3 runAction:[self moveTo:ccp(643,411)]];
+        shownStar3=YES;
         countStar3=NO;
+    }
+    
+    if(shownStar3)
+        timeSinceStar3+=delta;
+    
+    if(shownStar3 && timeSinceStar3>0.5f)
+    {
+        [self setupParticleAt:ccp(643,411)];
+        shownStar3=NO;
     }
 }
 
@@ -146,6 +158,13 @@
 //    [s2 runAction:[self scaleTo1xRotateAndPlace:ccp(510,446)]];
 //    [s3 runAction:[self scaleTo1xRotateAndPlace:ccp(643,411)]];
     
+}
+
+-(void)setupParticleAt:(CGPoint)position
+{
+    CCParticleSystemQuad *primaryParticle=[CCParticleSystemQuad particleWithFile:@"star_explosion2.plist"];
+    [primaryParticle setPosition:position];
+    [self addChild:primaryParticle];
 }
 
 -(CCScaleTo*)scaleTo1x

@@ -27,6 +27,7 @@ typedef enum {
 @property (readonly) NSDictionary *currentUserClone;
 @property (readonly) FMDatabase *allUsersDatabase;
 @property (readonly) NSString *currentUserId;
+@property int lastStarAcheived;
 
 -(id)initWithProblemPipeline:(NSString*)source
            andLoggingService:(LoggingService*)ls;

@@ -10,6 +10,7 @@
 #import "NodePlay.h"
 #import "FMDatabase.h"
 #import "global.h"
+#import "UsersService.h"
 
 @interface UserNodeState()
 {
@@ -90,6 +91,8 @@
     self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
     self.lastScore = [nodePlay.score intValue];
     
+    UsersService *us=(UsersService*)[UIApplication sharedApplication].delegate;
+    
     if (self.lastScore)
     {
         // completed
@@ -100,22 +103,22 @@
         if (!self.firstCompleted) self.firstCompleted = self.lastPlayed;
         self.lastCompleted = self.lastPlayed;
         
-        self.lastStarAcheived=0;
+        us.lastStarAcheived=0;
     
         if (self.lastScore > SCORE_ARTIFACT_1)
         {
             self.artifact1LastAchieved = self.lastPlayed;
-            self.lastStarAcheived=1;
+            us.lastStarAcheived=1;
             
             if (self.lastScore > SCORE_ARTIFACT_2)
             {
                 self.artifact2LastAchieved = self.lastPlayed;
-                self.lastStarAcheived=2;
+                us.lastStarAcheived=2;
                 
                 if (self.lastScore > SCORE_ARTIFACT_3)
                 {
                     self.artifact3LastAchieved = self.lastPlayed;
-                    self.lastStarAcheived=3;
+                    us.lastStarAcheived=3;
                     
 //                    if (self.lastScore > SCORE_ARTIFACT_4)
 //                    {

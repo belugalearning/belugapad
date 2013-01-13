@@ -150,11 +150,11 @@
     s3=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_3.png")];
     
     replayNode=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_replay.png")];
-    [replayNode setPosition:ccp(350,283)];
+    [replayNode setPosition:ccp(350,278)];
     [self addChild:replayNode];
     
     returnToMap=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_map.png")];
-    [returnToMap setPosition:ccp(668,283)];
+    [returnToMap setPosition:ccp(668,278)];
     [self addChild:returnToMap];
     
 

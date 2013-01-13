@@ -1800,7 +1800,7 @@ static float kTimeToHintToolTray=0.0f;
     if([self calcMetaQuestion])
     {
         [self doWinning];
-        autoMoveToNextProblem=YES;
+        metaQuestionForceComplete=YES;
     }
     else
     {

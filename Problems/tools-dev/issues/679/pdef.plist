@@ -23,7 +23,7 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Place these numbers in order, from smallest to largest.&lt;/b:t&gt;</string>
-		<string>&lt;b:ph /&gt;&lt;b:t&gt;          &lt;/b:t&gt;&lt;b:ph /&gt;&lt;b:t&gt;          &lt;/b:t&gt;&lt;b:ph /&gt;&lt;b:t&gt;          &lt;/b:t&gt;&lt;b:ph /&gt;&lt;b:t&gt;          &lt;/b:t&gt;&lt;b:ph /&gt;</string>
+		<string>&lt;b:ph /&gt;&lt;b:t&gt;  &lt;/b:t&gt;&lt;b:ph /&gt;&lt;b:t&gt;  &lt;/b:t&gt;&lt;b:ph /&gt;&lt;b:t&gt;  &lt;/b:t&gt;&lt;b:ph /&gt;&lt;b:t&gt;  &lt;/b:t&gt;&lt;b:ph /&gt;</string>
 	</array>
 </dict>
 </plist>

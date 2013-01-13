@@ -640,8 +640,12 @@ static float kTimeToHintToolTray=0.0f;
     //show correct multiplier
     if(multiplierBadge)[perstLayer removeChild:multiplierBadge cleanup:YES];
     
+    int showScore=displayScore;
+    if(showScore>999999) showScore=999999;
+    if(showScore<0) showScore=0;
+    
     //this isn't going to do this ultiamtely -- it'll be based on shards
-    [scoreLabel setString:[NSString stringWithFormat:@"%d", displayScore]];
+    [scoreLabel setString:[NSString stringWithFormat:@"%d", showScore]];
 }
 
 -(void)incrementDisplayScore: (id)sender

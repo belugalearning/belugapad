@@ -16,6 +16,7 @@
 #import "JMap.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
+#import "ContentService.h"
 #import "ToolHost.h"
 #import "SimpleAudioEngine.h"
 
@@ -60,6 +61,9 @@
 -(void)doUpdate:(ccTime)delta
 {
     if(fireStar1)
+        timeSinceFired+=delta;
+    
+    if(fireStar1 && timeSinceFired>0.5f)
     {
         [s1 setVisible:YES];
         [s1 runAction:[self scaleTo1x]];
@@ -68,6 +72,7 @@
         
         if(stars>1)
             countStar2=YES;
+        
         fireStar1=NO;
     }
     
@@ -199,7 +204,17 @@
     }
     else if(CGRectContainsPoint(replayNode.boundingBox, location))
     {
-        NSLog(@"replay");
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        ContentService *cs = ac.contentService;
+        [cs createAndStartFunnelForNode:ac.lastViewedNodeId];
+        
+        if(ac.IsIpad1)
+        {
+            [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+        }
+        else {
+            [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[ToolHost scene]]];
+        }
     }
 }
 

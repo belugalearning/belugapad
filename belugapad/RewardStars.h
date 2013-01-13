@@ -17,6 +17,7 @@
     CCSprite *replayNode;
     UsersService *usersService;
     
+    float timeSinceFired;
     float timeSinceStar1;
     float timeSinceStar2;
     float timeSinceStar3;

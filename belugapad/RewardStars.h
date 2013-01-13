@@ -27,6 +27,10 @@
     BOOL countStar3;
     BOOL shownStar3;
     
+    BOOL timeParticle1;
+    BOOL timeParticle2;
+    BOOL timeParticle3;
+    
     int stars;
     
     CCSprite *s1;

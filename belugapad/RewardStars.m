@@ -74,44 +74,66 @@
             countStar2=YES;
         
         fireStar1=NO;
+        timeParticle1=YES;
     }
     
-    if(countStar2)
+    if(countStar2||timeParticle1)
         timeSinceStar1+=delta;
+    
+    if(timeParticle1 && timeSinceStar1>0.5f)
+    {
+        [self setupParticleAt:ccp(376,411)];
+        timeParticle1=NO;
+    }
     
     if(countStar2 && timeSinceStar1>0.5f)
     {
-        [self setupParticleAt:ccp(376,411)];
         [s2 setVisible:YES];
         [s2 runAction:[self scaleTo1x]];
         [s2 runAction:[self rotateTo0]];
         [s2 runAction:[self moveTo:ccp(510,446)]];
-        countStar3=YES;
+        
+        if(stars>2)
+            countStar3=YES;
+        
         countStar2=NO;
+        timeParticle2=YES;
     }
     
-    if(countStar3)
+    if(countStar3||timeParticle2)
         timeSinceStar2+=delta;
+    
+    if(timeParticle2 && timeSinceStar2>0.5f)
+    {
+        [self setupParticleAt:ccp(510,446)];
+        timeParticle2=NO;
+    }
     
     if(countStar3 && timeSinceStar2>0.5f)
     {
-        [self setupParticleAt:ccp(510,446)];
         [s3 setVisible:YES];
         [s3 runAction:[self scaleTo1x]];
         [s3 runAction:[self rotateTo0]];
         [s3 runAction:[self moveTo:ccp(643,411)]];
-        shownStar3=YES;
+        //shownStar3=YES;
         countStar3=NO;
+        timeParticle3=YES;
     }
     
-    if(shownStar3)
+    if(timeParticle3)
         timeSinceStar3+=delta;
     
-    if(shownStar3 && timeSinceStar3>0.5f)
+    if(timeParticle3 && timeSinceStar3>0.5f)
     {
         [self setupParticleAt:ccp(643,411)];
-        shownStar3=NO;
+        timeParticle3=NO;
     }
+    
+//    if(shownStar3 && timeSinceStar3>0.5f)
+//    {
+//        [self setupParticleAt:ccp(643,411)];
+//        shownStar3=NO;
+//    }
 }
 
 #pragma mark - setup and parse
@@ -128,11 +150,11 @@
     s3=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_3.png")];
     
     replayNode=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_replay.png")];
-    [replayNode setPosition:ccp(762,227)];
+    [replayNode setPosition:ccp(350,283)];
     [self addChild:replayNode];
     
     returnToMap=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_map.png")];
-    [returnToMap setPosition:ccp(351,227)];
+    [returnToMap setPosition:ccp(668,283)];
     [self addChild:returnToMap];
     
 

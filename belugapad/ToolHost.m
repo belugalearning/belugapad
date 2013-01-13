@@ -766,7 +766,15 @@ static float kTimeToHintToolTray=0.0f;
     [self stopAllSpeaking];
     [contentService quitPipelineTracking];
     [self unscheduleAllSelectors];
-    [[CCDirector sharedDirector] replaceScene:[RewardStars scene]];
+    
+    if(ac.IsIpad1)
+    {
+        [[CCDirector sharedDirector] replaceScene:[RewardStars scene]];
+    }
+    else {
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[RewardStars scene]]];
+    }
+    
 }
 
 -(NSDictionary*)loadIntroProblemFromFK
@@ -1426,7 +1434,10 @@ static float kTimeToHintToolTray=0.0f;
         [self addChild:blackOverlay z:5]; // fits between everything else and the context progress layer
     }
     
-    [blackOverlay runAction:[InteractionFeedback fadeInOutHoldFor:1.0f to:200]];
+    if(!countUpToJmap)
+        [blackOverlay runAction:[InteractionFeedback fadeInOutHoldFor:1.0f to:200]];
+    else
+        [blackOverlay runAction:[CCFadeIn actionWithDuration:1.0f]];
 }
 
 #pragma mark - meta question

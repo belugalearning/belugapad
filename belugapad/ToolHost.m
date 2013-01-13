@@ -1165,6 +1165,10 @@ static float kTimeToHintToolTray=0.0f;
     
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
+    
+    //manually reset any intro problem state
+    breakOutIntroProblemFK=nil;
+    breakOutIntroProblemHasLoaded=NO;
 
     if(evalMode==kProblemEvalOnCommit)
     {

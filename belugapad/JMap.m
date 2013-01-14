@@ -191,6 +191,9 @@ typedef enum {
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
+//    [ac.searchBar removeFromSuperview];
+//    ac.searchBar=nil;
+    
     if(ac.IsIpad1)
     {
         [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];        
@@ -272,7 +275,7 @@ typedef enum {
     [gw handleMessage:kSGreadyRender];
 
     // position map so that bottom-most included node in view, bottom-left
-    if (!contentService.resetPositionAfterTH)
+    if (!contentService.resetPositionAfterTH && !mapPositionSet)
     {
         CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
         for (id go in [gw AllGameObjects]) {
@@ -282,7 +285,7 @@ typedef enum {
                 if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
             }
         }
-        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
+        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
     }
     
     [self buildSearchIndex];
@@ -306,11 +309,11 @@ typedef enum {
 -(void)setupContentRegions
 {
     CCSprite *algebra=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Algebra.png")];
-    [algebra setPosition:ccp(4773,3500)];
+    [algebra setPosition:ccp(5285,3585)];
     [mapLayer addChild:algebra];
     
     CCSprite *shape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/Region_Geometry.png")];
-    [shape setPosition:ccp(0,3500)];
+    [shape setPosition:ccp(-512,3585)];
     [mapLayer addChild:shape];
 }
 
@@ -410,6 +413,11 @@ typedef enum {
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
         id<CouchDerived, Configurable, Selectable, Transform> newnode;
+        
+        if([n._id isEqualToString:ac.lastViewedNodeId])
+        {
+            lastPlayedNode=newnode;
+        }
         
         //create a node go
         
@@ -650,10 +658,65 @@ typedef enum {
             [rightgo.ConnectToMasteryNodes addObject:leftgo];
         }
         else {
-            NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+            //NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
         }
     }
 
+    //check if last mastery has been completed, and
+    // - bounce nodes on other islands
+    // - fly planes
+    //always
+    // - centre map on that mastery
+    // - bounce that node
+    
+    if(lastPlayedNode)
+    {
+        NSLog(@"identified last played mastery node");
+        
+        if([lastPlayedNode isKindOfClass:[SGJmapMasteryNode class]])
+            lastPlayedMasteryNode=(SGJmapMasteryNode*)lastPlayedNode;
+        else
+            lastPlayedMasteryNode=((SGJmapNode*)lastPlayedNode).MasteryNode;
+        
+        BOOL allComplete=YES;
+        NSLog(@"assuming all children complete... testing");
+        for(SGJmapNode *n in lastPlayedMasteryNode.ChildNodes)
+        {
+            if(n.ustate.lastScore==0)
+            {
+                NSLog(@"children not complete, reverting assumption");
+                allComplete=NO;
+                break;
+            }
+        }
+        
+        if(allComplete)
+        {
+            NSLog(@"bouncing all other applicable nodes / islands; enabling planes");
+            //bounce all other mastery node
+            for(id go in [gw AllGameObjects])
+            {
+                if([go isKindOfClass:[SGJmapMasteryNode class]])
+                {
+                    SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+                    mgo.shouldBouncePins=YES;
+                }
+            }
+            
+            //enable paper planes on this node/island
+            lastPlayedMasteryNode.shouldShowPaperPlanes=YES;
+        }
+        
+        //always
+        lastPlayedMasteryNode.shouldBouncePins=YES;
+        
+        //centre on this node
+        CGPoint p = lastPlayedMasteryNode.Position;
+        [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
+        
+        mapPositionSet=YES;
+    }
+    
 }
 
 -(void)buildSearchIndex
@@ -1023,6 +1086,7 @@ typedef enum {
         [usersService setCurrentUserToUserWithId:nil];
         
         ac.lastJmapViewUState=nil;
+        ac.lastViewedNodeId=nil;
         [ac returnToLogin];
         
         return;
@@ -1076,17 +1140,56 @@ typedef enum {
 
 -(void)testForNodeTouchAt:(CGPoint)lOnMap
 {
-    for (id go in [gw AllGameObjects]) {
-        if([go conformsToProtocol:@protocol(Selectable)])
-        {
-            id<Selectable>sgo=go;
-            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+    if(lastSelectedNode && [((id<Selectable>)lastSelectedNode).NodeSelectComponent trySelectionForPosition:lOnMap])
+    {
+        return;
+    }
+    else
+    {
+        
+        id selected=nil;
+        float bestDistance=0;
+        BOOL first=YES;
+        
+        for (id go in [gw AllGameObjects]) {
+            if([go conformsToProtocol:@protocol(Selectable)] && [go conformsToProtocol:@protocol(Transform)])
             {
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
-                break;
+                id<Transform>tgo=go;
+                float thisDistance=[BLMath DistanceBetween:lOnMap and:tgo.Position];
+                
+                if(first||thisDistance<bestDistance)
+                {
+                    first=NO;
+                    bestDistance=thisDistance;
+                    selected=tgo;
+                    lastSelectedNode=selected;
+                }
+                
+    //            id<Selectable>sgo=go;
+    //            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+    //            {
+    //                selected=sgo;
+    //                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
+    //                break;
+    //            }
             }
+            
         }
         
+        if(selected)
+            [((id<Selectable>)selected).NodeSelectComponent trySelectionForPosition:lOnMap];
+        
+        for (id go in [gw AllGameObjects]) {
+            if([go conformsToProtocol:@protocol(Selectable)])
+            {
+                id<Selectable>sgo=go;
+                if(selected!=sgo)
+                {
+                    [((id<Selectable>)sgo).NodeSelectComponent removeSign];
+                }
+            }
+            
+        }
     }
 }
 

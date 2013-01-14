@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make 22.</string>
+	<string>&lt;b:t&gt;Make 21 by dragging a&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Value_10&quot;/&gt;&lt;b:t&gt;to the group of 11. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>DISTRIBUTION_EVAL_TYPE</key>

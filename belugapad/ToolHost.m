@@ -21,6 +21,7 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "JMap.h"
+#import "RewardStars.h"
 #import "DProblemParser.h"
 #import "Problem.h"
 #import "Pipeline.h"
@@ -595,6 +596,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)resetScoreMultiplier
 {
+    if(breakOutIntroProblemFK)return;
     scoreMultiplier=1;
     multiplierStage=1;
     hasResetMultiplier=YES;
@@ -638,8 +640,12 @@ static float kTimeToHintToolTray=0.0f;
     //show correct multiplier
     if(multiplierBadge)[perstLayer removeChild:multiplierBadge cleanup:YES];
     
+    int showScore=displayScore;
+    if(showScore>999999) showScore=999999;
+    if(showScore<0) showScore=0;
+    
     //this isn't going to do this ultiamtely -- it'll be based on shards
-    [scoreLabel setString:[NSString stringWithFormat:@"%d", displayScore]];
+    [scoreLabel setString:[NSString stringWithFormat:@"%d", showScore]];
 }
 
 -(void)incrementDisplayScore: (id)sender
@@ -761,7 +767,18 @@ static float kTimeToHintToolTray=0.0f;
     contentService.fullRedraw=YES;
     contentService.lightUpProgressFromLastNode=YES;
     
-    [self returnToMap];
+    [self stopAllSpeaking];
+    [contentService quitPipelineTracking];
+    [self unscheduleAllSelectors];
+    
+    if(ac.IsIpad1)
+    {
+        [[CCDirector sharedDirector] replaceScene:[RewardStars scene]];
+    }
+    else {
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[RewardStars scene]]];
+    }
+    
 }
 
 -(NSDictionary*)loadIntroProblemFromFK
@@ -797,7 +814,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     // ---------------- END TEAR DOWN --------------------------------
     
-    
+    if(multiplierStage>0 && breakOutIntroProblemFK)
+        [multiplierBadge setVisible:NO];
     
     if(breakOutIntroProblemFK && !breakOutIntroProblemHasLoaded)
     {
@@ -822,7 +840,9 @@ static float kTimeToHintToolTray=0.0f;
         if(breakOutIntroProblemFK && breakOutIntroProblemHasLoaded)
         {
             [usersService addEncounterWithFeatureKey:breakOutIntroProblemFK date:[NSDate date]];
-            
+
+            if(multiplierStage>0)
+                [multiplierBadge setVisible:YES];
             //reset state -- we've loaded, play and logged the breakout problem
             breakOutIntroProblemFK=nil;
             breakOutIntroProblemHasLoaded=NO;
@@ -1161,6 +1181,10 @@ static float kTimeToHintToolTray=0.0f;
     
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
+    
+    //manually reset any intro problem state
+    breakOutIntroProblemFK=nil;
+    breakOutIntroProblemHasLoaded=NO;
 
     if(evalMode==kProblemEvalOnCommit)
     {
@@ -1313,7 +1337,6 @@ static float kTimeToHintToolTray=0.0f;
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self stopAllSpeaking];
         [self returnToMap];
     }
     if(CGRectContainsPoint(muteBtn.boundingBox, location))
@@ -1373,6 +1396,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)returnToMap
 {
+    [self stopAllSpeaking];
     [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
     [contentService quitPipelineTracking];
     [self unscheduleAllSelectors];
@@ -1418,7 +1442,10 @@ static float kTimeToHintToolTray=0.0f;
         [self addChild:blackOverlay z:5]; // fits between everything else and the context progress layer
     }
     
-    [blackOverlay runAction:[InteractionFeedback fadeInOutHoldFor:1.0f to:200]];
+    if(!countUpToJmap)
+        [blackOverlay runAction:[InteractionFeedback fadeInOutHoldFor:1.0f to:200]];
+    else
+        [blackOverlay runAction:[CCFadeIn actionWithDuration:1.0f]];
 }
 
 #pragma mark - meta question
@@ -1792,7 +1819,7 @@ static float kTimeToHintToolTray=0.0f;
     if([self calcMetaQuestion])
     {
         [self doWinning];
-        autoMoveToNextProblem=YES;
+        metaQuestionForceComplete=YES;
     }
     else
     {
@@ -2451,9 +2478,10 @@ static float kTimeToHintToolTray=0.0f;
     float rowHeight=0;
     
     if([currentTool isKindOfClass:[ExprBuilder class]])
-        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] + 15;
     else
-        rowHeight=row.size.height;
+        rowHeight=row.size.height + 35;
+    
     
     if(rowHeight<68.0f)rowHeight=68.0f;
     
@@ -2934,9 +2962,8 @@ static float kTimeToHintToolTray=0.0f;
         
         [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
         */
-
-        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
         [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
         
         /*
         float rowHeight=0;
@@ -3077,6 +3104,11 @@ static float kTimeToHintToolTray=0.0f;
     if(metaArrow && [self metaQuestionSelectedCount]==0)
         //[metaArrow setVisible:YES];
         [metaArrow setVisible:NO];
+    
+    if(metaQuestionForThisProblem){
+        timeSinceInteractionOrShake=0.0f;
+        hasUsedMetaTray=NO;
+    }
 }
 
 -(void)disableWheel
@@ -3130,6 +3162,11 @@ static float kTimeToHintToolTray=0.0f;
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
     else
         [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+    
+    if(numberPickerForThisProblem){
+        timeSinceInteractionOrShake=0.0f;
+        hasUsedWheelTray=NO;
+    }
 }
 
 -(void)showPad

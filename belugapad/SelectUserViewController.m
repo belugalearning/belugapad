@@ -29,10 +29,8 @@
     UIButton *joinClassButton;
     
     UIImageView *selectUserModalUnderlay;
-    UIImageView *selectUserModalBgView;
+    UIView *selectUserModalContainer;
     PassCodeView *selectUserPassCodeModalView;
-    UIButton *backToSelectUserButton;
-    UIButton *loginButton;
     UIImageView *tickCrossImg;
     
     NSMutableArray *deviceUsers;
@@ -44,7 +42,7 @@
     UIButton *cancelNewUserButton;
     UIButton *saveNewUserButton;
     
-    // sync user
+    // download user
     UIView *loadExistingUserView;
     UITextField *existingUserNameTF;
     PassCodeView *downloadUserPassCodeView;
@@ -100,15 +98,18 @@
     selectUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
     [self.view addSubview:selectUserView];
     [self buildSelectUserView];
+    [selectUserView setHidden:YES];
     
     editUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
     [self.view addSubview:editUserView];
     [self buildEditUserView];
+    [editUserView setHidden:YES];
     
     loadExistingUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
     [self.view addSubview:loadExistingUserView];
     [self buildLoadExistingUserView];
-    
+    [loadExistingUserView setHidden:YES];
+
     [self setActiveView:selectUserView];
     
     loadingImg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/loadwheel.png"]] autorelease];
@@ -124,6 +125,26 @@
     rotationAnimation.cumulative = YES;
     rotationAnimation.repeatCount = HUGE_VALF;
     [loadingImg.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+    
+    editUserView.center = CGPointMake(1536, 512);
+    loadExistingUserView.center = CGPointMake(1536, 512);
+    selectUserView.center = CGPointMake(384, -312);
+    selectUserBG.center = CGPointMake(512, 364);
+    
+    bgOverlay.alpha = 0.0;
+    [UIView animateWithDuration:0.8
+                     animations:^{ bgOverlay.alpha = 1.0; }];
+    
+    
+    [UIView animateWithDuration:1.0
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+     
+                     animations:^{
+                         selectUserView.center = CGPointMake(384, 512);
+                     }
+                     completion:^(BOOL finished){ }];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -139,9 +160,64 @@
 
 -(void)setActiveView:(UIView *)view
 {
-    [selectUserView setHidden:(view != selectUserView)];
-    [editUserView setHidden:(view != editUserView)];
-    [loadExistingUserView setHidden:(view != loadExistingUserView)];
+    freezeUI = YES;
+    
+    UIView *currentView = nil;
+    if (![selectUserView isHidden])
+    {
+        currentView = selectUserView;
+    }
+    else if (![editUserView isHidden])
+    {
+        currentView = editUserView;
+    }
+    else if (![loadExistingUserView isHidden])
+    {
+        currentView = loadExistingUserView;
+    }
+    
+    __block BOOL currentViewAnimating = currentView != nil;;
+    __block BOOL nextViewAnimating = view != nil;
+    
+    // animate currentView off screen and hide
+    if (currentView)
+    {
+        [UIView animateWithDuration:1.2
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                        animations:^{
+                            if (currentView == selectUserView)
+                            {
+                                currentView.center = CGPointMake(-512, 512);
+                            }
+                            else
+                            {
+                                currentView.center = CGPointMake(1536, 512);
+                            }
+                         }
+                         completion:^(BOOL finished){
+                             [currentView setHidden:YES];
+                             currentViewAnimating = NO;
+                             freezeUI = nextViewAnimating;
+                         }];
+    }
+    
+    // animate next view into position
+    if (view)
+    {
+        [view setHidden:NO];
+        [UIView animateWithDuration:1.0
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                            view.center = CGPointMake(384, 512);
+                         }
+                         completion:^(BOOL finished){
+                             nextViewAnimating = NO;
+                             freezeUI = currentViewAnimating;
+                         }];
+    
+    }
 }
 
 #pragma mark -
@@ -158,7 +234,6 @@
 -(void)buildSelectUserView
 {
     selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
-    [selectUserBG setCenter:CGPointMake(511.0f, 377.0f)];
     [selectUserView addSubview:selectUserBG];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];
@@ -238,7 +313,6 @@
     saveChangeNickButton.frame = CGRectMake(289, 246, 131, 51);
     [saveChangeNickButton addTarget:self action:@selector(handleSaveChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [changeNickView addSubview:saveChangeNickButton];
-    [saveChangeNickButton registerForDragAndLog];
     
 }
 
@@ -331,10 +405,9 @@
     
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
 
-    if (selectUserModalBgView) return;
+    if (selectUserModalContainer) return;
     
-    // TEMP
-    // N.B. Next few lines are a temp way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
+    // TEMP way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
     NSDictionary *ur = deviceUsers[ip.row];
     NSRegularExpression *m = [[[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil] autorelease];
     if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
@@ -342,34 +415,51 @@
         [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:ur repeats:NO];
         return;
     }
+    // -----------------
     
     selectUserModalUnderlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
     selectUserModalUnderlay.userInteractionEnabled = YES; // prevents buttons behind modal view from receiving touch events
     [self.view addSubview:selectUserModalUnderlay];
     
-    CGPoint p = CGPointMake(512.0f, 354.0f);
+    selectUserModalContainer = [[[UIView alloc] initWithFrame:CGRectMake(286, -283, 452, 283)] autorelease];
+    [self.view addSubview:selectUserModalContainer];
     
-    selectUserModalBgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]] autorelease];
-    selectUserModalBgView.center = p;
-    [self.view addSubview:selectUserModalBgView];
+    UIView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]] autorelease];
+    [selectUserModalContainer addSubview:bg];
+    
+    UILabel *nameLabel = [[[UILabel alloc] initWithFrame:CGRectMake(44, 67, 359, 30)] autorelease];
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.font = [UIFont fontWithName:@"Chango" size:24];
+    nameLabel.textAlignment = UITextAlignmentCenter;
+    nameLabel.text = ur[@"nickName"];
+    [selectUserModalContainer addSubview:nameLabel];
+    
+    UIButton *back = [[[UIButton alloc] init] autorelease];
+    back.frame = CGRectMake(36.0f, 181.0f, 131.0f, 51.0f);
+    [back setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];
+    [back addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserModalContainer addSubview:back];
+    
+    UIButton *login = [[[UIButton alloc] init] autorelease];
+    login.frame = CGRectMake(289.0f, 181.0f, 131.0f, 51.0f);
+    [login setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
+    [login addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserModalContainer addSubview:login];
+    
+    [UIView animateWithDuration:0.8
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         selectUserModalContainer.center = CGPointMake(512.0f, 354.0f);
+                     }
+                     completion:^(BOOL finished){
+                         [selectUserPassCodeModalView becomeFirstResponder];
+                     }];
     
     selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
     selectUserPassCodeModalView.delegate = self;
     [self.view addSubview:selectUserPassCodeModalView];
-    [selectUserPassCodeModalView becomeFirstResponder];
-    
-    backToSelectUserButton = [[[UIButton alloc] init] autorelease];
-    backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);
-    [backToSelectUserButton setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];
-    [backToSelectUserButton addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:backToSelectUserButton];
-    
-    loginButton = [[[UIButton alloc] init] autorelease];
-    loginButton.frame = CGRectMake(577.0f, 394.0f, 131.0f, 51.0f);
-    [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
-    [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:loginButton];
     
     tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
     [self.view addSubview:tickCrossImg];
@@ -381,14 +471,11 @@
     
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
-    [selectUserModalBgView removeFromSuperview];
-    selectUserModalBgView = nil;
+    [button removeFromSuperview];
+    [selectUserModalContainer removeFromSuperview];
+    selectUserModalContainer = nil;
     [selectUserPassCodeModalView removeFromSuperview];
     selectUserPassCodeModalView = nil;
-    [backToSelectUserButton removeFromSuperview];
-    backToSelectUserButton = nil;
-    [loginButton removeFromSuperview];
-    loginButton = nil;
     [tickCrossImg removeFromSuperview];
     tickCrossImg = nil;
 }
@@ -412,9 +499,8 @@
     {
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/correct_tick.png"]];
         tickCrossImg.alpha = 1;
+        freezeUI = YES;
         [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:ur repeats:NO];
-        [backToSelectUserButton removeTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [loginButton removeTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     else
     {
@@ -435,14 +521,11 @@
     {
         [selectUserModalUnderlay removeFromSuperview];
         [selectUserPassCodeModalView removeFromSuperview];
-        [selectUserModalBgView removeFromSuperview];
-        [loginButton removeFromSuperview];
-        [backToSelectUserButton removeFromSuperview];
+        [selectUserModalContainer removeFromSuperview];
         [playButton removeFromSuperview];
         tickCrossImg.alpha = 0;
         [tickCrossImg setCenter:CGPointMake(595, 331)];
         
-        [loadingImg registerForDragAndLog];
         [loadingImg setCenter:CGPointMake(596, 415)];
         changeNickTF.text = ur[@"nickName"];
         [selectUserView addSubview:changeNickView];
@@ -687,27 +770,6 @@
 {
     if (freezeUI) return;
     
-    __block typeof(self) bself = self;
-    void (^callback)() = ^(NSDictionary *ur) {
-        bself->loadingImg.alpha = 0;
-        bself->freezeUI = NO;
-        
-        if (!ur)
-        {
-            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil] autorelease];
-            [alertView show];
-            return;
-        }
-        
-        [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];        
-        [self.view removeFromSuperview];
-        [bself->app proceedFromLoginViaIntro:NO];
-    };
-    
     if (!existingUserNameTF.text || !existingUserNameTF.text.length)
     {
         [existingUserNameTF becomeFirstResponder];
@@ -720,12 +782,50 @@
         return;
     }
     
-    loadingImg.alpha = 1;    
+    loadingImg.alpha = 1;
     freezeUI = YES;
+    
+    __block typeof(self) bself = self;
+    __block SEL bOnDownloadUserStateComplete = @selector(onDownloadUserStateComplete:);
+    
+    void (^callback)() = ^(NSDictionary *ur) {
+        if (!ur)
+        {
+            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
+            bself->loadingImg.alpha = 0;
+            bself->freezeUI = NO;
+            [alertView show];
+            return;
+        }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:bOnDownloadUserStateComplete name:DOWNLOAD_USER_STATE_COMPLETE object:nil];
+        [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
+    };
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text
                                       callback:callback];
+}
+
+-(void)onDownloadUserStateComplete:(NSNotification*)notification
+{
+    if (![[notification userInfo][@"userId"] isEqualToString:usersService.currentUserId])
+    {
+         return;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DOWNLOAD_USER_STATE_COMPLETE object:nil];
+    
+    if ([[notification userInfo][@"success"] boolValue])
+    {
+        [usersService applyDownloadedStateUpdatesForCurrentUser];
+    }
+    
+    [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
 }
 
 #pragma mark -
@@ -782,6 +882,7 @@
 {
     if (deviceUsers)[deviceUsers release];
     if (changeNickView)[changeNickView release];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 @end

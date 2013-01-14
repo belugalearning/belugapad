@@ -3460,20 +3460,7 @@ static float kTimeToCageShake=7.0f;
                         
                     }
                     else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
-                    {
-//                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
-//                            
-//                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-//                            {
-//                                [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-//                                [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-//                            }
-//                            else if(![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-//                            {
-//                                [b handleMessage:kDWresetToMountPositionAndDestroy];
-//                            }
-//                        }
-                        
+                    {                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects){
                             [go handleMessage:kDWresetToMountPositionAndDestroy];
                         }
@@ -3658,9 +3645,14 @@ static float kTimeToCageShake=7.0f;
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 
                 if([b.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
-                    [b handleMessage:kDWresetToMountPositionAndDestroy];
+                {
+                    for(DWPlaceValueBlockGameObject *tb in pickupObjects)
+                        [tb handleMessage:kDWresetToMountPositionAndDestroy];
+                }
                 else
+                {
                     [self resetPickupObjectPos];
+                }
             }
             
         }

@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Take away 2&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_p&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Take away 2&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_p&quot;/&gt;&lt;b:t&gt;by dragging them down to the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_dock_with_block&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

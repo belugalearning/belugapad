@@ -142,7 +142,7 @@
     SGJmapNode *pn=(SGJmapNode*)ParentGO;
     
     //if the node is on a 100% prqc island but isn't complete, bounce it
-    if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete)
+    if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete && pn.MasteryNode.shouldBouncePins)
     {
         [self boundThisPin:nodeSprite];
     }
@@ -202,7 +202,11 @@
     if(an)
     {
         CCSprite *stars=[CCSprite spriteWithSpriteFrameName:an];
-        stars.position=ccpAdd(ParentGO.Position, ccp(0, 50));
+        
+        if(nodeSprite.flipX)
+            stars.position=ccpAdd(ParentGO.Position, ccp(-6, 50));
+        else
+            stars.position=ccpAdd(ParentGO.Position, ccp(6, 50));
         
         [ParentGO.RenderBatch addChild:stars z:7];
     }

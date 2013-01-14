@@ -12,6 +12,7 @@
 @interface SGBtxeNumberDotRender : SGComponent
 {
     id<Value> ParentGO;
+    float spacing;
 }
 @property (retain) CCNode *baseNode;
 @property (readonly) CGSize size;

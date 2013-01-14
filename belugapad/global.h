@@ -11,6 +11,8 @@
 
 #define BUNDLE_FULL_PATH(_filePath_) [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:_filePath_]
 
+#define DOWNLOAD_USER_STATE_COMPLETE @"DOWNLOAD_USER_STATE_COMPLETE"
+
 #define GENERIC_FONT @"STHeitiTC-Light"
 #define TITLE_FONT @"STHeitiTC-Light"
 //#define TITLE_FONT @"Helvetica-Bold"
@@ -493,7 +495,7 @@
 #define SCORE_MAX_SHARDS 180
 #define SCORE_ARTIFACT_1 0
 #define SCORE_ARTIFACT_2 499999
-#define SCORE_ARTIFACT_3 999998
+#define SCORE_ARTIFACT_3 999998             
 #define SCORE_ARTIFACT_4 999998
 #define SCORE_ARTIFACT_5 999998
 

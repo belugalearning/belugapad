@@ -20,6 +20,7 @@
 
 -(BOOL)trySelectionForPosition:(CGPoint)pos;
 -(void)deselect;
+-(void)removeSign;
 -(void)showSignWithForce:(BOOL)forceOn;
 
 @end

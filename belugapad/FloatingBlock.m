@@ -168,7 +168,7 @@
         showNewPipe=YES;
     
     if([pdef objectForKey:SUPPORTED_OPERATORS])
-        supportedOperators=[pdef objectForKey:SUPPORTED_OPERATORS];
+        supportedOperators=[[pdef objectForKey:SUPPORTED_OPERATORS]retain];
     
     if([pdef objectForKey:MIN_BLOCKS_FROM_PIPE])
         minBlocksFromPipe=[[pdef objectForKey:MIN_BLOCKS_FROM_PIPE]intValue];

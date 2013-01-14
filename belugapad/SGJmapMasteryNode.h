@@ -38,6 +38,9 @@
 
 @property (retain, readonly) NSMutableArray *EffectedPathDestinationNodes;
 
+@property bool shouldBouncePins;
+@property bool shouldShowPaperPlanes;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

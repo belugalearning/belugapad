@@ -39,6 +39,7 @@
 @synthesize numberMode;
 @synthesize backgroundType;
 @synthesize rowWidth;
+@synthesize disableTrailingPadding;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -398,12 +399,13 @@
         if(self.interactive)
             self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
         else
-            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
+//            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
+            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width, self.textRenderComponent.label.contentSize.height);
 
     }
     
     if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
-        size.width=170;
+        size.width=size.width;
     else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
         size.width=116;
     else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Smaller"] && size.width<40)

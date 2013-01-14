@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tap 2 squares to shade half the shape.</string>
+	<string>&lt;b:t&gt;Tap 2 squares to shade half the shape, then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Shade in half of 4.</string>
 	<key>TOOL_KEY</key>

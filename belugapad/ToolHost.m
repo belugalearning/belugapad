@@ -382,14 +382,6 @@ static float kTimeToHintToolTray=0.0f;
     if(delayShowMeta&&timeToMetaStart>2.0f){
         [self showMq];
         
-        for(int i=0;i<[metaQuestionAnswerLabels count];i++)
-        {
-            SGBtxeRow *row=[metaQuestionAnswerLabels objectAtIndex:i];
-            
-            [row setupDraw];
-            [row inflateZindex];
-            [row tagMyChildrenForIntro];
-        }
         timeToMetaStart=0.0f;
         delayShowMeta=NO;
     }
@@ -604,9 +596,6 @@ static float kTimeToHintToolTray=0.0f;
     [self scheduleOnce:@selector(updateScoreLabels) delay:0.5f];
     
     [self rejectMultiplierButton];
-    
-    //[multiplierLabel runAction:[InteractionFeedback fadeOutInTo:75]];
-    //[multiplierLabel runAction:[InteractionFeedback scaleOutReturn]];
 }
 
 -(void)scoreProblemSuccess
@@ -1357,14 +1346,6 @@ static float kTimeToHintToolTray=0.0f;
             [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
         }
     }
-//    if(CGRectContainsPoint(kPauseMenuLogOut, location))
-//    {
-//        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-//        [usersService setCurrentUserToUserWithId:nil];
-//        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-//        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
-//    }
-    
     //top left tap for edit pdef
     if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
     {
@@ -1497,6 +1478,7 @@ static float kTimeToHintToolTray=0.0f;
     answersY=cy*1.30;
     
     [self setProblemDescription:[pdefMQ objectForKey:META_QUESTION_TITLE]];
+    descGw.Blackboard.inProblemSetup=YES;
     
     // check the answer mode and assign
     NSNumber *aMode=[pdefMQ objectForKey:META_QUESTION_ANSWER_MODE];
@@ -1508,12 +1490,11 @@ static float kTimeToHintToolTray=0.0f;
         [usersService notifyStartingFeatureKey:@"METAQUESTION_ANSWER_MODE_MULTI"];
     
     // check the eval mode and assign
-//    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
-//    if(eMode) mqEvalMode=[eMode intValue];
+
     mqEvalMode=kMetaQuestionEvalOnCommit;
     [self addCommitButton];
     // put our array of answers in an ivar
-//    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
+
     metaQuestionAnswerCount = [[pdefMQ objectForKey:META_QUESTION_ANSWERS] count];
     
     if([pdefMQ objectForKey:META_QUESTION_RANDOMISE_ANSWERS])
@@ -1529,11 +1510,6 @@ static float kTimeToHintToolTray=0.0f;
     // assign our complete and incomplete text to show later
     metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];
     
-//    if(currentTool)
-//        [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
-//    else
-//        [metaQuestionIncompleteLabel setPosition:ccp(cx, cy*0.25)];
-    
     NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_Bar_%d.png",metaQuestionAnswerCount];
     metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];
     [metaQuestionBanner setPosition:ccp(cx,answersY)];
@@ -1547,7 +1523,6 @@ static float kTimeToHintToolTray=0.0f;
         
         CCSprite *answerBtn;
         SGBtxeRow *row=nil;
-//        CCLabelTTF *answerLabel;
         NSString *raw=nil;
         NSString *answerLabelString=nil;
         // sort out the labels and buttons if there's an answer text
@@ -1555,9 +1530,6 @@ static float kTimeToHintToolTray=0.0f;
         {
             // sort out the buttons
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
-//            answerLabel=[CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(answerBtn.contentSize.width-10,answerBtn.contentSize.height-6) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:CHANGO fontSize:16.0f];
-
-//            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
             
             // then the answer label
             raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
@@ -1605,10 +1577,6 @@ static float kTimeToHintToolTray=0.0f;
 //            [answerLabel setString:answerLabelString];
             NSLog(@"before answerLabelString: %@", answerLabelString);
             
-//            if(answerLabelString.length>9)
-//                [answerLabel setFontSize:16.0f];
-//            else
-//                [answerLabel setFontSize:22.0f];
         }
         // there should never be both an answer text and custom sprite defined - so if no answer text, only render the SPRITE_FILENAME
         else
@@ -1618,10 +1586,8 @@ static float kTimeToHintToolTray=0.0f;
         }
         
         int s=fabsf(metaQuestionAnswerCount-5);
-//        float adjLX=lx-(lx*((24*s)/lx));
         
         // render buttons
-        //float sectionW=adjLX / metaQuestionAnswerCount;
         float sectionW=(metaQuestionBanner.contentSize.width / metaQuestionAnswerCount)-8;
         float startOffset=0;
         
@@ -1647,13 +1613,14 @@ static float kTimeToHintToolTray=0.0f;
             row.rowWidth=answerBtn.contentSize.width-10;
             row.tintMyChildren=NO;
             [row parseXML:answerLabelString];
-            [metaQuestionAnswerLabels addObject:row];
         }
         // check for text, render if nesc
         if(row)
         {
             row.position=answerBtn.position;
+            [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
+            [row tagMyChildrenForIntro];
         }
     
         if(row)[row release];
@@ -1664,7 +1631,7 @@ static float kTimeToHintToolTray=0.0f;
     
     
 
-    
+    descGw.Blackboard.inProblemSetup=NO;
 }
 
 
@@ -1705,7 +1672,6 @@ static float kTimeToHintToolTray=0.0f;
         for(int i=0; i<metaQuestionAnswerCount; i++)
         {
             CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-            //CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
             
             float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
             float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
@@ -1717,14 +1683,6 @@ static float kTimeToHintToolTray=0.0f;
                 // and check its current selected value
                 BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
                 
-                // then if it's an answer and isn't currently selected
-                
-                //if(isSelected && touchEnd)
-                //{
-                    // if this is an auto eval, run the eval now
-                //    if(mqAnswerMode==kMetaQuestionAnswerSingle && mqEvalMode==kMetaQuestionEvalAuto)
-                //        [self evalMetaQuestion];
-                //}
                 
                 if(!isSelected && !touchEnd)
                 {
@@ -1744,9 +1702,7 @@ static float kTimeToHintToolTray=0.0f;
                     else if(mqAnswerMode==kMetaQuestionAnswerMulti)
                     {
                         [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
-                        //[answerLabel setColor:kMetaAnswerLabelColorSelected];
-                        //                        [answerBtn setColor:kMetaQuestionButtonSelected];
-                        [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
                         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_selected.wav")];
                     }
                     return;
@@ -1900,16 +1856,12 @@ static float kTimeToHintToolTray=0.0f;
         {
             //NSLog(@"answer %d selected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
-            //[answerLabel setColor:kMetaAnswerLabelColorSelected];
-//            [answerBtn setColor:kMetaQuestionButtonSelected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
         }
         else
         {
             //NSLog(@"answer %d deselected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
-            //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
-//            [answerBtn setColor:kMetaQuestionButtonDeselected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
         }
     }
@@ -1949,10 +1901,6 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)removeMetaQuestionButtons
 {
-//    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
-//    {
-//        [trayLayerMq removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
-//    } 
     for(int i=0;i<metaQuestionAnswerButtons.count;i++)
     {
         [trayLayerMq removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
@@ -1979,143 +1927,6 @@ static float kTimeToHintToolTray=0.0f;
     if(!currentTool)
         delayShowWheel=YES;
     
-    //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
-    //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
-    
-    //BOOL npShowDropbox=[[pdefNP objectForKey:SHOW_DROPBOX]boolValue];
-    
-    //numberPickerType=[[pdefNP objectForKey:PICKER_LAYOUT]intValue];
-    //numberPickerEvalMode=[[pdefNP objectForKey:EVAL_MODE]intValue];
-    //animatePickedButtons=[[pdefNP objectForKey:ANIMATE_FROM_PICKER]boolValue];
-    
-
-    
-    //if([pdefNP objectForKey:MAX_NUMBERS])
-    //    npMaxNoInDropbox=[[pdefNP objectForKey:MAX_NUMBERS]intValue];
-    //else
-    //    npMaxNoInDropbox=4;
-    
-    //numberPickerButtons=[[NSMutableArray alloc]init];
-    //numberPickedSelection=[[NSMutableArray alloc]init];
-    //numberPickedValue=[[NSMutableArray alloc]init];
-    
-    //nPicker=[[CCNode alloc]init];
-    //[nPicker setPosition:ccp(npOriginX,npOriginY)];
-    
-    //numberPickerLayer=[[CCLayer alloc]init];
-    //[self addChild:numberPickerLayer z:2];
-    //[numberPickerLayer addChild:nPicker];
-    
-    //[numberPickerLayer addChild:problemDescLabel];
-    
-    // if we have the dropbox defined, then we need to set it up here
-    //npDropbox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberpicker/np_dropbox.png")];
-    //[npDropbox setPosition:ccp(cx,cy+50)];
-    //[numberPickerLayer addChild:npDropbox z:0];
-    //if(!npShowDropbox)[npDropbox setVisible:NO];
-    
-    // then continue and make our awesome picker dood
-//    if(numberPickerType==kNumberPickerCalc)
-//    {
-//        int h=0;
-//        
-//        for(int i=0;i<3;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(i*75), 265)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//        }
-//        h=0;
-//        for(int i=3;i<6;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(h*75), 190)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//            h++;
-//        }
-//        h=0;
-//        for(int i=6;i<9;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(h*75), 115)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//            h++;
-//        }
-//        h=0;
-//        for(int i=9;i<12;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(h*75), 40)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//            h++;
-//        }
-//        
-//    }
-//    else if(numberPickerType==kNumberPickerSingleLine)
-//    {
-//        for(int i=0;i<12;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(i*75), 40)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//            
-//        }
-//    }
-//    else if(numberPickerType==kNumberPickerDoubleLineHoriz)
-//    {
-//        for (int i=0;i<6;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(i*75), 115)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//        }
-//        
-//        int h=0;
-//        for (int i=6;i<12;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45+(h*75), 40)];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//            h++;
-//        }
-//    }
-//    else if(numberPickerType==kNumberPickerDoubleColumnVert)
-//    {
-//        for (int i=0;i<6;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(45, 415-(i*75))];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//        }
-//        int h=0;
-//        for (int i=6;i<12;i++)
-//        {
-//            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//            [curSprite setPosition:ccp(120, 415-(h*75))];
-//            [nPicker addChild:curSprite];
-//            [numberPickerButtons addObject:curSprite];
-//            h++;
-//        }
-//    }
-//    
-//    // create a picker bounding box so we can drag items back off to it later
-//    pickerBox=CGRectNull;
-//    
-//    for (int i=0; i<[numberPickerButtons count];i++)
-//    {
-//        CCSprite *s=[numberPickerButtons objectAtIndex:i];
-//        pickerBox=CGRectUnion(pickerBox, s.boundingBox);
-//    }
-    
-    // if eval mode is commit, render a commit button
 }
 
 -(void)checkNumberPickerTouches:(CGPoint)location
@@ -2138,169 +1949,141 @@ static float kTimeToHintToolTray=0.0f;
         }
     }
     // if we haven't met our max number on the number picker then carry on adding more
-    if([numberPickedSelection count] <npMaxNoInDropbox) {
-        BOOL isValid=YES;
-        
-        for(int i=0;i<[numberPickerButtons count];i++)
-        {
-            if(i==10||i==11)
-            {
-                for(NSNumber *n in numberPickedValue)
-                {
-                    if([n intValue]==10 && i==10)isValid=NO;
-                    if([n intValue]==11 && i==11)isValid=NO;
-                }
-            }
-            // check each of the buttons to see if it was them that were hit
-            CCSprite *s=[numberPickerButtons objectAtIndex:i];
-            if(CGRectContainsPoint(s.boundingBox, location) && isValid)
-            {
-                hasUsedNumber=YES;
-                //a valid click?
-                [self playAudioPress];
-                
-                CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-                [numberPickerLayer addChild:curSprite];
-                
-                // log pickup from register/dropbox
-                [loggingService logEvent:BL_PA_NP_NUMBER_FROM_PICKER
-                      withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
-                
-                // check if we're animating our buttons or fading them in
-                if(animatePickedButtons) {
-                    // and set the position/actions
-                    [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];
-                    
-                    if(i==11)
-                    {
-                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];
-                    }
-                    else {
-                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
-                    }
-                }
-                else {
-                    if(i==11)
-                    {
-                        [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)];
-                    }
-                    else
-                    {
-                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
-                    }
-                    
-                    [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
-                    
-                }
-                
-                // then add them to our selection and value arrays
-                if(i==11)
-                {
-                    [numberPickedSelection insertObject:curSprite atIndex:0];
-                    [numberPickedValue insertObject:[NSNumber numberWithInt:i] atIndex:0];
-                }
-                else
-                {
-                    [numberPickedSelection addObject:curSprite];
-                    [numberPickedValue addObject:[NSNumber numberWithInt:i]];
-                }
-                
-                
-                [self reorderNumberPickerSelections];
-                
-                return;
-            }
-        }
-    }
-    for(int i=0;i<[numberPickedSelection count];i++)
-    {
-        CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        int n=[[numberPickedValue objectAtIndex:i]intValue];
-        if(CGRectContainsPoint(s.boundingBox, origloc))
-        {
-            [self playAudioPress];
-            [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]] forKey:@"number"]];
-            npMove=s;
-            npMoveStartPos=npMove.position;
-            if(n==11)canMoveNumber=NO;
-            else canMoveNumber=YES;
-            
-            return;
-        }
-    }
+//    if([numberPickedSelection count] <npMaxNoInDropbox) {
+//        BOOL isValid=YES;
+//        
+//        for(int i=0;i<[numberPickerButtons count];i++)
+//        {
+//            if(i==10||i==11)
+//            {
+//                for(NSNumber *n in numberPickedValue)
+//                {
+//                    if([n intValue]==10 && i==10)isValid=NO;
+//                    if([n intValue]==11 && i==11)isValid=NO;
+//                }
+//            }
+//            // check each of the buttons to see if it was them that were hit
+//            CCSprite *s=[numberPickerButtons objectAtIndex:i];
+//            if(CGRectContainsPoint(s.boundingBox, location) && isValid)
+//            {
+//                hasUsedNumber=YES;
+//                //a valid click?
+//                [self playAudioPress];
+//                
+//                CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
+//                [numberPickerLayer addChild:curSprite];
+//                
+//                // log pickup from register/dropbox
+//                [loggingService logEvent:BL_PA_NP_NUMBER_FROM_PICKER
+//                      withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
+//                
+//                // check if we're animating our buttons or fading them in
+//                if(animatePickedButtons) {
+//                    // and set the position/actions
+//                    [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];
+//                    
+//                    if(i==11)
+//                    {
+//                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];
+//                    }
+//                    else {
+//                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
+//                    }
+//                }
+//                else {
+//                    if(i==11)
+//                    {
+//                        [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)];
+//                    }
+//                    else
+//                    {
+//                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
+//                    }
+//                    
+//                    [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
+//                    
+//                }
+//                
+//                // then add them to our selection and value arrays
+//                if(i==11)
+//                {
+//                    [numberPickedSelection insertObject:curSprite atIndex:0];
+//                    [numberPickedValue insertObject:[NSNumber numberWithInt:i] atIndex:0];
+//                }
+//                else
+//                {
+//                    [numberPickedSelection addObject:curSprite];
+//                    [numberPickedValue addObject:[NSNumber numberWithInt:i]];
+//                }
+//                
+//                
+//                [self reorderNumberPickerSelections];
+//                
+//                return;
+//            }
+//        }
+//    }
+//    for(int i=0;i<[numberPickedSelection count];i++)
+//    {
+//        CCSprite *s=[numberPickedSelection objectAtIndex:i];
+//        int n=[[numberPickedValue objectAtIndex:i]intValue];
+//        if(CGRectContainsPoint(s.boundingBox, origloc))
+//        {
+//            [self playAudioPress];
+//            [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
+//                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]] forKey:@"number"]];
+//            npMove=s;
+//            npMoveStartPos=npMove.position;
+//            if(n==11)canMoveNumber=NO;
+//            else canMoveNumber=YES;
+//            
+//            return;
+//        }
+//    }
     
     
 }
 
--(void)checkNumberPickerTouchOnRegister:(CGPoint)location
-{
-    if(!canMoveNumber)return;
-    for(int i=0;i<[numberPickedSelection count];i++)
-    {
-        CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        if(s==npMove||s==npLastMoved)continue;
-        if(CGRectContainsPoint(s.boundingBox, location))
-        {
-            NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
-            // log pickup from register/dropbox
-            [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-                  withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
-            
-            CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
-            [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
-            npMoveStartPos=repSprite.position;
-            npLastMoved=s;
-            
-            NSLog(@"s position %@, repsprite pos %@", NSStringFromCGPoint(s.position), NSStringFromCGPoint(repSprite.position));
-            
-            int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
-            [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
-            [numberPickedSelection removeObject:npMove];
-            [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
-            [numberPickedSelection insertObject:npMove atIndex:i];
-            
-            //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
-            
-        }
-    }
-    
-    if(!hasMovedNumber) hasMovedNumber=YES;
-    
-    npMove.position=location;
-    
-}
+//-(void)checkNumberPickerTouchOnRegister:(CGPoint)location
+//{
+//    if(!canMoveNumber)return;
+//    for(int i=0;i<[numberPickedSelection count];i++)
+//    {
+//        CCSprite *s=[numberPickedSelection objectAtIndex:i];
+//        if(s==npMove||s==npLastMoved)continue;
+//        if(CGRectContainsPoint(s.boundingBox, location))
+//        {
+//            NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
+//            // log pickup from register/dropbox
+//            [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
+//                  withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
+//            
+//            CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
+//            [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
+//            npMoveStartPos=repSprite.position;
+//            npLastMoved=s;
+//            
+//            NSLog(@"s position %@, repsprite pos %@", NSStringFromCGPoint(s.position), NSStringFromCGPoint(repSprite.position));
+//            
+//            int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+//            [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
+//            [numberPickedSelection removeObject:npMove];
+//            [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
+//            [numberPickedSelection insertObject:npMove atIndex:i];
+//            
+//            //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
+//            
+//        }
+//    }
+//    
+//    if(!hasMovedNumber) hasMovedNumber=YES;
+//    
+//    npMove.position=location;
+//    
+//}
 
 -(void)evalNumberPicker
 {
-//    NSString *strEval=@"";
-//    
-//    for (int i=0;i<[numberPickedValue count];i++)
-//    {
-//        NSNumber *thisNo=[numberPickedValue objectAtIndex:i];
-//        int iThisNo=[thisNo intValue];
-//        NSString *strThisNo;
-//        
-//        if(iThisNo==10)strThisNo=@".";
-//        else if(iThisNo==11)strThisNo=@"-";
-//        else strThisNo=[NSString stringWithFormat:@"%d", iThisNo];
-//        //strEval=[NSString stringWithFormat:@"%d", iThisNo];
-//        
-//        strEval=[NSString stringWithFormat:@"%@%@", strEval, strThisNo];
-//        
-//        NSLog(@"eval %@", strEval);
-//    }
-//    
-//    float onDropbox=[strEval floatValue];
-//    if(onDropbox==npEval)
-//    {
-//        [self doWinning];
-//    }
-//    else
-//    {
-//        [self doIncomplete];
-//    }
-
     if(trayWheelShowing){
         NSString *pickerValue=[self returnPickerNumber];
         NSString *strNpEval=[NSString stringWithFormat:@"%g", npEval];
@@ -2342,27 +2125,18 @@ static float kTimeToHintToolTray=0.0f;
     if(CurrentBTXE)CurrentBTXE=nil;
     toolCanEval=YES;
     [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
-    
-//    if(traybtnWheel){
-//        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
-//        [traybtnWheel setColor:ccc3(255,255,255)];
-//        [trayLayerWheel removeAllChildrenWithCleanup:YES];
-//    }
 
     if(trayLayerWheel)
         [trayLayerWheel removeAllChildrenWithCleanup:YES];
 
     trayLayerWheel=nil;
         
-//    [numberPickerLayer removeAllChildrenWithCleanup:YES];
-    //numberPickerForThisProblem=NO;
 
     hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
     hasUsedWheelTray=NO;
     trayWheelShowing=NO;
-//    [numberPickerLayer release];
     numberPickerLayer=nil;
 }
 
@@ -2376,8 +2150,6 @@ static float kTimeToHintToolTray=0.0f;
     
     if(currentTool.ProblemComplete)
     {
-        //[self playAudioFlourish];
-        
         timeBeforeUserInteraction=kDisableInteractionTime;
     }
     else {
@@ -2525,29 +2297,6 @@ static float kTimeToHintToolTray=0.0f;
 {
     //hide everything int he btxe gw
 }
-
-//-(void)setProblemDescription:(NSString*)descString
-//{
-//    if(!problemDescLabel)
-//    {
-//        problemDescLabel=[CCLabelTTF labelWithString:descString dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-//        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-//        [problemDescLabel setTag:3];
-//        [problemDescLabel setOpacity:0];
-//        [problemDefLayer addChild:problemDescLabel];
-//    }
-//    else {
-//        [problemDescLabel setString:descString];
-//
-//        //assume it should be visible
-//        problemDescLabel.visible=YES;
-//    }
-//}
-
-//-(void)setProblemDescriptionVisible:(BOOL)visible
-//{
-//    if(problemDescLabel) [problemDescLabel setVisible:visible];
-//}
 
 
 #pragma mark - touch handling

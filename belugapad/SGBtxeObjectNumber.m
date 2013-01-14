@@ -405,7 +405,7 @@
     }
     
     if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
-        size.width=170;
+        size.width=size.width;
     else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
         size.width=116;
     else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Smaller"] && size.width<40)

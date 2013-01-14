@@ -1934,7 +1934,7 @@ static float kTimeToHintToolTray=0.0f;
     if(isAnimatingIn)return;
     
     CGPoint origloc=location;
-    location=[nPicker convertToNodeSpace:location];
+//    location=[nPicker convertToNodeSpace:location];
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
@@ -2444,7 +2444,7 @@ static float kTimeToHintToolTray=0.0f;
         heldObject.worldPosition=location;
     }
     
-    if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
+//    if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
     //pinch handling
     if([touches count]>1)

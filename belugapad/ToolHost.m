@@ -2962,9 +2962,8 @@ static float kTimeToHintToolTray=0.0f;
         
         [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
         */
-
-        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
         [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
         
         /*
         float rowHeight=0;

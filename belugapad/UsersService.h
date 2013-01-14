@@ -27,6 +27,7 @@ typedef enum {
 @property (readonly) NSDictionary *currentUserClone;
 @property (readonly) FMDatabase *allUsersDatabase;
 @property (readonly) NSString *currentUserId;
+@property int lastStarAcheived;
 
 -(id)initWithProblemPipeline:(NSString*)source
            andLoggingService:(LoggingService*)ls;
@@ -48,6 +49,8 @@ typedef enum {
 -(void)downloadUserMatchingNickName:(NSString*)nickName
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback;
+
+-(void)applyDownloadedStateUpdatesForCurrentUser;
 
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;

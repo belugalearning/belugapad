@@ -54,6 +54,8 @@
 	<string>dock</string>
 	<key>30_PV_unit1</key>
 	<string>one block</string>
+	<key>30_PV_unit1_p</key>
+	<string>one blocks</string>
 	<key>30_PV_unit10</key>
 	<string>ten block</string>
 	<key>30_Counter_Start</key>

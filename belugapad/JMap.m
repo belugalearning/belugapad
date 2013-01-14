@@ -191,6 +191,9 @@ typedef enum {
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
+//    [ac.searchBar removeFromSuperview];
+//    ac.searchBar=nil;
+    
     if(ac.IsIpad1)
     {
         [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];        
@@ -282,7 +285,7 @@ typedef enum {
                 if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
             }
         }
-        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
+        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
     }
     
     [self buildSearchIndex];
@@ -655,7 +658,7 @@ typedef enum {
             [rightgo.ConnectToMasteryNodes addObject:leftgo];
         }
         else {
-            NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+            //NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
         }
     }
 
@@ -709,7 +712,7 @@ typedef enum {
         
         //centre on this node
         CGPoint p = lastPlayedMasteryNode.Position;
-        [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
+        [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
         
         mapPositionSet=YES;
     }

@@ -27,6 +27,8 @@
 @synthesize assetType;
 @synthesize backgroundType;
 
+@synthesize disableTrailingPadding;
+
 // LogPolling properties
 @synthesize logPollId, logPollType;
 -(NSString*)logPollType { return @"SGBtxeObjectOperator"; }

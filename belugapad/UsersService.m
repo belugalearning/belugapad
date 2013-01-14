@@ -54,7 +54,6 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
 -(void)ensureStateDbConsistency;
 -(void)downloadStateForUser:(NSString*)userId;
 -(void)processDownloadedState:(NSTimer*)timer;
--(void)applyDownloadedStateUpdatesForCurrentUser;
 @end
 
 
@@ -419,6 +418,10 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
             NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:processData userInfo:@{ @"userId":userId, @"responseData":res } repeats:YES];
             [bself performSelector:processData withObject:timer];
         }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:DOWNLOAD_USER_STATE_COMPLETE object:self userInfo:@{ @"userId":userId, @"success":@NO }];
+        }
     };
     
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
@@ -467,6 +470,8 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     [timer invalidate];
     processingDownloadedState = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:DOWNLOAD_USER_STATE_COMPLETE object:self userInfo:@{ @"userId":userId, @"success":@YES }];
 }
 
 -(void)applyDownloadedStateUpdatesForCurrentUser

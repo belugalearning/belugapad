@@ -61,6 +61,10 @@
         {
             //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
             
+            //set last played
+            AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
+            ac.lastViewedNodeId=ParentGO._id;
+            
             [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:testParentPos];
         }
         

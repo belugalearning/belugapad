@@ -361,11 +361,38 @@ static float kTimeSinceAction=7.0f;
     if([initAreas count]>0 && evalType)
         [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_EVAL_AREAS"];
     
-    if(evalType==kCheckTaggedGroups)
+    if(evalType==kCheckTaggedGroups){
         [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_BTXE_LABELLING"];
-    
-    if(evalType==kCheckContainerValues||evalType==kCheckEvalAreaValues)
+    }
+    else if(evalType==kCheckContainerValues||evalType==kCheckEvalAreaValues){
         [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_VALUES"];
+    }
+    else if(evalType==kCheckEvalAreasForTypes||evalType==kCheckGroupsForTypes){
+        for(NSDictionary *d in solutionsDef)
+        {
+            for(NSString *key in [d allKeys])
+            {
+                if([key rangeOfString:@"VALUE"].location!=0)
+                {
+                    [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_VALUES"];
+                    break;
+                }
+            }
+        }
+    }
+    else if(evalType==kCheckGroupTypeAndNumber)
+    {
+        for(NSDictionary *d in solutionsDef)
+        {
+            if([d objectForKey:BLOCK_TYPE])
+            {
+                if([[d objectForKey:BLOCK_TYPE] rangeOfString:@"Value"].location!=0)
+                {
+                    [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_VALUES"];
+                }
+            }
+        }
+    }
 }
 
 -(void)populateGW
@@ -504,7 +531,7 @@ static float kTimeSinceAction=7.0f;
     if(!hasInactiveArea)
     {
         
-        int farLeft=(numBlocks/2)*60;
+        int farLeft=(numBlocks/2)*kDistanceBetweenBlocks;
         int farRight=lx-30;
         int topMost=ly-200;
         int botMost=180;

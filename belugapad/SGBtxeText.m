@@ -17,6 +17,8 @@
 @synthesize container;
 @synthesize hidden, rowWidth, worldPosition;
 
+@synthesize disableTrailingPadding;
+
 -(SGBtxeText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])

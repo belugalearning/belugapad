@@ -880,7 +880,7 @@ float timerIgnoreFrog;
                 writeText=[NSString stringWithFormat:fmt, multDisplayNum];
             }
             
-            if(readNumber>0)
+            if(readNumber>0 && countOutLoudFromInitStartVal)
                 writeText=[NSString stringWithFormat:@"plus %@", writeText];
             
             

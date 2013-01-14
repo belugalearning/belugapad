@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>thing_1</key>
-	<string>red</string>
+	<string>pink</string>
 	<key>thing_2</key>
 	<string>orange</string>
 	<key>thing_3</key>
@@ -11,7 +11,7 @@
 	<key>thing_4</key>
 	<string>green</string>
 	<key>thing_5</key>
-	<string>purple</string>
+	<string>blue</string>
 	<key>thing_s</key>
 	<string>person</string>
 	<key>thing_p</key>

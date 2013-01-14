@@ -76,6 +76,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     assIndicators=[[NSMutableArray alloc] init];
     assNumberBackgrounds=[[NSMutableArray alloc] init];
     jumpSprites=[[NSMutableArray alloc] init];
+    jumpLabels=[[NSMutableArray alloc] init];
     
     //repeat the fors so we add the stuff in the right paint order
     
@@ -402,6 +403,11 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
 -(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset
 {
+    for(CCLabelTTF *l in jumpLabels)
+    {
+        [l removeFromParentAndCleanup:YES];
+    }
+    [jumpLabels removeAllObjects];
     //intended for in-loop draw
     if(ramblerGameObject.UserJumps)
     {
@@ -411,8 +417,14 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             float jumpStart=(jump.x / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize + mid.x + ramblerGameObject.TouchXOffset;
             float jumpLength=(jump.y / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize;
             
-            
             CGPoint origin=ccp(jumpStart, mid.y + yOffset);
+            
+            NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
+            CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
+            [l setPosition:ccp(mid.x+(jumpLength/2)+ramblerGameObject.TouchXOffset, mid.y+50)];
+            [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
+            [jumpLabels addObject:l];
+            
             
             ccBezierConfig bc;
             

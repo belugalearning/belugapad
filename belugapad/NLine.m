@@ -37,7 +37,7 @@
 @end
 
 static float kBubbleProx=35.0f;
-static float kBubbleScrollBoundary=450;
+static float kBubbleScrollBoundary=450.0f;
 static float kBubblePushSpeed=220.0f;
 
 static float kTimeToBubbleShake=7.0f;
@@ -943,9 +943,9 @@ float timerIgnoreFrog;
         //determine whether or not to show the frog target
         if(lastBubbleLoc!=lastFrogLoc)
         {
-            if(lastBubbleLoc>logLastBubblePos)
+            if(lastBubbleLoc>logLastBubblePos && lastBubbleLoc>lastFrogLoc)
                 [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")]];
-            else if(lastBubbleLoc<logLastBubblePos)
+            else if(lastBubbleLoc<logLastBubblePos && lastBubbleLoc<lastFrogLoc)
                 [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButtonBack.png")]];
             
             [self showFrogTarget];

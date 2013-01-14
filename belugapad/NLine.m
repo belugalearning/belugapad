@@ -886,7 +886,7 @@ float timerIgnoreFrog;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         
-        
+        //decrement the adjusted steps if this would take us off the screen
         if(bubbleSprite.position.x + diffx - 512 > kBubbleScrollBoundary)
         {
             adjustedStepsFromCentre--;
@@ -897,18 +897,16 @@ float timerIgnoreFrog;
             diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         }
         
-//        NSLog(@"moving by %f, %f adj steps %d seg size %f", diffx, diffy, adjustedStepsFromCentre, rambler.DefaultSegmentSize);
-        
-//        if(bubbleSprite.position.x + diffx > (kBubbleScrollBoundary + 512))
-//        {
-//            slideLineBy=(kBubbleScrollBoundary + 512) - bubbleSprite.position.x;
-//            
-//            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp((kBubbleScrollBoundary + 512) - bubbleSprite.position.x, 0)]];
-//        }
-//        else
-//        {
-//            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
-//        }
+        //increment if offscreen left
+        if(bubbleSprite.position.x + diffx < (512 - kBubbleScrollBoundary))
+        {
+            adjustedStepsFromCentre++;
+            lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+            lastBubbleValue=lastBubbleLoc*initSegmentVal;
+            
+            rambler.BubblePos=lastBubbleValue;
+            diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        }
         
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         

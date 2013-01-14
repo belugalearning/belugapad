@@ -20,6 +20,7 @@
 @synthesize MaxValue;
 
 @synthesize TouchXOffset;
+@synthesize HeldMoveOffsetX;
 
 @synthesize RenderStitches;
 @synthesize AutoStitchIncrement;

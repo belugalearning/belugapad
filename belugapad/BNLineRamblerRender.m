@@ -135,23 +135,15 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 -(void)doUpdate:(ccTime)delta
 {
     int segsInCX=(gameWorld.Blackboard.hostCX / ramblerGameObject.DefaultSegmentSize);
-    
-    //scale these up by three -- allows for full screen scroll in either direction without new draw
-    
-//    float minValuePos=ramblerGameObject.Value - ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
-//    float maxValuePos=ramblerGameObject.Value + ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
-    
-//    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
-//    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
-    
+        
     float minValuePos=ramblerGameObject.BubblePos - ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
-//    minValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
-//    maxValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
-
-//    minValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
-//    maxValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+    //add the touchxoffset to the maxvalue, or decrement from the minimum value
+    float touchDrawOffset=(-ramblerGameObject.HeldMoveOffsetX / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+    NSLog(@"heldx %f touchdrawoff %f", ramblerGameObject.HeldMoveOffsetX, touchDrawOffset);
+    maxValuePos+=touchDrawOffset;
+    minValuePos+=touchDrawOffset;
 
     int assBlankIndex=0;
     int assLineIndex=0;

@@ -207,6 +207,7 @@ float timerIgnoreFrog;
 //    slideLineBy+=moveRamblerBy;
     
     rambler.TouchXOffset+=moveRamblerBy;
+    rambler.HeldMoveOffsetX+=moveRamblerBy;
     stitchOffsetX+=actualPushDir * kBubblePushSpeed * delta;
     
 //    if(bubblePushDir==0 && actualPushDir!=0)
@@ -995,7 +996,7 @@ float timerIgnoreFrog;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
     stitchOffsetX=0;
-    //rambler.TouchXOffset=0;
+    rambler.HeldMoveOffsetX=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

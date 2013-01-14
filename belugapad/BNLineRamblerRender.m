@@ -413,7 +413,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             
             NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
             CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
-            [l setPosition:ccp(mid.x+(jumpLength/2)+ramblerGameObject.TouchXOffset, mid.y+50)];
+            [l setPosition:ccp(jumpStart+(jumpLength/2), mid.y+90)];
             [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
             [jumpLabels addObject:l];
             

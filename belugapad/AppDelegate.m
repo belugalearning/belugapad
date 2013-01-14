@@ -265,12 +265,12 @@
 
 -(void)tearDownUI
 {
-    if(searchBar.superview)
-        [searchBar removeFromSuperview];
+    if(self.searchBar.superview)
+        [self.searchBar removeFromSuperview];
     self.searchBar=nil;
     
-    if(searchList.superview)
-        [searchList removeFromSuperview];
+    if(self.searchList.superview)
+        [self.searchList removeFromSuperview];
     self.searchList=nil;
 }
 

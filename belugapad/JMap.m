@@ -191,6 +191,9 @@ typedef enum {
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
+//    [ac.searchBar removeFromSuperview];
+//    ac.searchBar=nil;
+    
     if(ac.IsIpad1)
     {
         [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];        

@@ -203,12 +203,15 @@
         [reqShapes retain];
     }
     
-    
+    if([pdef objectForKey:SHOW_DRAGGABLE_BLOCK])
+       showDraggableBlock=[[pdef objectForKey:SHOW_DRAGGABLE_BLOCK]boolValue];
+    else
+        showDraggableBlock=YES;
+        
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
     evalDivisor=[[pdef objectForKey:DOTGRID_EVAL_DIVISOR] intValue];
     evalTotalSize=[[pdef objectForKey:DOTGRID_EVAL_TOTALSIZE] intValue];
-    showDraggableBlock=[[pdef objectForKey:SHOW_DRAGGABLE_BLOCK]boolValue];
     renderWidthHeightOnShape=[[pdef objectForKey:RENDER_SHAPE_DIMENSIONS]boolValue];
     selectWholeShape=[[pdef objectForKey:SELECT_WHOLE_SHAPE]boolValue];
     useShapeGroups=[[pdef objectForKey:USE_SHAPE_GROUPS]boolValue];
@@ -405,6 +408,8 @@
     
     if(showDraggableBlock)
     {
+        drawMode=0;
+        disableDrawing=YES;
         dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Sq40.png")];
         [dragBlock setPosition:ccp(55,550)];
         [renderLayer addChild:dragBlock];

@@ -687,7 +687,23 @@
 {
     if (freezeUI) return;
     
+    if (!existingUserNameTF.text || !existingUserNameTF.text.length)
+    {
+        [existingUserNameTF becomeFirstResponder];
+        return;
+    }
+    
+    if (!downloadUserPassCodeView.isValid)
+    {
+        [downloadUserPassCodeView becomeFirstResponder];
+        return;
+    }
+    
+    loadingImg.alpha = 1;
+    freezeUI = YES;
+    
     __block typeof(self) bself = self;
+    
     void (^callback)() = ^(NSDictionary *ur) {
         bself->loadingImg.alpha = 0;
         bself->freezeUI = NO;
@@ -707,21 +723,6 @@
         [self.view removeFromSuperview];
         [bself->app proceedFromLoginViaIntro:NO];
     };
-    
-    if (!existingUserNameTF.text || !existingUserNameTF.text.length)
-    {
-        [existingUserNameTF becomeFirstResponder];
-        return;
-    }
-    
-    if (!downloadUserPassCodeView.isValid)
-    {
-        [downloadUserPassCodeView becomeFirstResponder];
-        return;
-    }
-    
-    loadingImg.alpha = 1;    
-    freezeUI = YES;
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text

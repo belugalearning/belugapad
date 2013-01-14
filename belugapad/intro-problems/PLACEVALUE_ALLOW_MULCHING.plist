@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Drag 1&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit10&quot;/&gt;&lt;b:t&gt;to the ones&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;to make 10&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit1&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Drag 1&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit10&quot;/&gt;&lt;b:t&gt;to the ones&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;to make 10&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_unit1_p&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Move 1 ten to the ones grid to make 10 ones. Press the green button.</string>
 	<key>TOOL_KEY</key>

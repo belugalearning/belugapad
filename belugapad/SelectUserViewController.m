@@ -313,7 +313,6 @@
     saveChangeNickButton.frame = CGRectMake(289, 246, 131, 51);
     [saveChangeNickButton addTarget:self action:@selector(handleSaveChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [changeNickView addSubview:saveChangeNickButton];
-    [saveChangeNickButton registerForDragAndLog];
     
 }
 
@@ -527,7 +526,6 @@
         tickCrossImg.alpha = 0;
         [tickCrossImg setCenter:CGPointMake(595, 331)];
         
-        [loadingImg registerForDragAndLog];
         [loadingImg setCenter:CGPointMake(596, 415)];
         changeNickTF.text = ur[@"nickName"];
         [selectUserView addSubview:changeNickView];

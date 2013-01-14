@@ -428,6 +428,14 @@
     UIView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]] autorelease];
     [selectUserModalContainer addSubview:bg];
     
+    UILabel *nameLabel = [[[UILabel alloc] initWithFrame:CGRectMake(44, 67, 359, 30)] autorelease];
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.font = [UIFont fontWithName:@"Chango" size:24];
+    nameLabel.textAlignment = UITextAlignmentCenter;
+    nameLabel.text = ur[@"nickName"];
+    [selectUserModalContainer addSubview:nameLabel];
+    
     UIButton *back = [[[UIButton alloc] init] autorelease];
     back.frame = CGRectMake(36.0f, 181.0f, 131.0f, 51.0f);
     [back setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];

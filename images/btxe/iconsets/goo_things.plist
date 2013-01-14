@@ -563,6 +563,19 @@
                 <key>sourceSize</key>
                 <string>{30,30}</string>
             </dict>
+            <key>30_PV_unit1_p.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{111,290},{30,30}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{30,30}}</string>
+                <key>sourceSize</key>
+                <string>{30,30}</string>
+            </dict>
             <key>30_Q.png</key>
             <dict>
                 <key>frame</key>
@@ -1015,7 +1028,7 @@
             <key>size</key>
             <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b391960c2c86a6af109ca7fd8d2f1b65$</string>
+            <string>$TexturePacker:SmartUpdate:47232193923e7635d8560ac06429fd73$</string>
             <key>textureFileName</key>
             <string>goo_things.png</string>
         </dict>

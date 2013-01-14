@@ -1161,6 +1161,8 @@ static float kTimeToHintToolTray=0.0f;
     
     TFLog(@"resetting problem");
     
+    [self tearDownProblemDef];
+    
     [self tearDownQuestionTray];
     
     [self tearDownNumberPicker];

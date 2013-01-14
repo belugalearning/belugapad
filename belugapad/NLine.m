@@ -37,7 +37,7 @@
 @end
 
 static float kBubbleProx=35.0f;
-static float kBubbleScrollBoundary=350;
+static float kBubbleScrollBoundary=450;
 static float kBubblePushSpeed=220.0f;
 
 static float kTimeToBubbleShake=7.0f;
@@ -184,9 +184,35 @@ float timerIgnoreFrog;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
+    
+    float actualPushDir=bubblePushDir;
+    
+    //if the bubble is outside of a screen edge/boundary, set the push dir to correct it
+//    float absoffset=fabsf(bubbleSprite.position.x)-512.0f;
+//    if(bubbleSprite.position.x<512.0f) absoffset=512-bubbleSprite.position.x;
+//    
+//    if(absoffset>kBubbleScrollBoundary && bubblePushDir==0)
+//    {
+//        if(bubbleSprite.position.x>512)actualPushDir=-1;
+//        else actualPushDir=1;
+//    }
 
-    rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
-    stitchOffsetX+=bubblePushDir * kBubblePushSpeed * delta;
+//    if(slideLineBy!=0 && bubblePushDir==0)
+//    {
+//        if(slideLineBy>0)actualPushDir=-1;
+//        else actualPushDir=1;
+//    }
+
+    float moveRamblerBy=actualPushDir * kBubblePushSpeed * delta;
+//    slideLineBy+=moveRamblerBy;
+    
+    rambler.TouchXOffset+=moveRamblerBy;
+    stitchOffsetX+=actualPushDir * kBubblePushSpeed * delta;
+    
+//    if(bubblePushDir==0 && actualPushDir!=0)
+//    {
+//        bubbleSprite.position=ccpAdd(bubbleSprite.position, ccp(actualPushDir * kBubblePushSpeed * delta, 0));
+//    }
     
     //update frog position
     if(timerIgnoreFrog>0.0f)timerIgnoreFrog-=delta;
@@ -860,9 +886,31 @@ float timerIgnoreFrog;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         
-//        NSLog(@"moving by %f, %f adj steps %d seg size %f", diffx, diffy, adjustedStepsFromCentre, rambler.DefaultSegmentSize);
-        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
+        if(bubbleSprite.position.x + diffx - 512 > kBubbleScrollBoundary)
+        {
+            adjustedStepsFromCentre--;
+            lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+            lastBubbleValue=lastBubbleLoc*initSegmentVal;
+            
+            rambler.BubblePos=lastBubbleValue;
+            diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        }
+        
+//        NSLog(@"moving by %f, %f adj steps %d seg size %f", diffx, diffy, adjustedStepsFromCentre, rambler.DefaultSegmentSize);
+        
+//        if(bubbleSprite.position.x + diffx > (kBubbleScrollBoundary + 512))
+//        {
+//            slideLineBy=(kBubbleScrollBoundary + 512) - bubbleSprite.position.x;
+//            
+//            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp((kBubbleScrollBoundary + 512) - bubbleSprite.position.x, 0)]];
+//        }
+//        else
+//        {
+//            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
+//        }
+        
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         //play some audio -- only for non decimal numbers at the moment
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)

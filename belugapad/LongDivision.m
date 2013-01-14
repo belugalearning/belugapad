@@ -495,6 +495,7 @@
     
     goodBadHighlight=NO;
     
+    [usersService notifyStartingFeatureKey:@"LONGDIVISION_INTRO"];
 }
 
 -(void)populateGW

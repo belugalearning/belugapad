@@ -11,6 +11,8 @@
 
 #define BUNDLE_FULL_PATH(_filePath_) [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:_filePath_]
 
+#define DOWNLOAD_USER_STATE_COMPLETE @"DOWNLOAD_USER_STATE_COMPLETE"
+
 #define GENERIC_FONT @"STHeitiTC-Light"
 #define TITLE_FONT @"STHeitiTC-Light"
 //#define TITLE_FONT @"Helvetica-Bold"

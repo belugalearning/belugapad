@@ -703,11 +703,9 @@
     freezeUI = YES;
     
     __block typeof(self) bself = self;
+    __block SEL bOnDownloadUserStateComplete = @selector(onDownloadUserStateComplete:);
     
     void (^callback)() = ^(NSDictionary *ur) {
-        bself->loadingImg.alpha = 0;
-        bself->freezeUI = NO;
-        
         if (!ur)
         {
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
@@ -715,18 +713,36 @@
                                                                 delegate:nil
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil] autorelease];
+            bself->loadingImg.alpha = 0;
+            bself->freezeUI = NO;
             [alertView show];
             return;
         }
         
-        [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];        
-        [self.view removeFromSuperview];
-        [bself->app proceedFromLoginViaIntro:NO];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:bOnDownloadUserStateComplete name:DOWNLOAD_USER_STATE_COMPLETE object:nil];
+        [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
     };
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text
                                       callback:callback];
+}
+
+-(void)onDownloadUserStateComplete:(NSNotification*)notification
+{
+    if (![[notification userInfo][@"userId"] isEqualToString:usersService.currentUserId])
+    {
+         return;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DOWNLOAD_USER_STATE_COMPLETE object:nil];
+    
+    if ([[notification userInfo][@"success"] boolValue])
+    {
+        [usersService applyDownloadedStateUpdatesForCurrentUser];
+    }
+    
+    [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
 }
 
 #pragma mark -
@@ -783,6 +799,7 @@
 {
     if (deviceUsers)[deviceUsers release];
     if (changeNickView)[changeNickView release];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 @end

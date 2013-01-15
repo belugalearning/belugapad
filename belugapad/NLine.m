@@ -111,7 +111,7 @@ float timerIgnoreFrog;
     
     bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
     [bubbleSprite setPosition:ccp(cx, cy)];
-    [self.ForeLayer addChild:bubbleSprite];
+    [self.ForeLayer addChild:bubbleSprite z:100];
     
 }
 

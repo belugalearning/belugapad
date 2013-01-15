@@ -2949,6 +2949,10 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     [btxeDescLayer setVisible:NO];
+    
+    if(multiplierStage>0)
+        [multiplierBadge setVisible:NO];
+    
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
@@ -2961,6 +2965,9 @@ static float kTimeToHintToolTray=0.0f;
     if(doPlaySound)
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
 
+    if(multiplierStage>0)
+        [multiplierBadge setVisible:YES];
+    
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];

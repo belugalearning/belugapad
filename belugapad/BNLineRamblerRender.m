@@ -84,28 +84,28 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         CCSprite *blank=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_LineSeg.png")];
         [blank setVisible:NO];
         [assBlankSegments addObject:blank];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:blank];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:blank z:1];
     }
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_LineMiddle115.png")];
         [line setVisible:NO];
         [assLineSegments addObject:line];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:line];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:line z:2];
     }
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *ind=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-NumberShown.png")];
         [ind setVisible:NO];
         [assIndicators addObject:ind];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind z:3];
     }
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *numback=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-NumberBackground.png")];
         [numback setVisible:YES];
         [assNumberBackgrounds addObject:numback];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:numback];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:numback z:4];
     }
     
 //    for (int i=0; i<baseSegs; i++) {
@@ -119,7 +119,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
     assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];
-    [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer];
+    [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer z:5];
     
     if(ramblerGameObject.MarkerValuePositions)
     {
@@ -324,7 +324,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
                     [l setColor:ccBLACK];
                     [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                    [labelLayer addChild:l];
+                    [labelLayer addChild:l z:99];
                 }
                 
             }
@@ -390,6 +390,12 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     {
         [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
     }
+    
+    
+//    for(int i=0; i<[assNumberBackgrounds count]; i++)
+//    {
+//        [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
+//    }
 }
 
 -(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset

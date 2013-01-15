@@ -30,6 +30,7 @@
     
     UIImageView *selectUserModalUnderlay;
     UIView *selectUserModalContainer;
+    UIButton *loginButton;
     PassCodeView *selectUserPassCodeModalView;
     UIImageView *tickCrossImg;
     
@@ -452,11 +453,11 @@
     [back addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserModalContainer addSubview:back];
     
-    UIButton *login = [[[UIButton alloc] init] autorelease];
-    login.frame = CGRectMake(289.0f, 181.0f, 131.0f, 51.0f);
-    [login setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
-    [login addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [selectUserModalContainer addSubview:login];
+    loginButton = [[[UIButton alloc] init] autorelease];
+    loginButton.frame = CGRectMake(289.0f, 181.0f, 131.0f, 51.0f);
+    [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
+    [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserModalContainer addSubview:loginButton];
     
     [UIView animateWithDuration:0.8
                           delay:0.0
@@ -483,6 +484,7 @@
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
     [button removeFromSuperview];
+    loginButton = nil;
     [selectUserModalContainer removeFromSuperview];
     selectUserModalContainer = nil;
     [selectUserPassCodeModalView removeFromSuperview];
@@ -532,6 +534,7 @@
     {
         [selectUserModalUnderlay removeFromSuperview];
         [selectUserPassCodeModalView removeFromSuperview];
+        loginButton = nil;
         [selectUserModalContainer removeFromSuperview];
         [playButton removeFromSuperview];
         tickCrossImg.alpha = 0;
@@ -851,10 +854,14 @@
 
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView
 {
+    if (passCodeView == selectUserPassCodeModalView)
+        [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
 }
 
 -(void)passCodeBecameValid:(PassCodeView*)passCodeView
 {
+    if (passCodeView == selectUserPassCodeModalView)
+        [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_orange.png"] forState:UIControlStateNormal];
 }
 
 #pragma mark -

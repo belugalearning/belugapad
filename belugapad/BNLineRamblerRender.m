@@ -126,7 +126,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         markerSprites=[[NSMutableArray alloc] init];
         for (NSNumber *n in ramblerGameObject.MarkerValuePositions) {
             CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Marker.png")];
-            [gameWorld.Blackboard.ComponentRenderLayer addChild:s];
+            [gameWorld.Blackboard.ComponentRenderLayer addChild:s z:98];
             [markerSprites addObject:s];
         }
     }
@@ -141,8 +141,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     
     //add the touchxoffset to the maxvalue, or decrement from the minimum value
     float touchDrawOffset=(-ramblerGameObject.HeldMoveOffsetX / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
-    maxValuePos+=touchDrawOffset;
-    minValuePos+=touchDrawOffset;
+//    maxValuePos+=touchDrawOffset;
+//    minValuePos+=touchDrawOffset;
 
     int assBlankIndex=0;
     int assLineIndex=0;
@@ -154,6 +154,11 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     
     [assStartTerminator setVisible:NO];
     [assEndTerminator setVisible:NO];
+    
+    for(CCSprite *ms in markerSprites)
+    {
+        ms.visible=NO;
+    }
     
 //    NSLog(@"current segment value %f", ramblerGameObject.CurrentSegmentValue);
     
@@ -222,6 +227,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     {
                         CCSprite *s=[markerSprites objectAtIndex:i];
                         [s setPosition:segStartPos];
+                        s.visible=YES;
                     }
                 }
             }

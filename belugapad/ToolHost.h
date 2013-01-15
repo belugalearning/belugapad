@@ -235,6 +235,8 @@ typedef enum {
     NSString *breakOutIntroProblemFK;
     BOOL breakOutIntroProblemHasLoaded;
     
+    BOOL quittingToMap;
+    
 }
 
 @property (retain) Daemon *Zubi;

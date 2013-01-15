@@ -199,6 +199,17 @@
                              [currentView setHidden:YES];
                              currentViewAnimating = NO;
                              freezeUI = nextViewAnimating;
+                             
+                             if (currentView == loadExistingUserView)
+                             {
+                                 existingUserNameTF.text = @"";
+                                 [downloadUserPassCodeView clearText];
+                             }
+                             else if (currentView == editUserView)
+                             {
+                                 newUserNameTF.text = @"";
+                                 [newUserPassCodeView clearText];
+                             }
                          }];
     }
     
@@ -649,8 +660,6 @@
 -(void)handleCancelNewUserClicked:(id)button
 {
     if (freezeUI) return;
-    newUserNameTF.text = @"";
-    [newUserPassCodeView clearText];
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -688,10 +697,7 @@
             [alertView show];
         }
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
-        {
-            newUserNameTF.text = @"";
-            [newUserPassCodeView clearText];
-            
+        {            
             [bself loadDeviceUsers];
             [bself->selectUserTableView reloadData];
             for (uint i=0; i<[bself->deviceUsers count]; i++)
@@ -759,8 +765,6 @@
 -(void)handleCancelExistingUserClicked:(id)button
 {
     if (freezeUI) return;
-    existingUserNameTF.text = @"";
-    [downloadUserPassCodeView clearText];
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];

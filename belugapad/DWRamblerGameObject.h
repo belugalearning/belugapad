@@ -22,6 +22,7 @@
 @property float StartValue;
 @property float DefaultSegmentSize;
 @property float CurrentSegmentValue;
+@property BOOL showJumpLabels;
 @property CGPoint Pos;
 @property (retain) NSNumber *MinValue;
 @property (retain) NSNumber *MaxValue;

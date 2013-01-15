@@ -111,7 +111,7 @@ float timerIgnoreFrog;
     
     bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
     [bubbleSprite setPosition:ccp(cx, cy)];
-    [self.ForeLayer addChild:bubbleSprite];
+    [self.ForeLayer addChild:bubbleSprite z:100];
     
 }
 
@@ -463,6 +463,11 @@ float timerIgnoreFrog;
     
     NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
+    
+    if([problemDef objectForKey:@"SHOW_JUMP_LABELS"])
+        rambler.showJumpLabels=[[problemDef objectForKey:@"SHOW_JUMP_LABELS"]boolValue];
+    else
+        rambler.showJumpLabels=NO;
     
     //jump sections
     rambler.UserJumps=[[[NSMutableArray alloc]init] autorelease];

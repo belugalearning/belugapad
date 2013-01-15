@@ -408,11 +408,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
 -(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset
 {
-    for(CCLabelTTF *l in jumpLabels)
-    {
-        [l removeFromParentAndCleanup:YES];
+    if(ramblerGameObject.showJumpLabels){
+        for(CCLabelTTF *l in jumpLabels)
+        {
+            [l removeFromParentAndCleanup:YES];
+        }
+        [jumpLabels removeAllObjects];
     }
-    [jumpLabels removeAllObjects];
     //intended for in-loop draw
     if(ramblerGameObject.UserJumps)
     {
@@ -423,13 +425,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             float jumpLength=(jump.y / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize;
             
             CGPoint origin=ccp(jumpStart, mid.y + yOffset);
-            
-            NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
-            CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
-            [l setPosition:ccp(jumpStart+(jumpLength/2), mid.y+90)];
-            [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
-            [jumpLabels addObject:l];
-            
+                if(ramblerGameObject.showJumpLabels){
+                NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
+                CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
+                [l setPosition:ccp(jumpStart+(jumpLength/2), mid.y+90)];
+                [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
+                [jumpLabels addObject:l];
+            }
             
             ccBezierConfig bc;
             

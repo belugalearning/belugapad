@@ -84,28 +84,28 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         CCSprite *blank=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_LineSeg.png")];
         [blank setVisible:NO];
         [assBlankSegments addObject:blank];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:blank];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:blank z:1];
     }
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_LineMiddle115.png")];
         [line setVisible:NO];
         [assLineSegments addObject:line];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:line];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:line z:2];
     }
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *ind=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-NumberShown.png")];
         [ind setVisible:NO];
         [assIndicators addObject:ind];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind z:3];
     }
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *numback=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-NumberBackground.png")];
         [numback setVisible:YES];
         [assNumberBackgrounds addObject:numback];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:numback];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:numback z:4];
     }
     
 //    for (int i=0; i<baseSegs; i++) {
@@ -119,14 +119,14 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
     assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];
-    [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer];
+    [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer z:5];
     
     if(ramblerGameObject.MarkerValuePositions)
     {
         markerSprites=[[NSMutableArray alloc] init];
         for (NSNumber *n in ramblerGameObject.MarkerValuePositions) {
             CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Marker.png")];
-            [gameWorld.Blackboard.ComponentRenderLayer addChild:s];
+            [gameWorld.Blackboard.ComponentRenderLayer addChild:s z:98];
             [markerSprites addObject:s];
         }
     }
@@ -135,23 +135,16 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 -(void)doUpdate:(ccTime)delta
 {
     int segsInCX=(gameWorld.Blackboard.hostCX / ramblerGameObject.DefaultSegmentSize);
-    
-    //scale these up by three -- allows for full screen scroll in either direction without new draw
-    
-//    float minValuePos=ramblerGameObject.Value - ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
-//    float maxValuePos=ramblerGameObject.Value + ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
-    
-//    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
-//    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
-    
+        
     float minValuePos=ramblerGameObject.BubblePos - ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
-//    minValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
-//    maxValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
-
-//    minValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
-//    maxValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+    //add the touchxoffset to the maxvalue, or decrement from the minimum value
+    float touchDrawOffset=((int)(-ramblerGameObject.HeldMoveOffsetX / ramblerGameObject.DefaultSegmentSize)) * ramblerGameObject.CurrentSegmentValue;
+    maxValuePos+=touchDrawOffset;
+    minValuePos+=touchDrawOffset;
+    
+//    NSLog(@"min %f max %f tdo %f", minValuePos, maxValuePos, touchDrawOffset);
 
     int assBlankIndex=0;
     int assLineIndex=0;
@@ -163,6 +156,11 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     
     [assStartTerminator setVisible:NO];
     [assEndTerminator setVisible:NO];
+    
+    for(CCSprite *ms in markerSprites)
+    {
+        ms.visible=NO;
+    }
     
 //    NSLog(@"current segment value %f", ramblerGameObject.CurrentSegmentValue);
     
@@ -231,6 +229,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     {
                         CCSprite *s=[markerSprites objectAtIndex:i];
                         [s setPosition:segStartPos];
+                        s.visible=YES;
                     }
                 }
             }
@@ -333,7 +332,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
                     [l setColor:ccBLACK];
                     [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                    [labelLayer addChild:l];
+                    [labelLayer addChild:l z:99];
                 }
                 
             }
@@ -399,15 +398,23 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     {
         [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
     }
+    
+    
+//    for(int i=0; i<[assNumberBackgrounds count]; i++)
+//    {
+//        [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
+//    }
 }
 
 -(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset
 {
-    for(CCLabelTTF *l in jumpLabels)
-    {
-        [l removeFromParentAndCleanup:YES];
+    if(ramblerGameObject.showJumpLabels){
+        for(CCLabelTTF *l in jumpLabels)
+        {
+            [l removeFromParentAndCleanup:YES];
+        }
+        [jumpLabels removeAllObjects];
     }
-    [jumpLabels removeAllObjects];
     //intended for in-loop draw
     if(ramblerGameObject.UserJumps)
     {
@@ -418,13 +425,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             float jumpLength=(jump.y / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize;
             
             CGPoint origin=ccp(jumpStart, mid.y + yOffset);
-            
-            NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
-            CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
-            [l setPosition:ccp(mid.x+(jumpLength/2)+ramblerGameObject.TouchXOffset, mid.y+50)];
-            [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
-            [jumpLabels addObject:l];
-            
+                if(ramblerGameObject.showJumpLabels){
+                NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
+                CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
+                [l setPosition:ccp(jumpStart+(jumpLength/2), mid.y+90)];
+                [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
+                [jumpLabels addObject:l];
+            }
             
             ccBezierConfig bc;
             
@@ -443,6 +450,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
             if(jumpLength>0 && bc.endPosition.x<0) continue;
             if(jumpLength<0 && origin.x<0) continue;
+            
+            int drawSteps=STEPS;
+            if([CCDirector sharedDirector].contentScaleFactor>1) drawSteps*=2;
             
             for(int i=0; i<STEPS; i++)
             {
@@ -487,6 +497,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
 -(void) setupSwooshCircleOffsets
 {
+    int drawSteps=STEPS;
+    if([CCDirector sharedDirector].contentScaleFactor>1) drawSteps*=2;
+    
     for(int i=0; i<STEPS; i++)
     {
         float a=225.0f-((180/STEPS) * i);

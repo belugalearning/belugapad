@@ -37,7 +37,7 @@
 @end
 
 static float kBubbleProx=35.0f;
-static float kBubbleScrollBoundary=350;
+static float kBubbleScrollBoundary=450.0f;
 static float kBubblePushSpeed=220.0f;
 
 static float kTimeToBubbleShake=7.0f;
@@ -111,7 +111,7 @@ float timerIgnoreFrog;
     
     bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
     [bubbleSprite setPosition:ccp(cx, cy)];
-    [self.ForeLayer addChild:bubbleSprite];
+    [self.ForeLayer addChild:bubbleSprite z:100];
     
 }
 
@@ -184,9 +184,36 @@ float timerIgnoreFrog;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
+    
+    float actualPushDir=bubblePushDir;
+    
+    //if the bubble is outside of a screen edge/boundary, set the push dir to correct it
+//    float absoffset=fabsf(bubbleSprite.position.x)-512.0f;
+//    if(bubbleSprite.position.x<512.0f) absoffset=512-bubbleSprite.position.x;
+//    
+//    if(absoffset>kBubbleScrollBoundary && bubblePushDir==0)
+//    {
+//        if(bubbleSprite.position.x>512)actualPushDir=-1;
+//        else actualPushDir=1;
+//    }
 
-    rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
-    stitchOffsetX+=bubblePushDir * kBubblePushSpeed * delta;
+//    if(slideLineBy!=0 && bubblePushDir==0)
+//    {
+//        if(slideLineBy>0)actualPushDir=-1;
+//        else actualPushDir=1;
+//    }
+
+    float moveRamblerBy=actualPushDir * kBubblePushSpeed * delta;
+//    slideLineBy+=moveRamblerBy;
+    
+    rambler.TouchXOffset+=moveRamblerBy;
+    rambler.HeldMoveOffsetX+=moveRamblerBy;
+    stitchOffsetX+=actualPushDir * kBubblePushSpeed * delta;
+    
+//    if(bubblePushDir==0 && actualPushDir!=0)
+//    {
+//        bubbleSprite.position=ccpAdd(bubbleSprite.position, ccp(actualPushDir * kBubblePushSpeed * delta, 0));
+//    }
     
     //update frog position
     if(timerIgnoreFrog>0.0f)timerIgnoreFrog-=delta;
@@ -436,6 +463,11 @@ float timerIgnoreFrog;
     
     NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
+    
+    if([problemDef objectForKey:@"SHOW_JUMP_LABELS"])
+        rambler.showJumpLabels=[[problemDef objectForKey:@"SHOW_JUMP_LABELS"]boolValue];
+    else
+        rambler.showJumpLabels=NO;
     
     //jump sections
     rambler.UserJumps=[[[NSMutableArray alloc]init] autorelease];
@@ -860,9 +892,29 @@ float timerIgnoreFrog;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         
-//        NSLog(@"moving by %f, %f adj steps %d seg size %f", diffx, diffy, adjustedStepsFromCentre, rambler.DefaultSegmentSize);
-        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
+        //decrement the adjusted steps if this would take us off the screen
+        if(bubbleSprite.position.x + diffx - 512 > kBubbleScrollBoundary)
+        {
+            adjustedStepsFromCentre--;
+            lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+            lastBubbleValue=lastBubbleLoc*initSegmentVal;
+            
+            rambler.BubblePos=lastBubbleValue;
+            diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        }
         
+        //increment if offscreen left
+        if(bubbleSprite.position.x + diffx < (512 - kBubbleScrollBoundary))
+        {
+            adjustedStepsFromCentre++;
+            lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+            lastBubbleValue=lastBubbleLoc*initSegmentVal;
+            
+            rambler.BubblePos=lastBubbleValue;
+            diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        }
+        
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         //play some audio -- only for non decimal numbers at the moment
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
@@ -896,9 +948,9 @@ float timerIgnoreFrog;
         //determine whether or not to show the frog target
         if(lastBubbleLoc!=lastFrogLoc)
         {
-            if(lastBubbleLoc>logLastBubblePos)
+            if(lastBubbleLoc>logLastBubblePos && lastBubbleLoc>lastFrogLoc)
                 [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")]];
-            else if(lastBubbleLoc<logLastBubblePos)
+            else if(lastBubbleLoc<logLastBubblePos && lastBubbleLoc<lastFrogLoc)
                 [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButtonBack.png")]];
             
             [self showFrogTarget];
@@ -949,7 +1001,7 @@ float timerIgnoreFrog;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
     stitchOffsetX=0;
-    //rambler.TouchXOffset=0;
+    rambler.HeldMoveOffsetX=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

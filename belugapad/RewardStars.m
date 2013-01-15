@@ -63,6 +63,25 @@
     if(fireStar1)
         timeSinceFired+=delta;
     
+    if(!stopScore){
+        scoreCounter+=scoreIncrementer;
+    }
+    
+    if(scoreCounter>scoreAchieved)
+    {
+        scoreCounter=scoreAchieved;
+        stopScore=YES;
+    }
+    
+    NSString *sScore=@"";
+    NSNumberFormatter *nf = [NSNumberFormatter new];
+    nf.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *thisNumber=[NSNumber numberWithFloat:(int)scoreCounter];
+    sScore = [nf stringFromNumber:thisNumber];
+    [nf release];
+    
+    [scoreLabel setString:sScore];
+    
     if(fireStar1 && timeSinceFired>0.5f)
     {
         [s1 setVisible:YES];
@@ -141,9 +160,17 @@
 -(void) setupStars;
 {
     stars=usersService.lastStarAcheived;
+    scoreAchieved=usersService.lastScoreAcheived;
+    scoreCounter=0;
+    scoreIncrementer=scoreAchieved/30;
+    
     CCSprite *starBkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_bg.png")];
     [starBkg setPosition:ccp(cx,cy)];
     [self addChild:starBkg];
+    
+    scoreLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
+    [scoreLabel setPosition:ccp(510,360)];
+    [self addChild:scoreLabel];
     
     s1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_1.png")];
     s2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_2.png")];
@@ -192,6 +219,10 @@
     CCParticleSystemQuad *primaryParticle=[CCParticleSystemQuad particleWithFile:@"star_explosion2.plist"];
     [primaryParticle setPosition:position];
     [self addChild:primaryParticle];
+    
+    CCParticleSystemQuad *secondaryParticle=[CCParticleSystemQuad particleWithFile:@"glitter_explosion2.plist"];
+    [secondaryParticle setPosition:position];
+    [self addChild:secondaryParticle];
 }
 
 -(CCScaleTo*)scaleTo1x
@@ -222,10 +253,13 @@
     
     if(CGRectContainsPoint(returnToMap.boundingBox, location))
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
         [[CCDirector sharedDirector] replaceScene:[JMap scene]];
     }
     else if(CGRectContainsPoint(replayNode.boundingBox, location))
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
+        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         ContentService *cs = ac.contentService;
         [cs createAndStartFunnelForNode:ac.lastViewedNodeId];

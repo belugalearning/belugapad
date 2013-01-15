@@ -22,11 +22,13 @@
 @property float StartValue;
 @property float DefaultSegmentSize;
 @property float CurrentSegmentValue;
+@property BOOL showJumpLabels;
 @property CGPoint Pos;
 @property (retain) NSNumber *MinValue;
 @property (retain) NSNumber *MaxValue;
 
 @property float TouchXOffset;
+@property float HeldMoveOffsetX;
 
 @property BOOL RenderStitches;
 @property int AutoStitchIncrement;

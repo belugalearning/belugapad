@@ -22,10 +22,15 @@
     float timeSinceStar2;
     float timeSinceStar3;
     
+    float scoreAchieved;
+    float scoreCounter;
+    float scoreIncrementer;
+    
     BOOL fireStar1;
     BOOL countStar2;
     BOOL countStar3;
     BOOL shownStar3;
+    BOOL stopScore;
     
     BOOL timeParticle1;
     BOOL timeParticle2;
@@ -36,6 +41,8 @@
     CCSprite *s1;
     CCSprite *s2;
     CCSprite *s3;
+    
+    CCLabelTTF *scoreLabel;
 }
 
 +(CCScene *)scene;

@@ -15,11 +15,13 @@
 @synthesize StartValue;
 @synthesize DefaultSegmentSize;
 @synthesize CurrentSegmentValue;
+@synthesize showJumpLabels;
 @synthesize Pos;
 @synthesize MinValue;
 @synthesize MaxValue;
 
 @synthesize TouchXOffset;
+@synthesize HeldMoveOffsetX;
 
 @synthesize RenderStitches;
 @synthesize AutoStitchIncrement;

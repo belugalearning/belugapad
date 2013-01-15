@@ -104,6 +104,9 @@
     int lastFrogLoc;
     CCSprite *frogTargetSprite;
     
+    
+    float slideLineBy;
+    
 }
 
 -(void)populateGW;

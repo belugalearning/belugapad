@@ -105,6 +105,9 @@
         if (!self.firstCompleted) self.firstCompleted = self.lastPlayed;
         self.lastCompleted = self.lastPlayed;
         
+        //for complete scene
+        us.lastScoreAcheived=self.lastScore;
+        
         us.lastStarAcheived=0;
     
         if (self.lastScore > SCORE_ARTIFACT_1)

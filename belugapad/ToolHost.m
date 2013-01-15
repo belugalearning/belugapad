@@ -255,6 +255,8 @@ static float kTimeToHintToolTray=0.0f;
         if(toolForeLayer)[self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
         if(toolNoScaleLayer)[self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
         if(metaQuestionLayer)[self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
+        if(trayLayerMq)[self recurseSetIntroFor:trayLayerMq withTime:time forTag:i];
+        if(descGw.Blackboard.RenderLayer)[self recurseSetIntroFor:descGw.Blackboard.RenderLayer withTime:time forTag:i];
         if(problemDefLayer)[self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
         if(numberPickerLayer)[self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
         if(perstLayer)[self recurseSetIntroFor:perstLayer withTime:time forTag:i];
@@ -1513,7 +1515,7 @@ static float kTimeToHintToolTray=0.0f;
     NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_Bar_%d.png",metaQuestionAnswerCount];
     metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];
     [metaQuestionBanner setPosition:ccp(cx,answersY)];
-    [trayLayerMq addChild:metaQuestionBanner];
+    [trayLayerMq addChild:metaQuestionBanner z:-2];
     
     // render answer labels and buttons for each answer
     for(int i=0; i<metaQuestionAnswerCount; i++)
@@ -1603,7 +1605,7 @@ static float kTimeToHintToolTray=0.0f;
         [answerBtn setTag:3];
         //[answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
-        [trayLayerMq addChild:answerBtn];
+        [trayLayerMq addChild:answerBtn z:-1];
         [metaQuestionAnswerButtons addObject:answerBtn];
         
         if(answerLabelString){

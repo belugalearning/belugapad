@@ -141,7 +141,6 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     
     //add the touchxoffset to the maxvalue, or decrement from the minimum value
     float touchDrawOffset=(-ramblerGameObject.HeldMoveOffsetX / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
-    NSLog(@"heldx %f touchdrawoff %f", ramblerGameObject.HeldMoveOffsetX, touchDrawOffset);
     maxValuePos+=touchDrawOffset;
     minValuePos+=touchDrawOffset;
 
@@ -436,6 +435,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             if(jumpLength>0 && bc.endPosition.x<0) continue;
             if(jumpLength<0 && origin.x<0) continue;
             
+            int drawSteps=STEPS;
+            if([CCDirector sharedDirector].contentScaleFactor>1) drawSteps*=2;
+            
             for(int i=0; i<STEPS; i++)
             {
                 ccBezierConfig bc2;
@@ -479,6 +481,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
 -(void) setupSwooshCircleOffsets
 {
+    int drawSteps=STEPS;
+    if([CCDirector sharedDirector].contentScaleFactor>1) drawSteps*=2;
+    
     for(int i=0; i<STEPS; i++)
     {
         float a=225.0f-((180/STEPS) * i);

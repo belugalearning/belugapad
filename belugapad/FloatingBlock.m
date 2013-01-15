@@ -226,7 +226,7 @@
     for(int i=0;i<[initObjects count];i++)
     {
         NSDictionary *d=[initObjects objectAtIndex:i];
-        [self createShapeWith:d];
+        [self createShapeWith:d andObj:i of:[initObjects count]];
     }
     
     
@@ -274,18 +274,29 @@
 #pragma mark - interaction
 -(void)createShapeWith:(NSDictionary*)theseSettings
 {
+    [self createShapeWith:theseSettings andObj:1 of:1];
+}
+-(void)createShapeWith:(NSDictionary*)theseSettings andObj:(int)thisObj of:(int)thisMany
+{
     
     int numberInShape=[[theseSettings objectForKey:NUMBER]intValue];
     id<Group> thisGroup=[[[SGFBlockGroup alloc]initWithGameWorld:gw] autorelease];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    int farLeft=100;
-    int farRight=lx-60;
-    int topMost=ly-170;
-    int botMost=130;
+    int totalShapes=thisMany;
+    int thisShape=thisObj;
+    float sectWidth=lx/totalShapes;
     
-    float xStartPos=farLeft + arc4random() % (farRight - farLeft);
-    float yStartPos=botMost + arc4random() % (topMost - botMost);
+    float xStartPos=sectWidth*(thisShape+0.5);
+    float yStartPos=540;
+    
+    //int farLeft=100;
+    //int farRight=lx-60;
+    //int topMost=ly-170;
+    //int botMost=130;
+    
+    //float xStartPos=farLeft + arc4random() % (farRight - farLeft);
+    //float yStartPos=botMost + arc4random() % (topMost - botMost);
     
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     

@@ -94,7 +94,7 @@
     UIImageView *bgOverlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
     [self.view addSubview:bgOverlay];
     
-    CGRect frame = self.view.frame;
+    CGRect frame = CGRectMake(0, 0, 1024, 768);
     
     selectUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
     [self.view addSubview:selectUserView];
@@ -127,10 +127,8 @@
     rotationAnimation.repeatCount = HUGE_VALF;
     [loadingImg.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
     
-    editUserView.center = CGPointMake(1536, 512);
-    loadExistingUserView.center = CGPointMake(1536, 512);
-    selectUserView.center = CGPointMake(384, -312);
-    selectUserBG.center = CGPointMake(512, 364);
+    selectUserView.center = CGPointMake(512, -312);
+    editUserView.center = loadExistingUserView.center = CGPointMake(1408, 384);
     
     bgOverlay.alpha = 0.0;
     [UIView animateWithDuration:0.8
@@ -142,7 +140,7 @@
                         options:UIViewAnimationOptionCurveEaseInOut
      
                      animations:^{
-                         selectUserView.center = CGPointMake(384, 512);
+                         selectUserView.center = CGPointMake(512, 384);
                      }
                      completion:^(BOOL finished){ }];
     
@@ -189,11 +187,11 @@
                         animations:^{
                             if (currentView == selectUserView)
                             {
-                                currentView.center = CGPointMake(-512, 512);
+                                currentView.center = CGPointMake(-512, 384);
                             }
                             else
                             {
-                                currentView.center = CGPointMake(1536, 512);
+                                currentView.center = CGPointMake(1408, 384);
                             }
                          }
                          completion:^(BOOL finished){
@@ -222,7 +220,7 @@
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                            view.center = CGPointMake(384, 512);
+                            view.center = CGPointMake(512, 384);
                          }
                          completion:^(BOOL finished){
                              nextViewAnimating = NO;
@@ -244,8 +242,9 @@
 }
 
 -(void)buildSelectUserView
-{
-    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
+{    
+    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];    
+    selectUserBG.center = CGPointMake(512, 364);
     [selectUserView addSubview:selectUserBG];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];

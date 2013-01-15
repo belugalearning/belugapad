@@ -467,7 +467,7 @@ float timerIgnoreFrog;
     if([problemDef objectForKey:@"SHOW_JUMP_LABELS"])
         rambler.showJumpLabels=[[problemDef objectForKey:@"SHOW_JUMP_LABELS"]boolValue];
     else
-        rambler.showJumpLabels=YES;
+        rambler.showJumpLabels=NO;
     
     //jump sections
     rambler.UserJumps=[[[NSMutableArray alloc]init] autorelease];

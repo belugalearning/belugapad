@@ -1464,6 +1464,8 @@ typedef enum {
 {
     NSLog(@"selected %@", [searchNodes objectAtIndex:indexPath.row]);
     
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
+    
     id<CouchDerived, Transform>node;
     if(isFiltered)node=[filteredNodes objectAtIndex:indexPath.row];
     else node=[searchNodes objectAtIndex:indexPath.row];

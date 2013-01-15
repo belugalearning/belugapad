@@ -140,9 +140,11 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
     //add the touchxoffset to the maxvalue, or decrement from the minimum value
-    float touchDrawOffset=(-ramblerGameObject.HeldMoveOffsetX / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
-//    maxValuePos+=touchDrawOffset;
-//    minValuePos+=touchDrawOffset;
+    float touchDrawOffset=((int)(-ramblerGameObject.HeldMoveOffsetX / ramblerGameObject.DefaultSegmentSize)) * ramblerGameObject.CurrentSegmentValue;
+    maxValuePos+=touchDrawOffset;
+    minValuePos+=touchDrawOffset;
+    
+//    NSLog(@"min %f max %f tdo %f", minValuePos, maxValuePos, touchDrawOffset);
 
     int assBlankIndex=0;
     int assLineIndex=0;

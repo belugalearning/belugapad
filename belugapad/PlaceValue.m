@@ -547,17 +547,14 @@ static float kTimeToCageShake=7.0f;
                 headerString=[NSString stringWithFormat:@"<b:t>%@</b:t>", headerString];
             }
             
-            if(gw.Blackboard.inProblemSetup)
-            {
-                row.position=ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader);
+            row.position=ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader);
                 
-                NSLog(@"this row position is %@", NSStringFromCGPoint(row.position));
+            //NSLog(@"this row position is %@", NSStringFromCGPoint(row.position));
                 //row.position=[self.ForeLayer convertToWorldSpace:ccp(i*50, 120)];
-                [row parseXML:headerString];
-                [row setupDraw];
-                [row inflateZindex];
-//                [row tagMyChildrenForIntro];
-            }
+            [row parseXML:headerString];
+            [row setupDraw];
+            [row inflateZindex];
+            [row tagMyChildrenForIntro];
             
         }
         

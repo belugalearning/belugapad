@@ -38,12 +38,6 @@
 {
     if(messageType==kDWsetupStuff)
     {
-//        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-//        LoggingService *loggingService = ac.loggingService;
-//        [loggingService.logPoller registerPollee:(id<LogPolling>)b];
-//        NSLog(@"added logging for %d", (int)b);
-        
-        
         CCSprite *mySprite=b.mySprite;
         if(!mySprite) 
         {
@@ -416,9 +410,6 @@
 
 -(void) dealloc
 {
-//    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-//    LoggingService *loggingService = ac.loggingService;
-//    [loggingService.logPoller unregisterPollee:(id<LogPolling>)b];
 //    NSLog(@"removed logging for %d", (int)b);
     [super dealloc];
 }

@@ -229,6 +229,14 @@
 
 -(void)animateAndMoveToPosition:(CGPoint)thePosition
 {
+    for(id<NSObject> go in children)
+    {
+        if([go isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            ((SGBtxeObjectIcon*)go).animatePos=YES;
+        }
+    }
+    
     position=thePosition;
     [self.baseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:position] rate:2.0f]];
 }

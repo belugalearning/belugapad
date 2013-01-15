@@ -10,6 +10,7 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "SGBtxeRow.h"
+#import "SGBtxeObjectIcon.h"
 
 @implementation SGBtxeRowLayout
 
@@ -112,6 +113,8 @@
         }
         
         //place object here (offset for centre position)
+        
+
         c.position=CGPointMake(headXPos + (c.size.width / 2.0), headYPos);
         
         //if applicable, set this as the original position

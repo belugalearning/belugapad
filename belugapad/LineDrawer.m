@@ -84,10 +84,10 @@ typedef struct _LineVertex {
 
     shaderProgram_ = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionColor];
     overdraw = 3.0f;
-    renderTexture = [[CCRenderTexture alloc] initWithWidth:(int)self.contentSize.width height:(int)self.contentSize.height pixelFormat:kCCTexture2DPixelFormat_RGBA8888];
+    renderTexture = [[CCRenderTexture alloc] initWithWidth:910 height:485 pixelFormat:kCCTexture2DPixelFormat_RGBA8888];
     renderTexture.anchorPoint = ccp(0, 0);
-    renderTexture.position = ccp(1024 * 0.5f, 768 * 0.5f);
-    //[renderTexture clear:1.0f g:1.0f b:1.0f a:0];
+    renderTexture.position = ccp(1024 * 0.5f, 272.0f);
+    [renderTexture clear:1.0f g:1.0f b:1.0f a:1.0f];
       
     [self addChild:renderTexture];
 
@@ -435,7 +435,7 @@ typedef struct _LineVertex {
 
 -(void)clearSlate
 {
-    [renderTexture beginWithClear:0 g:0 b:0 a:0];
+    [renderTexture beginWithClear:1.0f g:1.0f b:1.0f a:1.0f];
     [renderTexture end];
 }
 -(void)dealloc

@@ -2343,25 +2343,18 @@ static float kTimeToHintToolTray=0.0f;
         return;
     }
     
-    //delegate touch handling for trays here
-    if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing||trayPadShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
+    if(trayPadShowing)
     {
-        if(trayPadShowing)
+        if(CGRectContainsPoint(trayPadClear.boundingBox, location))
         {
-            if(CGRectContainsPoint(trayPadClear.boundingBox, location))
-            {
-                [(LineDrawer*)lineDrawer clearSlate];
-                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_cleared.wav")];
-            }
-            if(CGRectContainsPoint(trayPadClose.boundingBox, location))
-            {
-                [self hidePad];
-            }
-            else
-            {
-                return;
-            }
+            [(LineDrawer*)lineDrawer clearSlate];
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_cleared.wav")];
         }
+    }
+    
+    //delegate touch handling for trays here
+    if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
+    {
         if (location.x < 120 && location.y > 688 && !isPaused)
         {
             [self showPauseMenu];
@@ -2599,13 +2592,16 @@ static float kTimeToHintToolTray=0.0f;
             if(currentTool)[self showCornerTray];
         }
     }
-    
+    if(trayPadShowing && location.y>cx+40.0f)
+    {
+        [self hidePad];
+        return;
+    }
     if(traybtnPad && CGRectContainsPoint(bbPad, location))
     {
         if(trayPadShowing)
         {
             [self hidePad];
-            //[self hideCornerTray];
         }
         else
         {
@@ -2929,32 +2925,31 @@ static float kTimeToHintToolTray=0.0f;
 {
     if(!trayLayerPad)
     {
-        //trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
+//        trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 0) width:910 height:485];
+//
+//        [trayLayerPad setPosition:ccp(61,32)];
         trayLayerPad=[[CCLayer alloc]init];
         lineDrawer=[LineDrawer node];
         
-        CCSprite *bg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-background.png")];
-        [bg setPosition:ccp(1024 * 0.5f, 768 * 0.5f)];
-        [trayLayerPad addChild:bg z:-1];
+        CCSprite *bg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/notepad/note_pad_frame.png")];
+        [bg setPosition:ccp(512, 272)];
+
+        
         
         [trayLayerPad addChild:lineDrawer];
         [problemDefLayer addChild:trayLayerPad z:10];
+        [trayLayerPad addChild:bg z:15];
         
-        trayPadClear=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-clear.png")];
-        [trayPadClear setPosition:ccp(lx-125,ly-50)];
-        [trayLayerPad addChild:trayPadClear];
+        trayPadClear=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/notepad/note_pad_bin.png")];
+        [trayPadClear setPosition:ccp(963,454)];
+        [trayLayerPad addChild:trayPadClear z:20];
         
-        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];
-        [trayPadClose setPosition:ccp(lx-50,ly-50)];
-        [trayLayerPad addChild:trayPadClose];
-        
+//        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];
+//        [trayPadClose setPosition:ccp(lx-50,ly-50)];
+//        [trayLayerPad addChild:trayPadClose];
+//        
         //trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
     }
-    
-    [btxeDescLayer setVisible:NO];
-    
-    if(multiplierStage>0)
-        [multiplierBadge setVisible:NO];
     
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
@@ -2968,14 +2963,10 @@ static float kTimeToHintToolTray=0.0f;
     if(doPlaySound)
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
 
-    if(multiplierStage>0)
-        [multiplierBadge setVisible:YES];
-    
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
-    [btxeDescLayer setVisible:YES];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

@@ -2350,11 +2350,6 @@ static float kTimeToHintToolTray=0.0f;
             [(LineDrawer*)lineDrawer clearSlate];
             [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_cleared.wav")];
         }
-        else if(location.y>cx+40.0f)
-        {
-            [self hidePad];
-            return;
-        }
     }
     
     //delegate touch handling for trays here
@@ -2597,13 +2592,16 @@ static float kTimeToHintToolTray=0.0f;
             if(currentTool)[self showCornerTray];
         }
     }
-    
+    if(trayPadShowing && location.y>cx+40.0f)
+    {
+        [self hidePad];
+        return;
+    }
     if(traybtnPad && CGRectContainsPoint(bbPad, location))
     {
         if(trayPadShowing)
         {
             [self hidePad];
-            //[self hideCornerTray];
         }
         else
         {

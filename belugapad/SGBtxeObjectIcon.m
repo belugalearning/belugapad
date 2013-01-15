@@ -22,6 +22,7 @@
 @synthesize hidden, rowWidth;
 @synthesize assetType;
 @synthesize backgroundType;
+@synthesize animatePos;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -144,7 +145,7 @@
 {
     //position=[gameWorld.Blackboard.RenderLayer convertToWorldSpace:thePos];
     position=thePos;
-    //NSLog(@"set position of %@ to %@", [self returnMyText], NSStringFromCGPoint(position));
+    NSLog(@"set position of %@ to %@", [self returnMyText], NSStringFromCGPoint(position));
     
     CGPoint actualPos=position;
     
@@ -154,7 +155,12 @@
         actualPos=ccpAdd(position, bc.position);
     }
     
-    [self.iconRenderComponent updatePosition:actualPos];
+    if(!animatePos)
+        [self.iconRenderComponent updatePosition:actualPos];
+    else
+        [self.iconRenderComponent updatePositionWithAnimation:actualPos];
+
+    animatePos=NO;
 }
 
 -(void)setupDraw

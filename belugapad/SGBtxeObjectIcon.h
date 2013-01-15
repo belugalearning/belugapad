@@ -22,6 +22,7 @@
 }
 
 @property (retain) SGBtxeIconRender *iconRenderComponent;
+@property BOOL animatePos;
 
 -(void)tagMyChildrenForIntro;
 -(NSString*)returnMyText;

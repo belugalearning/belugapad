@@ -19,6 +19,7 @@
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;
+-(void)updatePositionWithAnimation:(CGPoint)position;
 -(void)inflateZindex;
 -(void)deflateZindex;
 

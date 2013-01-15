@@ -464,6 +464,11 @@ float timerIgnoreFrog;
     NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
     
+    if([problemDef objectForKey:@"SHOW_JUMP_LABELS"])
+        rambler.showJumpLabels=[[problemDef objectForKey:@"SHOW_JUMP_LABELS"]boolValue];
+    else
+        rambler.showJumpLabels=YES;
+    
     //jump sections
     rambler.UserJumps=[[[NSMutableArray alloc]init] autorelease];
     

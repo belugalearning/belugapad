@@ -1381,6 +1381,9 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)returnToMap
 {
+    if(quittingToMap)return;
+    quittingToMap=YES;
+    
     [self stopAllSpeaking];
     [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
     [contentService quitPipelineTracking];

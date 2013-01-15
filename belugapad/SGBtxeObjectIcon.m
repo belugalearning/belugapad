@@ -142,7 +142,9 @@
 
 -(void)setPosition:(CGPoint)thePos
 {
-    position=[gameWorld.Blackboard.RenderLayer convertToWorldSpace:thePos];
+    //position=[gameWorld.Blackboard.RenderLayer convertToWorldSpace:thePos];
+    position=thePos;
+    //NSLog(@"set position of %@ to %@", [self returnMyText], NSStringFromCGPoint(position));
     
     CGPoint actualPos=position;
     

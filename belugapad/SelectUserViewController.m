@@ -30,6 +30,7 @@
     
     UIImageView *selectUserModalUnderlay;
     UIView *selectUserModalContainer;
+    UIButton *loginButton;
     PassCodeView *selectUserPassCodeModalView;
     UIImageView *tickCrossImg;
     
@@ -93,7 +94,7 @@
     UIImageView *bgOverlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
     [self.view addSubview:bgOverlay];
     
-    CGRect frame = self.view.frame;
+    CGRect frame = CGRectMake(0, 0, 1024, 768);
     
     selectUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
     [self.view addSubview:selectUserView];
@@ -126,10 +127,8 @@
     rotationAnimation.repeatCount = HUGE_VALF;
     [loadingImg.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
     
-    editUserView.center = CGPointMake(1536, 512);
-    loadExistingUserView.center = CGPointMake(1536, 512);
-    selectUserView.center = CGPointMake(384, -312);
-    selectUserBG.center = CGPointMake(512, 364);
+    selectUserView.center = CGPointMake(512, -312);
+    editUserView.center = loadExistingUserView.center = CGPointMake(1408, 384);
     
     bgOverlay.alpha = 0.0;
     [UIView animateWithDuration:0.8
@@ -141,7 +140,7 @@
                         options:UIViewAnimationOptionCurveEaseInOut
      
                      animations:^{
-                         selectUserView.center = CGPointMake(384, 512);
+                         selectUserView.center = CGPointMake(512, 384);
                      }
                      completion:^(BOOL finished){ }];
     
@@ -188,17 +187,28 @@
                         animations:^{
                             if (currentView == selectUserView)
                             {
-                                currentView.center = CGPointMake(-512, 512);
+                                currentView.center = CGPointMake(-512, 384);
                             }
                             else
                             {
-                                currentView.center = CGPointMake(1536, 512);
+                                currentView.center = CGPointMake(1408, 384);
                             }
                          }
                          completion:^(BOOL finished){
                              [currentView setHidden:YES];
                              currentViewAnimating = NO;
                              freezeUI = nextViewAnimating;
+                             
+                             if (currentView == loadExistingUserView)
+                             {
+                                 existingUserNameTF.text = @"";
+                                 [downloadUserPassCodeView clearText];
+                             }
+                             else if (currentView == editUserView)
+                             {
+                                 newUserNameTF.text = @"";
+                                 [newUserPassCodeView clearText];
+                             }
                          }];
     }
     
@@ -210,7 +220,7 @@
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                            view.center = CGPointMake(384, 512);
+                            view.center = CGPointMake(512, 384);
                          }
                          completion:^(BOOL finished){
                              nextViewAnimating = NO;
@@ -232,8 +242,9 @@
 }
 
 -(void)buildSelectUserView
-{
-    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
+{    
+    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];    
+    selectUserBG.center = CGPointMake(512, 364);
     [selectUserView addSubview:selectUserBG];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];
@@ -441,11 +452,11 @@
     [back addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserModalContainer addSubview:back];
     
-    UIButton *login = [[[UIButton alloc] init] autorelease];
-    login.frame = CGRectMake(289.0f, 181.0f, 131.0f, 51.0f);
-    [login setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
-    [login addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [selectUserModalContainer addSubview:login];
+    loginButton = [[[UIButton alloc] init] autorelease];
+    loginButton.frame = CGRectMake(289.0f, 181.0f, 131.0f, 51.0f);
+    [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
+    [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserModalContainer addSubview:loginButton];
     
     [UIView animateWithDuration:0.8
                           delay:0.0
@@ -472,6 +483,7 @@
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
     [button removeFromSuperview];
+    loginButton = nil;
     [selectUserModalContainer removeFromSuperview];
     selectUserModalContainer = nil;
     [selectUserPassCodeModalView removeFromSuperview];
@@ -521,6 +533,7 @@
     {
         [selectUserModalUnderlay removeFromSuperview];
         [selectUserPassCodeModalView removeFromSuperview];
+        loginButton = nil;
         [selectUserModalContainer removeFromSuperview];
         [playButton removeFromSuperview];
         tickCrossImg.alpha = 0;
@@ -649,8 +662,6 @@
 -(void)handleCancelNewUserClicked:(id)button
 {
     if (freezeUI) return;
-    newUserNameTF.text = @"";
-    [newUserPassCodeView clearText];
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -688,10 +699,7 @@
             [alertView show];
         }
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
-        {
-            newUserNameTF.text = @"";
-            [newUserPassCodeView clearText];
-            
+        {            
             [bself loadDeviceUsers];
             [bself->selectUserTableView reloadData];
             for (uint i=0; i<[bself->deviceUsers count]; i++)
@@ -759,8 +767,6 @@
 -(void)handleCancelExistingUserClicked:(id)button
 {
     if (freezeUI) return;
-    existingUserNameTF.text = @"";
-    [downloadUserPassCodeView clearText];
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -847,10 +853,14 @@
 
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView
 {
+    if (passCodeView == selectUserPassCodeModalView)
+        [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
 }
 
 -(void)passCodeBecameValid:(PassCodeView*)passCodeView
 {
+    if (passCodeView == selectUserPassCodeModalView)
+        [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_orange.png"] forState:UIControlStateNormal];
 }
 
 #pragma mark -

@@ -61,7 +61,7 @@
 	<key>30_Counter_Start</key>
 	<string>start button</string>
 	<key>30_Counter_Stop</key>
-	<string>stop button</string>
+	<string>green tick</string>
 	<key>30_DG_sq</key>
 	<string>square</string>
 	<key>30_DG_Handle</key>

@@ -38,9 +38,9 @@
 
 -(void)initComplete
 {
-//    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-//    LoggingService *loggingService = ac.loggingService;
-//    [loggingService.logPoller registerPollee:(id<LogPolling>)self];
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller registerPollee:(id<LogPolling>)self];
 }
 
 -(DWGameObject*)Mount
@@ -78,11 +78,12 @@
 
 -(void)dealloc
 {
-//    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-//    LoggingService *loggingService = ac.loggingService;
-//    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];
     self.logPollId = nil;
-    if (logPollId) [logPollId release];
+    
+    
     logPollId = nil;
     self.Mount=nil;
     self.LastMount=nil;

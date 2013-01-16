@@ -825,6 +825,7 @@ static float kTimeToHintToolTray=0.0f;
         introProblemSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_tutorial.png")];
         [introProblemSprite setPosition:ccp(cx,((cy*2)-introProblemSprite.contentSize.height/2))];
         [problemDefLayer addChild:introProblemSprite];
+        [introProblemSprite runAction:[InteractionFeedback shakeAction]];
     }
     else
     {

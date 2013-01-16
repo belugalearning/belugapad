@@ -88,6 +88,7 @@ typedef enum {
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)createShapeWith:(NSDictionary*)theseSettings;
+-(void)createShapeWith:(NSDictionary*)theseSettings andObj:(int)thisObj of:(int)thisMany;
 -(void)handleMergeShapes;
 -(void)showOperatorBubbleOrMerge;
 -(void)mergeGroupsFromBubbles;

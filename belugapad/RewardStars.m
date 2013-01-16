@@ -251,10 +251,11 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(CGRectContainsPoint(returnToMap.boundingBox, location))
+    if(CGRectContainsPoint(returnToMap.boundingBox, location) && !returningToMap)
     {
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
         [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        returningToMap=YES;
     }
     else if(CGRectContainsPoint(replayNode.boundingBox, location))
     {

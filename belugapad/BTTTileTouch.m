@@ -134,7 +134,14 @@
                 [tile.mySprite addChild:tile.myText z:20];
 
             }
-            
+            else
+            {
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_SELECT_ANSWER
+                      withAdditionalData:[NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:
+                                                                             [NSNumber numberWithInt:tile.myXpos],
+                                                                             [NSNumber numberWithInt:tile.myYpos], nil]
+                                                                     forKey:@"tileCoords"]];
+            }
             gameWorld.Blackboard.LastSelectedObject=gameObject;
 
         }

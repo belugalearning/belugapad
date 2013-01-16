@@ -145,6 +145,8 @@
         
         lastTotal=currentTotal;
         renderingChanges=YES;
+        
+        [loggingService logEvent:BL_PA_LD_TOUCH_END_CHANGE_WHEEL_VALUE withAdditionalData:[NSNumber numberWithFloat:currentTotal]];
     }
     
     

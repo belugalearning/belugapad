@@ -881,7 +881,7 @@
             {
                 pickupObject=thisGroup;
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_picking_up_blocks.wav")];
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_PICKUP_GROUP withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_PICKUP_GROUP withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)thisGroup blocksInGroup]]];
                 [thisGroup inflateZIndexOfMyObjects];
             }
         }
@@ -918,7 +918,7 @@
             isInBubble=[grp checkIfInBubbleAt:location];
             if(!hasLoggedMove){
                 hasLoggedMove=YES;
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)grp blocksInGroup]]];
             }
         }
     }
@@ -942,10 +942,10 @@
     location=[self.ForeLayer convertToNodeSpace:location];
     
     if(isInBubble && [BLMath DistanceBetween:location and:lastTouch]<15.0f){
-       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:nil];
+       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
     }else{
-       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_FREE_SPACE withAdditionalData:nil];
+       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_FREE_SPACE withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_block_outside_of_mountable_area.wav")];
     }
     if(bubbleAutoOperate)
@@ -965,7 +965,7 @@
             {
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_pipe.wav")];
                 
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]];
                 [self evalProblem];
                 [self setTouchVarsToOff];
                 return;

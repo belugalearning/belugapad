@@ -2716,7 +2716,7 @@ static float kTimeToHintToolTray=0.0f;
         [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
         */
         [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
-        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
+        [descRow relayoutChildrenToWidth:[self questionTrayWidth]];
         
         /*
         float rowHeight=0;
@@ -2792,6 +2792,11 @@ static float kTimeToHintToolTray=0.0f;
         
         trayCornerShowing=NO;
     }
+}
+
+-(float)questionTrayWidth
+{
+    return (qTrayBot.contentSize.width*qTrayBot.scaleX)-15;
 }
 
 -(void)showCalc

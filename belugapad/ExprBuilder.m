@@ -372,8 +372,6 @@
             }
         }
     }
-
-    
 }
 
 -(float)getDescriptionAreaHeight
@@ -387,6 +385,29 @@
     toolHost.thisProblemDescription=[descRow2 returnRowStringForSpeech];
     
 //    [toolHost readOutProblemDescription];
+}
+
+-(void)contractDescAndCardRows
+{
+    [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
+    [descRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    float hoffset=descRow.size.height;
+    [ncardRow animateAndMoveToPosition:ccp(360, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f)];
+    [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+}
+
+-(void)expandDescAndCardRows
+{
+    float hoffset=descRow.size.height;
+    
+    if(descRow){
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 110)];
+        [descRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    }
+    if(ncardRow){
+        [ncardRow animateAndMoveToPosition:ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f)];
+        [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    }
 }
 
 #pragma mark - touches events
@@ -445,15 +466,25 @@
  
                         }
                         toolHost.CurrentBTXE=o;
+                        if(!toolHost.pickerView && toolHost.CurrentBTXE)
+                        {
+                            [self contractDescAndCardRows];
+                        }
+                        
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        {
                             [toolHost showWheel];
-
+                            [toolHost showCornerTray];
+                            
+                            [self contractDescAndCardRows];
+                        }
                     }
                     else
                     {
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [toolHost tearDownNumberPicker];
+                            [self expandDescAndCardRows];
                             toolHost.CurrentBTXE=nil;
                         }
                     }
@@ -471,7 +502,9 @@
     if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView){
+            [self expandDescAndCardRows];
             [toolHost disableWheel];
+            [toolHost hideCornerTray];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
     }

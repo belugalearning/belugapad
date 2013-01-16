@@ -267,6 +267,7 @@ typedef enum {
 -(void)disableWheel;
 -(void)showWheel;
 -(void)showCornerTray;
+-(void)hideCornerTray;
 -(void)hideWheel;
 -(void)readOutProblemDescription;
 -(void)doUpdateOnTick:(ccTime)delta;
@@ -275,6 +276,7 @@ typedef enum {
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
+-(float)questionTrayWidth;
 -(NSMutableArray*)randomizeAnswers:(NSMutableArray*)thisArray;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd;

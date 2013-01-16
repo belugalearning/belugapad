@@ -372,22 +372,20 @@
             ccColor3B curCol;
             ccColor3B sepLine=ccc3(68,71,72);
             ccColor4F sepLine4=ccc4FFromccc3B(sepLine);
-            ccColor4F curCol4=ccc4FFromccc3B(curCol);
             sepLine4=ccc4f(sepLine4.r, sepLine4.g, sepLine4.b, (float)maskOuter.opacity/255);
-            curCol4=ccc4f(curCol4.r, curCol4.g, curCol4.b, (float)maskOuter.opacity/255);
             
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
             else
                 curCol=kBTXEColour[(digits.length-i)-1];
             
+            ccColor4F curCol4=ccc4FFromccc3B(curCol);
+            curCol4=ccc4f(curCol4.r, curCol4.g, curCol4.b, (float)maskOuter.opacity/255);
+            
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
             
-
-
-            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:curCol4 borderWidth:1 borderColor:sepLine4];
-
+            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:curCol4 borderWidth:1 borderColor:curCol4];
             
             // and all of it's separators
             for(int i=0;i<[c intValue];i++)

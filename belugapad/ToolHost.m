@@ -393,10 +393,12 @@ static float kTimeToHintToolTray=0.0f;
     if(timeSinceInteractionOrShake>kTimeToHintToolTray)
     {
         if(numberPickerForThisProblem && !hasUsedWheelTray && !hasRunInteractionFeedback && [traybtnWheel numberOfRunningActions]==0){
+            [traybtnWheel setZOrder:10];
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
             hasRunInteractionFeedback=YES;
         }
         if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0){
+            [traybtnMq setZOrder:10];
             [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
             hasRunInteractionFeedback=YES;
         }

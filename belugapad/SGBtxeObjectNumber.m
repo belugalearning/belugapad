@@ -147,7 +147,7 @@
 
 -(NSString*)numberText
 {
-    return numberText;
+    return self.text;
 }
 
 -(void)setNumberText:(NSString *)theNumberText

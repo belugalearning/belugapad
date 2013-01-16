@@ -1187,7 +1187,10 @@ typedef enum {
         }
         
         if(selected)
+        {
+            [loggingService logEvent:BL_JS_PIN_SELECT withAdditionalData:nil];
             [((id<Selectable>)selected).NodeSelectComponent trySelectionForPosition:lOnMap];
+        }
         
         for (id go in [gw AllGameObjects]) {
             if([go conformsToProtocol:@protocol(Selectable)])

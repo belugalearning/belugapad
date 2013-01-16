@@ -413,6 +413,7 @@ static float kTimeToHintToolTray=0.0f;
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
             [self showWheel];
+            [self showCornerTray];
         }
         else
         {

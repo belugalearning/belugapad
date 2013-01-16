@@ -266,6 +266,7 @@ typedef enum {
 -(void)showHideCommit;
 -(void)disableWheel;
 -(void)showWheel;
+-(void)showCornerTray;
 -(void)hideWheel;
 -(void)readOutProblemDescription;
 -(void)doUpdateOnTick:(ccTime)delta;

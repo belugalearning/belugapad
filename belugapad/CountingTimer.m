@@ -155,6 +155,7 @@
     if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
@@ -162,6 +163,7 @@
     else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }

@@ -228,7 +228,7 @@
         if (view == selectUserView)
         {
             BOOL deviceHasUsers = [deviceUsers count] && [((NSDictionary*)deviceUsers[0]) count];
-            [selectUserBG setImage:[UIImage imageNamed:deviceHasUsers ? @"/login-images/select_user_BG.png" : @"/login-images/Create_account_bg.png"]];
+            [selectUserBG setImage:[UIImage imageNamed:deviceHasUsers ? @"/login-images/select_user_BG.png" : @"/login-images/Create_account_BG.png"]];
             [noUsersAdvisoryText setHidden:deviceHasUsers];
             [selectUserTableView setHidden:!deviceHasUsers];
             [selectUserTableMask setHidden:!deviceHasUsers];

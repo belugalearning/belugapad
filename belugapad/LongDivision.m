@@ -127,20 +127,20 @@
     //    currentTotal=nWheel.OutputValue/(pow((double)startColValue,-1));
     currentTotal=[nWheel.StrOutputValue floatValue];
     
-    if(lastTotal!=currentTotal)
-    {
-        if(currentTotal>lastTotal)
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_growing_block.wav")];
-        
-        lastTotal=currentTotal;
-        renderingChanges=YES;
-    }
-    
     //effective 4-digit precision evaluation test
     int prec=10000;
     int sum=(int)(currentTotal*divisor*prec);
     int idividend=(int)(dividend*prec);
     expressionIsEqual=(sum==idividend);
+    
+    if(lastTotal!=currentTotal)
+    {
+        if(currentTotal>lastTotal && !expressionIsEqual)
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_growing_block.wav")];
+        
+        lastTotal=currentTotal;
+        renderingChanges=YES;
+    }
     
     if(expressionIsEqual && !audioHasPlayedOnTarget)
     {

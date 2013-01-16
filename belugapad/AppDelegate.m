@@ -66,9 +66,9 @@
     speechReplacement=[[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-replace.plist")]retain];
     
     // Init the window
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-//    [self.window makeKeyAndVisible];
+    [self.window makeKeyAndVisible];
     
     // Try to use CADisplayLink director
     // if it fails (SDK < 3.1) use the default director
@@ -155,7 +155,7 @@
 								 multiSampling:!self.IsIpad1
 							   numberOfSamples:(self.IsIpad1 ? 0 : 4)];
     
-//	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
 	director_.wantsFullScreenLayout = YES;
     

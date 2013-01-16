@@ -14,14 +14,7 @@
 @interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PassCodeViewDelegate>
 {
     IBOutlet UIImageView *backgroundImageView;
-    
-    int avstage;
 }
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView;
 -(void)passCodeBecameValid:(PassCodeView*)passCodeView;
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
-
-@property (retain) UIAlertView *alertView;
-
 @end

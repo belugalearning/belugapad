@@ -2935,7 +2935,6 @@ static float kTimeToHintToolTray=0.0f;
     {
 //        trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 0) width:910 height:485];
 //
-//        [trayLayerPad setPosition:ccp(61,32)];
         trayLayerPad=[[CCLayer alloc]init];
         lineDrawer=[LineDrawer node];
         
@@ -2949,7 +2948,7 @@ static float kTimeToHintToolTray=0.0f;
         [trayLayerPad addChild:bg z:15];
         
         trayPadClear=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/notepad/note_pad_bin.png")];
-        [trayPadClear setPosition:ccp(963,454)];
+        [trayPadClear setPosition:ccp(963,460)];
         [trayLayerPad addChild:trayPadClear z:20];
         
 //        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];

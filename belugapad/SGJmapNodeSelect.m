@@ -269,7 +269,10 @@
         placePos=((SGJmapMasteryNode*)ParentGO).MasteryPinPosition;
 
 
-    [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
+    if(((SGJmapNode*)ParentGO).flip)
+        [signSprite setPosition:[BLMath AddVector:ccp(-7, 33 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
+    else
+     [signSprite setPosition:[BLMath AddVector:ccp(7, 33 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
     
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     

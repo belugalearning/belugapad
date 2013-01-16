@@ -1634,7 +1634,7 @@ static float kTimeSinceAction=7.0f;
                 id<Moveable,Pairable>cObj=(id<Moveable,Pairable>)go;
                 
                 if([cObj amIProximateTo:location]){
-                    
+                    [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
                     NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
                     hasBeenProximate=YES;
                     
@@ -1751,7 +1751,7 @@ static float kTimeSinceAction=7.0f;
     }
     
     [self setTouchVarsToOff];
-    [self checkForOverlappingContainers];
+    //[self checkForOverlappingContainers];
     
     
 }

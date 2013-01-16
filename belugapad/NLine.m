@@ -156,6 +156,8 @@ float timerIgnoreFrog;
     
     timerIgnoreFrog=0.5f;
     
+    [loggingService logEvent:BL_PA_NL_TOUCH_END_JUMP_LINE withAdditionalData:[NSNumber numberWithInt:fabs(lastFrogLoc-lastBubbleLoc)]];
+    
     [self hideFrogTarget];
     
     [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp((lastFrogLoc-initStartLoc)*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
@@ -802,10 +804,11 @@ float timerIgnoreFrog;
         
         [self animPickupBubble];
         
-        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:[NSNumber numberWithInt:logLastBubblePos]];
         
         //retain current pos to incr/decr log
         logLastBubblePos=lastBubbleLoc;
+        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:[NSNumber numberWithInt:logLastBubblePos]];
         
         timeSinceInteractionOrShake=0;
         
@@ -963,7 +966,7 @@ float timerIgnoreFrog;
         }
         
         //do some logging
-        [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:[NSNumber numberWithInt:lastBubbleLoc]];
         
         if(lastBubbleLoc>logLastBubblePos)
         {
@@ -977,7 +980,8 @@ float timerIgnoreFrog;
         //did we move the bubble, the line
         if(logBubbleDidMove)
         {
-            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_BUBBLE withAdditionalData:nil];
+            float moveDistance=fabsf(lastBubbleLoc-logLastBubblePos);
+            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_BUBBLE withAdditionalData:[NSNumber numberWithFloat:moveDistance]];
         }
         if(logBubbleDidMoveLine)
         {

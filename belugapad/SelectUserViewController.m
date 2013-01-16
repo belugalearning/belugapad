@@ -72,6 +72,8 @@
 
 @implementation SelectUserViewController
 
+@synthesize alertView;
+
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
@@ -652,13 +654,18 @@
 
 -(void)handleNewUserClicked:(id)button
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                         message:@"We could not find a match for those login details. Please double-check and try again."
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-    [alertView show];
-    [alertView release];
+    if(!self.alertView)
+    {
+        self.alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                     message:@"We could not find a match for those login details. Please double-check and try again."
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+    }
+    
+    [self.alertView show];
+    
+
     
     if (freezeUI) return;
     [self setActiveView:editUserView];

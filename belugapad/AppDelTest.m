@@ -9,7 +9,24 @@
 #import "AppDelTest.h"
 #import "SelectUserViewController.h"
 
+#import "global.h"
+
+#import "LoggingService.h"
+#import "ContentService.h"
+#import "UsersService.h"
+
 @implementation AppDelTest
+
+@synthesize loggingService;
+@synthesize contentService;
+@synthesize usersService;
+@synthesize LocalSettings;
+@synthesize AdplineSettings;
+
+@synthesize ReleaseMode;
+@synthesize AuthoringMode;
+@synthesize IsMuted;
+@synthesize IsIpad1;
 
 - (void)dealloc
 {
@@ -20,6 +37,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //load adaptive pipeline settings
+    self.AdplineSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/adpline-settings.plist")];
+    
+    NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
+    BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
+    
+    loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
+    contentService = [[ContentService alloc] initWithLocalSettings:self.LocalSettings];
+    usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    
+    [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
+
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     

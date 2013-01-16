@@ -124,7 +124,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     contentService = [[ContentService alloc] initWithLocalSettings:self.LocalSettings];
     usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
     
-    [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
+    //compile device info
+    UIDevice *d=[UIDevice currentDevice];
+    NSDictionary *devinfo=@{@"systemVersion" : d.systemVersion, @"systemType" : d.systemName, @"name" : d.name, @"model" : d.model};
+    
+    [self.loggingService logEvent:BL_APP_START withAdditionalData:devinfo];
     
     //are we in release mode
     NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];

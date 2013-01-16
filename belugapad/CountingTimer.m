@@ -41,6 +41,8 @@
 
 @end
 
+static float kTimeToButtonShake=7.0f;
+
 @implementation CountingTimer
 
 #pragma mark - scene setup
@@ -103,6 +105,21 @@
             timeElapsed+=numIncrement*delta;
             timeKeeper+=delta;
         }
+    }
+    
+    if(!started)
+        timeSinceInteractionOrShake+=delta;
+    
+    if(timeSinceInteractionOrShake>kTimeToButtonShake)
+    {
+        [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        timeSinceInteractionOrShake=0.0f;
+    }
+    
+    if([buttonOfWin numberOfRunningActions]==0)
+    {
+        if(!CGPointEqualToPoint(buttonOfWin.position, ccp(cx,cy-80)))
+            buttonOfWin.position=ccp(cx,cy-80);
     }
     
     if(debugLogging)
@@ -355,6 +372,8 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     touchStartPos=location;
+    
+    timeSinceInteractionOrShake=0.0f;
     
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {

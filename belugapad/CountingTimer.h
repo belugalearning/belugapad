@@ -39,6 +39,7 @@ typedef enum {
     
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
+    float timeSinceInteractionOrShake;
     BOOL autoMoveToNextProblem;
     
     // and a default layer

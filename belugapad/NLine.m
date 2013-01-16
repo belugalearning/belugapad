@@ -426,8 +426,6 @@ float timerIgnoreFrog;
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    lastBubbleLoc=initStartLoc;
-    
     rambler.Value=initStartVal;
     rambler.StartValue=rambler.Value;
     rambler.CurrentSegmentValue=initSegmentVal;
@@ -436,6 +434,8 @@ float timerIgnoreFrog;
     rambler.BubblePos=initStartVal;
     
     initStartLoc=initStartVal / initSegmentVal;
+    lastBubbleLoc=initStartLoc;
+    logLastBubblePos=initStartLoc;
 
     
     enableAudioCounting=YES;
@@ -948,6 +948,8 @@ float timerIgnoreFrog;
         //determine whether or not to show the frog target
         if(lastBubbleLoc!=lastFrogLoc)
         {
+            NSLog(@"lastBubbleLoc = %d, logLastBubblePos = %d, lastFrogLoc = %d", lastBubbleLoc, logLastBubblePos, lastFrogLoc);
+            
             if(lastBubbleLoc>logLastBubblePos && lastBubbleLoc>lastFrogLoc)
                 [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")]];
             else if(lastBubbleLoc<logLastBubblePos && lastBubbleLoc<lastFrogLoc)

@@ -30,6 +30,7 @@ typedef struct
 {
     id<LogPolling,NSObject> pollee;
     LP_POLLEE_STATUS status;
+    NSString *pollId;
     CGPoint position;
 } PolleeState;
 @end
@@ -102,6 +103,8 @@ typedef struct
     [tickState addObject:[NSValue valueWithPointer:ps]];
     
     if (!pollee.logPollId) pollee.logPollId = [self generateUUID];
+    
+    ps->pollId=pollee.logPollId;
 }
 
 -(void)unregisterPollee:(id<LogPolling>)pollee
@@ -171,15 +174,25 @@ typedef struct
             case LP_REMOVE:
                 [deltaPState setValue:@"REMOVE" forKey:@"status"];
                 [toRemove addObject:psAddress];
-                free(ps);
+//                free(ps);
                 break;
         }
         
         if ([deltaPState count])
         {
-            [deltaPState setValue:pollee.logPollId forKey:@"id"];
+            [deltaPState setValue:ps->pollId forKey:@"id"];
+            
+            if([[deltaPState objectForKey:@"status"] isEqualToString:@"REMOVE"])
+                free(ps);
+            
             [tickDelta addObject:deltaPState];
+            
         }
+    }
+    
+    if(toRemove.count>0)
+    {
+        NSLog(@"has toRemove count %d", toRemove.count);
     }
     
     [tickState minusSet:toRemove];

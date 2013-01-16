@@ -298,8 +298,8 @@
 
 -(void)unregisterLogger
 {
-    b.logPollId=nil;
-    NSLog(@"object %d unreg", (int)b);
+//    b.logPollId=nil;
+//    NSLog(@"object %d unreg", (int)b);
 }
 
 -(void)destroy

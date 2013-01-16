@@ -284,10 +284,10 @@ typedef enum {
     [gw handleMessage:kSGretainOffsetPosition];
     
     //force layout mastery
-    for(int i=0; i<50; i++)
-    {
-        [gw handleMessage:kSGforceLayout];
-    }
+    //for(int i=0; i<50; i++)
+    //{
+    //    [gw handleMessage:kSGforceLayout];
+    //}
     
     //re-set node positions
     [gw handleMessage:kSGresetPositionUsingOffset];

@@ -135,6 +135,11 @@
     }
 }
 
+-(int)blocksInGroup
+{
+    return [MyBlocks count];
+}
+
 -(void)destroy
 {
     if([self.MyBlocks count]==0)

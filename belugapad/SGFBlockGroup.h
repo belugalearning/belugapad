@@ -12,4 +12,6 @@
 
 @interface SGFBlockGroup : SGGameObject <Group>
 
+-(int)blocksInGroup;
+
 @end

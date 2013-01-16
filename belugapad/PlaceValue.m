@@ -2504,6 +2504,8 @@ static float kTimeToCageShake=7.0f;
 
 -(void)resetPickupObjectPos
 {
+    if(!gw.Blackboard.PickupObject)return;
+    
     if(isBasePickup)
     {
         for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)

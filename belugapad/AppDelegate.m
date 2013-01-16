@@ -26,6 +26,7 @@
 #import "babbelu.lic.h"
 #import "libs/Acapela/api/babbelu.lic.0166883f.password"
 
+#import "Flurry.h"
 
 @interface AppController()
 {
@@ -58,8 +59,18 @@
 @synthesize lastJmapViewUState;
 @synthesize lastViewedNodeId;
 
+void uncaughtExceptionHandler(NSException *exception) {
+    
+    [Flurry logError:@"Uncaught" message:@"in global handler" exception:exception];
+
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Flurry startSession:@"MJS5MGYRRJ89729FTNPP"];
+    
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    
     [self writeLogMemoryUsage];
     
     launchOptionsCache=launchOptions;

@@ -407,6 +407,7 @@
 		7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FBA3A8016A7002700E4908F /* CODialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FBA3A7F16A7002700E4908F /* CODialog.m */; };
+		7FBA3A8516A7481C00E4908F /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FBA3A8416A7481C00E4908F /* libFlurry.a */; };
 		7FBE969C15498F3700D993AC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969B15498F3700D993AC /* Icon.png */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
@@ -1262,6 +1263,8 @@
 		7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
 		7FBA3A7E16A7002700E4908F /* CODialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CODialog.h; sourceTree = "<group>"; };
 		7FBA3A7F16A7002700E4908F /* CODialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CODialog.m; sourceTree = "<group>"; };
+		7FBA3A8316A7481C00E4908F /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		7FBA3A8416A7481C00E4908F /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		7FBE969B15498F3700D993AC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWRamblerGameObject.h; sourceTree = "<group>"; };
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
@@ -1366,6 +1369,7 @@
 				7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */,
 				7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */,
 				7F35846A162588FB004067A1 /* libTestFlight.a in Frameworks */,
+				7FBA3A8516A7481C00E4908F /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2095,6 +2099,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				7FBA3A8216A7481C00E4908F /* Flurry */,
 				558D79EB1688950300048B01 /* CCNode+SFGestureRecognizers */,
 				7F817B1A165A750E00B291DA /* cocos2d */,
 				7F98456C164E5F300081BE39 /* Acapela */,
@@ -2860,6 +2865,16 @@
 				7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */,
 			);
 			name = BAExpression;
+			sourceTree = "<group>";
+		};
+		7FBA3A8216A7481C00E4908F /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				7FBA3A8316A7481C00E4908F /* Flurry.h */,
+				7FBA3A8416A7481C00E4908F /* libFlurry.a */,
+			);
+			name = Flurry;
+			path = libs/Flurry;
 			sourceTree = "<group>";
 		};
 		7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */ = {
@@ -3718,6 +3733,7 @@
 					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/arm7-7s\"",
 					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/sim\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/belugapad/libs/Flurry\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -3774,6 +3790,7 @@
 					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/arm7-7s\"",
 					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/sim\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/belugapad/libs/Flurry\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",

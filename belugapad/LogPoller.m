@@ -187,7 +187,6 @@ typedef struct
             
             [tickDelta addObject:deltaPState];
             
-            NSLog(@"has deltaPstate");
         }
     }
     

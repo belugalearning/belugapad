@@ -406,6 +406,7 @@
 		7FB982C615116633006D31AE /* BAVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AA15116633006D31AE /* BAVariable.m */; };
 		7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
+		7FBA3A8016A7002700E4908F /* CODialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FBA3A7F16A7002700E4908F /* CODialog.m */; };
 		7FBE969C15498F3700D993AC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969B15498F3700D993AC /* Icon.png */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
@@ -1259,6 +1260,8 @@
 		7FB982AA15116633006D31AE /* BAVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAVariable.m; sourceTree = "<group>"; };
 		7FB982AB15116633006D31AE /* NSArray_BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArray_BAAdditions.h; sourceTree = "<group>"; };
 		7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
+		7FBA3A7E16A7002700E4908F /* CODialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CODialog.h; sourceTree = "<group>"; };
+		7FBA3A7F16A7002700E4908F /* CODialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CODialog.m; sourceTree = "<group>"; };
 		7FBE969B15498F3700D993AC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWRamblerGameObject.h; sourceTree = "<group>"; };
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
@@ -2227,6 +2230,8 @@
 		7F51159A14A9EF31001AF372 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				7FBA3A7E16A7002700E4908F /* CODialog.h */,
+				7FBA3A7F16A7002700E4908F /* CODialog.m */,
 				7FABE69214B33E5800ED2D0C /* global.h */,
 				7F51158014A9EE67001AF372 /* AppDelegate.h */,
 				7F51158114A9EE67001AF372 /* AppDelegate.m */,
@@ -3562,6 +3567,7 @@
 				558D79E7168893F800048B01 /* LineDrawer.m in Sources */,
 				558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */,
 				5509D85516A08A5F0076A29F /* RewardStars.m in Sources */,
+				7FBA3A8016A7002700E4908F /* CODialog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

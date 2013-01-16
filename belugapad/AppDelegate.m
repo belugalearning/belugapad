@@ -23,6 +23,10 @@
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+
+
 #import "babbelu.lic.h"
 #import "libs/Acapela/api/babbelu.lic.0166883f.password"
 
@@ -91,7 +95,6 @@ void uncaughtExceptionHandler(NSException *exception) {
     //init test flight
 
 #if USE_TESTFLIGHT_SDK
-    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
@@ -126,7 +129,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     //compile device info
     UIDevice *d=[UIDevice currentDevice];
-    NSDictionary *devinfo=@{@"systemVersion" : d.systemVersion, @"systemType" : d.systemName, @"name" : d.name, @"model" : d.model};
+    NSDictionary *devinfo=@{@"systemVersion" : d.systemVersion, @"systemType" : d.systemName, @"platform" : [self platform], @"model" : d.model};
     
     [self.loggingService logEvent:BL_APP_START withAdditionalData:devinfo];
     
@@ -254,6 +257,16 @@ void uncaughtExceptionHandler(NSException *exception) {
 #endif
     
     return YES;
+}
+
+- (NSString *) platform{
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *platform = [NSString stringWithUTF8String:machine];
+    free(machine);
+    return platform;
 }
 
 -(void)speakString:(NSString*)speakThis

@@ -1349,6 +1349,8 @@ typedef enum {
 
 -(void)zoomToCityViewAtPoint:(CGPoint)gesturePoint
 {
+    [loggingService logEvent:BL_JS_ZOOM_IN withAdditionalData:nil];
+    
     zoomedOut=NO;
     //[backarrow setVisible:YES];
     [backarrow setFlipX:NO];
@@ -1376,6 +1378,8 @@ typedef enum {
 
 -(void)zoomToRegionView
 {
+    [loggingService logEvent:BL_JS_ZOOM_OUT withAdditionalData:nil];
+    
     zoomedOut=YES;
 //    [backarrow setVisible:NO];
     [backarrow setFlipX:YES];

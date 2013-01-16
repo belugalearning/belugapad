@@ -1444,7 +1444,7 @@ typedef enum {
 
 -(void)setupUI
 {
-    ac.searchBar=[[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)] autorelease];
+    ac.searchBar=[[[UISearchBar alloc] initWithFrame:CGRectMake(748, -2, 266, 58)] autorelease];
     ac.searchBar.barStyle=UIBarStyleBlackTranslucent;
     [[[ac.searchBar subviews] objectAtIndex:0] removeFromSuperview];
     ac.searchBar.backgroundColor=[UIColor clearColor];
@@ -1454,9 +1454,11 @@ typedef enum {
     [[CCDirector sharedDirector].view addSubview:ac.searchBar];
     
     
-    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)] autorelease];
+    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 56, 341, 360)] autorelease];
     ac.searchList.delegate=self;
     ac.searchList.dataSource=self;
+    
+    ac.searchList.backgroundColor=[UIColor colorWithRed:72.0f/255.0f green:76.0f/255.0f blue:77.0f/255.0f alpha:1];
 }
 
 -(void)resetUI
@@ -1534,10 +1536,12 @@ typedef enum {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId] autorelease];
     }
     
+    cell.backgroundColor=[UIColor clearColor];
+    
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
-    cell.textLabel.textColor=[UIColor blackColor];
+    cell.textLabel.textColor=[UIColor whiteColor];
 
     id<CouchDerived> go;
     if(isFiltered)go=[filteredNodes objectAtIndex:indexPath.row];

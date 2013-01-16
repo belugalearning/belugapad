@@ -129,6 +129,9 @@
     
     if(lastTotal!=currentTotal)
     {
+        if(currentTotal>lastTotal)
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_growing_block.wav")];
+        
         lastTotal=currentTotal;
         renderingChanges=YES;
     }
@@ -139,22 +142,30 @@
     int idividend=(int)(dividend*prec);
     expressionIsEqual=(sum==idividend);
     
+    if(expressionIsEqual && !audioHasPlayedOnTarget)
+    {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_target_reached.wav")];
+        audioHasPlayedOnTarget=YES;
+        audioHasPlayedOverTarget=NO;
+    }
+    else if(currentTotal>(dividend/divisor) && !audioHasPlayedOverTarget){
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
+        audioHasPlayedOverTarget=YES;
+        audioHasPlayedOnTarget=NO;
+    }
+    else if(currentTotal<(dividend/divisor))
+    {
+        audioHasPlayedOnTarget=NO;
+        audioHasPlayedOverTarget=NO;
+    }
     // this sets the good/bad sum indicator if the mode is enabled
     if(goodBadHighlight)
     {
         if(expressionIsEqual)
         {
             [lblCurrentTotal setColor:ccc3(0, 255,0)];
-            audioHasPlayedOverTarget=NO;
-            audioHasPlayedOnTarget=YES;
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_target_reached.wav")];
         }else{
             [lblCurrentTotal setColor:ccc3(255,0,0)];
-            if(!audioHasPlayedOverTarget){
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
-                audioHasPlayedOverTarget=YES;
-                audioHasPlayedOnTarget=NO;
-            }
         }
     }
     

@@ -13,6 +13,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "PassCodeView.h"
+#import "SimpleAudioEngine.h"
 #import "UIView+UIView_DragLogPosition.h"
 
 @interface SelectUserViewController ()
@@ -146,6 +147,11 @@
     
 }
 
+-(void)buttonTap
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_button_tap.wav")];
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -160,6 +166,8 @@
 -(void)setActiveView:(UIView *)view
 {
     freezeUI = YES;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
     
     UIView *currentView = nil;
     if (![selectUserView isHidden])
@@ -418,6 +426,8 @@
 
     if (selectUserModalContainer) return;
     
+    [self buttonTap];
+    
     // TEMP way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
     NSDictionary *ur = deviceUsers[ip.row];
     NSRegularExpression *m = [[[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil] autorelease];
@@ -480,6 +490,8 @@
 {
     if (freezeUI) return;
     
+    [self buttonTap];
+    
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
     [button removeFromSuperview];
@@ -495,8 +507,10 @@
 {
     if (freezeUI) return;
     
+    
     if (!selectUserPassCodeModalView.isValid)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_login_failure.wav")];
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
         tickCrossImg.alpha = 1;
         [selectUserPassCodeModalView becomeFirstResponder];
@@ -508,6 +522,7 @@
     
     if ([ur[@"password"] isEqualToString:selectUserPassCodeModalView.text])
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_login_success.wav")];
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/correct_tick.png"]];
         tickCrossImg.alpha = 1;
         freezeUI = YES;
@@ -515,6 +530,7 @@
     }
     else
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_login_failure.wav")];
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
         tickCrossImg.alpha = 1;
         [selectUserPassCodeModalView clearText];
@@ -552,6 +568,7 @@
 -(void)handleCancelChangeNickClicked:(id)button
 {
     if (freezeUI) return;
+    [self buttonTap];
     freezeUI = YES;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
@@ -560,6 +577,7 @@
 -(void)handleSaveChangeNickClicked:(id)button
 {
     if (freezeUI) return;
+    [self buttonTap];
     freezeUI = YES;
     
     loadingImg.alpha = 1;
@@ -661,6 +679,7 @@
 -(void)handleCancelNewUserClicked:(id)button
 {
     if (freezeUI) return;
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -669,7 +688,7 @@
 -(void)handleSaveNewUserClicked:(id)button
 {
     if (freezeUI) return;
-    
+    [self buttonTap];
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
         [newUserNameTF becomeFirstResponder];
@@ -774,7 +793,7 @@
 -(void)handleLoadExistingUserClicked:(id)button
 {
     if (freezeUI) return;
-    
+    [self buttonTap];
     if (!existingUserNameTF.text || !existingUserNameTF.text.length)
     {
         [existingUserNameTF becomeFirstResponder];

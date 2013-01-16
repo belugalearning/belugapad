@@ -10,6 +10,7 @@
 #import "BLMath.h"
 #import "global.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
 
 #import "AppDelegate.h"
 #import "ContentService.h"
@@ -67,7 +68,7 @@
             
             [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:testParentPos];
         }
-        
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_overlay_panel_tap.wav")];
         NSLog(@"i'm starting! %@", ParentGO._id);
         ParentGO.Selected=YES;
     }
@@ -78,6 +79,7 @@
         //no longer hacky at all -- completely miss the mastery/node check (no chance of hitting this anyway as there are no mastery pins, and allow direct access
         
         //this is mastery -- pop the sign
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
         [self showSignWithForce:NO];
     }
     else {

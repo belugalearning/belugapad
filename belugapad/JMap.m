@@ -261,10 +261,10 @@ typedef enum {
     [gw handleMessage:kSGretainOffsetPosition];
     
     //force layout mastery
-    for(int i=0; i<50; i++)
-    {
-        [gw handleMessage:kSGforceLayout];
-    }
+    //for(int i=0; i<50; i++)
+    //{
+    //    [gw handleMessage:kSGforceLayout];
+    //}
     
     //re-set node positions
     [gw handleMessage:kSGresetPositionUsingOffset];
@@ -834,8 +834,10 @@ typedef enum {
     //step over each group that includes a data-features and create a dictionary for it
     NSArray *nodes=[doc nodesForXPath:@"//svg:g[starts-with(@id, 'data-features')]" namespaceMappings:nsMappings error:nil];
     
+    int didx=0;
     
     for (CXMLElement *node in nodes) {
+        
         //this is a node
         //NSLog(@"parsing island group %@", [[node attributeForName:@"id"] stringValue]);
         
@@ -855,6 +857,9 @@ typedef enum {
         
         //step over all of the images in the group to infer types
         NSArray *dimages=[node nodesForXPath:@"svg:image" namespaceMappings:nsMappings error:nil];
+        
+        //NSLog(@"dimages in data found %d is %d", didx, dimages.count);
+        
         for(CXMLElement *dimg in dimages)
         {
             NSString *href=[[dimg attributeForName:@"xlink:href"] stringValue];
@@ -897,12 +902,15 @@ typedef enum {
                 
             }
         }
+        
+        didx++;
     }
     
 }
 
 -(NSValue*)getBoxedPosFromTransformString:(NSString*)t
 {
+    
     NSArray *ps=[t componentsSeparatedByString:@" "];
     NSString *sx=[ps objectAtIndex:4];
     NSString *sy=[ps objectAtIndex:5];
@@ -912,6 +920,8 @@ typedef enum {
     float fy=[sy floatValue];
     fy=768.0f-fy;
 
+    //NSLog(@"boxing %@ to %f, %f", t, fx, fy);
+    
     return [NSValue valueWithCGPoint:CGPointMake(fx, fy)];
 }
 
@@ -931,7 +941,7 @@ typedef enum {
     }
     
     NSNumber *res=[NSNumber numberWithBool:(set<0)];
-//    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
+
     return res;
 }
 

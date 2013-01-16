@@ -285,19 +285,7 @@ static int shadowSteps=5;
 
 -(void)setup
 {
-//    NSLog(@"new island setup");
-    
-//    int iCount=ParentGO.ChildNodes.count;
-//    if(iCount==0)iCount=1; // handle islands with no nodes
-
-    //get an island selection base
-    //self.islandShapeIdx=(arc4random()%10) + 1;
-    
     self.islandShapeIdx=ParentGO.renderBase;
-//    if(self.islandShapeIdx>0)self.islandShapeIdx-=1;
-    
-    //get island data base
-    //self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
     
     self.islandLayoutIdx=ParentGO.renderLayout % 4;
     if(self.islandLayoutIdx>0)self.islandLayoutIdx-=1;
@@ -310,25 +298,8 @@ static int shadowSteps=5;
     self.previousIslandStage=1;
     if(ParentGO.PreviousPreReqPercentage>=30)self.previousIslandStage=3;
     if(ParentGO.PreviousPreReqPercentage>=70)self.previousIslandStage=5;
-
-    
-//    //position children
-//    NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
-//    for (int i=0; i<ParentGO.ChildNodes.count; i++)
-//    {
-//        id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
-//        //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
-//        child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
-//        
-//        if([[nodePoints objectAtIndex:i] CGPointValue].x<0)
-//        {
-//            child.flip=YES;
-//        }
-//    }
-    
     
     [self createBaseNodes];
-    
     
     //position children
     
@@ -357,7 +328,7 @@ static int shadowSteps=5;
         //get position by copying from indexed placeholder
         CGPoint pos=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).position;
         
-        child.Position=pos;
+        child.Position=ccp(pos.x+48,pos.y-33);
         
         child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
         
@@ -535,6 +506,9 @@ static int shadowSteps=5;
             [oldNodeSprite runAction:[CCFadeOut actionWithDuration:actTime/2]];
             
             CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
+            
+            newfsprite.position=ccp(newfsprite.contentSize.width / 2.0f, -newfsprite.contentSize.height / 2.0f);
+            
             [base addChild:newfsprite];
             newfsprite.opacity=0;
             [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
@@ -580,6 +554,8 @@ static int shadowSteps=5;
                 oldNodeSprite=[CCSprite spriteWithSpriteFrameName:fnameold];
                 [base addChild:oldNodeSprite];
 //
+                oldNodeSprite.position=ccp(oldNodeSprite.contentSize.width / 2.0f, -oldNodeSprite.contentSize.height / 2.0f);
+            
 //                [oldNodeSprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
 //            }
             
@@ -614,33 +590,6 @@ static int shadowSteps=5;
         }
         
     }
-
-    //don't render any mastery pin at all -- it's not used and shouldn't happen, but sprite renderes as per issue #571
-    
-//    //render the actual mastery sprite itself, as well as the label
-//    
-//    if(ParentGO.EnabledAndComplete)
-//    {
-//        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Complete_Right.png"];
-//    }
-//    else
-//    {
-//        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Incomplete_Right.png"];
-//    }
-//    //ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
-//    ParentGO.MasteryPinPosition=[[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"MASTERY"] objectForKey:@"POS"] CGPointValue];
-//    [nodeSprite setPosition:ParentGO.MasteryPinPosition];
-//    
-//    if(ParentGO.flip)nodeSprite.flipX=YES;
-//    
-//    if(ParentGO.MasteryPinPosition.x < ParentGO.Position.x)
-//    {
-//        ((SGJmapMasteryNode*)ParentGO).flip=YES;
-//    }
-//    
-//    [nodeSprite setVisible:ParentGO.Visible];
-//    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-//    [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
     NSString *labelText=ParentGO.UserVisibleString;
     
@@ -668,97 +617,6 @@ static int shadowSteps=5;
 
 #pragma mark - random feature placement / scatter & calculations
 
-//-(void)scatterThing:(NSString*)thing withOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
-//{
-//    [self scatterThing1:thing andThing2:thing withRatio1:50 andRatio2:50 andOffset:offsetPos andScale:scale];
-//}
-
-//-(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2 andOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
-//{
-////    NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
-//    
-//    //assumed picking from random selection of three of each
-//    
-//    NSMutableArray *masks=[islandData objectForKey:ISLAND_FEATURE_SPACES];
-//    if(!masks) return;
-//    int maskCount=masks.count;
-//    
-//    CGPoint centres[maskCount];
-//    float radii[maskCount];
-//    
-//    int i=0;
-//    for (NSMutableDictionary *fs in masks) {
-//        radii[i]=[[fs objectForKey:ISLAND_RADIUS] floatValue];
-//        
-//        CGPoint dataCentre=[[fs objectForKey:ISLAND_POS] CGPointValue];
-//        //CGPoint centreCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f) from:dataCentre];
-//        
-//        centres[i]=dataCentre;
-//        
-//        //centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
-//
-//        //NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
-//        
-//        i++;
-//    }
-//    
-//    //CGRect box=CGRectMake(islandSprite.position.x-islandSprite.contentSize.width / 2.0f, islandSprite.position.y - islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
-//    
-//    CGRect box=CGRectMake(-islandSprite.contentSize.width / 2.0f, -islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
-//    
-////    NSLog(@"before mod %@", NSStringFromCGRect(box));
-//    
-//    //position * scale
-//    //box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)*scale.x, (box.origin.y + box.origin.y * offsetPos.y)*scale.y, box.size.width * scale.x, box.size.height * scale.y);
-//    
-//    box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)+(scale.x*box.size.width*0.5f), (box.origin.y + box.origin.y * offsetPos.y)+(scale.y*box.size.height*0.5f), box.size.width * scale.x, box.size.height * scale.y);
-//    
-//    //box=CGRectMake(box.origin.x+offsetPos.x, box.origin.y+offsetPos.y, box.size.width, box.size.height);
-//    
-////    NSLog(@"after mod %@", NSStringFromCGRect(box));
-//    
-//    
-//    //float y=islandSprite.boundingBox.size.height;
-//    float y=box.size.height + box.origin.y;
-//    while (y>box.origin.y) {
-//        //float x=arc4random() % (int)islandSprite.boundingBox.size.width;
-//        float x=(arc4random() % (int)box.size.width) + box.origin.x;
-//
-//        BOOL pass=NO;
-//        //test if x, y valid
-//        for(int i=0; i<maskCount; i++)
-//        {
-//            //CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
-//            CGPoint pCentre=ccp(x,y);
-//            
-//            if ([BLMath DistanceBetween:pCentre and:centres[i]]<radii[i])
-//            {
-//                pass=YES;
-//                break;
-//            }
-//        }
-//        
-//        //draw at x, y
-//        if(pass)
-//        {
-//            int rver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
-//            int type=1+arc4random()%100;
-//            NSString *typeName=thing1;
-//            if(type>ratio1) typeName=thing2;
-//            NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
-//            CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
-//            [featureSprites addObject:fsprite];
-//            fsprite.position=ccpAdd(ccp(x,y-40), islandSprite.position);
-//            fsprite.visible=ParentGO.Visible;
-//            [ParentGO.RenderBatch addChild:fsprite z:3];
-//        }
-//        
-//        //y-=arc4random()%3;
-//        y-=arc4random()%5;
-//    }
-//    
-//}
-
 
 -(CGPoint) subCentre:(CGPoint)pos
 {
@@ -770,7 +628,9 @@ static int shadowSteps=5;
 //    return ccpMult([self subCentre:pos], 1.0f);
     
     CGPoint sc=[self subCentre:pos];
-    return ccp(sc.x * 0.7f, sc.y * 0.5f);
+    
+    return sc;
+//    return ccp(sc.x * 0.7f, sc.y * 0.5f);
 }
 
 #pragma mark - parse island data out of a single-island data template and cache

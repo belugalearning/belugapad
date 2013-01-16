@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_Block_Neg_s&quot;/&gt;&lt;b:t&gt;into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_dock_with_block&quot;/&gt;&lt;b:t&gt;to make the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_s&quot;/&gt;&lt;b:t&gt;explode. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_Block_Neg_s&quot;/&gt;&lt;b:t&gt;into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_grid&quot;/&gt;&lt;b:t&gt;to make the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_s&quot;/&gt;&lt;b:t&gt;explode. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -82,7 +82,7 @@
 	<key>MULTIPLE_BLOCK_PICKUP_MAX</key>
 	<dict>
 		<key>1</key>
-		<string>-1</string>
+		<string>1</string>
 	</dict>
 </dict>
 </plist>

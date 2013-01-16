@@ -2504,6 +2504,8 @@ static float kTimeToCageShake=7.0f;
 
 -(void)resetPickupObjectPos
 {
+    if(!gw.Blackboard.PickupObject)return;
+    
     if(isBasePickup)
     {
         for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
@@ -3628,7 +3630,6 @@ static float kTimeToCageShake=7.0f;
                 if(!isCage){
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
                 }else{
-                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
                     [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPositionAndDestroy];
                 }
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];

@@ -41,6 +41,8 @@
 
 @end
 
+static float kTimeToButtonShake=7.0f;
+
 @implementation CountingTimer
 
 #pragma mark - scene setup
@@ -105,6 +107,21 @@
         }
     }
     
+    if(!started)
+        timeSinceInteractionOrShake+=delta;
+    
+    if(timeSinceInteractionOrShake>kTimeToButtonShake)
+    {
+        [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        timeSinceInteractionOrShake=0.0f;
+    }
+    
+    if([buttonOfWin numberOfRunningActions]==0)
+    {
+        if(!CGPointEqualToPoint(buttonOfWin.position, ccp(cx,cy-80)))
+            buttonOfWin.position=ccp(cx,cy-80);
+    }
+    
     if(debugLogging)
         [tLabel setString:[NSString stringWithFormat:@"%f",timeElapsed]];
     
@@ -155,6 +172,7 @@
     if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
@@ -162,6 +180,7 @@
     else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
@@ -303,6 +322,9 @@
 #pragma mark - problem state
 -(void)startProblem
 {
+    if(showingIntroOverlay)return;
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    [ac stopAllSpeaking];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_start_button_tapped.wav")];
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_stop.png")]];
     started=YES;
@@ -353,6 +375,8 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     touchStartPos=location;
+    
+    timeSinceInteractionOrShake=0.0f;
     
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {

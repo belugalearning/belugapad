@@ -858,7 +858,7 @@ typedef enum {
         //step over all of the images in the group to infer types
         NSArray *dimages=[node nodesForXPath:@"svg:image" namespaceMappings:nsMappings error:nil];
         
-        NSLog(@"dimages in data found %d is %d", didx, dimages.count);
+        //NSLog(@"dimages in data found %d is %d", didx, dimages.count);
         
         for(CXMLElement *dimg in dimages)
         {
@@ -920,7 +920,7 @@ typedef enum {
     float fy=[sy floatValue];
     fy=768.0f-fy;
 
-    NSLog(@"boxing %@ to %f, %f", t, fx, fy);
+    //NSLog(@"boxing %@ to %f, %f", t, fx, fy);
     
     return [NSValue valueWithCGPoint:CGPointMake(fx, fy)];
 }

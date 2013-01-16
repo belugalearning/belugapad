@@ -328,7 +328,7 @@ static int shadowSteps=5;
         //get position by copying from indexed placeholder
         CGPoint pos=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).position;
         
-        child.Position=pos;
+        child.Position=ccp(pos.x+48,pos.y-33);
         
         child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
         

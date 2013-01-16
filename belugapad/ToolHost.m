@@ -303,7 +303,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)playAudioFlourish
 {
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer_1.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer.wav")];
 }
 
 #pragma mark draw and ticks
@@ -393,10 +393,12 @@ static float kTimeToHintToolTray=0.0f;
     if(timeSinceInteractionOrShake>kTimeToHintToolTray)
     {
         if(numberPickerForThisProblem && !hasUsedWheelTray && !hasRunInteractionFeedback && [traybtnWheel numberOfRunningActions]==0){
+            [traybtnWheel setZOrder:10];
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
             hasRunInteractionFeedback=YES;
         }
         if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0){
+            [traybtnMq setZOrder:10];
             [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
             hasRunInteractionFeedback=YES;
         }
@@ -413,6 +415,7 @@ static float kTimeToHintToolTray=0.0f;
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
             [self showWheel];
+            [self showCornerTray];
         }
         else
         {
@@ -1695,6 +1698,7 @@ static float kTimeToHintToolTray=0.0f;
                     // the user has changed their answer (even if they didn't have one before)
                     [loggingService logEvent:BL_PA_MQ_CHANGE_ANSWER
                           withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"selection"]];
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_selected.wav")];
                     // check what answer mode we have
                     // if single, we should only only be able to select one so we need to deselect the others and change the selected value
                     if(mqAnswerMode==kMetaQuestionAnswerSingle)
@@ -1709,7 +1713,6 @@ static float kTimeToHintToolTray=0.0f;
                     {
                         [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
                          [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
-                        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_selected.wav")];
                     }
                     return;
                 }
@@ -1890,15 +1893,14 @@ static float kTimeToHintToolTray=0.0f;
         [self tearDownNumberPicker];
         metaQuestionForceComplete=YES;
     }
-    
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer.wav")];
+    [self playAudioFlourish];
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
 }
 -(void)doIncomplete
 {
     evalShowCommit=NO;
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer_1.wav")];
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
@@ -2569,7 +2571,7 @@ static float kTimeToHintToolTray=0.0f;
         }
     }
     
-    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && hasTrayWheel)
+    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && (hasTrayWheel||trayWheelShowing))
     {
         if(trayWheelShowing)
         {
@@ -2716,7 +2718,7 @@ static float kTimeToHintToolTray=0.0f;
         [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
         */
         [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
-        [descRow relayoutChildrenToWidth:qTrayBot.contentSize.width*0.65f];
+        [descRow relayoutChildrenToWidth:[self questionTrayWidth]];
         
         /*
         float rowHeight=0;
@@ -2792,6 +2794,11 @@ static float kTimeToHintToolTray=0.0f;
         
         trayCornerShowing=NO;
     }
+}
+
+-(float)questionTrayWidth
+{
+    return (qTrayBot.contentSize.width*qTrayBot.scaleX)-15;
 }
 
 -(void)showCalc

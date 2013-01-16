@@ -941,7 +941,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if(isInBubble && CGPointEqualToPoint(location, lastTouch)){
+    if(isInBubble && [BLMath DistanceBetween:location and:lastTouch]<15.0f){
        [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
     }else{
@@ -963,7 +963,7 @@
             
             if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
             {
-                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_pipe.wav")];
                 
                 [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:nil];
                 [self evalProblem];
@@ -990,6 +990,7 @@
     isTouching=NO;
     hasLoggedMove=NO;
     isInBubble=NO;
+    audioHasPlayedBubbleProx=NO;
 }
 
 #pragma mark - evaluation

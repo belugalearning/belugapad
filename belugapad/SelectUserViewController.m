@@ -228,6 +228,7 @@
         if (view == selectUserView)
         {
             BOOL deviceHasUsers = [deviceUsers count] && [((NSDictionary*)deviceUsers[0]) count];
+            [selectUserBG setImage:[UIImage imageNamed:deviceHasUsers ? @"/login-images/select_user_BG.png" : @"/login-images/Create_account_bg.png"]];
             [noUsersAdvisoryText setHidden:deviceHasUsers];
             [selectUserTableView setHidden:!deviceHasUsers];
             [selectUserTableMask setHidden:!deviceHasUsers];
@@ -277,7 +278,7 @@
     noUsersAdvisoryText.shadowColor = [UIColor blackColor];
     noUsersAdvisoryText.shadowOffset = CGSizeMake(2,2);
     noUsersAdvisoryText.font = [UIFont fontWithName:@"Chango" size:16];
-//    [noUsersAdvisoryText setTransform:CGAffineTransformMakeRotation(-M_PI / 130)];
+    [noUsersAdvisoryText setTransform:CGAffineTransformMakeRotation(-M_PI / 160)];
     [selectUserView addSubview:noUsersAdvisoryText];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];

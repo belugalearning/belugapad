@@ -1062,7 +1062,7 @@ static float kNBFontSizeLarge=35.0f;
             
                 [pogo handleMessage:kDWmoveSpriteToHome];
             
-            NSLog(@"blocksForThisStore=%d, blocksUsedFromThisStore=%d, storeCanCreate=%@", blocksForThisStore[pogo.IndexPos], blocksUsedFromThisStore[pogo.IndexPos], storeCanCreate[pogo.IndexPos]?@"YES":@"NO");
+            //NSLog(@"blocksForThisStore=%d, blocksUsedFromThisStore=%d, storeCanCreate=%@", blocksForThisStore[pogo.IndexPos], blocksUsedFromThisStore[pogo.IndexPos], storeCanCreate[pogo.IndexPos]?@"YES":@"NO");
             
             if(storeCanCreate[pogo.IndexPos])
                 blocksUsedFromThisStore[pogo.IndexPos]--;

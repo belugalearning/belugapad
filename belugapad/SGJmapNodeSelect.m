@@ -112,7 +112,7 @@
         if([gameObject isKindOfClass:[SGJmapNode class]])
         {
             SGJmapNode *n=(SGJmapNode*)gameObject;
-            float lastPlayedSize=13.0f;
+            float lastPlayedSize=10.0f;
             
             NSString *sScore=@"";
             if(n.ustate.highScore>0)sScore=[NSString stringWithFormat:@"%d", n.ustate.highScore];
@@ -153,7 +153,7 @@
             else{
                 splayed=@"NOT PLAYED";
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-small.png")];
-                lastPlayedSize=20.0f;
+                lastPlayedSize=18.0f;
             }
             //show play again
             CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/play-button-normal.png")];
@@ -174,12 +174,12 @@
 //            if([thisNumber floatValue]>0)
 //            {
             if(![splayed isEqualToString:@"NOT PLAYED"]){
-                CCLabelTTF *lblBestScore=[CCLabelTTF labelWithString:@"BEST SCORE" fontName:CHANGO fontSize:13.0f dimensions:CGSizeMake(signSprite.contentSize.width,100) hAlignment:UITextAlignmentCenter];
-                [lblBestScore setPosition:ccp(100,95)];
+                CCLabelTTF *lblBestScore=[CCLabelTTF labelWithString:@"BEST SCORE" fontName:CHANGO fontSize:10.0f dimensions:CGSizeMake(signSprite.contentSize.width,100) hAlignment:UITextAlignmentCenter];
+                [lblBestScore setPosition:ccp(100,90)];
                 [signSprite addChild:lblBestScore];
                 
-                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore fontName:CHANGO fontSize:19.0f dimensions:CGSizeMake(signSprite.contentSize.width,100) hAlignment:UITextAlignmentCenter];
-                [score setPosition:ccp(100, 80)];
+                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore fontName:CHANGO fontSize:18.0f dimensions:CGSizeMake(signSprite.contentSize.width,100) hAlignment:UITextAlignmentCenter];
+                [score setPosition:ccp(100, 75)];
                 [score setColor:ccc3(240, 230, 1)];
                 [signSprite addChild:score];
             }
@@ -193,15 +193,15 @@
                                                          fontName:CHANGO
                                                          fontSize:lastPlayedSize
                                                        dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentCenter ];
-            [lblLastPlayed setPosition:ccp(100, 55)];
+            [lblLastPlayed setPosition:ccp(100, 50)];
             [lblLastPlayed setColor:ccc3(255, 255, 255)];
             [signSprite addChild:lblLastPlayed];
             
             CCLabelTTF *lblLastPlayedTime=[CCLabelTTF labelWithString:displayString
                                                          fontName:CHANGO
-                                                         fontSize:19.0f
+                                                         fontSize:12.0f
                                                        dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentCenter ];
-            [lblLastPlayedTime setPosition:ccp(100, 40)];
+            [lblLastPlayedTime setPosition:ccp(100, 35)];
             [lblLastPlayedTime setColor:ccc3(240, 230, 1)];
             [signSprite addChild:lblLastPlayedTime];
         
@@ -273,6 +273,8 @@
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     
     hitbox=CGRectMake(signSprite.position.x-(signSprite.contentSize.width / 2.0f), signSprite.position.y-(signSprite.contentSize.height / 2.0f), signSprite.contentSize.width, 60);
+    
+    [((JMap*)[gameWorld GameScene]) setUtdLabel:ParentGO.UserVisibleString];
     
     NSLog(@"i'm selected! %@", ParentGO._id);
 }

@@ -56,11 +56,14 @@
     id lastPlayedNode;
     SGJmapMasteryNode *lastPlayedMasteryNode;
     bool mapPositionSet;
+    
+    CCLabelTTF *utdHeaderLabel;
 }
 
 +(CCScene *)scene;
 
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos;
+-(void)setUtdLabel:(NSString*)toThisString;
 -(BOOL) isPointInView:(CGPoint)testPoint;
 
 

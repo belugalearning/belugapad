@@ -274,6 +274,8 @@
     noUsersAdvisoryText.textAlignment = UITextAlignmentCenter;
     noUsersAdvisoryText.textColor = [UIColor whiteColor];
     noUsersAdvisoryText.backgroundColor = [UIColor clearColor];
+    noUsersAdvisoryText.shadowColor = [UIColor blackColor];
+    noUsersAdvisoryText.shadowOffset = CGSizeMake(2,2);
     noUsersAdvisoryText.font = [UIFont fontWithName:@"Chango" size:16];
 //    [noUsersAdvisoryText setTransform:CGAffineTransformMakeRotation(-M_PI / 130)];
     [selectUserView addSubview:noUsersAdvisoryText];

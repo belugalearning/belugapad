@@ -274,6 +274,7 @@
     noUsersAdvisoryText.textColor = [UIColor whiteColor];
     noUsersAdvisoryText.backgroundColor = [UIColor clearColor];
     noUsersAdvisoryText.font = [UIFont fontWithName:@"Chango" size:16];
+//    [noUsersAdvisoryText setTransform:CGAffineTransformMakeRotation(-M_PI / 130)];
     [selectUserView addSubview:noUsersAdvisoryText];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];

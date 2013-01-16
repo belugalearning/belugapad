@@ -428,7 +428,10 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *user = deviceUsers[indexPath.row];
-    if (user[@"nickName"]) [self enablePlayButton];// i.e. a real user, not empty one
+    if (user[@"nickName"]){
+        [self buttonTap];
+        [self enablePlayButton];
+    }// i.e. a real user, not empty one
 }
 
 #pragma mark interactions

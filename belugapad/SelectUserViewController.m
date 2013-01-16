@@ -652,6 +652,14 @@
 
 -(void)handleNewUserClicked:(id)button
 {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                         message:@"We could not find a match for those login details. Please double-check and try again."
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+    [alertView show];
+    [alertView release];
+    
     if (freezeUI) return;
     [self setActiveView:editUserView];
 }
@@ -842,7 +850,7 @@
         {
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
                                                                  message:@"We could not find a match for those login details. Please double-check and try again."
-                                                                delegate:nil
+                                                                delegate:self
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil] autorelease];
             bself->loadingImg.alpha = 0;
@@ -858,6 +866,12 @@
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text
                                       callback:callback];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"got callback from alertview");
+
 }
 
 -(void)onDownloadUserStateComplete:(NSNotification*)notification

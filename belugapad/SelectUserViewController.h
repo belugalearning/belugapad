@@ -17,4 +17,8 @@
 }
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView;
 -(void)passCodeBecameValid:(PassCodeView*)passCodeView;
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
+
 @end

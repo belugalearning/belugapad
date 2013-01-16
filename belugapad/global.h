@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define RELEASE_MODE 0
-#define USE_TESTFLIGHT_SDK 1
+#define RELEASE_MODE 1
+#define USE_TESTFLIGHT_SDK 0
 
 #define BUNDLE_FULL_PATH(_filePath_) [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:_filePath_]
 

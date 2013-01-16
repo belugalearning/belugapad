@@ -20,8 +20,9 @@
 #import "TestFlight.h"
 #import "cocos2d/Support/base64.h"
 #import "NSData+GzipExtension.h"
+#import "Flurry.h"
 
-NSString * const kUsersWSBaseURL = @"http://u.zubi.me:3000";
+NSString * const kUsersWSBaseURL = @"http://app.zubi.me:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
@@ -146,6 +147,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         if (![contentSource isEqualToString:@"DATABASE"]) return;
         
         [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
+        [Flurry logEvent:@"USER_LOGIN" withParameters:@{@"USER_ID" : urId}];
         
         NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSFileManager *fm = [NSFileManager defaultManager];

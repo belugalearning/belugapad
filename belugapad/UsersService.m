@@ -22,7 +22,7 @@
 #import "NSData+GzipExtension.h"
 #import "Flurry.h"
 
-NSString * const kUsersWSBaseURL = @"http://u.zubi.me:3000";
+NSString * const kUsersWSBaseURL = @"http://app.zubi.me:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";

@@ -81,16 +81,18 @@ static int shadowSteps=5;
     {
         nodeSprite.visible=ParentGO.Visible;
         islandShadowSprite.visible=ParentGO.Visible;
+        labelShadowSprite.visible=YES;
+        labelSprite.visible=YES;
         
         if(ParentGO.Visible)
         {
-            [labelSprite runAction:[CCFadeTo actionWithDuration:0.5f opacity:255]];
-            [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.75f opacity:255]];
+//            [labelSprite runAction:[CCFadeTo actionWithDuration:0.5f opacity:255]];
+//            [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.75f opacity:255]];
         }
         else
         {
-            labelShadowSprite.opacity=0;
-            labelSprite.opacity=0;
+//            labelShadowSprite.opacity=0;
+//            labelSprite.opacity=0;
             
 //            [labelSprite runAction:[CCFadeTo actionWithDuration:0.25f opacity:0]];
 //            [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.15f opacity:0]];
@@ -112,11 +114,11 @@ static int shadowSteps=5;
         ParentGO.Visible=YES;
         zoomedOut=YES;
         
-        labelSprite.opacity=255;
-        labelShadowSprite.opacity=255;
+//        labelSprite.opacity=255;
+//        labelShadowSprite.opacity=255;
         
-        [labelSprite runAction:[CCFadeTo actionWithDuration:0.25f opacity:0]];
-        [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.15f opacity:0]];
+//        [labelSprite runAction:[CCFadeTo actionWithDuration:0.25f opacity:0]];
+//        [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.15f opacity:0]];
         
         for (CCSprite *s in featureSprites) {
             //rly!?

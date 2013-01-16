@@ -537,6 +537,7 @@
 {
     if (freezeUI) return;
     
+    [loginButton setImage:[UIImage imageNamed:@"/login-images/loading_button.png"] forState:UIControlStateNormal];
     
     if (!selectUserPassCodeModalView.isValid)
     {

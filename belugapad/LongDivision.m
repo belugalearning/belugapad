@@ -112,6 +112,11 @@
     [self.ForeLayer addChild:clippingNode];
     [self.ForeLayer addChild:maskOuter];
     
+    [clippingNode setVisible:NO];
+    [magnifyBar setOpacity:0];
+    [spriteMask setOpacity:0];
+    [maskOuter setOpacity:0];
+    
     //test for clipping
 //    CCDrawNode *drawTests=[CCDrawNode node];
 //    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
@@ -135,7 +140,7 @@
     
     if(lastTotal!=currentTotal)
     {
-        if(currentTotal>lastTotal && !expressionIsEqual)
+        if(currentTotal>lastTotal && currentTotal<(dividend/divisor) && !expressionIsEqual)
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_growing_block.wav")];
         
         lastTotal=currentTotal;
@@ -144,7 +149,7 @@
     
     if(expressionIsEqual && !audioHasPlayedOnTarget)
     {
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_target_reached.wav")];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_target_reached.wav")];
         audioHasPlayedOnTarget=YES;
         audioHasPlayedOverTarget=NO;
     }
@@ -538,13 +543,6 @@
     CCLabelTTF *expectedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",dividend] fontName:CHANGO fontSize:26.0f];
     [expectedLabel setPosition:ccp(barUnderneathThing.position.x+barUnderneathThing.contentSize.width/2, barUnderneathThing.position.y-20)];
     [renderLayer addChild:expectedLabel];
-
-    
-
-//    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
-//    [questionLabel setAnchorPoint:ccp(0,0.5)];
-//    [questionLabel setPosition:ccp(20,ly-320)];
-//    [renderLayer addChild:questionLabel];
     
     [self setupNumberWheel];
     
@@ -555,6 +553,8 @@
         [s setColor:kBTXEColour[i]];
         [renderLayer addChild:s z:50];
     }
+    
+    lastTotal=currentTotal;
 }
 
 -(void)setupNumberWheel

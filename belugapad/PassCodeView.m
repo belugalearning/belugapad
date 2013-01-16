@@ -8,6 +8,8 @@
 
 #import "PassCodeView.h"
 #import "NumpadInputController.h"
+#import "SimpleAudioEngine.h"
+#import "global.h"
 
 @interface PassCodeView()
 {
@@ -134,11 +136,15 @@ const uint labelSpacing = 67;
     currentIndex = labelIx;
     [self positionCursor];
 }
-
+-(void)buttonTap
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_button_tap.wav")];
+}
 #pragma mark -
 #pragma mark NumpadInputControllerDelegate
 -(void)buttonTappedWithText:(NSString*)buttonText
 {
+    [self buttonTap];
     BOOL validBefore = self.isValid;
     BOOL isDigitButton = [singleDigitMatch numberOfMatchesInString:buttonText options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0,[buttonText length])] == 1;
     

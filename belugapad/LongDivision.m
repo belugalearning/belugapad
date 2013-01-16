@@ -377,7 +377,7 @@
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
             else
-                curCol=kBTXEColour[(digits.length-i)-1];
+                curCol=kLongDivColour[(digits.length-i)-1];
             
             ccColor4F curCol4=ccc4FFromccc3B(curCol);
             curCol4=ccc4f(curCol4.r, curCol4.g, curCol4.b, (float)maskOuter.opacity/255);
@@ -563,7 +563,7 @@
     {
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
         [s setPosition:ccp(963.5-(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing))),568)];
-        [s setColor:kBTXEColour[i]];
+        [s setColor:kLongDivColour[i]];
         [renderLayer addChild:s z:50];
     }
     

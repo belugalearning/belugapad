@@ -176,6 +176,29 @@ typedef enum {
 
 #pragma mark - transitions
 
+-(void)setUtdLabel:(NSString *)toThisString
+{
+    if(!utdHeaderLabel){
+        utdHeaderLabel=[CCLabelTTF labelWithString:@""
+                                          fontName:CHANGO
+                                          fontSize:14.0f
+                                        dimensions:CGSizeMake(575, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
+        [utdHeaderLabel setPosition:ccp(442,742)];
+        [foreLayer addChild:utdHeaderLabel z:10];
+    }
+    
+    int maxStringSize=100;
+    
+    if([toThisString length]>maxStringSize)
+    {
+        NSString *truncString=[toThisString substringToIndex: MIN(maxStringSize, [toThisString length])];
+        toThisString=[NSString stringWithFormat:@"%@...", truncString];
+    }
+
+    [utdHeaderLabel setString:toThisString];
+
+}
+
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos
 {
     
@@ -1167,7 +1190,7 @@ typedef enum {
                 id<Transform>tgo=go;
                 float thisDistance=[BLMath DistanceBetween:lOnMap and:tgo.Position];
                 
-                if(first||thisDistance<bestDistance)
+                if((first||thisDistance<bestDistance) && thisDistance<40.0f)
                 {
                     first=NO;
                     bestDistance=thisDistance;
@@ -1187,10 +1210,10 @@ typedef enum {
         }
         
         if(selected)
-        {
-            [loggingService logEvent:BL_JS_PIN_SELECT withAdditionalData:nil];
             [((id<Selectable>)selected).NodeSelectComponent trySelectionForPosition:lOnMap];
-        }
+        else
+            [self setUtdLabel:@""];
+
         
         for (id go in [gw AllGameObjects]) {
             if([go conformsToProtocol:@protocol(Selectable)])

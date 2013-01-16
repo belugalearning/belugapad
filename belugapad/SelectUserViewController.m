@@ -228,6 +228,7 @@
         if (view == selectUserView)
         {
             BOOL deviceHasUsers = [deviceUsers count] && [((NSDictionary*)deviceUsers[0]) count];
+            [noUsersAdvisoryText setHidden:deviceHasUsers];
             [selectUserTableView setHidden:!deviceHasUsers];
             [selectUserTableMask setHidden:!deviceHasUsers];
             [joinClassButton setHidden:!deviceHasUsers];

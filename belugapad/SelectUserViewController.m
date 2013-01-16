@@ -458,6 +458,13 @@
     [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserModalContainer addSubview:loginButton];
     
+    selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(100, 115, 245.0f, 46.0f)] autorelease];
+    selectUserPassCodeModalView.delegate = self;
+    [selectUserModalContainer addSubview:selectUserPassCodeModalView];
+    
+    tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
+    [self.view addSubview:tickCrossImg];
+    
     [UIView animateWithDuration:0.8
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseOut
@@ -467,13 +474,6 @@
                      completion:^(BOOL finished){
                          [selectUserPassCodeModalView becomeFirstResponder];
                      }];
-    
-    selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
-    selectUserPassCodeModalView.delegate = self;
-    [self.view addSubview:selectUserPassCodeModalView];
-    
-    tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
-    [self.view addSubview:tickCrossImg];
 }
 
 -(void)handleBackToSelectUserClicked:(id)button
@@ -484,10 +484,9 @@
     selectUserModalUnderlay = nil;
     [button removeFromSuperview];
     loginButton = nil;
+    selectUserPassCodeModalView = nil;
     [selectUserModalContainer removeFromSuperview];
     selectUserModalContainer = nil;
-    [selectUserPassCodeModalView removeFromSuperview];
-    selectUserPassCodeModalView = nil;
     [tickCrossImg removeFromSuperview];
     tickCrossImg = nil;
 }

@@ -25,7 +25,9 @@
     // select user
     UIView *selectUserView;
     UIImageView *selectUserBG;
+    UILabel *noUsersAdvisoryText;
     UITableView *selectUserTableView;
+    UIImageView *selectUserTableMask;
     UIButton *playButton;
     UIButton *joinClassButton;
     
@@ -188,7 +190,7 @@
     
     // animate currentView off screen and hide
     if (currentView)
-    {
+    {        
         [UIView animateWithDuration:1.2
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseInOut
@@ -223,6 +225,15 @@
     // animate next view into position
     if (view)
     {
+        if (view == selectUserView)
+        {
+            BOOL deviceHasUsers = [deviceUsers count] && [((NSDictionary*)deviceUsers[0]) count];
+            [selectUserTableView setHidden:!deviceHasUsers];
+            [selectUserTableMask setHidden:!deviceHasUsers];
+            [joinClassButton setHidden:!deviceHasUsers];
+            [playButton setHidden:!deviceHasUsers];
+        }
+        
         [view setHidden:NO];
         [UIView animateWithDuration:1.0
                               delay:0.0
@@ -250,10 +261,20 @@
 }
 
 -(void)buildSelectUserView
-{    
-    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];    
+{
+    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
     selectUserBG.center = CGPointMake(512, 364);
     [selectUserView addSubview:selectUserBG];
+    
+    noUsersAdvisoryText = [[[UILabel alloc] initWithFrame:CGRectMake(237, 286, 550, 50)] autorelease];
+    noUsersAdvisoryText.text = @"CREATE AN ACCOUNT TO BEGIN YOUR JOURNEY THROUGH THE WORLD OF MATHS";
+    noUsersAdvisoryText.lineBreakMode = UILineBreakModeWordWrap;
+    noUsersAdvisoryText.numberOfLines = 2;
+    noUsersAdvisoryText.textAlignment = UITextAlignmentCenter;
+    noUsersAdvisoryText.textColor = [UIColor whiteColor];
+    noUsersAdvisoryText.backgroundColor = [UIColor clearColor];
+    noUsersAdvisoryText.font = [UIFont fontWithName:@"Chango" size:16];
+    [selectUserView addSubview:noUsersAdvisoryText];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];
     selectUserTableView.backgroundColor = [UIColor clearColor];
@@ -264,9 +285,9 @@
     selectUserTableView.delegate = self;
     [selectUserView addSubview:selectUserTableView];
     
-    UIImageView *mask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
-    mask.frame = CGRectMake(320.0f,243.0f,381.0f,146.0f);
-    [selectUserView addSubview:mask];
+    selectUserTableMask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
+    selectUserTableMask.frame = CGRectMake(320.0f,243.0f,381.0f,146.0f);
+    [selectUserView addSubview:selectUserTableMask];
     
     UIButton *newUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     newUserButton.frame = CGRectMake(331.0f, 403.0f, 131.0f, 51.0f);

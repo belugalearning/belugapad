@@ -322,6 +322,7 @@ static float kTimeToButtonShake=7.0f;
 #pragma mark - problem state
 -(void)startProblem
 {
+    if(showingIntroOverlay)return;
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     [ac stopAllSpeaking];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_start_button_tapped.wav")];

@@ -147,6 +147,8 @@
         renderingChanges=YES;
     }
     
+    
+    
     if(expressionIsEqual && !audioHasPlayedOnTarget)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_target_reached.wav")];
@@ -369,6 +371,10 @@
             CGPoint *firstCo=&block[0];
             ccColor3B curCol;
             ccColor3B sepLine=ccc3(68,71,72);
+            ccColor4F sepLine4=ccc4FFromccc3B(sepLine);
+            ccColor4F curCol4=ccc4FFromccc3B(curCol);
+            sepLine4=ccc4f(sepLine4.r, sepLine4.g, sepLine4.b, (float)maskOuter.opacity/255);
+            curCol4=ccc4f(curCol4.r, curCol4.g, curCol4.b, (float)maskOuter.opacity/255);
             
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
@@ -378,14 +384,17 @@
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
             
-            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
+
+
+            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:curCol4 borderWidth:1 borderColor:sepLine4];
+
             
             // and all of it's separators
             for(int i=0;i<[c intValue];i++)
             {
                 if(i<[c intValue]-1){
                     [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
-                    [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
+                    [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:sepLine4];
                     sectionStartPos+=sectionSize;
                 }
                 float curTot=0;
@@ -460,7 +469,8 @@
         
         CGPoint *firstVert=&verts[0];
         [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
-        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, maskOuter.opacity)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, maskOuter.opacity))];
+        
     }
 //    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
 //    [l setPosition:ccp(startBarPos,yInset-27)];
@@ -487,6 +497,11 @@
     scaleDrawNode.scale=1.8f;
     
     renderingChanges=NO;
+    
+    if(clippingNode.visible && currentTotal>=visTrigger && maskOuter.opacity<255)
+        renderingChanges=YES;
+    
+    NSLog(@"maskOuter.opacity %f", (float)maskOuter.opacity);
 }
 
 #pragma mark - gameworld setup and population

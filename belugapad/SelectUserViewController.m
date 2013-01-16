@@ -15,6 +15,7 @@
 #import "PassCodeView.h"
 #import "SimpleAudioEngine.h"
 #import "UIView+UIView_DragLogPosition.h"
+#import "CODialog.h"
 
 @interface SelectUserViewController ()
 {
@@ -615,7 +616,6 @@
     __block typeof(self) bself = self;
     void (^changeNickCallback)() = ^(BL_USER_NICK_CHANGE_RESULT result) {
         bself->loadingImg.alpha = 0;
-        UIAlertView *alertView;
         
         switch (result) {
             case BL_USER_NICK_CHANGE_SUCCESS:
@@ -632,13 +632,18 @@
                 break;
             case BL_USER_NICK_CHANGE_ERROR:
                 bself->loadingImg.alpha = 0;
-                alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                        message:@"There was a problem connecting to the server. You can change your username next time you log in."
-                                                       delegate:bself
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil] autorelease];
-                alertView.tag = 999;
-                [alertView show];
+                
+                self.dialog=[CODialog dialogWithWindow:self.view.window];
+                [self.dialog resetLayout];
+                
+                self.dialog.dialogStyle=CODialogStyleDefault;
+                self.dialog.title=@"Sorry";
+                self.dialog.subtitle=@"There was a problem connecting to the server. You can change your username next time you log in.";
+                [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialogAndGoToIntro:)];
+                
+                [self.dialog sizeToFit];
+                [self.dialog showOrUpdateAnimated:YES];
+                
                 break;
         }
     };
@@ -648,6 +653,15 @@
 -(void)proceedAfterPause:(NSTimer*)timer
 {
     [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
+}
+
+- (void)hideDialog:(id)sender {
+    [self.dialog hideAnimated:YES];
+}
+
+- (void)hideDialogAndGoToIntro:(id)sender {
+    [self.dialog hideAnimated:YES];
     [app proceedFromLoginViaIntro:NO];
 }
 
@@ -735,12 +749,17 @@
         
         if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
         {
-            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"This nickname is already in use. Please try another one."
-                                                                delegate:bself
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil] autorelease];
-            [alertView show];
+            self.dialog=[CODialog dialogWithWindow:self.view.window];
+            [self.dialog resetLayout];
+            
+            self.dialog.dialogStyle=CODialogStyleDefault;
+            self.dialog.title=@"Sorry";
+            self.dialog.subtitle=@"This nickname is already in use. Please try another one.";
+            [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialog:)];
+            
+            [self.dialog sizeToFit];
+            [self.dialog showOrUpdateAnimated:YES];
+            
         }
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {            
@@ -841,14 +860,20 @@
     void (^callback)() = ^(NSDictionary *ur) {
         if (!ur)
         {
-            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil] autorelease];
+            self.dialog=[CODialog dialogWithWindow:self.view.window];
+            [self.dialog resetLayout];
+            
+            self.dialog.dialogStyle=CODialogStyleDefault;
+            self.dialog.title=@"Sorry";
+            self.dialog.subtitle=@"We could not find a match for those login details. Please double-check and try again.";
+            [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialog:)];
+            
+            [self.dialog sizeToFit];
+            [self.dialog showOrUpdateAnimated:YES];
+            
+            
             bself->loadingImg.alpha = 0;
             bself->freezeUI = NO;
-            [alertView show];
             return;
         }
         

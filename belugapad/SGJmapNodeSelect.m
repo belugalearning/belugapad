@@ -197,14 +197,15 @@
             [lblLastPlayed setColor:ccc3(255, 255, 255)];
             [signSprite addChild:lblLastPlayed];
             
-            CCLabelTTF *lblLastPlayedTime=[CCLabelTTF labelWithString:displayString
-                                                         fontName:CHANGO
-                                                         fontSize:12.0f
-                                                       dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentCenter ];
-            [lblLastPlayedTime setPosition:ccp(100, 35)];
-            [lblLastPlayedTime setColor:ccc3(240, 230, 1)];
-            [signSprite addChild:lblLastPlayedTime];
-        
+            if(![splayed isEqualToString:@"NOT PLAYED"]){
+                CCLabelTTF *lblLastPlayedTime=[CCLabelTTF labelWithString:displayString
+                                                             fontName:CHANGO
+                                                             fontSize:12.0f
+                                                           dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentCenter ];
+                [lblLastPlayedTime setPosition:ccp(100, 35)];
+                [lblLastPlayedTime setColor:ccc3(240, 230, 1)];
+                [signSprite addChild:lblLastPlayedTime];
+            }
             
         }
         else {

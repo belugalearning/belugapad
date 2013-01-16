@@ -2569,7 +2569,7 @@ static float kTimeToHintToolTray=0.0f;
         }
     }
     
-    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && hasTrayWheel)
+    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && (hasTrayWheel||trayWheelShowing))
     {
         if(trayWheelShowing)
         {

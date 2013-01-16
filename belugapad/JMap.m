@@ -1210,7 +1210,10 @@ typedef enum {
         }
         
         if(selected)
+        {
+            [loggingService logEvent:BL_JS_PIN_SELECT withAdditionalData:nil];
             [((id<Selectable>)selected).NodeSelectComponent trySelectionForPosition:lOnMap];
+        }
         else
             [self setUtdLabel:@""];
 

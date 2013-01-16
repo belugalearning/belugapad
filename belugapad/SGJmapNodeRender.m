@@ -121,7 +121,10 @@
         nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
     }
     
-    [nodeSprite setPosition:ParentGO.Position];
+    CGPoint offset=ccp(nodeSprite.contentSize.width / 2.0f, -nodeSprite.contentSize.height / 2.0f);
+    ParentGO.Position=ccpAdd(ParentGO.Position, offset);
+    
+    [nodeSprite setPosition:ccpAdd(ParentGO.Position, offset)];
     [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
     

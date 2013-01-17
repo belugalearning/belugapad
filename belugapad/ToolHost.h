@@ -308,5 +308,6 @@ typedef enum {
 -(void)playAudioPress;
 
 -(void)resetScoreMultiplier;
+- (void)sizeQuestionDescription;
 
 @end

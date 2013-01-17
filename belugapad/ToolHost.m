@@ -2208,23 +2208,19 @@ static float kTimeToHintToolTray=0.0f;
     
     float rowHeight=0;
 
-    [qTrayMid setAnchorPoint:ccp(0.5,0)];
+    [qTrayMid setAnchorPoint:ccp(0.5f, 0.0f)];
     
     if([currentTool isKindOfClass:[ExprBuilder class]])
     {
-        ExprBuilder *eb=(ExprBuilder*)currentTool;
+//        ExprBuilder *eb=(ExprBuilder*)currentTool;
         
-        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] +35;
-        
-        //[qTrayMid setPosition:ccp(row.position.x,[eb getRowPosY]-10 - [eb getDescriptionAreaHeight] / 2.0f)];
-        
-        qTrayMid.position=ccp(row.position.x, row.position.y-10);
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] +15;
+        qTrayMid.position=ccp(row.position.x, row.position.y);
     }
     else
     {
-        rowHeight=row.size.height + 35;
-        [qTrayMid setPosition:ccp(row.position.x,row.position.y - row.size.height / 2.0f)];
-
+        rowHeight=row.size.height+35;
+        [qTrayMid setPosition:ccp(row.position.x,row.position.y -10)];
     }
     
     if(rowHeight<68.0f)rowHeight=68.0f;
@@ -2241,10 +2237,26 @@ static float kTimeToHintToolTray=0.0f;
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
     
+    NSLog(@"mid pos %@", NSStringFromCGPoint(qTrayMid.position));
+    
+    
+    float topY=qTrayTop.position.y;
+    
+//    float centerY=qTrayMid.position.y;
+//    float centerToTop=0.5f * (qTrayMid.contentSize.height * qTrayMid.scaleY);
+//    float posAtTop=centerY+centerToTop;
+    float desiredY=680;
+    float diffYToTop= desiredY-topY;
+    
+    //move everything by difftotoop
+    qTrayMid.position=ccpAdd(qTrayMid.position, ccp(0, diffYToTop));
+    qTrayBot.position=ccpAdd(qTrayBot.position, ccp(0, diffYToTop));
+    qTrayTop.position=ccpAdd(qTrayTop.position, ccp(0, diffYToTop));
+    
+    
     [readProblemDesc setPosition:ccp(qTrayMid.position.x+((qTrayMid.contentSize.width * qTrayMid.scaleX)/2)-readProblemDesc.contentSize.width,
                                      qTrayBot.position.y-25)];
     
-    NSLog(@"mid pos %@", NSStringFromCGPoint(qTrayMid.position));
 }
 
 -(void)setProblemDescription:(NSString*)descString
@@ -2274,7 +2286,7 @@ static float kTimeToHintToolTray=0.0f;
     SGBtxeRow *row=qDescRow;
     
     descRow=row;
-    row.position=ccp(cx, (cy*2) - 100);
+    row.position=ccp(cx, (cy*2) - 110);
 
     NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     if(numberMode)
@@ -2759,7 +2771,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)updateReadButtonPosAtScale:(float)scaleX
 {
-    readProblemDesc.position=ccp((qTrayBot.contentSize.width * scaleX) / 2.0f + qTrayBot.position.x - 40.0f, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    readProblemDesc.position=ccp((qTrayBot.contentSize.width * scaleX) / 2.0f + qTrayBot.position.x - 40.0f, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
 }
 
 -(void)showCornerTray

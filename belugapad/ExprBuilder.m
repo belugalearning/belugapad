@@ -241,7 +241,7 @@
         {
             descRow=row;
             //position at top, top aligned, with spacer underneath
-            row.position=ccp(cx, (cy*2) - 110);
+            row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;
             
             //question separator bar -- flow with bottom of row 0
@@ -403,11 +403,13 @@
 -(void)contractDescAndCardRows
 {
     isContracted=YES;
-    [descRow animateAndMoveToPosition:ccp(345.0f, (cy*2)-100)];
+    [descRow animateAndMoveToPosition:ccp(345.0f, (cy*2)-115)];
     [descRow relayoutChildrenToWidth:600];
     float hoffset=descRow.size.height;
-    [ncardRow animateAndMoveToPosition:ccp(360, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f)];
+    [ncardRow animateAndMoveToPosition:ccp(345, ((cy*2) - 115) - hoffset - ncardRow.size.height / 2.0f)];
     [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    
+    [toolHost sizeQuestionDescription];
 }
 
 -(void)expandDescAndCardRows
@@ -416,13 +418,15 @@
     float hoffset=descRow.size.height;
     
     if(descRow){
-        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 110)];
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 115)];
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
     }
     if(ncardRow){
-        [ncardRow animateAndMoveToPosition:ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f)];
+        [ncardRow animateAndMoveToPosition:ccp(cx, ((cy*2) - 115) - hoffset - ncardRow.size.height / 2.0f)];
         [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
     }
+    
+    [toolHost sizeQuestionDescription];
 }
 
 #pragma mark - touches events
@@ -484,6 +488,7 @@
                         if(!toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [self contractDescAndCardRows];
+                            
                         }
                         
                         if(toolHost.pickerView && toolHost.CurrentBTXE)

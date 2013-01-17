@@ -1648,7 +1648,18 @@ static float kTimeSinceAction=7.0f;
                         // if the current pickup has a container - layout the old container's blocks it's blocks after removing from it
                         if(currentPickupObject.MyContainer){
                             id<ShapeContainer>oldCont=(id<ShapeContainer>)currentPickupObject.MyContainer;
+                            
+                            BOOL wasAt0=([oldCont.BlocksInShape objectAtIndex:0] == currentPickupObject);
+                            
                             [((id<ShapeContainer>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+
+                            
+                            if(wasAt0)
+                            {
+                                id<Moveable>object1=[oldCont.BlocksInShape objectAtIndex:0];
+                                object1.Position=ccp(object1.Position.x, object1.Position.y+kDistanceBetweenBlocks);
+                            }
+                            
                             [oldCont layoutMyBlocks];
                         }
                         
@@ -1692,7 +1703,7 @@ static float kTimeSinceAction=7.0f;
                 if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0] && [LayoutCont.BlocksInShape count]>2)
                 {
                     id<Moveable>object1=[LayoutCont.BlocksInShape objectAtIndex:1];
-                    object1.Position=ccp(object1.Position.x, object1.Position.y+52);
+                    object1.Position=ccp(object1.Position.x, object1.Position.y+kDistanceBetweenBlocks);
                 }
                 [LayoutCont removeBlockFromMe:currentPickupObject];
                 [LayoutCont layoutMyBlocks];
@@ -1717,19 +1728,28 @@ static float kTimeSinceAction=7.0f;
         SGDtoolContainer *c=(SGDtoolContainer*)currentPickupObject.MyContainer;
         
         if([c.BlocksInShape count]>=1){
+            BOOL goingRight=NO;
+            
             for(SGDtoolBlock *b in c.BlocksInShape)
             {
                     if(b.Position.x<60)
-                        diffX+=60;
+                    {
+                        diffX+=(60-b.Position.x);
+                        goingRight=YES;
+                    }
+                
+//                    else if(b.Position.x>lx-60 && !goingRight)
+//                    {
+//                        diffX-= (b.Position.x - (lx-60));
+//                    }
                 
                     if(b.Position.y<100)
-                        diffY+=60;
+                        diffY+=20 + (100-b.Position.y);
                 
-                    if(b.Position.x>lx-60)
-                        diffX+=-60;
-                
-                    if(b.Position.y>ly-200)
-                        diffY+=-60;
+                    if(b.Position.y>(ly-200))
+                    {
+                        diffY-= (b.Position.y - (ly-200));
+                    }
                 
             }
             
@@ -1744,7 +1764,7 @@ static float kTimeSinceAction=7.0f;
             {
                 if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape count]>1){
                     SGDtoolBlock *b2=[((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:1];
-                    b.Position=ccp(b2.Position.x,b2.Position.y+52);
+                    b.Position=ccp(b2.Position.x,b2.Position.y+kDistanceBetweenBlocks);
                     [b.MyContainer layoutMyBlocks];
                 }
             }

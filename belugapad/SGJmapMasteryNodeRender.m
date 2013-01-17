@@ -330,7 +330,12 @@ static int shadowSteps=5;
         //get position by copying from indexed placeholder
         CGPoint pos=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).position;
         
-        child.Position=ccp(pos.x+48,pos.y-33);
+        child.Position=ccp(pos.x+8,pos.y-33);
+        
+        float ydiff=child.Position.y - ParentGO.Position.y;
+        float ynew=ParentGO.Position.y + (0.7f * ydiff);
+        
+        child.Position=ccp(child.Position.x, ynew);
         
         child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
         
@@ -509,7 +514,9 @@ static int shadowSteps=5;
             
             CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
             
-            newfsprite.position=ccp(newfsprite.contentSize.width / 2.0f, -newfsprite.contentSize.height / 2.0f);
+            newfsprite.position=ccpAdd(ccp(newfsprite.contentSize.width / 2.0f, -newfsprite.contentSize.height / 2.0f), ccp(-20, 0));
+            
+
             
             [base addChild:newfsprite];
             newfsprite.opacity=0;
@@ -556,7 +563,7 @@ static int shadowSteps=5;
                 oldNodeSprite=[CCSprite spriteWithSpriteFrameName:fnameold];
                 [base addChild:oldNodeSprite];
 //
-                oldNodeSprite.position=ccp(oldNodeSprite.contentSize.width / 2.0f, -oldNodeSprite.contentSize.height / 2.0f);
+                oldNodeSprite.position=ccpAdd(ccp(oldNodeSprite.contentSize.width / 2.0f, -oldNodeSprite.contentSize.height / 2.0f), ccp(-20, 0));
             
 //                [oldNodeSprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
 //            }

@@ -11,6 +11,7 @@
 
 @class Daemon;
 @class SGJmapMasteryNode;
+@class SGJmapNode;
 
 @interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
@@ -58,6 +59,9 @@
     bool mapPositionSet;
     
     CCLabelTTF *utdHeaderLabel;
+    
+    SGJmapNode *resumeAtNode;
+    NSDate *resumeAtMaxDate;
 }
 
 +(CCScene *)scene;

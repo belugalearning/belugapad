@@ -300,15 +300,18 @@ typedef enum {
     // position map so that bottom-most included node in view, bottom-left
     if (!contentService.resetPositionAfterTH && !mapPositionSet)
     {
-        CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
-        for (id go in [gw AllGameObjects]) {
-            if([go isKindOfClass:[SGJmapMasteryNode class]])
-            {
-                CGPoint mnpos = ((SGJmapMasteryNode*)go).Position;
-                if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
-            }
-        }
-        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
+//        CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
+//        for (id go in [gw AllGameObjects]) {
+//            if([go isKindOfClass:[SGJmapMasteryNode class]])
+//            {
+//                CGPoint mnpos = ((SGJmapMasteryNode*)go).Position;
+//                if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
+//            }
+//        }
+//        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
+        
+        CGPoint np=resumeAtNode.Position;
+        [mapLayer setPosition:ccp(512-np.x, 384-np.y)];
     }
     
     [self buildSearchIndex];
@@ -661,6 +664,27 @@ typedef enum {
             
             
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
+        }
+        else if([go isKindOfClass:[SGJmapNode class]])
+        {
+            SGJmapNode *n=(SGJmapNode*)go;
+            if (n.ustate.lastPlayed)
+            {
+                if([resumeAtMaxDate compare:n.ustate.lastPlayed]==NSOrderedAscending)
+                {
+                    resumeAtMaxDate=n.ustate.lastPlayed;
+                    resumeAtNode=n;
+                }
+            }
+            else if([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180214"])
+            {
+                //if no other node set, we'll use this one -- so set an aritifically low date
+                if(!resumeAtMaxDate)
+                {
+                    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:0];
+                    resumeAtNode=n;
+                }
+            }
         }
     }
     

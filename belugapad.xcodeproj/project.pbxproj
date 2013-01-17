@@ -58,6 +58,7 @@
 		3395A5FE164F092500492FC2 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 3395A5FD164F092500492FC2 /* Default-Landscape@2x~ipad.png */; };
 		339804841661157300589106 /* 72_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 339804831661157300589106 /* 72_icon.png */; };
 		339804871661157A00589106 /* 144_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 339804861661157A00589106 /* 144_icon.png */; };
+		33E7CC4D16A788D90024CFFE /* glitter_explosion2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */; };
 		33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33FF5F14166133860077EEA3 /* tts-replace.plist */; };
 		5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFbuilderChunk.m */; };
 		5501FC4C15D929EC007E124A /* SGDtoolCage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501FC4B15D929EC007E124A /* SGDtoolCage.m */; };
@@ -101,7 +102,6 @@
 		558ADA3616611B250000C448 /* tts-objects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA3516611B250000C448 /* tts-objects.plist */; };
 		558D79E7168893F800048B01 /* LineDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79E6168893F800048B01 /* LineDrawer.m */; };
 		558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */; };
-		5597038B16A49AD8007F27D2 /* glitter_explosion2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5597038A16A49AD8007F27D2 /* glitter_explosion2.plist */; };
 		559846661627095B00554E8A /* MQDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 559846651627095B00554E8A /* MQDisplay.m */; };
 		5598466A162732CA00554E8A /* RatioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55984669162732CA00554E8A /* RatioTool.m */; };
 		559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A33D615DA382C00CA97E2 /* CountingTimer.m */; };
@@ -546,6 +546,7 @@
 		3395A5FD164F092500492FC2 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		339804831661157300589106 /* 72_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 72_icon.png; sourceTree = "<group>"; };
 		339804861661157A00589106 /* 144_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 144_icon.png; sourceTree = "<group>"; };
+		33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glitter_explosion2.plist; sourceTree = "<group>"; };
 		33FF5F14166133860077EEA3 /* tts-replace.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-replace.plist"; sourceTree = "<group>"; };
 		5501947015C038300067E22C /* SGFbuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderChunk.h; sourceTree = "<group>"; };
 		5501947115C038300067E22C /* SGFbuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderChunk.m; sourceTree = "<group>"; };
@@ -629,7 +630,6 @@
 		558D79E6168893F800048B01 /* LineDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDrawer.m; sourceTree = "<group>"; };
 		558D79EC1688950300048B01 /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
 		558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
-		5597038A16A49AD8007F27D2 /* glitter_explosion2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glitter_explosion2.plist; sourceTree = "<group>"; };
 		559846641627095B00554E8A /* MQDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDisplay.h; sourceTree = "<group>"; };
 		559846651627095B00554E8A /* MQDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQDisplay.m; sourceTree = "<group>"; };
 		55984668162732CA00554E8A /* RatioTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatioTool.h; sourceTree = "<group>"; };
@@ -2386,7 +2386,7 @@
 		7F813D5914CCC38100C1E997 /* particles */ = {
 			isa = PBXGroup;
 			children = (
-				5597038A16A49AD8007F27D2 /* glitter_explosion2.plist */,
+				33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */,
 				557C1FBD16A20FF5000ED30A /* star_explosion2.plist */,
 				7FDBA56214EC4271004D1CC9 /* bm11.plist */,
 				7F813D6A14CCD8CF00C1E997 /* fire3.plist */,
@@ -3160,7 +3160,7 @@
 				0CA32F11166506DD00FC5423 /* NumpadInputController.xib in Resources */,
 				55435F1F1696273C00C39926 /* intro-problems in Resources */,
 				557C1FBE16A20FF5000ED30A /* star_explosion2.plist in Resources */,
-				5597038B16A49AD8007F27D2 /* glitter_explosion2.plist in Resources */,
+				33E7CC4D16A788D90024CFFE /* glitter_explosion2.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

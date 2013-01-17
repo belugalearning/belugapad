@@ -2720,6 +2720,7 @@ static float kTimeToHintToolTray=0.0f;
         */
         [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
         [descRow relayoutChildrenToWidth:[self questionTrayWidth]];
+        NSLog(@"questionTrayWidth: %f", [self questionTrayWidth]);
         
         /*
         float rowHeight=0;

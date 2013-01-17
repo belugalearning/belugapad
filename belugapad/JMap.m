@@ -681,9 +681,9 @@ typedef enum {
             else if([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180214"])
             {
                 //if no other node set, we'll use this one -- so set an aritifically low date
-                if(!resumeAtMaxDate)
+                if([resumeAtMaxDate compare:[NSDate dateWithTimeIntervalSince1970:1]]==NSOrderedAscending)
                 {
-                    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:0];
+                    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:1];
                     resumeAtNode=n;
                 }
             }

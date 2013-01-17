@@ -918,7 +918,7 @@
             isInBubble=[grp checkIfInBubbleAt:location];
             if(!hasLoggedMove){
                 hasLoggedMove=YES;
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)grp blocksInGroup]]];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:[(NSObject*)grp isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)grp blocksInGroup]]:nil];
             }
         }
     }
@@ -965,7 +965,7 @@
             {
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_pipe.wav")];
                 
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
                 [self evalProblem];
                 [self setTouchVarsToOff];
                 return;

@@ -2207,22 +2207,33 @@ static float kTimeToHintToolTray=0.0f;
     qTrayMid.zOrder=1;
     
     float rowHeight=0;
+
+    [qTrayMid setAnchorPoint:ccp(0.5,0)];
     
     if([currentTool isKindOfClass:[ExprBuilder class]])
-        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] + 15;
+    {
+        ExprBuilder *eb=(ExprBuilder*)currentTool;
+        
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] +35;
+        
+        //[qTrayMid setPosition:ccp(row.position.x,[eb getRowPosY]-10 - [eb getDescriptionAreaHeight] / 2.0f)];
+        
+        qTrayMid.position=ccp(row.position.x, row.position.y-10);
+    }
     else
+    {
         rowHeight=row.size.height + 35;
-    
+        [qTrayMid setPosition:ccp(row.position.x,row.position.y - row.size.height / 2.0f)];
+
+    }
     
     if(rowHeight<68.0f)rowHeight=68.0f;
     
 
-    
-    [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
-    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
+
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
     [qTrayMid setScaleY:(rowHeight-64)/16];
-    //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+
     
         NSLog(@"row height %f scaleY %f", rowHeight, qTrayMid.scaleY);
     
@@ -2329,11 +2340,11 @@ static float kTimeToHintToolTray=0.0f;
 //    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY)]];
 //    
 
-    qTrayTop.position=ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    qTrayMid.position=ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    qTrayBot.position=ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    readProblemDesc.position=ccp(readProblemDesc.position.x, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    
+//    qTrayTop.position=ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    qTrayMid.position=ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    qTrayBot.position=ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    readProblemDesc.position=ccp(readProblemDesc.position.x, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    
     
 }
 -(void)setProblemDescriptionVisible:(BOOL)visible
@@ -2740,9 +2751,9 @@ static float kTimeToHintToolTray=0.0f;
 {
     [self sizeQuestionDescription];
     
-    qTrayTop.position=ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    qTrayMid.position=ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    qTrayBot.position=ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    qTrayTop.position=ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    qTrayMid.position=ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+//    qTrayBot.position=ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
     
 }
 

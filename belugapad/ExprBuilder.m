@@ -374,6 +374,16 @@
     }
 }
 
+-(SGBtxeRow*)descRow
+{
+    return descRow;
+}
+
+-(float)getRowPosY
+{
+    return descRow.position.y;
+}
+
 -(float)getDescriptionAreaHeight
 {
     if(isContracted)

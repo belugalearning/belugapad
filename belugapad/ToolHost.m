@@ -2194,6 +2194,36 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - problem description
 
+- (void)sizeQuestionDescription
+{
+    SGBtxeRow *row=qDescRow;
+    
+    qTrayBot.position=ccp(0,0);
+    qTrayMid.position=ccp(0,0);
+    qTrayTop.position=ccp(0,0);
+    
+    float rowHeight=0;
+    
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] + 15;
+    else
+        rowHeight=row.size.height + 35;
+    
+    
+    if(rowHeight<68.0f)rowHeight=68.0f;
+    
+    [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
+    //[qTrayMid setPosition:ccp(cx,row.position.y)];
+    [qTrayMid setScaleY:(rowHeight-64)/16];
+    //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
+    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
+    
+    [readProblemDesc setPosition:ccp(qTrayMid.position.x+((qTrayMid.contentSize.width * qTrayMid.scaleX)/2)-readProblemDesc.contentSize.width,
+                                     qTrayBot.position.y-25)];
+}
+
 -(void)setProblemDescription:(NSString*)descString
 {
     if(skipNextDescDraw)
@@ -2216,7 +2246,10 @@ static float kTimeToHintToolTray=0.0f;
     descGw.Blackboard.RenderLayer = btxeDescLayer;
     
     //create row
-    SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    
+    qDescRow=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    SGBtxeRow *row=qDescRow;
+    
     descRow=row;
     row.position=ccp(cx, (cy*2) - 100);
 
@@ -2257,25 +2290,7 @@ static float kTimeToHintToolTray=0.0f;
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
 
-    float rowHeight=0;
-    
-    if([currentTool isKindOfClass:[ExprBuilder class]])
-        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] + 15;
-    else
-        rowHeight=row.size.height + 35;
-    
-    
-    if(rowHeight<68.0f)rowHeight=68.0f;
-    
-    [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
-    [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
-    //[qTrayMid setPosition:ccp(cx,row.position.y)];
-    [qTrayMid setScaleY:(rowHeight-64)/16];
-//    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
-    [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
-    [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
-    
-    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
+    [self sizeQuestionDescription];
     
     animateQuestionBox=YES;
     
@@ -2700,6 +2715,21 @@ static float kTimeToHintToolTray=0.0f;
     [self hideCornerTray];
 }
 
+-(void)sizeAndResetQuestionDescripion
+{
+    [self sizeQuestionDescription];
+    
+    qTrayTop.position=ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+    qTrayMid.position=ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+    qTrayBot.position=ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+    
+}
+
+-(void)updateReadButtonPosAtScale:(float)scaleX
+{
+    readProblemDesc.position=ccp((qTrayBot.contentSize.width * scaleX) / 2.0f + qTrayBot.position.x - 40.0f, readProblemDesc.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
+}
+
 -(void)showCornerTray
 {
     if(!trayCornerShowing)
@@ -2718,9 +2748,17 @@ static float kTimeToHintToolTray=0.0f;
         
         [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
         */
-        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
-        [descRow relayoutChildrenToWidth:[self questionTrayWidth]];
-        NSLog(@"questionTrayWidth: %f", [self questionTrayWidth]);
+        [descRow animateAndMoveToPosition:ccp(345.0f, (cy*2)-100)];
+        [descRow relayoutChildrenToWidth:600];
+        
+        [self sizeAndResetQuestionDescripion];
+
+        
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
+        
+        [self updateReadButtonPosAtScale:0.65f];
         
         /*
         float rowHeight=0;
@@ -2753,15 +2791,14 @@ static float kTimeToHintToolTray=0.0f;
         NEW FUCKED STUFF */
         
         
-        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
-        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
-        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
+
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
-        
+//        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3), qTrayTop.position.y)]];
+//        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
+//        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
+
+//        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
+
         trayCornerShowing=YES;
     }
 }
@@ -2785,14 +2822,19 @@ static float kTimeToHintToolTray=0.0f;
         [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
         [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3), qTrayBot.position.y)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
+//        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3), qTrayTop.position.y)]];
+//        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3), qTrayMid.position.y)]];
+//        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3), qTrayBot.position.y)]];
+
+//        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 100)];
         
         [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
+        
+        [self sizeAndResetQuestionDescripion];
+        
+        [self updateReadButtonPosAtScale:1.0f];
         
         trayCornerShowing=NO;
     }

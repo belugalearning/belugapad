@@ -237,6 +237,8 @@ typedef enum {
     
     BOOL quittingToMap;
     
+    SGBtxeRow *qDescRow;
+    
 }
 
 @property (retain) Daemon *Zubi;

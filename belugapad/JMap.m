@@ -527,6 +527,8 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
+    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:0];
+    
     //mastery>child relations
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {

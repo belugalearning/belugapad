@@ -59,7 +59,7 @@
 -(void)updatePosition:(CGPoint)position
 {
     self.sprite.position=position;
-    NSLog(@"position at %@", NSStringFromCGPoint(position));
+    //NSLog(@"position at %@", NSStringFromCGPoint(position));
 }
 
 -(void)updatePositionWithAnimation:(CGPoint)position

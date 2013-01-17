@@ -61,6 +61,8 @@ typedef enum {
     // tool stuff
     CCSprite *buttonOfWin;
     CCSprite *numiconOne;
+    CCSprite *flasher;
+    CCSprite *flashingFlasher;
     CCLabelTTF *currentNumber;
     CCLabelTTF *tLabel;
     CCSpriteFrameCache *frameCache;

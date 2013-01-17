@@ -105,7 +105,7 @@
 
     spriteMask.position=ccp(800,130);
     maskOuter.position=ccp(800,150);
-    [magnifyBar setPosition:ccp(150,75)];
+    [magnifyBar setPosition:ccp(150,74)];
     [clippingNode addChild:magnifyBar];
     [clippingNode addChild:spriteMask];
 
@@ -550,7 +550,7 @@
     [renderLayer addChild:barBg];
     
     CCSprite *barUnderneathThing=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar.png")];
-    [barUnderneathThing setPosition:ccp(cx, 355)];
+    [barUnderneathThing setPosition:ccp(cx, 356)];
     [renderLayer addChild:barUnderneathThing];
     
     CCLabelTTF *zeroLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:26.0f];

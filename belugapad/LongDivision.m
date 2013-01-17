@@ -105,7 +105,7 @@
 
     spriteMask.position=ccp(800,130);
     maskOuter.position=ccp(800,150);
-    [magnifyBar setPosition:ccp(150,70)];
+    [magnifyBar setPosition:ccp(150,80)];
     [clippingNode addChild:magnifyBar];
     [clippingNode addChild:spriteMask];
 
@@ -397,26 +397,26 @@
                     [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:sepLine4];
                     sectionStartPos+=sectionSize;
                 }
-                float curTot=0;
+//                float curTot=0;
                 
-                if(rem>0)
-                {
-                    curTot+=((i+1)*magMult)*divisor;
-                    NSLog(@"thislabel %g", curTot);
-//                    float barStart=magnifyBar.position.x-((magnifyBar.contentSize.width*magnifyBar.scale)/2);
-                    CGPoint relPos=[clippingNode convertToNodeSpace:ccp(sectionStartPos,block[1].y)];
-                    CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
-                    //[m setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height)];
-                    [m setPosition:ccp(relPos.x,relPos.y+5)];
-                    [clippingNode addChild:m];
-                    [allSprites addObject:m];
-                    
-                    CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", curTot] fontName:CHANGO fontSize:10.0f];
-                    //[u setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height+15)];
-                    [u setPosition:ccp(relPos.x,relPos.y+10)];
-                    [scaleDrawNode addChild:u];
-                    [allLabels addObject:u];
-                }
+//                if(rem>0)
+//                {
+//                    curTot+=((i+1)*magMult)*divisor;
+//                    NSLog(@"thislabel %g", curTot);
+////                    float barStart=magnifyBar.position.x-((magnifyBar.contentSize.width*magnifyBar.scale)/2);
+//                    CGPoint relPos=[clippingNode convertToNodeSpace:ccp(sectionStartPos,block[1].y)];
+//                    CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
+//                    //[m setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height)];
+//                    [m setPosition:ccp(relPos.x,relPos.y+5)];
+//                    [clippingNode addChild:m];
+//                    [allSprites addObject:m];
+//                    
+//                    CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", curTot] fontName:CHANGO fontSize:10.0f];
+//                    //[u setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height+15)];
+//                    [u setPosition:ccp(relPos.x,relPos.y+10)];
+//                    [scaleDrawNode addChild:u];
+//                    [allLabels addObject:u];
+//                }
             }
 
             // and the labelling stuffs
@@ -544,7 +544,7 @@
 //    [renderLayer addChild:multiplier];
     
     CCSprite *barBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar_Background.png")];
-    [barBg setPosition:ccp(cx,400)];
+    [barBg setPosition:ccp(cx,405)];
     [renderLayer addChild:barBg];
     
     CCSprite *barUnderneathThing=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar.png")];

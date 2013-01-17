@@ -129,8 +129,6 @@ static float kNBFontSizeLarge=35.0f;
     }
 
     for(int i=0;i<10;i++){
-        if(blocksUsedFromThisStore[i]==blocksForThisStore[i]-1 && storeCanCreate[i])
-            storeCanCreate[i]=NO;
         if(blocksUsedFromThisStore[i]<0)blocksUsedFromThisStore[i]=0;
     }
     
@@ -336,7 +334,7 @@ static float kNBFontSizeLarge=35.0f;
         pogo.IndexPos=pogo.Length-1;
         thisLength=pogo.Length;
         blocksForThisStore[pogo.IndexPos]=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
-        blocksUsedFromThisStore[pogo.IndexPos]=1;
+        blocksUsedFromThisStore[pogo.IndexPos]=0;
         
         if(blocksForThisStore[pogo.IndexPos]==blocksUsedFromThisStore[pogo.IndexPos])
             storeCanCreate[pogo.IndexPos]=NO;
@@ -969,7 +967,7 @@ static float kNBFontSizeLarge=35.0f;
                         CCFadeIn *fi=[CCFadeIn actionWithDuration:0.5f];
 
 
-                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];if(storeCanCreate[po.IndexPos])blocksUsedFromThisStore[po.IndexPos]--;}];
+                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];blocksUsedFromThisStore[po.IndexPos]--;}];
                         CCAction *remt=[CCCallBlock actionWithBlock:^{[[mountedObjects objectAtIndex:po.IndexPos] addObject:po];}];
                         CCSequence *sq=nil;
                         
@@ -1042,7 +1040,6 @@ static float kNBFontSizeLarge=35.0f;
                 
                 else{
                     [po handleMessage:kDWmoveSpriteToHome];
-                    if(storeCanCreate[po.IndexPos])
                         blocksUsedFromThisStore[po.IndexPos]--;
                 }
                 [self setTouchVarsToOff];
@@ -1064,8 +1061,8 @@ static float kNBFontSizeLarge=35.0f;
             
             //NSLog(@"blocksForThisStore=%d, blocksUsedFromThisStore=%d, storeCanCreate=%@", blocksForThisStore[pogo.IndexPos], blocksUsedFromThisStore[pogo.IndexPos], storeCanCreate[pogo.IndexPos]?@"YES":@"NO");
             
-            if(storeCanCreate[pogo.IndexPos])
-                blocksUsedFromThisStore[pogo.IndexPos]--;
+
+                //blocksUsedFromThisStore[pogo.IndexPos]--;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 

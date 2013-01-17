@@ -1724,6 +1724,13 @@ static float kTimeSinceAction=7.0f;
                 
                     if(b.Position.y<100)
                         diffY+=60;
+                
+                    if(b.Position.x>lx-60)
+                        diffX+=-60;
+                
+                    if(b.Position.y>ly-200)
+                        diffY+=-60;
+                
             }
             
             SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];

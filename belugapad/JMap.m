@@ -298,7 +298,7 @@ typedef enum {
     [gw handleMessage:kSGreadyRender];
 
     // position map so that bottom-most included node in view, bottom-left
-    if (!contentService.resetPositionAfterTH && !mapPositionSet)
+    if (!mapPositionSet)
     {
 //        CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
 //        for (id go in [gw AllGameObjects]) {
@@ -363,10 +363,10 @@ typedef enum {
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
-    if(contentService.resetPositionAfterTH)
-        [mapLayer setPosition:contentService.lastMapLayerPosition];
-    else
-        [mapLayer setPosition:kStartMapPos];        
+//    if(contentService.resetPositionAfterTH)
+//        [mapLayer setPosition:contentService.lastMapLayerPosition];
+//    else
+//        [mapLayer setPosition:kStartMapPos];        
 
     [self addChild:mapLayer z:1];
     
@@ -1146,6 +1146,7 @@ typedef enum {
         
         ac.lastJmapViewUState=nil;
         ac.lastViewedNodeId=nil;
+        contentService.lastMapLayerPosition=CGPointZero;
         [ac returnToLogin];
         
         return;

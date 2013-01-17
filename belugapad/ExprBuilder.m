@@ -490,6 +490,7 @@
                         {
                             [toolHost tearDownNumberPicker];
                             [self expandDescAndCardRows];
+                            [toolHost hideCornerTray];
                             toolHost.CurrentBTXE=nil;
                         }
                     }
@@ -1045,10 +1046,12 @@
 {
     BOOL isWinning=[self evalExpression];
     
-    if(isWinning)
+    if(isWinning){
         [toolHost doWinning];
-    else
+    }else{
+        [self expandDescAndCardRows];
         [toolHost doIncomplete];
+    }
 }
 
 #pragma mark - problem state

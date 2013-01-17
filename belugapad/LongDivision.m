@@ -105,7 +105,7 @@
 
     spriteMask.position=ccp(800,130);
     maskOuter.position=ccp(800,150);
-    [magnifyBar setPosition:ccp(150,80)];
+    [magnifyBar setPosition:ccp(150,75)];
     [clippingNode addChild:magnifyBar];
     [clippingNode addChild:spriteMask];
 
@@ -466,10 +466,12 @@
         verts[1]=ccp(xInset-1,yInset+1);
         verts[2]=ccp(xInset+lineSize,yInset+1);
         verts[3]=ccp(xInset+lineSize,yInset-1);
+        float myOpac=(maskOuter.opacity/255)*100;
+        
         
         CGPoint *firstVert=&verts[0];
         [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
-        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, maskOuter.opacity)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, maskOuter.opacity))];
+        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, myOpac)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, myOpac))];
         
     }
 //    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];

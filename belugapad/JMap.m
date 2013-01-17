@@ -527,6 +527,8 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
+    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:0];
+    
     //mastery>child relations
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {
@@ -1304,7 +1306,7 @@ typedef enum {
             {
                 if (newpos.x > -282) newpos.x=-282;
                 if (newpos.y < -199) newpos.y=-199;
-                if (newpos.y > 260) newpos.y=260;
+                if (newpos.y > 560) newpos.y=560;
                 if (newpos.x < -282) newpos.x=-282;
             }
             else

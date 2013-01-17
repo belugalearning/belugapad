@@ -2202,6 +2202,10 @@ static float kTimeToHintToolTray=0.0f;
     qTrayMid.position=ccp(0,0);
     qTrayTop.position=ccp(0,0);
     
+    qTrayBot.zOrder=3;
+    qTrayTop.zOrder=3;
+    qTrayMid.zOrder=1;
+    
     float rowHeight=0;
     
     if([currentTool isKindOfClass:[ExprBuilder class]])
@@ -2212,16 +2216,23 @@ static float kTimeToHintToolTray=0.0f;
     
     if(rowHeight<68.0f)rowHeight=68.0f;
     
+
+    
     [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
-    [qTrayMid setPosition:ccp(row.position.x,row.position.y+205)];
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
     [qTrayMid setScaleY:(rowHeight-64)/16];
     //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
+    
+        NSLog(@"row height %f scaleY %f", rowHeight, qTrayMid.scaleY);
+    
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
     
     [readProblemDesc setPosition:ccp(qTrayMid.position.x+((qTrayMid.contentSize.width * qTrayMid.scaleX)/2)-readProblemDesc.contentSize.width,
                                      qTrayBot.position.y-25)];
+    
+    NSLog(@"mid pos %@", NSStringFromCGPoint(qTrayMid.position));
 }
 
 -(void)setProblemDescription:(NSString*)descString
@@ -2587,7 +2598,8 @@ static float kTimeToHintToolTray=0.0f;
         }
     }
     
-    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && (hasTrayWheel||trayWheelShowing))
+//    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && (hasTrayWheel||trayWheelShowing))
+    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && hasTrayWheel)
     {
         if(trayWheelShowing)
         {

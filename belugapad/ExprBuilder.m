@@ -377,7 +377,7 @@
 -(float)getDescriptionAreaHeight
 {
     if(isContracted)
-        return (((cy*2) - 110) - sepYpos + 40.0f);
+        return (((cy*2) - 110) - sepYpos + 20.0f);
     else
         return (((cy*2) - 110) - sepYpos);
 }

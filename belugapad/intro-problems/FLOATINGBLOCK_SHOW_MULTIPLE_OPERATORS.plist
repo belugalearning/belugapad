@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Add the blocks by placing one in each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Block&quot;/&gt;&lt;b:t&gt;. Place the answer into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Pipe_In&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION</key>
+	<integer>2</integer>
+	<key>INIT_BUBBLES</key>
+	<integer>2</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+		<string>-</string>
+		<string>/</string>
+		<string>x</string>
+	</array>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<false/>
+	<key>SHOW_SOLUTION_ON_PIPE</key>
+	<true/>
+	<key>SHOW_INPUT_PIPE</key>
+	<false/>
+</dict>
+</plist>

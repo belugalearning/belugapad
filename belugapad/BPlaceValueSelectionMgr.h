@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "DWBehaviour.h"
+@class DWPlaceValueBlockGameObject;
 
 @interface BPlaceValueSelectionMgr : DWBehaviour
+{
+    DWPlaceValueBlockGameObject *b;
+}
 
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data;
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload;

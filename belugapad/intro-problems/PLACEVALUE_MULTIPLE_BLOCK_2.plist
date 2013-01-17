@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>INTRO</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Press the right arrow on the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PV_cage-variable&quot;/&gt;&lt;b:t&gt;6 times. Add 7&lt;/b:t&gt;&lt;b:oi tag=&quot;30_pv_block_p&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>PlaceValue</string>
+	<key>NUMBER_COLS</key>
+	<integer>1</integer>
+	<key>FIRST_COL_VALUE</key>
+	<integer>1</integer>
+	<key>COL_BASE_VALUE</key>
+	<string>10</string>
+	<key>DEFAULT_COL</key>
+	<integer>1</integer>
+	<key>ROPES_PER_COL</key>
+	<integer>7</integer>
+	<key>ROWS_PER_COL</key>
+	<integer>1</integer>
+	<key>ALLOW_CONDENSING</key>
+	<false/>
+	<key>ALLOW_MULCHING</key>
+	<false/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>1</integer>
+	<key>SHOW_CAGE</key>
+	<true/>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>SHOW_COUNT_BLOCK</key>
+	<true/>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<true/>
+	<key>COLUMN_HEADERS</key>
+	<dict>
+		<key>0</key>
+		<string>Ones</string>
+	</dict>
+	<key>INIT_OBJECTS</key>
+	<array/>
+	<key>SOLUTION</key>
+	<dict>
+		<key>SOLUTION_TYPE</key>
+		<string>TOTAL_COUNT</string>
+		<key>SOLUTION_VALUE</key>
+		<integer>7</integer>
+	</dict>
+	<key>MULTIPLE_BLOCK_PICKUP</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

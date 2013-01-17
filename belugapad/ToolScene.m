@@ -14,6 +14,10 @@
 @synthesize ProblemComplete;
 @synthesize BkgLayer;
 @synthesize ForeLayer;
+@synthesize NoScaleLayer;
+@synthesize ScaleMin;
+@synthesize ScaleMax;
+@synthesize PassThruScaling;
 
 -(id)initWithToolHost:(ToolHost*)host andProblemDef:(NSDictionary*)pdef
 {
@@ -48,6 +52,36 @@
 -(float)metaQuestionAnswersXLocation
 {
     return 0;
+}
+
+-(float)metaQuestionTitleYLocation
+{
+    return 0;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return 0;
+}
+
+-(void)handlePassThruScaling:(float)scale
+{
+    
+}
+
+-(void)evalProblem
+{
+    
+}
+
+-(void)draw
+{
+    
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -88,6 +122,15 @@
 -(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
     
+}
+
+-(void)dealloc
+{
+    self.BkgLayer=nil;
+    self.NoScaleLayer=nil;
+    self.ForeLayer=nil;
+    
+    [super dealloc];
 }
 
 @end

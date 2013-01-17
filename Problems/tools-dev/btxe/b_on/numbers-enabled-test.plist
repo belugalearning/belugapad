@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>1 to 5</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Make 1 to 5 in the correct order using numicon blocks.</string>
+	<key>NUMBER_MODE</key>
+	<string>numicon</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:on number=&quot;3&quot;&gt; &lt;/b:on&gt;
+&lt;b:on number=&quot;2&quot; &lt;/b:on&gt;
+&lt;b:on number=&quot;5&quot;&lt;/b:on&gt;
+&lt;b:on number=&quot;1&quot; &lt;/b:on&gt;
+&lt;b:on number=&quot;4&quot; &lt;/b:on&gt;</string>
+		<string>&lt;b:on number=&quot;1&quot; enabled=&quot;no&quot;/&gt;
+&lt;b:on number=&quot;2&quot; enabled=&quot;no&quot;/&gt;
+&lt;b:on number=&quot;3&quot; enabled=&quot;no&quot;/&gt;
+&lt;b:on number=&quot;4&quot; enabled=&quot;no&quot;/&gt;
+&lt;b:on number=&quot;5&quot; enabled=&quot;no&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$object</key>
+		<dict>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<key>$decrementor</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$number</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$object-$decrementor}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@object</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>apples</string>
+				<string>sweets</string>
+				<string>pens</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

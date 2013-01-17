@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NUMBER_MODE</key>
+	<string>numicon</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;this is a problem about&lt;/b:t&gt;&lt;b:on number=&quot;4&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:on number=&quot;5&quot; /&gt;&lt;b:t&gt;and some text that is a number 3 and 4! yes and 5? oh&lt;/b:t&gt;</string>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>&lt;b:t&gt;How many &lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt; are there?&lt;/b:t&gt;&lt;b:t&gt;How many &lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt; are there?&lt;/b:t&gt;&lt;b:t&gt;How many &lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt; are there?&lt;/b:t&gt;&lt;b:t&gt;How many &lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt; are there?&lt;/b:t&gt;&lt;b:t&gt;How many &lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt; are there?&lt;/b:t&gt;&lt;b:t&gt;How many &lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt; are there?&lt;/b:t&gt;</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>1111</string>
+	</dict>
+</dict>
+</plist>

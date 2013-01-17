@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Count to 5 motherfucker</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>0</integer>
+	<key>DOCK_TYPE</key>
+	<string>Infinite</string>
+	<key>HAS_INACTIVE_AREA</key>
+	<false/>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>BOND_ALL_OBJECTS</key>
+	<true/>
+	<key>EVAL_AREAS</key>
+	<array>
+		<dict>
+			<key>AREA_SIZE</key>
+			<integer>12</integer>
+			<key>AREA_WIDTH</key>
+			<integer>3</integer>
+			<key>LABEL</key>
+			<string>Sausages</string>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<integer>5</integer>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>count to 8</string>
+	<key>EXPRESSION_FILE</key>
+	<string>/Problems/tools-dev/nline-dev/a-eq-8.mathml</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>0</string>
+	<key>SEGMENT_VALUE</key>
+	<string>1</string>
+	<key>MIN_VALUE</key>
+	<string>0</string>
+	<key>MAX_VALUE</key>
+	<string>10</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>HIDE_ZUBI</key>
+	<true/>
+</dict>
+</plist>

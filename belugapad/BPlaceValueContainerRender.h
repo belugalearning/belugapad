@@ -7,10 +7,11 @@
 //
 
 #import "DWBehaviour.h"
+@class DWPlaceValueNetGameObject;
 
 @interface BPlaceValueContainerRender : DWBehaviour
 {
-
+    DWPlaceValueNetGameObject *n;
     CCSprite *mySprite;
 }
 

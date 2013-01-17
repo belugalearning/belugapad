@@ -1,3 +1,12 @@
-[submodule "belugapad/BAExpression"]
-	path = belugapad/BAExpression
-	url = git@github.com:belugalearning/BAExpression.git
+[submodule "belugapad/libs/fmdb"]
+	path = belugapad/libs/fmdb
+	url = git://github.com/ccgus/fmdb.git
+[submodule "belugapad/libs/JSONKit"]
+	path = belugapad/libs/JSONKit
+	url = https://github.com/johnezang/JSONKit.git
+[submodule "belugapad/libs/AFNetworking"]
+	path = belugapad/libs/AFNetworking
+	url = https://github.com/AFNetworking/AFNetworking.git
+[submodule "belugapad/libs/SSZipArchive"]
+	path = belugapad/libs/SSZipArchive
+	url = git://github.com/samsoffes/ssziparchive.git

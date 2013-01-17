@@ -22,7 +22,6 @@
         mGameScene=scene;
         gameObjects=[[NSMutableArray alloc] init];        
         localStore=[[NSMutableDictionary alloc] init];
-		[localStore retain];
 		
 		mPause = false;
 		
@@ -53,6 +52,12 @@
 	[gameObjects addObject:gameObject];
 	
 	return gameObject;
+}
+
+-(void)populateAndAddGameObject:(DWGameObject*)originalObject withTemplateName:(NSString *)templateName
+{
+    [DWGameObject populateObject:originalObject fromTemplate:templateName withWorld:self];
+    [gameObjects addObject:originalObject];
 }
 
 -(void)addGameObject:(DWGameObject*)gameObject
@@ -88,6 +93,7 @@
 	{
 		[gameObjects removeObjectsInArray:removeObjects];
 		dirtyRemoveObjects=NO;
+        [removeObjects removeAllObjects];
 	}
 	
 	if(!mPause)
@@ -143,6 +149,11 @@
     [wStr release];
 }
 
+-(NSMutableArray*)AllGameObjects
+{
+    return gameObjects;
+}
+
 -(NSMutableDictionary *) store
 {
 //	[gameObjects release];
@@ -193,12 +204,12 @@
 -(void)dealloc
 {
 	[localStore release];
-    
-
-    
 	[gameObjects release];
-
     [removeObjects release];
+    
+    [blackboard release];
+    [LogBuffer release];
+    
 	[super dealloc];
 }
 

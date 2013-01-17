@@ -16,14 +16,18 @@
 
 @property BOOL ProblemComplete;
 @property (retain) CCLayer *BkgLayer;
+@property (retain) CCLayer *NoScaleLayer;
 @property (retain) CCLayer *ForeLayer;
+@property float ScaleMin;
+@property float ScaleMax;
+@property BOOL PassThruScaling;
 
 -(id)initWithToolHost:(ToolHost*)host andProblemDef:(NSDictionary*)pdef;
 -(void)problemStateChanged;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;
-
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
@@ -32,8 +36,13 @@
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event;
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event;
 -(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event;
-
+-(void)evalProblem;
+-(float)metaQuestionTitleXLocation;
+-(float)metaQuestionAnswersXLocation;
+-(void)handlePassThruScaling:(float)scale;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
+
+-(void)draw;
 
 @end

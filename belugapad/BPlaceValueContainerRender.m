@@ -8,16 +8,26 @@
 
 #import "BPlaceValueContainerRender.h"
 #import "global.h"
+#import "DWPlaceValueNetGameObject.h"
+#import "LoggingService.h"
+#import "LogPoller.h"
+#import "AppDelegate.h"
 
 @implementation BPlaceValueContainerRender
 
 -(BPlaceValueContainerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueContainerRender*)[super initWithGameObject:aGameObject withData:data];
+   
+    n=(DWPlaceValueNetGameObject*)aGameObject;
     
     //init pos x & y in case they're not set elsewhere
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
+    n.PosX=0.0f;
+    n.PosY=0.0f;
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller registerPollee:(id<LogPolling>)n];
     
     return self;
 }
@@ -37,26 +47,32 @@
 
 -(void)setSprite
 {
-    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
-    if(!sname) sname=@"netspacer.png";
+    NSString *sname=@"";
     
-    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/placevalue/%@", sname]))];
-    [mySprite setOpacity:120];
+    if(n.renderType==0)
+        sname=@"/images/placevalue/grid-middle.png";
+    else if(n.renderType==1)
+        sname=@"/images/placevalue/grid-top.png";
+    else if(n.renderType==2)
+        sname=@"/images/placevalue/grid-bottom.png";
+    
+    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
+    [mySprite setOpacity:127];
+    n.mySprite=mySprite;
 
-    float x=[[[gameObject store] objectForKey:POS_X] floatValue];
-    float y=[GOS_GET(POS_Y) floatValue];
+    float x=n.PosX;
+    float y=n.PosY;
     
     [mySprite setPosition:ccp(x, y)];
     
-    BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
+    BOOL inactive=n.Hidden;
     if(inactive)
-    {
         [mySprite setVisible:NO];
-    }
+    
     if(gameWorld.Blackboard.inProblemSetup)
     {
-        [mySprite setTag:1];
-        [mySprite setOpacity:0];
+//        [mySprite setTag:1];
+//        [mySprite setOpacity:0];
     }
     [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:0];
 
@@ -65,7 +81,10 @@
 
 -(void) dealloc
 {
-    [mySprite release];
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    LoggingService *loggingService = ac.loggingService;
+    [loggingService.logPoller unregisterPollee:(id<LogPolling>)n];
+    
     [super dealloc];
 }
 

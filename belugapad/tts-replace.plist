@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1s</key>
+	<string>ones</string>
+	<key>2s</key>
+	<string>twos</string>
+	<key>3s</key>
+	<string>threes</string>
+	<key>4s</key>
+	<string>fours</string>
+	<key>5s</key>
+	<string>fives</string>
+	<key>6s</key>
+	<string>sixes</string>
+	<key>7s</key>
+	<string>sevens</string>
+	<key>8s</key>
+	<string>eights</string>
+	<key>9s</key>
+	<string>nines</string>
+	<key>10s</key>
+	<string>tens</string>
+	<key>11s</key>
+	<string>elevens</string>
+	<key>12s</key>
+	<string>twelves</string>
+	<key>20s</key>
+	<string>twentys</string>
+	<key>100s</key>
+	<string>hundreds</string>
+	<key>1000s</key>
+	<string>thousands</string>
+	<key>goobles</key>
+	<string>guubles</string>
+	<key>?</key>
+	<string>.</string>
+</dict>
+</plist>

@@ -8,11 +8,14 @@
 
 #import "BPlaceValueObjectSpawn.h"
 #import "global.h"
+#import "DWPlaceValueCageGameObject.h"
+#import "DWPlaceValueBlockGameObject.h"
 
 @implementation BPlaceValueObjectSpawn
 -(BPlaceValueObjectSpawn *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueObjectSpawn*)[super initWithGameObject:aGameObject withData:data];
+    c=(DWPlaceValueCageGameObject*)gameObject;
     
     return self;
 }
@@ -32,15 +35,28 @@
 
 -(void)spawnObject
 {
-    DWGameObject *block = [gameWorld addGameObjectWithTemplate:@"TplaceValueObject"];
+    if(c.MountedObject)return;
+    if(c.DisableAdd && c.ObjectValue>0)return;
+    if(c.DisableAddNeg && c.ObjectValue<0)return;
+    
+    DWPlaceValueBlockGameObject *block = [DWPlaceValueBlockGameObject alloc];
+    [gameWorld populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
 
-    [[block store] setObject:[[gameObject store] objectForKey:OBJECT_VALUE] forKey:OBJECT_VALUE];
-    [[block store] setObject:[[gameObject store] objectForKey:SPRITE_FILENAME] forKey:SPRITE_FILENAME];
+    block.ObjectValue=c.ObjectValue;
+    block.SpriteFilename=c.SpriteFilename;
+    block.PosX=c.PosX;
+    block.PosY=c.PosY+20;
     
-    NSMutableDictionary *pl = [[[NSMutableDictionary alloc] init] autorelease];
-    [pl setObject:gameObject forKey:MOUNT];
+    block.PickupSprite=c.PickupSpriteFilename;
+
+    block.Mount=gameObject;
+    c.MountedObject=block;
     
-    [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+    [block handleMessage:kDWsetupStuff];
+
+    [block release];
+    
+    //[block handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
 }
 
 

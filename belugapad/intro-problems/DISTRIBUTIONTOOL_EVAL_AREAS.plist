@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle&quot;/&gt;&lt;b:t&gt;into each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>5</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EVAL_AREAS</key>
+	<array>
+		<dict>
+			<key>AREA_SIZE</key>
+			<string>1</string>
+			<key>AREA_WIDTH</key>
+			<string>1</string>
+		</dict>
+		<dict>
+			<key>AREA_SIZE</key>
+			<string>1</string>
+			<key>AREA_WIDTH</key>
+			<string>1</string>
+		</dict>
+	</array>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<string>2</string>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<dict>
+			<key>EVAL_CIRCLES_REQUIRED</key>
+			<string>1</string>
+		</dict>
+		<dict>
+			<key>EVAL_CIRCLES_REQUIRED</key>
+			<string>1</string>
+		</dict>
+	</array>
+</dict>
+</plist>

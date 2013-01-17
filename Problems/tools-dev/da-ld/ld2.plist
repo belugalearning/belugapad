@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>LongDivision</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>how many 2s in 32?</string>
+	<key>DIVIDEND</key>
+	<integer>32</integer>
+	<key>DIVISOR</key>
+	<integer>2</integer>
+	<key>ROW_MULTIPLIER</key>
+	<integer>10</integer>
+	<key>START_ROW</key>
+	<integer>5</integer>
+	<key>COLUMNS_IN_PICKER</key>
+	<integer>3</integer>
+	<key>GOOD_BAD_HIGHLIGHT</key>
+	<false/>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>HIDE_RENDERLAYER</key>
+	<true/>
+</dict>
+</plist>

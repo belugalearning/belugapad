@@ -32,7 +32,10 @@ typedef struct _ccHSL
 +(float) LengthOfVector:(CGPoint)v;
 +(CGPoint) TruncateVector:(CGPoint)v toMaxLength:(float)l;
 
++(NSValue*) BoxAndYFlipCGPoint:(CGPoint)point withMaxY:(float)maxY;
 
++(float) angleFromNorthToLineFrom:(CGPoint)v1 to:(CGPoint)v2;
++(float) angleForVector:(CGPoint)v;
 +(float) angleForNormVector:(CGPoint)v;
 +(CGPoint) closestIntersectionOfLineFrom:(CGPoint)E to:(CGPoint)L againstCircle:(CGPoint)C withRadius:(float)r;
 

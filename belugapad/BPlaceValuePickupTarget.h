@@ -7,10 +7,11 @@
 //
 
 #import "DWBehaviour.h"
+@class DWPlaceValueBlockGameObject;
 
 @interface BPlaceValuePickupTarget : DWBehaviour
 {
-    
+    DWPlaceValueBlockGameObject *b;
 }
 
 

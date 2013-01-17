@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>express factors of sausages (6)</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>4</string>
+	<key>DOTGRID_EVAL_FACTORS_OF</key>
+	<integer>6</integer>
+	<key>ANCHOR_SPACE</key>
+	<integer>80</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>DISABLE_DRAWING</key>
+	<true/>
+	<key>SHOW_DRAGGABLE_BLOCK</key>
+	<true/>
+	<key>SHAPE_BASE_SIZE</key>
+	<integer>10</integer>
+	<key>SELECT_WHOLE_SHAPE</key>
+	<true/>
+	<key>RENDER_SHAPE_DIMENSIONS</key>
+	<true/>
+	<key>AUTO_UPDATE_WHEEL</key>
+	<false/>
+</dict>
+</plist>

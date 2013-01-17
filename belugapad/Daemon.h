@@ -63,12 +63,18 @@ typedef enum {
     NSMutableArray *shardsExpiring;
     float expireShardsCooldown;
     int retainedXP;
+    
+    BOOL hidden;
+    
+    SEL shardCollectCallback;
+    NSObject *shardCollectCaller;
 }
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;
 -(void)setColor:(ccColor4F)aColor;
 
 -(void)doUpdate:(ccTime)delta;
+-(void)setRestingPoint:(CGPoint)newRestingPoint;
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint;
 -(void)setMode:(DaemonMode)newMode;
 -(void)setTarget:(CGPoint)theTarget;
@@ -87,7 +93,13 @@ typedef enum {
 -(void)animationOver;
 
 -(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation;
+-(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation withCallback:(SEL)callback fromCaller:(NSObject*)caller;
 -(void)dumpXP;
 -(void)tickManageShards:(ccTime)delta;
+
+-(void)hideZubi;
+-(void)showZubi;
+
+-(CGPoint)currentPosition;
 
 @end

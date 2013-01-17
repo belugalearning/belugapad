@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>3x2=6</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Make an expression to show how many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;{@b}&lt;b:t&gt; has.&lt;/b:t&gt;</string>
+		<string>{@a}&lt;b:t&gt;has&lt;/b:t&gt;
+&lt;b:on number=&quot;{6}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:obj count=&quot;6&quot;/&gt;
+{@b}&lt;b:t&gt;has&lt;/b:t&gt;
+&lt;b:on number=&quot;{4}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:t&gt; more&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt; than&lt;/b:t&gt;{@a}&lt;b:t&gt;.&lt;/b:t&gt;</string>
+		<string>&lt;b:ph/&gt;
+&lt;b:oo value=&quot;+&quot;/&gt;
+&lt;b:ph/&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on number=&quot;10&quot; enabled=&quot;yes&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$object</key>
+		<dict>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<key>$decrementor</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$number</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$object-$decrementor}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@b</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;thing_4&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_5&quot;/&gt;</string>
+			</array>
+		</dict>
+		<key>@a</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;thing_1&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_2&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_3&quot;/&gt;</string>
+			</array>
+		</dict>
+	</dict>
+	<key>EVAL_EXCLUDE_ROWS</key>
+	<array>
+		<string>2</string>
+	</array>
+</dict>
+</plist>

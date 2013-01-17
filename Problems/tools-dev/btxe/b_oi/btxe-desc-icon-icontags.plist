@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;this is a problem about &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_1&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:oi tag=&quot;b&quot; icontag=&quot;thing_4&quot; /&gt;</string>
+</dict>
+</plist>

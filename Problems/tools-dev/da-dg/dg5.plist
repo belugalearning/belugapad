@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Panning grid</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
+	<integer>2</integer>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<integer>3</integer>
+	<key>ANCHOR_SPACE</key>
+	<integer>82</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>DISABLE_DRAWING</key>
+	<true/>
+	<key>SHAPE_GROUP_SIZE</key>
+	<integer>100</integer>
+	<key>USE_SHAPE_GROUPS</key>
+	<true/>
+	<key>SELECT_WHOLE_SHAPE</key>
+	<true/>
+	<key>SHOW_DRAGGABLE_BLOCK</key>
+	<true/>
+	<key>SHOW_NUMBERWHEEL_FOR_SHAPES</key>
+	<true/>
+</dict>
+</plist>

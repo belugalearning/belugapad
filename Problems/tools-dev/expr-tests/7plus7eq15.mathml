@@ -1,0 +1,13 @@
+<?xml version='1.0'?>
+<!DOCTYPE math PUBLIC '-//W3C//DTD MathML 2.0//EN' 'http://www.w3.org/TR/MathML2/dtd/mathml2.dtd'>
+<math xmlns='http://www.w3.org/1998/Math/MathML'>
+ <apply>
+  <eq />
+  <apply>
+   <plus />
+   <cn type='integer'>7</cn>
+   <cn type='integer'>7</cn>
+  </apply>
+  <cn type='integer'>15</cn>
+ </apply>
+</math>

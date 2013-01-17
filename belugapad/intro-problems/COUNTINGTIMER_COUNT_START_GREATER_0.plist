@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>INTRO</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Start&quot;/&gt;&lt;b:t&gt;to start counting, then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_Counter_Stop&quot;/&gt;&lt;b:t&gt;to select a number.&lt;/b:t&gt;</string>
+	<key>IS_INTRO_PLIST</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>COUNT_TYPE</key>
+	<integer>1</integer>
+	<key>INCREMENT</key>
+	<integer>1</integer>
+	<key>COUNT_MIN</key>
+	<integer>5</integer>
+	<key>COUNT_MAX</key>
+	<integer>20</integer>
+</dict>
+</plist>

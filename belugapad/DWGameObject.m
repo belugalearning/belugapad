@@ -32,6 +32,23 @@
     return gameObject;
 }
 
++(void) populateObject:(DWGameObject*) theObject fromTemplate:(NSString*) templateName withWorld:(DWGameWorld *)gw
+{
+    //load templates from templatesdefs
+	NSString *path=[[NSBundle mainBundle] pathForResource:@"templatedefs-general" ofType:@"plist"];
+	NSDictionary *templateDefs=[NSDictionary dictionaryWithContentsOfFile:path];
+
+    [theObject initWithGameWorld:gw];
+    
+	[[theObject store] setObject:templateName forKey:TEMPLATE_NAME];
+	
+    //parse the root template
+	[self parseTemplate:templateName inTemplateDefs:templateDefs forObject:theObject];
+    [theObject initComplete];
+	
+    //[theObject autorelease];    
+}
+
 +(void) parseTemplate:(NSString *)templateName inTemplateDefs:(NSDictionary *)templateDefs forObject:(DWGameObject *)gameObject
 {
 	//get template
@@ -75,10 +92,8 @@
     {
         gameWorld=aGameWorld;
         behaviours=[[NSMutableArray alloc] init];
-        [behaviours retain];
         
         localStore=[[NSMutableDictionary alloc] init];
-        [localStore retain];
     }
 	return self;
 }
@@ -218,7 +233,6 @@
 
 -(void)dealloc
 {
-    
 	[behaviours release];
 	[localStore release];
 	

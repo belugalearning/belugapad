@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Divide 6 between 3</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>7</integer>
+			<key>POS_X</key>
+			<integer>300</integer>
+			<key>POS_Y</key>
+			<integer>300</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<integer>3</integer>
+		<integer>4</integer>
+	</array>
+	<key>SOLUTION_MODE</key>
+	<string>TARGET_GROUP_COUNT_AND_SIZE</string>
+	<key>EVAL_TARGET_GROUPS</key>
+	<string>3</string>
+	<key>EVAL_TARGET_SIZE</key>
+	<string>2</string>
+	<key>EVAL_UNIQUE_LABELS_ON_ALL_GROUPS</key>
+	<string>YES</string>
+</dict>
+</plist>

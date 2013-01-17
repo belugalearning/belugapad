@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Bigs</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>3</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>80</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>DISABLE_DRAWING</key>
+	<true/>
+	<key>SHOW_DRAGGABLE_BLOCK</key>
+	<true/>
+	<key>SHAPE_BASE_SIZE</key>
+	<integer>10</integer>
+	<key>SHAPE_GROUP_SIZE</key>
+	<string>0</string>
+	<key>USE_SHAPE_GROUPS</key>
+	<true/>
+	<key>SELECT_WHOLE_SHAPE</key>
+	<false/>
+	<key>SHOW_COUNT_BUBBLE</key>
+	<true/>
+	<key>RENDER_SHAPE_DIMENSIONS</key>
+	<true/>
+	<key>SHOW_MORE_LESS_ARROWS</key>
+	<true/>
+	<key>SOLUTION_VALUE</key>
+	<integer>14</integer>
+	<key>SHOW_COUNT</key>
+	<string>SHOW_FRACTION</string>
+	<key>REQUIRED_SHAPES</key>
+	<array>
+		<array>
+			<integer>4</integer>
+			<integer>3</integer>
+		</array>
+		<array>
+			<integer>2</integer>
+			<integer>1</integer>
+		</array>
+	</array>
+</dict>
+</plist>

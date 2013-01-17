@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>RatioTool</string>
+	<key>INTERNAL_DECSCRIPTION</key>
+	<string></string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>REJECT_MODE</key>
+	<string>0</string>
+	<key>RECIPE_RED</key>
+	<integer>40</integer>
+	<key>RECIPE_GREEN</key>
+	<integer>40</integer>
+	<key>RECIPE_BLUE</key>
+	<integer>20</integer>
+	<key>EVAL_VALUE_BLUE</key>
+	<integer>100</integer>
+	<key>WHEEL_MAX</key>
+	<integer>500</integer>
+	<key>INIT_VALUE_RED</key>
+	<integer>200</integer>
+	<key>INIT_VALUE_GREEN</key>
+	<string>200</string>
+</dict>
+</plist>

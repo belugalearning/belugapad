@@ -10,6 +10,7 @@
 #import "BLMath.h"
 #import "TouchXML.h"
 #import "global.h"
+#import "SimpleAudioEngine.h"
 
 const float kBaseMaxForce=6000.0f;
 const float kBaseMaxSpeed=800.0f;
@@ -80,8 +81,37 @@ static float kSubParticleOffset=10.0f;
     return self;
 }
 
+-(void)hideZubi
+{
+    [primaryParticle setVisible:NO];
+    [secondParticle setVisible:NO];
+    [thirdParticle setVisible:NO];
+    hidden=YES;
+}
+
+-(void)showZubi
+{
+    [primaryParticle setVisible:YES];
+    [secondParticle setVisible:YES];
+    [thirdParticle setVisible:YES];    
+    hidden=NO;
+}
+
 -(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation
 {
+    [self createXPshards:numShards fromLocation:baseLocation withCallback:nil fromCaller:nil];
+}
+
+-(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation withCallback:(SEL)callback fromCaller:(NSObject*)caller
+{
+    if(shardsActive.count>30) return;
+    
+    if(callback)
+    {
+        shardCollectCallback=callback;
+        shardCollectCaller=caller;
+    }
+    
     for (int i=0;i<numShards;i++)
     {
         CCSprite *shardSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/shard.png")];
@@ -109,6 +139,7 @@ static float kSubParticleOffset=10.0f;
         
         retainedXP++;
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_shards_dispersed.wav")];
 }
 
 -(void)dumpXP
@@ -140,7 +171,8 @@ static float kSubParticleOffset=10.0f;
         [hostLayer addChild:shardSprite];
         
         retainedXP--;
-    }    
+    }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_shards_flying_back.wav")];
 }
 
 -(void)setColor:(ccColor4F)aColor
@@ -229,6 +261,11 @@ static float kSubParticleOffset=10.0f;
     animationsEnabled=YES;
 }
 
+-(void)setRestingPoint:(CGPoint)newRestingPoint
+{
+    restingPos=newRestingPoint;
+}
+
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint
 {
     restingPos=newRestingPoint;
@@ -240,30 +277,41 @@ static float kSubParticleOffset=10.0f;
 {
     standbyTime+=delta;
     
-    //keep in sync with targetted follow object -- if one present
-    if(followObject)
-    {
-        target=[followObject position];
-        standbyTime=0.0f;
-    }
-    
-    CGPoint desiredSteer=[self getSteeringVelocity];
-    
-    CGPoint pos=[self getNewPositionWithDesiredSteer:desiredSteer andDelta:delta];
-    
-    //shouldn't ever be a need to move to position -- so long as this is running on tick delta
-    [primaryParticle setPosition:pos];
-    
-    //update breathing ryhthm
-    //disabled during testing peffect perf
-    [self updateBreatheVars:delta];
-    
-    if(standbyTime>standbyExpiry)
-    {
-        [self setMode:kDaemonModeResting];
-    }
     
     [self tickManageShards:delta];
+    
+    //for the moment, completely disable movement if hidden
+    if(!hidden)
+    {
+        //keep in sync with targetted follow object -- if one present
+        if(followObject)
+        {
+            target=[followObject position];
+            standbyTime=0.0f;
+        }
+        
+        CGPoint desiredSteer=[self getSteeringVelocity];
+        
+        CGPoint pos=[self getNewPositionWithDesiredSteer:desiredSteer andDelta:delta];
+        
+        //shouldn't ever be a need to move to position -- so long as this is running on tick delta
+        [primaryParticle setPosition:pos];
+        
+        //update breathing ryhthm
+        //disabled during testing peffect perf
+        [self updateBreatheVars:delta];
+        
+        if(standbyTime>standbyExpiry)
+        {
+            [self setMode:kDaemonModeResting];
+        }
+    }
+    
+}
+
+-(CGPoint)currentPosition
+{
+    return primaryParticle.position;
 }
 
 -(void)tickManageShards:(ccTime)delta
@@ -278,6 +326,12 @@ static float kSubParticleOffset=10.0f;
         if(diff<50 || (arc4random()%chanceDiff)==1)
         {
             //collect it
+            
+            //dispersing shards -- not used
+            //CGPoint diffPos=[BLMath SubtractVector:ccp(512, 384) from:shard.position];
+            //CGPoint dest=[BLMath MultiplyVector:diffPos byScalar:5.0f];
+            //CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:dest];
+            
             CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:[primaryParticle position]];
             CCEaseOut *eo=[CCEaseOut actionWithAction:mt rate:0.5f];
             CCFadeOut *fo=[CCFadeOut actionWithDuration:0.3f];
@@ -285,11 +339,19 @@ static float kSubParticleOffset=10.0f;
             [shard runAction:eo];
             [shard runAction:fo];
             
+            //indicate to any interested caller that we collected this shard
+            if(shardCollectCallback)
+            {
+//                [shardCollectCaller performSelectorOnMainThread:shardCollectCallback withObject:self waitUntilDone:YES];
+                
+                [shardCollectCaller performSelector:shardCollectCallback withObject:self afterDelay:0.25f];
+            }
+            
             //dispose of it in the future
             [shardsExpiring addObject:shard];
             
             //reset disposal timer
-            expireShardsCooldown=2.0f;
+            //expireShardsCooldown=2.0f;
         }
     }
     
@@ -307,11 +369,11 @@ static float kSubParticleOffset=10.0f;
         for (CCSprite *s in shardsExpiring) {
             [hostLayer removeChild:s cleanup:YES];
         }
-        
+
         [shardsExpiring removeAllObjects];
         
         //reset expiry
-        expireShardsCooldown=2.0f;
+        expireShardsCooldown=0.2f;
     }
     
 }
@@ -475,6 +537,16 @@ static float kSubParticleOffset=10.0f;
     }
     
     return returnPoints;
+}
+
+-(void)dealloc
+{
+    [shardsActive release];
+    [shardsExpiring release];
+    
+    
+    
+    [super dealloc];
 }
 
 @end

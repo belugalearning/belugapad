@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>SentenceBuilder</string>
+	<key>DESCRIPTION</key>
+	<string>[&lt;btxe id=&quot;allapples&quot;&gt;Tom and Gareth have {$apples} apples&lt;/btxe&gt;]. [&lt;btxe bid=&quot;tomapples&quot;&gt;Tom has {$tomapples}&lt;/btxe&gt;]. [&lt;btxe bid=&quot;garethapples&quot;&gt;How many apples does Gareth have?&lt;/btxe&gt;]</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string></string>
+	<key>SAMPLE_QUESTION</key>
+	<string>Tom and Gareth have 8 apples. Tom has 2. How many apples does Gareth have?</string>
+	<key>SHOW_EXPRESSION</key>
+	<integer>0</integer>
+	<key>SHOW_EXPRESSION_WITH_CONTAINERS</key>
+	<true/>
+	<key>ONLY_ALLOW_MATCHING_ARRANGEMENTS</key>
+	<true/>
+	<key>VALID_EXPRESSIONS</key>
+	<array>
+		<string>&lt;eq /&gt;&lt;ci bid=&quot;garethsapples&quot;/&gt;&lt;subtract/&gt;&lt;ci bid=&quot;allapples&quot;/&gt;&lt;ci bid=&quot;tomsapples&quot;/&gt;</string>
+		<string>&lt;eq /&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$apples</key>
+		<dict>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<key>$decrementor</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$tomsapples</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$apples-$decrementor}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$operator</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>x</string>
+				<string>multiplied by</string>
+				<string>times</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

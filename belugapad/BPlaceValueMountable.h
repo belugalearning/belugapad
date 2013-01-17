@@ -8,9 +8,11 @@
 
 #import "DWBehaviour.h"
 
+@class DWPlaceValueBlockGameObject;
+
 @interface BPlaceValueMountable : DWBehaviour
 {
-    
+    DWPlaceValueBlockGameObject *b;
 }
 
 -(BPlaceValueMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

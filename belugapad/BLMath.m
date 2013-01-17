@@ -59,6 +59,11 @@
     
 }
 
++(NSValue*) BoxAndYFlipCGPoint:(CGPoint)point withMaxY:(float)maxY
+{
+    return [NSValue valueWithCGPoint:ccp(point.x, maxY-point.y)];
+}
+
 +(CGPoint) TruncateVector:(CGPoint)v toMaxLength:(float)l
 {
     float cl=sqrtf((v.x * v.x) + (v.y * v.y));
@@ -69,6 +74,16 @@
         tp=[self MultiplyVector:v byScalar:l/cl];
     }
     return tp;
+}
+
++(float) angleFromNorthToLineFrom:(CGPoint)v1 to:(CGPoint)v2
+{
+    return [self angleForVector:[self SubtractVector:v1 from:v2]];
+}
+
++(float) angleForVector:(CGPoint)v
+{
+    return [self angleForNormVector:[self TruncateVector:v toMaxLength:1.0f]];
 }
 
 +(float) angleForNormVector:(CGPoint)v

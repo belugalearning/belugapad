@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Move </string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>1</integer>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>CAGE_OBJECT_COUNT</key>
+	<integer>0</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>BLOCK_TYPE</key>
+			<string>Value_1</string>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>SHOW_CONTAINER_VALUE</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>BLOCK_TYPE</key>
+			<string>Value_10</string>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>SHOW_CONTAINER_VALUE</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>SHOW_CONTAINER_VALUE</key>
+			<true/>
+			<key>BLOCK_TYPE</key>
+			<string>Value_100</string>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<dict>
+			<key>EVAL_VALUE_100_REQUIRED</key>
+			<integer>3</integer>
+			<key>EVAL_VALUE_10_REQUIRED</key>
+			<integer>2</integer>
+			<key>EVAL_VALUE_1_REQUIRED</key>
+			<integer>6</integer>
+		</dict>
+		<dict>
+			<key>EVAL_VALUE_100_REQUIRED</key>
+			<integer>1</integer>
+			<key>EVAL_VALUE_1_REQUIRED</key>
+			<integer>4</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

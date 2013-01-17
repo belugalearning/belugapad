@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>INTRO</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Drag the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_NB_Block1&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:oi tag=&quot;30_NB_Block2&quot;/&gt;&lt;b:t&gt;into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_NB_Grid_3&quot;/&gt;&lt;b:t&gt;to make 3, then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>NB_Intro_Multiple_Block</string>
+	<key>TOOL_KEY</key>
+	<string>NumberBonds</string>
+	<key>INIT_BARS</key>
+	<array>
+		<dict>
+			<key>LOCKED</key>
+			<true/>
+			<key>LENGTH</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>LABEL</key>
+			<string>3</string>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+			<key>LENGTH</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>INIT_CAGES</key>
+	<array>
+		<dict>
+			<key>LENGTH</key>
+			<integer>1</integer>
+			<key>LABEL</key>
+			<string>1</string>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>LABEL</key>
+			<string>2</string>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>SHOW_BADGES</key>
+	<true/>
+</dict>
+</plist>

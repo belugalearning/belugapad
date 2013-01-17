@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>MQDisplay</string>
+	<key>INTERNAL_DECSCRIPTION</key>
+	<string>display A: 3+15, B: 15+3</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>REJECT_MODE</key>
+	<string>0</string>
+	<key>DISPLAY</key>
+	<array>
+		<dict>
+			<key>LABEL</key>
+			<string>A</string>
+			<key>STRING</key>
+			<string>3 + 15</string>
+		</dict>
+		<dict>
+			<key>LABEL</key>
+			<string>B</string>
+			<key>STRING</key>
+			<string>15 + 3</string>
+		</dict>
+	</array>
+</dict>
+</plist>

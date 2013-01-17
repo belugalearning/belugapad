@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>thing_1</key>
+	<string>pink</string>
+	<key>thing_2</key>
+	<string>orange</string>
+	<key>thing_3</key>
+	<string>yellow</string>
+	<key>thing_4</key>
+	<string>green</string>
+	<key>thing_5</key>
+	<string>blue</string>
+	<key>thing_s</key>
+	<string>creature</string>
+	<key>thing_p</key>
+	<string>creatures</string>
+	<key>30_bubble</key>
+	<string>slider</string>
+	<key>30_commit</key>
+	<string>OK button</string>
+	<key>30_mq_true</key>
+	<string>button or buttons that display a correct answer</string>
+	<key>30_Q</key>
+	<string>what?</string>
+	<key>30_QM</key>
+	<string>question mark</string>
+	<key>30_LD_NP_Green</key>
+	<string>green wheel</string>
+	<key>30_pv_block</key>
+	<string>blocks</string>
+	<key>30_pv_block_s</key>
+	<string>block</string>
+	<key>30_pv_block_p</key>
+	<string>blocks</string>
+	<key>30_PV_Block_Neg_s</key>
+	<string>negative block</string>
+	<key>30_PV_Block_Neg_p</key>
+	<string>negative blocks</string>
+	<key>30_pv_grid</key>
+	<string>container</string>
+	<key>30_PV_Grid_1</key>
+	<string>container</string>
+	<key>30_pv_grid_p</key>
+	<string>containers</string>
+	<key>30_pv_dock_with_block</key>
+	<string>dock</string>
+	<key>30_PV_Cage_1</key>
+	<string>ones dock</string>
+	<key>30_PV_Cage_10</key>
+	<string>tens dock</string>
+	<key>30_PV_cage-variable</key>
+	<string>dock</string>
+	<key>30_PV_unit1</key>
+	<string>one block</string>
+	<key>30_PV_unit1_p</key>
+	<string>one blocks</string>
+	<key>30_PV_unit10</key>
+	<string>ten block</string>
+	<key>30_Counter_Start</key>
+	<string>start button</string>
+	<key>30_Counter_Stop</key>
+	<string>green tick</string>
+	<key>30_DG_sq</key>
+	<string>square</string>
+	<key>30_DG_Handle</key>
+	<string>handle</string>
+	<key>30_NW_2col</key>
+	<string>number wheel</string>
+	<key>30_pause</key>
+	<string>pause button</string>
+	<key>30_DT_Shape_Circle</key>
+	<string>circle</string>
+	<key>30_DT_Shape_Circle_s</key>
+	<string>circles</string>
+	<key>30_DT_Shape_Ellipse</key>
+	<string>ellipses</string>
+	<key>30_DT_Shape_Square</key>
+	<string>squares</string>
+	<key>30_DT_Shape_RoundedSquare</key>
+	<string>rounded squares</string>
+	<key>30_DT_Shape_House</key>
+	<string>houses</string>
+	<key>30_DT_Shape_Diamond</key>
+	<string>octagon</string>
+	<key>30_DT_Shape_Value_10</key>
+	<string>ten circle</string>
+	<key>30_DT_2Circles</key>
+	<string>two circles</string>
+	<key>30_DT_Dock</key>
+	<string>dock</string>
+	<key>30_TT_Grid_Block</key>
+	<string>square</string>
+	<key>30_TT_25</key>
+	<string>25 square</string>
+	<key>30_TT_5</key>
+	<string>circle labelled five</string>
+	<key>30_nl_jump_forward</key>
+	<string>jump forward button</string>
+	<key>30_NL_MoveButtonBack</key>
+	<string>jump back button</string>
+	<key>30_FB_Pipe_In</key>
+	<string>pipe at the bottom</string>
+	<key>30_pipe_out</key>
+	<string>output pipe</string>
+	<key>30_FB_Bubble</key>
+	<string>bubble</string>
+	<key>30_FB_Block</key>
+	<string>block</string>
+	<key>30_NB_grid</key>
+	<string>container</string>
+	<key>30_NB_Grid_1</key>
+	<string>container</string>
+	<key>30_NB_Grid_3</key>
+	<string>container</string>
+	<key>30_NB_grid_p</key>
+	<string>containers</string>
+	<key>30_TT_Tile_Black</key>
+	<string>black square</string>
+	<key>30_NB_Block</key>
+	<string>bar</string>
+	<key>30_NB_Block_p</key>
+	<string>bars</string>
+	<key>30_NL_Yellow</key>
+	<string>yellow marker</string>
+	<key>30_NL_2</key>
+	<string>two</string>
+	<key>30_NL_4</key>
+	<string>four</string>
+	<key>30_SB_Drop</key>
+	<string>container</string>
+	<key>30_NB_Block1</key>
+	<string>one block</string>
+	<key>30_NB_Block2</key>
+	<string>two block</string>
+	<key>1</key>
+	<string>1</string>
+	<key>2</key>
+	<string>2</string>
+	<key>3</key>
+	<string>3</string>
+	<key>4</key>
+	<string>4</string>
+	<key>5</key>
+	<string>5</string>
+	<key>6</key>
+	<string>6</string>
+	<key>7</key>
+	<string>7</string>
+	<key>8</key>
+	<string>8</string>
+	<key>9</key>
+	<string>9</string>
+	<key>10</key>
+	<string>10</string>
+</dict>
+</plist>

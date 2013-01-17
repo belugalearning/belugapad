@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Tom had&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;5 sweets&lt;/b:ot&gt;
+&lt;b:t&gt;He gets&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;4 more.&lt;/b:ot&gt;
+&lt;b:t&gt;How many does he have?&lt;/b:t&gt;</string>
+		<string>&lt;b:commlkp lkpid=&quot;cl1&quot;&gt;
+ &lt;b:lkpitem tag=&quot;a&quot;&gt;4 sweets&lt;/b:lkpitem&gt;
+ &lt;b:lkpitem tag=&quot;b&quot;&gt;5 sweets&lt;/b:lkpitem&gt;
+&lt;/b:commlkp&gt;
+
+&lt;b:commot lkpid=&quot;cl1&quot; sample=&quot;5 sweets&quot; preftag=&quot;a&quot; /&gt;
+&lt;b:op op=&quot;+&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:commot lkpid=&quot;cl1&quot; sample=&quot;4 sweets&quot; preftag=&quot;b&quot; /&gt;
+&lt;b:op op=&quot;=&quot; /&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;9&quot;&gt;9 sweets&lt;/b:ot&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$apples</key>
+		<dict>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<key>$decrementor</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$tomsapples</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$apples-$decrementor}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$operator</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>x</string>
+				<string>multiplied by</string>
+				<string>times</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

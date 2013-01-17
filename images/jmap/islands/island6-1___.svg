@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px"
+	 height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
+<g id="Layer_7">
+</g>
+<g id="island">
+</g>
+<g id="centre">
+</g>
+<g id="data-nodes">
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="689.743" cy="344.229" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="586.714" cy="339.724" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="484.257" cy="301.999" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="545.746" cy="237.999" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="374.228" cy="278.485" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="406.742" cy="357.485" r="13.257"/>
+</g>
+<g id="data-mastery">
+	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="446.96" cy="211.485" r="13.257"/>
+</g>
+<g id="data-label">
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M806.969,638.317"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M593.791,625.14"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="561.003" y1="487.5" x2="714.243" y2="480.986"/>
+</g>
+<g id="data-features" display="none">
+	<circle display="inline" fill="#EFFF00" cx="532.009" cy="333" r="41.009"/>
+	<circle display="inline" fill="#EFFF00" cx="584.588" cy="345.009" r="41.009"/>
+	<circle display="inline" fill="#EFFF00" cx="436.588" cy="333" r="41.009"/>
+	<circle display="inline" fill="#EFFF00" cx="599.646" cy="304" r="32.951"/>
+	<circle display="inline" fill="#EFFF00" cx="466.609" cy="360.174" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="382.917" cy="325.564" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="348.309" cy="326.6" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="452.135" cy="298.391" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="486.744" cy="314.391" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="411.744" cy="291.99" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="486.744" cy="271.049" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="535.826" cy="279.781" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="570.436" cy="263.781" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="619.197" cy="290.955" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="632.598" cy="325.564" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="667.206" cy="327.555" r="16.827"/>
+	<circle display="inline" fill="#EFFF00" cx="563.379" cy="298.391" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="452.135" cy="278.609" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="466.609" cy="251.256" r="34.609"/>
+</g>
+</svg>

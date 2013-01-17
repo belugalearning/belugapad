@@ -1558,6 +1558,12 @@ static float kTimeSinceAction=7.0f;
                     lastProxPos=location;
                 }
                 
+                if(gw.Blackboard.playFailedBondOverMax && !hasPlayedAudioCantBondOverMax)
+                {
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
+                    hasPlayedAudioCantBondOverMax=YES;
+                }
+                
             }
         }
         
@@ -1888,6 +1894,8 @@ static float kTimeSinceAction=7.0f;
     nearestObject=nil;
     spawnedNewObj=YES;
     hasMovedCagedBlock=NO;
+    gw.Blackboard.playFailedBondOverMax=NO;
+    hasPlayedAudioCantBondOverMax=NO;
 
 }
 

@@ -232,6 +232,8 @@ static float kTimeToButtonShake=7.0f;
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
     isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     
+    if(!showCount)buttonFlash=YES;
+    
     if(isIntroPlist)
     {
         countMin=0;
@@ -320,7 +322,7 @@ static float kTimeToButtonShake=7.0f;
         CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
         numiconOne=[CCSprite spriteWithSpriteFrame:frame];
         //[numiconOne setDisplayFrame:frame];
-        [numiconOne setPosition:ccp(currentNumber.position.x+(buttonOfWin.contentSize.width/2),currentNumber.position.y)];
+        [numiconOne setPosition:ccp(cx,100)];
         [numiconOne setOpacity:0];
         [renderLayer addChild:numiconOne];
 

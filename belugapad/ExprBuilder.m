@@ -376,7 +376,10 @@
 
 -(float)getDescriptionAreaHeight
 {
-    return (((cy*2) - 110) - sepYpos);
+    if(isContracted)
+        return (((cy*2) - 110) - sepYpos + 40.0f);
+    else
+        return (((cy*2) - 110) - sepYpos);
 }
 
 -(void)readOutProblemDescription
@@ -389,8 +392,9 @@
 
 -(void)contractDescAndCardRows
 {
-    [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-100)];
-    [descRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    isContracted=YES;
+    [descRow animateAndMoveToPosition:ccp(345.0f, (cy*2)-100)];
+    [descRow relayoutChildrenToWidth:600];
     float hoffset=descRow.size.height;
     [ncardRow animateAndMoveToPosition:ccp(360, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f)];
     [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
@@ -398,11 +402,12 @@
 
 -(void)expandDescAndCardRows
 {
+    isContracted=NO;
     float hoffset=descRow.size.height;
     
     if(descRow){
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 110)];
-        [descRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+        [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
     }
     if(ncardRow){
         [ncardRow animateAndMoveToPosition:ccp(cx, ((cy*2) - 110) - hoffset - ncardRow.size.height / 2.0f)];

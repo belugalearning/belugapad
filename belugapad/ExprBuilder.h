@@ -82,6 +82,8 @@
     BOOL expressionRowsAreLarge;
     
     float sepYpos;
+    
+    BOOL isContracted;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

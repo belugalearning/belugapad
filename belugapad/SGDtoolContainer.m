@@ -151,6 +151,16 @@
 -(void)layoutMyBlocks
 {
     if([BlocksInShape count]==0)return;
+    
+    //build an array of current positions
+    NSMutableArray *previousPositions=[[NSMutableArray alloc] init];
+    for(int i=0;i<[BlocksInShape count];i++)
+    {
+        id<Moveable> thisBlock=[BlocksInShape objectAtIndex:i];
+        CGPoint thisPos=thisBlock.Position;
+        [previousPositions addObject:[NSValue valueWithCGPoint:thisPos]];
+    }
+    
     NSArray *blockPos=[NumberLayout physicalLayoutAcrossToNumber:[BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
     id<Moveable> firstBlock=[BlocksInShape objectAtIndex:0];
@@ -164,7 +174,23 @@
         CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
         
         thisBlock.Position=ccp(posX+thisPos.x, posY+thisPos.y);
-        [thisBlock.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:thisBlock.Position] rate:2.0f]];
+        
+        //establish if this was a previously used location
+        BOOL wasPreviouslyUsed=NO;
+        for(NSValue *v in previousPositions)
+        {
+            CGPoint pcomp=[v CGPointValue];
+            if(pcomp.x==thisBlock.Position.x && pcomp.y==thisBlock.Position.y)
+            {
+                wasPreviouslyUsed=YES;
+            }
+        }
+        
+        if(wasPreviouslyUsed)
+            thisBlock.mySprite.position=thisBlock.Position;
+        else
+            [thisBlock.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:thisBlock.Position] rate:2.0f]];
+
     }
     
     [self repositionLabel];

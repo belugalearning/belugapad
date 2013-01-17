@@ -2353,6 +2353,7 @@ static float kTimeToHintToolTray=0.0f;
             [(LineDrawer*)lineDrawer clearSlate];
             [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_cleared.wav")];
         }
+        return;
     }
     
     //delegate touch handling for trays here

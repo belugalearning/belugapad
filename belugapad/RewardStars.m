@@ -177,8 +177,8 @@
     
     [starBkg runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(cx,cy)] rate:0.5f]];
     
-    scoreLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:28.0f];
-    [scoreLabel setPosition:ccp(510,356)];
+    scoreLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:36.0f];
+    [scoreLabel setPosition:ccp(510,340)];
     [self addChild:scoreLabel];
     [scoreLabel runAction:[CCFadeIn actionWithDuration:0.5f]];
     

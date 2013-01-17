@@ -149,6 +149,12 @@
     {
         [self boundThisPin:nodeSprite];
     }
+    
+    //or if this is the SPECIAL node && not complete
+    if([pn._id isEqualToString:@"5608a59d6797796ce9e11484fd180214"] && !pn.EnabledAndComplete)
+    {
+        [self boundThisPin:nodeSprite];
+    }
 }
 
 -(void)boundThisPin:(CCSprite*)sprite

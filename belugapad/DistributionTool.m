@@ -531,8 +531,8 @@ static float kTimeSinceAction=7.0f;
     if(!hasInactiveArea)
     {
         
-        int farLeft=(numBlocks/2)*kDistanceBetweenBlocks;
-        int farRight=lx-30;
+        int farLeft=(numBlocks/1.5)*kDistanceBetweenBlocks+30;
+        int farRight=lx-kDistanceBetweenBlocks;
         int topMost=ly-200;
         int botMost=180;
         
@@ -1724,6 +1724,13 @@ static float kTimeSinceAction=7.0f;
                 
                     if(b.Position.y<100)
                         diffY+=60;
+                
+                    if(b.Position.x>lx-60)
+                        diffX+=-60;
+                
+                    if(b.Position.y>ly-200)
+                        diffY+=-60;
+                
             }
             
             SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];

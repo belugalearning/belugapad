@@ -410,6 +410,7 @@
     [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
     
     [toolHost sizeQuestionDescription];
+    [toolHost setReadProblemPosWithScale:0.65f];
 }
 
 -(void)expandDescAndCardRows
@@ -427,6 +428,7 @@
     }
     
     [toolHost sizeQuestionDescription];
+    [toolHost setReadProblemPosWithScale:1.0f];
 }
 
 #pragma mark - touches events

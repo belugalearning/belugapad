@@ -309,5 +309,6 @@ typedef enum {
 
 -(void)resetScoreMultiplier;
 - (void)sizeQuestionDescription;
+-(void)setReadProblemPosWithScale:(float)ascale;
 
 @end

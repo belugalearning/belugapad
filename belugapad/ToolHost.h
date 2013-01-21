@@ -285,7 +285,6 @@ typedef enum {
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
 -(void)evalNumberPicker;
--(void)reorderNumberPickerSelections;
 -(BOOL)calcMetaQuestion;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;

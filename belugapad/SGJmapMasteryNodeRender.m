@@ -157,69 +157,6 @@ static int shadowSteps=5;
     [super dealloc];
 }
 
-#pragma mark - physical force-directed layout step
-
--(void)forceLayoutStep
-{
-    CGPoint max=ccp(900,900);
-    CGPoint avgp=ccp(0,0);
-    int countx=0, county=0;
-    
-    //connections from mnodes
-    
-    for(SGJmapMasteryNode *n in ParentGO.ConnectFromMasteryNodes)
-    {
-        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
-        diff=ccp(fabsf(diff.x), fabsf(diff.y));
-        if(diff.x<max.x || YES)
-        {
-            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
-            countx++;
-        }
-        if(diff.y<max.y || YES)
-        {
-            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
-            county++;
-        }
-    }
-    
-    
-    //connections to notes
-    for(SGJmapMasteryNode *n in ParentGO.ConnectToMasteryNodes)
-    {
-        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
-        diff=ccp(fabsf(diff.x), fabsf(diff.y));
-        if(diff.x<max.x || YES)
-        {
-            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
-            countx++;
-        }
-        if(diff.y<max.y || YES)
-        {
-            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
-            county++;
-        }
-    }
-
-    //NSLog(@"avgp pre  %@", NSStringFromCGPoint(avgp));
-    
-//    if(countx>0)avgp=ccp(avgp.x / (float)countx, avgp.y);
-//    if(county>0)avgp=ccp(avgp.x, avgp.y / (float)county);
-    
-    //NSLog(@"avgp post %@", NSStringFromCGPoint(avgp));
-    
-    //root of those squared
-//    avgp=ccp(sqrtf(avgp.x), sqrtf(avgp.y));
-    
-    //inverse and multiply
-//    avgp=ccp(avgp.x * 0.01f, avgp.y*0.02f);
-    
-    //NSLog(@"avgp adj  %@", NSStringFromCGPoint(avgp));
-    
-    //reset position
-    //ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
-}
-
 #pragma mark - update and draw (draw only used in debug)
 
 -(void)doUpdate:(ccTime)delta
@@ -1084,6 +1021,70 @@ static int shadowSteps=5;
 }
 
 
+#pragma mark - not on v1 code path
+
+-(void)forceLayoutStep
+{
+    CGPoint max=ccp(900,900);
+    CGPoint avgp=ccp(0,0);
+    int countx=0, county=0;
+    
+    //connections from mnodes
+    
+    for(SGJmapMasteryNode *n in ParentGO.ConnectFromMasteryNodes)
+    {
+        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
+        diff=ccp(fabsf(diff.x), fabsf(diff.y));
+        if(diff.x<max.x || YES)
+        {
+            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
+            countx++;
+        }
+        if(diff.y<max.y || YES)
+        {
+            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
+            county++;
+        }
+    }
+    
+    
+    //connections to notes
+    for(SGJmapMasteryNode *n in ParentGO.ConnectToMasteryNodes)
+    {
+        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
+        diff=ccp(fabsf(diff.x), fabsf(diff.y));
+        if(diff.x<max.x || YES)
+        {
+            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
+            countx++;
+        }
+        if(diff.y<max.y || YES)
+        {
+            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
+            county++;
+        }
+    }
+    
+    //NSLog(@"avgp pre  %@", NSStringFromCGPoint(avgp));
+    
+    //    if(countx>0)avgp=ccp(avgp.x / (float)countx, avgp.y);
+    //    if(county>0)avgp=ccp(avgp.x, avgp.y / (float)county);
+    
+    //NSLog(@"avgp post %@", NSStringFromCGPoint(avgp));
+    
+    //root of those squared
+    //    avgp=ccp(sqrtf(avgp.x), sqrtf(avgp.y));
+    
+    //inverse and multiply
+    //    avgp=ccp(avgp.x * 0.01f, avgp.y*0.02f);
+    
+    //NSLog(@"avgp adj  %@", NSStringFromCGPoint(avgp));
+    
+    //reset position
+    //ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
+}
+
+
 @end
 
 
@@ -1155,5 +1156,7 @@ static int shadowSteps=5;
     
     // ==================================================================================
 }
+
+
 
 @end

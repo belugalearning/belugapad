@@ -19,12 +19,7 @@
 
 static ccColor4B userCol={80, 110, 146, 255};
 static ccColor4B userCol2={120, 168, 221, 255};
-//static ccColor4B userCol={101, 140, 153, 255};
-//static ccColor4B userCol={0, 51, 98, 255};
-//static ccColor4B userCol={150,90,200,255};
-//static ccColor4B userCol={150,90,200,255};
-//static ccColor4B userHighCol={255, 255, 255, 50};
-//static ccColor4B userHighCol={239,119,82,255};
+
 static int shadowSteps=5;
 
 #define FEATURE_UNIQUE_VARIANTS 2
@@ -70,8 +65,6 @@ static int shadowSteps=5;
     {
         [self setup];
         
-//        [self readyRender];
-        
         [self readyNodeSpriteRender];
         
         [self readyIslandRender];
@@ -84,19 +77,7 @@ static int shadowSteps=5;
         labelShadowSprite.visible=YES;
         labelSprite.visible=YES;
         
-        if(ParentGO.Visible)
-        {
-//            [labelSprite runAction:[CCFadeTo actionWithDuration:0.5f opacity:255]];
-//            [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.75f opacity:255]];
-        }
-        else
-        {
-//            labelShadowSprite.opacity=0;
-//            labelSprite.opacity=0;
-            
-//            [labelSprite runAction:[CCFadeTo actionWithDuration:0.25f opacity:0]];
-//            [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.15f opacity:0]];
-        }
+        //visiblity checks were removed pre v1.1.0.5, but sprite checking still does its thing here
         
         for (CCSprite *s in featureSprites) {
             s.visible=ParentGO.Visible;
@@ -106,19 +87,11 @@ static int shadowSteps=5;
     
     if(messageType==kSGzoomOut)
     {
-        //[self setPointScalesAt:REGION_ZOOM_LEVEL];
-        
         [nodeSprite setVisible:NO];
         islandSprite.visible=YES;
         islandShadowSprite.visible=NO;
         ParentGO.Visible=YES;
         zoomedOut=YES;
-        
-//        labelSprite.opacity=255;
-//        labelShadowSprite.opacity=255;
-        
-//        [labelSprite runAction:[CCFadeTo actionWithDuration:0.25f opacity:0]];
-//        [labelShadowSprite runAction:[CCFadeTo actionWithDuration:0.15f opacity:0]];
         
         for (CCSprite *s in featureSprites) {
             //rly!?
@@ -130,7 +103,6 @@ static int shadowSteps=5;
         islandSprite.visible=YES;
         
         [self setPointScalesAt:1.0f];
-        //islandSprite.visible=ParentGO.Visible;
         
         zoomedOut=NO;
     }
@@ -172,52 +144,7 @@ static int shadowSteps=5;
 
 -(void)draw:(int)z
 {
-    //no current drawing outside of debug and draw testing
-    
-//    CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
-    
-    if(z==1)
-    {
-        //this was island base colour -- now in render node
-    }
-    else if (z==2)
-    {
-        
-//        ccColor4F f4=ccc4FFromccc4B(currentCol);
-//        
-//        //lines to inter mastery nodes
-//        for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
-//            //world space of their pos
-//            CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
-//            
-////            ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
-////            ccDrawLine(myWorldPos, tWP);
-//            
-//            float x1=myWorldPos.x;
-//            float y1=myWorldPos.y;
-//            float x2=tWP.x;
-//            float y2=tWP.y;
-//            
-//            float L=sqrtf((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-//            
-//            int lines=5;
-//            if(zoomedOut) lines=1;
-//            
-//            for (float width=-lines; width<(lines+1); width+=0.75f)
-//            {
-//                float x1p=x1+width * (y2-y1) / L;
-//                float x2p=x2+width * (y2-y1) / L;
-//                float y1p=y1+width * (x1-x2) / L;
-//                float y2p=y2+width * (x1-x2) / L;
-//                
-//                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 0.15f);
-//                else ccDrawColor4F(f4.r, f4.g, f4.b, 0.35f);
-//                
-//                ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
-//            }
-//            
-//        }    
-    }
+    //placeholder and completely redundant in v1.1.0.5
 }
 
 #pragma mark - sprite / fixed position layout, main setup sequence
@@ -244,9 +171,7 @@ static int shadowSteps=5;
     
     //all nodes with data
     NSArray *fnodes= [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"NODES"];
-    
-//    NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
-    
+        
     //step all children -- layout and attach artefact positions
     NSArray *artefacts=[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"ARTEFACTS"];
     int artefactIdx=0;
@@ -277,11 +202,6 @@ static int shadowSteps=5;
         child.flip=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).flipX;
         
         [child flipSprite];
-        
-//        NSLog(@"child flip? %@", child.flip? @"YES":@"NO");
-        
-        //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
-        
         
         //set artefact
         int artefactTargetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:[artefacts objectAtIndex:artefactIdx]];
@@ -336,65 +256,6 @@ static int shadowSteps=5;
     
     [gameWorld.Blackboard.debugDrawNode drawDot:ParentGO.Position radius:25.0f color:ccc4f(0, 0, 1, 0.25f)];
     
-//    //draw the volcano / big hill
-//    int vver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
-//    NSString *vName=[NSString stringWithFormat:@"Feature_Stage%d_Size5_%d.png", self.islandStage, vver];
-//    CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
-//    //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
-//    [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,120))];
-//    if(vver==3)vol.scale=0.7f;
-//    [ParentGO.RenderBatch addChild:vol z:3];
-//    [featureSprites addObject:vol];
-//
-//    //1st stage of hills -- stage 4
-//    NSString *scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size4", self.islandStage];
-//    [self scatterThing:scatterName withOffset:ccp(0, -0.25f) andScale:ccp(1.0f, 0.15f)];
-//
-//    
-//    scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size3", self.islandStage];
-//    [self scatterThing:scatterName withOffset:ccp(0, 0.75f) andScale:ccp(1.0f, 0.5f)];
-    
-//    if(ParentGO.PrereqPercentage==0)
-//    {
-//        //if bigger island (2/3+) draw volcano, pick from two
-//        if(ParentGO.ChildNodes.count>0)
-//        {
-////            int vver=3; // the non lava volcano
-////            if(ParentGO.ChildNodes.count>3) vver=1+arc4random()%2; //the lava volcanoes
-//            
-////            NSString *vName=[NSString stringWithFormat:@"volcano_%d.png", vver];
-////            CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
-////            //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
-////            [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,120))];
-////            if(vver==3)vol.scale=0.7f;
-////            [ParentGO.RenderBatch addChild:vol z:3];
-////            [featureSprites addObject:vol];
-//        }
-//
-//        //scatter black mountains
-//        [self scatterThing1:@"hill_black" andThing2:@"hill_black" withRatio1:50 andRatio2:50];
-//        
-//        
-//        //set island colour black-ish
-//        islandSprite.color=ccc3(183,183,167);
-//
-//        
-//    }
-//    else if(ParentGO.PrereqPercentage<100)
-//    {
-//        //scatter black and green in proportion
-//        [self scatterThing1:@"hill_black" andThing2:@"hill_green" withRatio1:100-ParentGO.PrereqPercentage andRatio2:ParentGO.PrereqPercentage];
-//        
-//        //set island colour sandy
-//        islandSprite.color=ccc3(186,182,104);
-//        
-//    }
-//    else //it's 100
-//    {
-//        //scatter green + trees
-//        [self scatterThing1:@"hill_green" andThing2:@"tree" withRatio1:100-ParentGO.CompletePercentage andRatio2:ParentGO.CompletePercentage];
-//        
-//    }
 }
 
 -(void)createBaseNodes
@@ -420,9 +281,6 @@ static int shadowSteps=5;
         
         [gameWorld.Blackboard.debugDrawNode drawDot:basesprite.position radius:5.0f color:ccc4f(1, 0, 0, 0.5f)];
         
-//        CCNode *node=[[CCNode alloc] init];
-//        node.position=[self subCentre:rawpos];
-//        [ParentGO.RenderBatch addChild:node z:5];
     }
     
 }
@@ -482,56 +340,18 @@ static int shadowSteps=5;
         
         if(size>2 || self.islandStage<3)
         {
-//            NSString *fnamenew=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
             NSString *fnameold=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.previousIslandStage, size, variant];
-            
-//            float stdTime = arc4random() % 11 * 0.1;
-//            float actTime = 1.5f;
-            
-            //create random delay to go before all transitions
-            //fade out needs to be 1.5s
-            //fade in needs to be 1s, starting and 0.5s
             
             if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
                 needToTransition=YES;
             
-//            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
-//            {
-                oldNodeSprite=[CCSprite spriteWithSpriteFrameName:fnameold];
-                [base addChild:oldNodeSprite];
-//
-                oldNodeSprite.position=ccpAdd(ccp(oldNodeSprite.contentSize.width / 2.0f, -oldNodeSprite.contentSize.height / 2.0f), ccp(-20, 0));
-            
-//                [oldNodeSprite runAction:[CCFadeOut actionWithDuration:stdTime+(actTime/2)]];
-//            }
-            
-//            CCSprite *newfsprite=[CCSprite spriteWithSpriteFrameName:fnamenew];
-//            [base addChild:newfsprite];
-            
-//            if(ParentGO.FreshlyCompleted && previousIslandStage!=islandStage)
-//            {
-//                newfsprite.opacity=0;
-//                [newfsprite runAction:[CCFadeIn actionWithDuration:(stdTime/2)+actTime]];
-//            }
-//            
-//            if(size==5 && self.islandStage>4)
-//            {
-//                newfsprite.position=ccpAdd(base.position, ccp(0, -75));
-//            }
-            
-            // mod pos of old sprite if existing
+            oldNodeSprite=[CCSprite spriteWithSpriteFrameName:fnameold];
+            [base addChild:oldNodeSprite];
+
+            oldNodeSprite.position=ccpAdd(ccp(oldNodeSprite.contentSize.width / 2.0f, -oldNodeSprite.contentSize.height / 2.0f), ccp(-20, 0));
             
             //sort irregular x offset
             base.position=ccpAdd(base.position, ccp(50,-25));
-
-            
-//            NSLog(@"island state -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
-            
-            if(ParentGO.FreshlyCompleted)
-            {
-//                NSLog(@"is fresh! -- prevIslandStage %d -- islandStage %d", previousIslandStage, islandStage);
-                
-            }
             
         }
         
@@ -544,7 +364,6 @@ static int shadowSteps=5;
     [labelShadowSprite setPosition:ccpAdd(labelCentre, ccp(0, -3))];
     [labelShadowSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
     [labelShadowSprite setColor:ccc3(0, 0, 0)];
-//    [labelShadowSprite setOpacity:0.2f*255];
     [labelShadowSprite setRotation:-8.0f];
     [labelShadowSprite setVisible:YES];
     
@@ -554,7 +373,6 @@ static int shadowSteps=5;
     [labelSprite setPosition:labelCentre];
     [labelSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
     [labelSprite setVisible:YES];
-//    [labelSprite setOpacity:0.7f*255];
     [labelSprite setRotation:-8.0f];
     if(ParentGO.Disabled) [labelSprite setOpacity:100];
     [ParentGO.RenderBatch.parent addChild:labelSprite z:3];
@@ -571,22 +389,18 @@ static int shadowSteps=5;
 
 -(CGPoint) halvedSubCentre:(CGPoint)pos
 {
-//    return ccpMult([self subCentre:pos], 1.0f);
-    
     CGPoint sc=[self subCentre:pos];
     
     return sc;
-//    return ccp(sc.x * 0.7f, sc.y * 0.5f);
 }
 
 #pragma mark - parse island data out of a single-island data template and cache
 
 -(NSMutableDictionary*)loadIslandData:(NSString*)name
 {
-    NSMutableDictionary *buildData=[[[NSMutableDictionary alloc] init] autorelease];
+    //static analysis -- suggests problems rooted in TouchXML parse/read and return of auto-released documents
     
-    //load animation data
-	//NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/%@.svg", name]));
+    NSMutableDictionary *buildData=[[[NSMutableDictionary alloc] init] autorelease];
     
     NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/island6-1.svg"]));
 	
@@ -654,20 +468,89 @@ static int shadowSteps=5;
     float lrot=[BLMath angleForNormVector:[BLMath SubtractVector:l2 from:l1]];
     [buildData setValue:[NSValue valueWithCGPoint:lmid] forKey:ISLAND_LABEL_POS];
     [buildData setValue:[NSNumber numberWithFloat:lrot + 90] forKey:ISLAND_LABEL_ROT];
-    
-    //[doc release];
-    
+
     return buildData;
 }
 
 
-#pragma mark - geometric/forced layout
+-(void)setPointScalesAt:(float)scale
+{
+    for(int i=0;i<(sortedChildren.count * shadowSteps); i++)
+    {
+        scaledPerimPoints[i]=[BLMath MultiplyVector:allPerimPoints[i] byScalar:scale];
+    }
+}
+
+
+#pragma mark - not on v1 code path
+
+-(void)forceLayoutStep
+{
+    CGPoint max=ccp(900,900);
+    CGPoint avgp=ccp(0,0);
+    int countx=0, county=0;
+    
+    //connections from mnodes
+    
+    for(SGJmapMasteryNode *n in ParentGO.ConnectFromMasteryNodes)
+    {
+        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
+        diff=ccp(fabsf(diff.x), fabsf(diff.y));
+        if(diff.x<max.x || YES)
+        {
+            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
+            countx++;
+        }
+        if(diff.y<max.y || YES)
+        {
+            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
+            county++;
+        }
+    }
+    
+    
+    //connections to notes
+    for(SGJmapMasteryNode *n in ParentGO.ConnectToMasteryNodes)
+    {
+        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
+        diff=ccp(fabsf(diff.x), fabsf(diff.y));
+        if(diff.x<max.x || YES)
+        {
+            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
+            countx++;
+        }
+        if(diff.y<max.y || YES)
+        {
+            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
+            county++;
+        }
+    }
+    
+    //NSLog(@"avgp pre  %@", NSStringFromCGPoint(avgp));
+    
+    //    if(countx>0)avgp=ccp(avgp.x / (float)countx, avgp.y);
+    //    if(county>0)avgp=ccp(avgp.x, avgp.y / (float)county);
+    
+    //NSLog(@"avgp post %@", NSStringFromCGPoint(avgp));
+    
+    //root of those squared
+    //    avgp=ccp(sqrtf(avgp.x), sqrtf(avgp.y));
+    
+    //inverse and multiply
+    //    avgp=ccp(avgp.x * 0.01f, avgp.y*0.02f);
+    
+    //NSLog(@"avgp adj  %@", NSStringFromCGPoint(avgp));
+    
+    //reset position
+    //ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
+}
 
 -(void)readyRender
 {
+    //this isn't in execution path
     
     sortedChildren=[[NSMutableArray alloc] init];
- 
+    
     float r=userCol.r + (userCol2.r - userCol.r) * (ParentGO.PrereqPercentage / 100.0f);
     float g=userCol.g + (userCol2.g - userCol.g) * (ParentGO.PrereqPercentage / 100.0f);
     float b=userCol.b + (userCol2.b - userCol.b) * (ParentGO.PrereqPercentage / 100.0f);
@@ -686,8 +569,6 @@ static int shadowSteps=5;
         CGPoint newPos=[BLMath AddVector:[BLMath ProjectMovementWithX:0 andY:startLength forRotation:angleInRange] toVector:ParentGO.Position];
         prnode.Position=newPos;
         
-//        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
-//        NSLog(@"diff is %@, startAngle %f, startLength %f, angleInRange %f, newPos %@", NSStringFromCGPoint(diff), startAngle, startLength, angleInRange, NSStringFromCGPoint(newPos));
     }
     
     // ------------------------------------------------------------------------------------------------------
@@ -727,14 +608,14 @@ static int shadowSteps=5;
                     doInsert=YES;
                     insertat=sortedChildren.count; //insert at end of list
                 }
-                    
+                
                 if(doInsert)
                 {
                     //insert the node itself
                     [sortedChildren insertObject:[NSValue valueWithCGPoint:prnode.Position] atIndex:insertat];
                     
                     break;
-
+                    
                 }
             }
             
@@ -745,11 +626,11 @@ static int shadowSteps=5;
     if(sortedChildren.count==0)return;
     
     //insert top positions?
-
+    
     float ildwidth= 30 + (2 * ParentGO.UserVisibleString.length);
     
     [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(-ildwidth, 10)]] atIndex:0];
-//    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 10)]] atIndex:0];
+    //    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 10)]] atIndex:0];
     [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(ildwidth, 10)]] atIndex:0];
     
     //big spacers
@@ -775,8 +656,8 @@ static int shadowSteps=5;
         float l=[BLMath LengthOfVector:diff];
         if(l>avgL)
         {
-            //the point is past the average, multiply it's length (for the point) by the distance over the 
-//            l = l/avgL;
+            //the point is past the average, multiply it's length (for the point) by the distance over the
+            //            l = l/avgL;
             
             //add to that an amount
             CGPoint add=[BLMath ProjectMovementWithX:0 andY:50 forRotation:[BLMath angleForVector:diff]];
@@ -788,16 +669,16 @@ static int shadowSteps=5;
         }
     }
     
-
-//    //start smooth from max
-//    float avgL=0.0f;
-//    for (NSValue *p in sortedChildren)
-//    {
-//        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
-//        if(l>avgL)avgL=l;
-//    }
-//    avgL=avgL*1.25f;
-//    //avgL=avgL / (float)sortedChildren.count;
+    
+    //    //start smooth from max
+    //    float avgL=0.0f;
+    //    for (NSValue *p in sortedChildren)
+    //    {
+    //        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
+    //        if(l>avgL)avgL=l;
+    //    }
+    //    avgL=avgL*1.25f;
+    //    //avgL=avgL / (float)sortedChildren.count;
     
     
     float seekr=110.0f;
@@ -816,7 +697,7 @@ static int shadowSteps=5;
             float rdiff=fabsf(inspr-r);
             if(inspr<seekr && r>(360-seekr)) rdiff=fabsf((inspr+360) - r);
             if(r<seekr && inspr>(360-seekr)) rdiff=fabsf(inspr - (360+r));
-
+            
             if(rdiff<seekr)
             {
                 float inspl=[BLMath LengthOfVector:inspd];
@@ -843,7 +724,7 @@ static int shadowSteps=5;
     int perimIx=0;
     
     //CGPoint offsetForTexture=[BLMath SubtractVector:myWorldPos from:ParentGO.Position];
-
+    
     for (NSValue *cPosVal in sortedChildren) {
         //world space pos of child node
         CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:[cPosVal CGPointValue]];
@@ -869,26 +750,26 @@ static int shadowSteps=5;
     xmean=xmean/(float)sortedChildren.count;
     ymean=ymean/(float)sortedChildren.count;
     CGPoint pmid=ccp(xmean,ymean);
-
+    
     // === stepping colour creation -- not used currently due to fixed colouring of islands ===
-//    ccColor4B stepColour=currentCol;
-//    stepColour.r=stepColour.r-5;
-//    stepColour.g=stepColour.g-5;
-//    stepColour.b=stepColour.b-10;
-//    if(stepColour.r>currentCol.r)stepColour.r=0;
-//    if(stepColour.g>currentCol.g)stepColour.g=0;
-//    if(stepColour.b>currentCol.b)stepColour.b=0;
-//    
-//    //step the colours
-//    for(int i=0; i<shadowSteps; i++)
-//    {
-//        stepColours[i]=stepColour;
-//        
-//        //adjust colour
-//        if(stepColour.r<252) stepColour.r+=3.5f;
-//        if(stepColour.g<252) stepColour.g+=3.5f;
-//        if(stepColour.b<252) stepColour.b+=7;
-//    }
+    //    ccColor4B stepColour=currentCol;
+    //    stepColour.r=stepColour.r-5;
+    //    stepColour.g=stepColour.g-5;
+    //    stepColour.b=stepColour.b-10;
+    //    if(stepColour.r>currentCol.r)stepColour.r=0;
+    //    if(stepColour.g>currentCol.g)stepColour.g=0;
+    //    if(stepColour.b>currentCol.b)stepColour.b=0;
+    //
+    //    //step the colours
+    //    for(int i=0; i<shadowSteps; i++)
+    //    {
+    //        stepColours[i]=stepColour;
+    //
+    //        //adjust colour
+    //        if(stepColour.r<252) stepColour.r+=3.5f;
+    //        if(stepColour.g<252) stepColour.g+=3.5f;
+    //        if(stepColour.b<252) stepColour.b+=7;
+    //    }
     // =========================================================================================
     
     //create the total perim array -- polys * points
@@ -1012,78 +893,6 @@ static int shadowSteps=5;
     } while (looking);
 }
 
--(void)setPointScalesAt:(float)scale
-{
-    for(int i=0;i<(sortedChildren.count * shadowSteps); i++)
-    {
-        scaledPerimPoints[i]=[BLMath MultiplyVector:allPerimPoints[i] byScalar:scale];
-    }
-}
-
-
-#pragma mark - not on v1 code path
-
--(void)forceLayoutStep
-{
-    CGPoint max=ccp(900,900);
-    CGPoint avgp=ccp(0,0);
-    int countx=0, county=0;
-    
-    //connections from mnodes
-    
-    for(SGJmapMasteryNode *n in ParentGO.ConnectFromMasteryNodes)
-    {
-        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
-        diff=ccp(fabsf(diff.x), fabsf(diff.y));
-        if(diff.x<max.x || YES)
-        {
-            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
-            countx++;
-        }
-        if(diff.y<max.y || YES)
-        {
-            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
-            county++;
-        }
-    }
-    
-    
-    //connections to notes
-    for(SGJmapMasteryNode *n in ParentGO.ConnectToMasteryNodes)
-    {
-        CGPoint diff=[BLMath SubtractVector:n.Position from:ParentGO.Position];
-        diff=ccp(fabsf(diff.x), fabsf(diff.y));
-        if(diff.x<max.x || YES)
-        {
-            avgp=ccp(avgp.x+((max.x - diff.x)*(max.x - diff.x)), avgp.y);
-            countx++;
-        }
-        if(diff.y<max.y || YES)
-        {
-            avgp=ccp(avgp.x, avgp.y + ((max.y - diff.y)*(max.y - diff.y)));
-            county++;
-        }
-    }
-    
-    //NSLog(@"avgp pre  %@", NSStringFromCGPoint(avgp));
-    
-    //    if(countx>0)avgp=ccp(avgp.x / (float)countx, avgp.y);
-    //    if(county>0)avgp=ccp(avgp.x, avgp.y / (float)county);
-    
-    //NSLog(@"avgp post %@", NSStringFromCGPoint(avgp));
-    
-    //root of those squared
-    //    avgp=ccp(sqrtf(avgp.x), sqrtf(avgp.y));
-    
-    //inverse and multiply
-    //    avgp=ccp(avgp.x * 0.01f, avgp.y*0.02f);
-    
-    //NSLog(@"avgp adj  %@", NSStringFromCGPoint(avgp));
-    
-    //reset position
-    //ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
-}
-
 
 @end
 
@@ -1156,6 +965,8 @@ static int shadowSteps=5;
     
     // ==================================================================================
 }
+
+
 
 
 

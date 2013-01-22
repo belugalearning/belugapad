@@ -47,15 +47,12 @@
 #define DRAW_DEPTH 3
 
 static float kNodeScale=0.5f;
-//static CGPoint kStartMapPos={-3576, -2557};
-static CGPoint kStartMapPos={-611, 3713};
-//static float kPropXNodeHitDist=0.065f;
-
-
 const float kLogOutBtnPadding = 8.0f;
-const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 
+static CGPoint kStartMapPos={-611, 3713};
+const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
+
 static BOOL debugRestrictMovement=NO;
 
 typedef enum {
@@ -164,8 +161,6 @@ typedef enum {
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
         
         [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
-                        
-        //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
         
         [TestFlight passCheckpoint:@"STARTED_JMAP"];
         
@@ -207,15 +202,10 @@ typedef enum {
 
 -(void)gotoToolHost:(ccTime)delta
 {
-    //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
-    
     [TestFlight passCheckpoint:@"PROCEEDING_TO_TOOLHOST_FROM_JMAP"];
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_enter_question.wav")];
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
-    
-//    [ac.searchBar removeFromSuperview];
-//    ac.searchBar=nil;
     
     if(ac.IsIpad1)
     {
@@ -236,17 +226,10 @@ typedef enum {
     
     gw.Blackboard.jmapInstance=self;
     
-//    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
-    
-    //used for debug draw of map positioning
-//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
-    
 }
 
 -(void)populateImageCache
 {
-    //load some cached images
-    
     //island texture bases (determined id generated from mastery pos)
     for(int i=1; i<10; i++)
     {
@@ -283,7 +266,7 @@ typedef enum {
     //get nodes to calculate their offset from parent / mastery
     [gw handleMessage:kSGretainOffsetPosition];
     
-    //force layout mastery
+    //force layout mastery -- currently unused, this handles rating of the layout
     //for(int i=0; i<50; i++)
     //{
     //    [gw handleMessage:kSGforceLayout];
@@ -297,19 +280,9 @@ typedef enum {
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
 
-    // position map so that bottom-most included node in view, bottom-left
+    // position map
     if (!mapPositionSet)
     {
-//        CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
-//        for (id go in [gw AllGameObjects]) {
-//            if([go isKindOfClass:[SGJmapMasteryNode class]])
-//            {
-//                CGPoint mnpos = ((SGJmapMasteryNode*)go).Position;
-//                if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
-//            }
-//        }
-//        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
-        
         CGPoint np=resumeAtNode.Position;
         [mapLayer setPosition:ccp(512-np.x, 384-np.y)];
     }
@@ -322,14 +295,10 @@ typedef enum {
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;
     
-    NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
-    
     if(playTransitionAudio)
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;
     
-//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0) andDestination:ccp(100,100)];
-//    [plane setup];
 }
 
 -(void)setupContentRegions
@@ -363,11 +332,6 @@ typedef enum {
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
-//    if(contentService.resetPositionAfterTH)
-//        [mapLayer setPosition:contentService.lastMapLayerPosition];
-//    else
-//        [mapLayer setPosition:kStartMapPos];        
-
     [self addChild:mapLayer z:1];
     
     //setup render batch for nodes
@@ -820,7 +784,6 @@ typedef enum {
     int rindex=0;
     
     for (NSString *r in regions) {
-//        NSLog(@"region: %@", r);
         
         //create the region
         SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
@@ -1029,19 +992,6 @@ typedef enum {
     //udpdate tap timer
     lastTapTime+=delta;
     
-//    //scrolling
-//    float friction=0.85f;
-//    
-//    if(!isDragging)
-//    {
-//        dragVel=[BLMath MultiplyVector:dragVel byScalar:friction];
-//        if(dragVel.x<100.0f && dragVel.y<100.0f)
-//            mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
-//    }
-//    else {
-//        dragVel=[BLMath SubtractVector:dragLast from:mapLayer.position];
-//        dragLast=mapLayer.position;
-//    }
 }
 
 -(void) doUpdateProximity:(ccTime)delta
@@ -1225,13 +1175,6 @@ typedef enum {
                     lastSelectedNode=selected;
                 }
                 
-    //            id<Selectable>sgo=go;
-    //            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
-    //            {
-    //                selected=sgo;
-    //                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
-    //                break;
-    //            }
             }
             
         }
@@ -1379,7 +1322,6 @@ typedef enum {
     [loggingService logEvent:BL_JS_ZOOM_IN withAdditionalData:nil];
     
     zoomedOut=NO;
-    //[backarrow setVisible:YES];
     [backarrow setFlipX:NO];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];
@@ -1408,25 +1350,17 @@ typedef enum {
     [loggingService logEvent:BL_JS_ZOOM_OUT withAdditionalData:nil];
     
     zoomedOut=YES;
-//    [backarrow setVisible:NO];
     [backarrow setFlipX:YES];
     
     [mapLayer setAnchorPoint:ccp(0.5,0.5)];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:REGION_ZOOM_LEVEL] rate:2.0f]];
     
-    NSLog(@"pos at region view %@", NSStringFromCGPoint(mapLayer.position));
-    
-    //mapLayer.position=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
-    
     CGPoint newpos=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
     newpos=ccp(-282, newpos.y);
     if(newpos.y<-199)newpos=ccp(newpos.x, -199);
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
-    
-    //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
-//    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-257, 212.5)] rate:2.0f]];
     
     [gw handleMessage:kSGzoomOut];
 }
@@ -1502,8 +1436,6 @@ typedef enum {
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-//    [ac speakString:searchBar.text];
-    
     [ac.searchList removeFromSuperview];
 }
 
@@ -1534,8 +1466,6 @@ typedef enum {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"selected %@", [searchNodes objectAtIndex:indexPath.row]);
-    
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
     
     id<CouchDerived, Transform>node;
@@ -1543,7 +1473,6 @@ typedef enum {
     else node=[searchNodes objectAtIndex:indexPath.row];
 
     CGPoint moveto=ccp(300-node.Position.x, 600-node.Position.y);
-    //if(zoomedOut)moveto=ccp(300-node.Position.x*REGION_ZOOM_LEVEL, 600-node.Position.y*REGION_ZOOM_LEVEL);
     
     if(zoomedOut)moveto=[BLMath MultiplyVector:moveto byScalar:REGION_ZOOM_LEVEL];
     

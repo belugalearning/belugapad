@@ -132,13 +132,6 @@ static float kTimeToHintToolTray=0.0f;
         [animator animateBackgroundIn];
         animPos=1;
         
-        //[self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
-        
-        //add a pause button but keep it hidden -- to be brought in by the fader
-        //CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
-        //[pause setPosition:ccp(lx-(kPropXPauseButtonPadding*lx), ly-(kPropXPauseButtonPadding*lx))];
-        //[perstLayer addChild:pause z:3];
-        
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
@@ -517,13 +510,7 @@ static float kTimeToHintToolTray=0.0f;
 {
     Zubi=[[Daemon alloc] initWithLayer:contextProgressLayer andRestingPostion:ccp(cx, 2*cy-HD_SCORE_INSET) andLy:ly];
     [Zubi hideZubi];
-    
-    //score labels
-//    multiplierLabel=[CCLabelTTF labelWithString:@"(1x)" dimensions:CGSizeMake(100, 50) alignment:UITextAlignmentLeft fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-//    [multiplierLabel setOpacity:75];
-//    [multiplierLabel setPosition:ccp(300, 20)];
-//    [perstLayer addChild:multiplierLabel];
-    
+        
     scoreLabel=[CCLabelTTF labelWithString:@"0" fontName:@"Chango" fontSize:18];;
     [scoreLabel setPosition:ccp(cx, 2*cy-HD_SCORE_INSET)];
     [perstLayer addChild:scoreLabel z:4];
@@ -574,7 +561,6 @@ static float kTimeToHintToolTray=0.0f;
     NSString *bf=[NSString stringWithFormat:@"/images/menu/HR_Multiplier_%d.png", m];
     multiplierBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(bf)];
     multiplierBadge.position=ccp(cx-95, 2*cy-multiplierBadge.contentSize.height/1.7);
-    //multiplierBadge.position=ccp(cx,cy);
     [self addChild:multiplierBadge z:4];
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_incremented.wav")];
     
@@ -699,13 +685,10 @@ static float kTimeToHintToolTray=0.0f;
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
-    //score and increment multiplier if appropriate
-    //[self incrementScoreAndMultiplier];
     
     //this problem will award multiplier if not subsequently reset
     hasResetMultiplier=NO;
     
-//    NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
     
     if(adpSkipProblemAndInsert)
     {
@@ -914,13 +897,6 @@ static float kTimeToHintToolTray=0.0f;
         currentTool=[NSClassFromString(toolKey) alloc];
         [currentTool initWithToolHost:self andProblemDef:pdef];
     }
-
-//    else
-//    {
-//        //continue normal load, nilling any previous breakout problem
-//        breakOutIntroProblemFK=nil;
-//        breakOutIntroProblemHasLoaded=NO;
-//    }
     
     //read our tool specific options
     [self readToolOptions:toolKey];
@@ -990,7 +966,6 @@ static float kTimeToHintToolTray=0.0f;
         glossary1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExample.png")];
         [glossary1 setPosition:ccp(cx,cy)];
         [self addChild:glossary1];
-        [self setProblemDescriptionVisible:NO];
     }
     else {
         isGlossaryMock=NO;
@@ -1720,8 +1695,6 @@ static float kTimeToHintToolTray=0.0f;
                 {
                     // return to full button colour and set the dictionary selected value to no
                     [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
-                    //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
-                    //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
                     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_deselected.wav")];
                 }
@@ -1956,140 +1929,7 @@ static float kTimeToHintToolTray=0.0f;
             [self evalNumberPicker];
         }
     }
-    // if we haven't met our max number on the number picker then carry on adding more
-//    if([numberPickedSelection count] <npMaxNoInDropbox) {
-//        BOOL isValid=YES;
-//        
-//        for(int i=0;i<[numberPickerButtons count];i++)
-//        {
-//            if(i==10||i==11)
-//            {
-//                for(NSNumber *n in numberPickedValue)
-//                {
-//                    if([n intValue]==10 && i==10)isValid=NO;
-//                    if([n intValue]==11 && i==11)isValid=NO;
-//                }
-//            }
-//            // check each of the buttons to see if it was them that were hit
-//            CCSprite *s=[numberPickerButtons objectAtIndex:i];
-//            if(CGRectContainsPoint(s.boundingBox, location) && isValid)
-//            {
-//                hasUsedNumber=YES;
-//                //a valid click?
-//                [self playAudioPress];
-//                
-//                CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-//                [numberPickerLayer addChild:curSprite];
-//                
-//                // log pickup from register/dropbox
-//                [loggingService logEvent:BL_PA_NP_NUMBER_FROM_PICKER
-//                      withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
-//                
-//                // check if we're animating our buttons or fading them in
-//                if(animatePickedButtons) {
-//                    // and set the position/actions
-//                    [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];
-//                    
-//                    if(i==11)
-//                    {
-//                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];
-//                    }
-//                    else {
-//                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
-//                    }
-//                }
-//                else {
-//                    if(i==11)
-//                    {
-//                        [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)];
-//                    }
-//                    else
-//                    {
-//                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
-//                    }
-//                    
-//                    [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
-//                    
-//                }
-//                
-//                // then add them to our selection and value arrays
-//                if(i==11)
-//                {
-//                    [numberPickedSelection insertObject:curSprite atIndex:0];
-//                    [numberPickedValue insertObject:[NSNumber numberWithInt:i] atIndex:0];
-//                }
-//                else
-//                {
-//                    [numberPickedSelection addObject:curSprite];
-//                    [numberPickedValue addObject:[NSNumber numberWithInt:i]];
-//                }
-//                
-//                
-//                [self reorderNumberPickerSelections];
-//                
-//                return;
-//            }
-//        }
-//    }
-//    for(int i=0;i<[numberPickedSelection count];i++)
-//    {
-//        CCSprite *s=[numberPickedSelection objectAtIndex:i];
-//        int n=[[numberPickedValue objectAtIndex:i]intValue];
-//        if(CGRectContainsPoint(s.boundingBox, origloc))
-//        {
-//            [self playAudioPress];
-//            [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-//                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]] forKey:@"number"]];
-//            npMove=s;
-//            npMoveStartPos=npMove.position;
-//            if(n==11)canMoveNumber=NO;
-//            else canMoveNumber=YES;
-//            
-//            return;
-//        }
-//    }
-    
-    
 }
-
-//-(void)checkNumberPickerTouchOnRegister:(CGPoint)location
-//{
-//    if(!canMoveNumber)return;
-//    for(int i=0;i<[numberPickedSelection count];i++)
-//    {
-//        CCSprite *s=[numberPickedSelection objectAtIndex:i];
-//        if(s==npMove||s==npLastMoved)continue;
-//        if(CGRectContainsPoint(s.boundingBox, location))
-//        {
-//            NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
-//            // log pickup from register/dropbox
-//            [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-//                  withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
-//            
-//            CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
-//            [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
-//            npMoveStartPos=repSprite.position;
-//            npLastMoved=s;
-//            
-//            NSLog(@"s position %@, repsprite pos %@", NSStringFromCGPoint(s.position), NSStringFromCGPoint(repSprite.position));
-//            
-//            int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
-//            [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
-//            [numberPickedSelection removeObject:npMove];
-//            [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
-//            [numberPickedSelection insertObject:npMove atIndex:i];
-//            
-//            //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
-//            
-//        }
-//    }
-//    
-//    if(!hasMovedNumber) hasMovedNumber=YES;
-//    
-//    npMove.position=location;
-//    
-//}
-
 -(void)evalNumberPicker
 {
     if(trayWheelShowing){
@@ -2100,17 +1940,6 @@ static float kTimeToHintToolTray=0.0f;
             [self doWinning];
         else
             [self doIncomplete];
-    }
-}
-
--(void)reorderNumberPickerSelections
-{
-    for(int i=0;i<[numberPickedSelection count];i++)
-    {
-        NSLog(@"value at %d is %d", i, [[numberPickedValue objectAtIndex:i]intValue]);
-        CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+(i*75),cy+50)];
-        NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
     }
 }
 
@@ -2242,9 +2071,6 @@ static float kTimeToHintToolTray=0.0f;
     
     float topY=qTrayTop.position.y;
     
-//    float centerY=qTrayMid.position.y;
-//    float centerToTop=0.5f * (qTrayMid.contentSize.height * qTrayMid.scaleY);
-//    float posAtTop=centerY+centerToTop;
     float desiredY=680;
     float diffYToTop= desiredY-topY;
     
@@ -2329,8 +2155,7 @@ static float kTimeToHintToolTray=0.0f;
     [row fadeInElementsFrom:1.0f andIncrement:0.1f];
     
     readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/Question_tray_play.png")];
-//    [readProblemDesc setOpacity:0];
-//    [readProblemDesc setTag:2];
+
     
     
     qTrayTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Top.png")];
@@ -2373,11 +2198,6 @@ static float kTimeToHintToolTray=0.0f;
 //    
     
 }
--(void)setProblemDescriptionVisible:(BOOL)visible
-{
-    //hide everything int he btxe gw
-}
-
 
 #pragma mark - touch handling
 
@@ -2392,27 +2212,6 @@ static float kTimeToHintToolTray=0.0f;
 
     timeSinceInteractionOrShake=0.0f;
     
-    //testing block for stepping between tool positions
-//    if(animPos==0)
-//    {
-//        animPos++;
-//        [self moveToTool1:0];
-//    }
-//    
-//    else if(animPos==1)
-//    {
-//        animPos++;
-//        [self moveToTool2:0];
-//    }
-//    else if(animPos==2)
-//    {
-//        animPos++;
-//        [self moveToTool3:0];
-//    }
-//    else if (animPos==3) {
-//        animPos=0;
-//        [self moveToTool0:0];
-//    }
     if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
@@ -2725,21 +2524,6 @@ static float kTimeToHintToolTray=0.0f;
                                                                  forKey:@"number"]];
         }
         
-        float distance=[BLMath DistanceBetween:lastTouch and:location];
-        //if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
-        if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<7.0f))
-        {
-            
-            [loggingService logEvent:BL_PA_NP_NUMBER_DELETE
-                withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]
-                                                               forKey:@"number"]];
-            
-            [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
-            [numberPickedSelection removeObject:npMove];
-            [npMove removeFromParentAndCleanup:YES];
-        }
-        [self reorderNumberPickerSelections];
-        
         // previously removed b/c performance hit. Restored for testing with sans-Couchbase logging
         // N.B. if performance still poor, we can try not writing certain log events to disk immediately
         
@@ -2776,11 +2560,6 @@ static float kTimeToHintToolTray=0.0f;
 -(void)sizeAndResetQuestionDescripion
 {
     [self sizeQuestionDescription];
-    
-//    qTrayTop.position=ccp(qTrayTop.position.x, qTrayTop.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-//    qTrayMid.position=ccp(qTrayMid.position.x, qTrayMid.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-//    qTrayBot.position=ccp(qTrayBot.position.x, qTrayBot.position.y-200-qTrayMid.contentSize.height*qTrayMid.scaleY);
-    
 }
 
 -(void)updateReadButtonPosAtScale:(float)scaleX
@@ -2795,17 +2574,6 @@ static float kTimeToHintToolTray=0.0f;
         //do stuff
         //descRow.position=ccp(350.0f, (cy*2)-95);
 
-        /*
-        [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
-        [qTrayMid setPosition:ccp(descRow.position.x,descRow.position.y+205)];
-        //[qTrayMid setPosition:ccp(cx,row.position.y)];
-        [qTrayMid setScaleY:(rowHeight-64)/16];
-        //    [qTrayMid setAnchorPoint:ccp(0.5,0.5)];
-        [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))];
-        [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)];
-        
-        [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayBot.position.y-(qTrayBot.contentSize.height*0.8))];
-        */
         [descRow animateAndMoveToPosition:ccp(345.0f, (cy*2)-115)];
         [descRow relayoutChildrenToWidth:600];
         
@@ -2818,50 +2586,6 @@ static float kTimeToHintToolTray=0.0f;
         
         [self setReadProblemPosWithScale:0.65f];
         
-//        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
-//        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
-//        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
-        
-//        [self updateReadButtonPosAtScale:0.65f];
-        
-        /*
-        float rowHeight=0;
-        
-        
-        if([currentTool isKindOfClass:[ExprBuilder class]])
-            rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
-        else
-            rowHeight=descRow.size.height;
-        
-        if(rowHeight<68.0f)rowHeight=68.0f;
-        
-        
-
-
-        [qTrayTop setAnchorPoint:ccp(0.5f,0.0f)];
-        [qTrayMid setAnchorPoint:ccp(0.5f,0.0f)];
-        [qTrayBot setAnchorPoint:ccp(0.5f,0.0f)];
-        
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:descRow.position]];
-        
-        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayTop.scaleY]];
-        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayMid.scaleY]];
-        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.65f scaleY:qTrayBot.scaleY]];
-        
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y+((qTrayMid.contentSize.height*qTrayMid.scaleY)+qTrayTop.contentSize.height/2))]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x,qTrayMid.position.y-qTrayBot.contentSize.height/2)]];
-        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
-        
-        NEW FUCKED STUFF */
-        
-        
-
-        
-//        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3), qTrayTop.position.y)]];
-//        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3), qTrayMid.position.y)]];
-//        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3), qTrayBot.position.y)]];
-
-//        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x-(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
 
         trayCornerShowing=YES;
     }
@@ -2871,32 +2595,13 @@ static float kTimeToHintToolTray=0.0f;
 {
     if(trayCornerShowing)
     {
-        //do stuff
-        //descRow.position=ccp(cx, (cy*2) - 95);
-
-//        [qTrayTop setScaleX:1.0];
-//        [qTrayMid setScaleX:1.0];
-//        [qTrayBot setScaleX:1.0];
-//        
-//        [qTrayTop setPosition:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)];
-//        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
-//        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
-
         qTrayTop.scaleX=1.0f;
         qTrayMid.scaleX=1.0f;
         qTrayBot.scaleX=1.0f;
 
         [self setReadProblemPosWithScale:1.0f];
         
-//        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayTop.scaleY]];
-//        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
-//        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
-        
-//        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3), qTrayTop.position.y)]];
-//        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3), qTrayMid.position.y)]];
-//        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3), qTrayBot.position.y)]];
 
-//        [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x+(cx/1.55), qTrayMid.position.y-(qTrayBot.contentSize.height*1.3)-(qTrayMid.contentSize.height/2.2))]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 115)];
         
@@ -3011,9 +2716,6 @@ static float kTimeToHintToolTray=0.0f;
             [pickerView spinComponent:i speed:40 easeRate:5 repeat:2 stopRow:0];
         }
         
-        //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
-        //lbl.position=ccp(150,112.5f);
-        //[trayLayerWheel addChild:lbl];
     }
     hasUsedWheelTray=YES;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_appears.wav")];
@@ -3047,8 +2749,6 @@ static float kTimeToHintToolTray=0.0f;
 {
     if(!trayLayerPad)
     {
-//        trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 0) width:910 height:485];
-//
         trayLayerPad=[[CCLayer alloc]init];
         lineDrawer=[LineDrawer node];
         
@@ -3065,17 +2765,11 @@ static float kTimeToHintToolTray=0.0f;
         [trayPadClear setPosition:ccp(963,460)];
         [trayLayerPad addChild:trayPadClear z:20];
         
-//        trayPadClose=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pad-close.png")];
-//        [trayPadClose setPosition:ccp(lx-50,ly-50)];
-//        [trayLayerPad addChild:trayPadClose];
-//        
-        //trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
     }
     
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
-//    [traybtnPad setColor:ccc3(247,143,6)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Selected.png")]];
 }
 
@@ -3086,42 +2780,8 @@ static float kTimeToHintToolTray=0.0f;
 
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
-//    [traybtnPad setColor:ccc3(255,255,255)];
     [traybtnPad setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")]];
 }
-
-//-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-//{
-//    if(isPaused||autoMoveToNextProblem)
-//    {
-//        return NO;
-//    }  
-//    return [currentTool ccTouchBegan:touch withEvent:event];
-//}
-//
-//-(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
-//{
-//    if(isPaused||autoMoveToNextProblem)
-//    {
-//        return;
-//    }  
-//    [currentTool ccTouchMoved:touch withEvent:event];
-//}
-//
-//-(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
-//{
-//    if(isPaused||autoMoveToNextProblem)
-//    {
-//        return;
-//    }  
-//    [currentTool ccTouchEnded:touch withEvent:event];
-//}
-//
-//-(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
-//{
-//    if(npMove)npMove=nil;
-//    [currentTool ccTouchCancelled:touch withEvent:event];
-//}
 
 #pragma mark - CCPickerView for number wheel
 
@@ -3130,9 +2790,7 @@ static float kTimeToHintToolTray=0.0f;
     if(self.pickerView) return;
     
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[self numberOfComponentsInPickerView:self.pickerView]];
-//    NSString *strULSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
-//    CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
     if(currentTool)
@@ -3145,16 +2803,11 @@ static float kTimeToHintToolTray=0.0f;
     
     if(CurrentBTXE && ([((id<Text>)CurrentBTXE).text floatValue]>0 || [((id<Text>)CurrentBTXE).text floatValue]<0))
         [self updatePickerNumber:((id<Text>)CurrentBTXE).text];
-    
-
-    
-//    [ulSprite setPosition:pickerView.position];
 
     
     
     [ovSprite setPosition:pickerView.position];
     [trayLayerWheel addChild:ovSprite z:18];
-//    [trayLayerWheel addChild:ulSprite z:19];
     [trayLayerWheel addChild:self.pickerView z:20];
 }
 
@@ -3253,14 +2906,6 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     return nil;
-//    temp.color = ccYELLOW;
-//    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
-//    
-//    NSString *rowString = [NSString stringWithFormat:@"%d", row];
-//    CCLabelBMFont *label = [CCLabelBMFont labelWithString:rowString fntFile:@"bitmapFont.fnt"];
-//    label.position = ccp(kComponentWidth/2, kComponentHeight/2-5);
-//    [temp addChild:label];
-//    return temp;
     
 }
 
@@ -3331,9 +2976,6 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)updatePickerNumber:(NSString*)thisNumber
 {
-    
-    //        [w.pickerViewSelection removeAllObjects];
-    
     int thisComponent=[self numberOfComponentsInPickerView:self.pickerView]-1;
     int numberOfComponents=thisComponent;
     
@@ -3344,7 +2986,7 @@ static float kTimeToHintToolTray=0.0f;
         
         [pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
         
-        //            [w.pickerViewSelection addObject:[NSNumber numberWithInt:thisInt]];
+
         [self.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
         thisComponent--;
     }
@@ -3369,7 +3011,6 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)debugShowPipelineState
 {
-//    CGRect f=CGRectMake(100, 100, (2*cx)-200, (2*cy)-200);
     CGRect f=CGRectMake(0, 0, lx, ly-30);
     debugWebView=[[UIWebView alloc] initWithFrame:f];
     debugWebView.backgroundColor=[UIColor whiteColor];

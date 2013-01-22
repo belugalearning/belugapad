@@ -23,9 +23,14 @@
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+
+
 #import "babbelu.lic.h"
 #import "libs/Acapela/api/babbelu.lic.0166883f.password"
 
+#import "Flurry.h"
 
 @interface AppController()
 {
@@ -58,8 +63,18 @@
 @synthesize lastJmapViewUState;
 @synthesize lastViewedNodeId;
 
+void uncaughtExceptionHandler(NSException *exception) {
+    
+    [Flurry logError:@"Uncaught" message:@"in global handler" exception:exception];
+
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Flurry startSession:@"MJS5MGYRRJ89729FTNPP"];
+    
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    
     [self writeLogMemoryUsage];
     
     launchOptionsCache=launchOptions;
@@ -80,7 +95,6 @@
     //init test flight
 
 #if USE_TESTFLIGHT_SDK
-    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
@@ -113,7 +127,11 @@
     contentService = [[ContentService alloc] initWithLocalSettings:self.LocalSettings];
     usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
     
-    [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
+    //compile device info
+    UIDevice *d=[UIDevice currentDevice];
+    NSDictionary *devinfo=@{@"systemVersion" : d.systemVersion, @"systemType" : d.systemName, @"platform" : [self platform], @"model" : d.model};
+    
+    [self.loggingService logEvent:BL_APP_START withAdditionalData:devinfo];
     
     //are we in release mode
     NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
@@ -239,6 +257,16 @@
 #endif
     
     return YES;
+}
+
+- (NSString *) platform{
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *platform = [NSString stringWithUTF8String:machine];
+    free(machine);
+    return platform;
 }
 
 -(void)speakString:(NSString*)speakThis

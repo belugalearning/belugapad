@@ -11,6 +11,7 @@
 
 @class Daemon;
 @class SGJmapMasteryNode;
+@class SGJmapNode;
 
 @interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
@@ -56,11 +57,17 @@
     id lastPlayedNode;
     SGJmapMasteryNode *lastPlayedMasteryNode;
     bool mapPositionSet;
+    
+    CCLabelTTF *utdHeaderLabel;
+    
+    SGJmapNode *resumeAtNode;
+    NSDate *resumeAtMaxDate;
 }
 
 +(CCScene *)scene;
 
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos;
+-(void)setUtdLabel:(NSString*)toThisString;
 -(BOOL) isPointInView:(CGPoint)testPoint;
 
 

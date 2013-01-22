@@ -23,7 +23,7 @@
 #import "SimpleAudioEngine.h"
 
 
-#define kEarliestHit 0.8
+#define kEarliestHit 1.2
 #define kLatestHit 1.0
 
 @interface CountingTimer()
@@ -40,6 +40,8 @@
 }
 
 @end
+
+static float kTimeToButtonShake=7.0f;
 
 @implementation CountingTimer
 
@@ -105,15 +107,44 @@
         }
     }
     
+    if(!started)
+        timeSinceInteractionOrShake+=delta;
+    
+    if(timeSinceInteractionOrShake>kTimeToButtonShake)
+    {
+        [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        timeSinceInteractionOrShake=0.0f;
+    }
+    
+    if([buttonOfWin numberOfRunningActions]==0)
+    {
+        if(!CGPointEqualToPoint(buttonOfWin.position, ccp(cx,cy)))
+            buttonOfWin.position=ccp(cx,cy);
+    }
+    
     if(debugLogging)
         [tLabel setString:[NSString stringWithFormat:@"%f",timeElapsed]];
     
     // update our tool variables
     if((int)timeKeeper!=trackNumber && started)
     {
-        if(buttonFlash)
-            [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
+        if(buttonFlash){
+//            CCFadeOut *ffo=[CCFadeOut actionWithDuration:0.2f];
+//            CCFadeIn *ffi=[CCFadeIn actionWithDuration:0.3f];
+//            
+//            CCSequence *ff=[CCSequence actionOne:ffo two:ffi];
+//            
+//            [flasher runAction:ff];
+
+            CCFadeIn *fffi=[CCFadeIn actionWithDuration:0.1f];
+            CCFadeOut *fffo=[CCFadeOut actionWithDuration:0.3f];
         
+            CCSequence *fff=[CCSequence actionOne:fffi two:fffo];
+            
+            [flashingFlasher runAction:fff];
+            
+//            [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
+        }
         if(displayNumicon)
         {
             if(trackNumber<=10.0f)
@@ -155,6 +186,7 @@
     if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
@@ -162,6 +194,7 @@
     else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
@@ -198,6 +231,8 @@
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
     isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
+    
+    if(!showCount)buttonFlash=YES;
     
     if(isIntroPlist)
     {
@@ -248,10 +283,22 @@
     }
     gw.Blackboard.RenderLayer = renderLayer;
     buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")];
-    [buttonOfWin setPosition:ccp(cx,cy-80)];
+    [buttonOfWin setPosition:ccp(cx,cy)];
     [buttonOfWin setOpacity:0];
     [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
+    
+    flasher=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter.png")];
+    [flasher setPosition:ccp(cx,buttonOfWin.position.x-(buttonOfWin.contentSize.height)-(flasher.contentSize.height))];
+    [flasher setOpacity:0];
+    [flasher setTag:2];
+    [renderLayer addChild:flasher];
+    
+    flashingFlasher=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_flash.png")];
+    [flashingFlasher setPosition:ccp(cx,buttonOfWin.position.x-(buttonOfWin.contentSize.height)-(flasher.contentSize.height))];
+    [flashingFlasher setOpacity:0];
+    [renderLayer addChild:flashingFlasher];
+
     
 //    if(showCount)
 //    {
@@ -261,9 +308,9 @@
     else
         startNo=countMax;
     
-        currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:50.0f];
+        currentNumber=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:50.0f];
     [currentNumber setString:[NSString stringWithFormat:@"%d", startNo]];
-        [currentNumber setPosition:ccp(cx,cy+100)];
+        [currentNumber setPosition:ccp(flasher.position.x,flasher.position.y-8)];
         [currentNumber setOpacity:0];
         [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
@@ -275,7 +322,7 @@
         CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
         numiconOne=[CCSprite spriteWithSpriteFrame:frame];
         //[numiconOne setDisplayFrame:frame];
-        [numiconOne setPosition:ccp(currentNumber.position.x+(buttonOfWin.contentSize.width/2),currentNumber.position.y)];
+        [numiconOne setPosition:ccp(cx,100)];
         [numiconOne setOpacity:0];
         [renderLayer addChild:numiconOne];
 
@@ -303,6 +350,9 @@
 #pragma mark - problem state
 -(void)startProblem
 {
+    if(showingIntroOverlay)return;
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    [ac stopAllSpeaking];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_start_button_tapped.wav")];
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_stop.png")]];
     started=YES;
@@ -323,7 +373,12 @@
     
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
     
+    [flasher setVisible:YES];
     [currentNumber setVisible:YES];
+    [buttonOfWin setVisible:YES];
+    [currentNumber setPosition:ccp(flasher.position.x,flasher.position.y-8)];
+    [currentNumber setFontSize:50.0f];
+    
     
     if(numIncrement>=0){
         lastNumber=countMin;
@@ -354,6 +409,8 @@
     lastTouch=location;
     touchStartPos=location;
     
+    timeSinceInteractionOrShake=0.0f;
+    
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {
         if(!started){
@@ -362,7 +419,7 @@
         }
         else{
             [self evalProblem];
-            [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:nil];
+            [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:[NSNumber numberWithInt:trackNumber]];
         }
     }
     
@@ -454,6 +511,7 @@
     
     if(isIntroPlist && !showingIntroOverlay && started)
     {
+        solutionNumber=trackNumber;
         [self setupIntroOverlay];
         return;
     }
@@ -462,7 +520,12 @@
     if(isWinning)
     {
         expired=YES;
+        [buttonOfWin setVisible:NO];
+        [flasher setVisible:NO];
+        [flashingFlasher setOpacity:0];
+        [currentNumber setPosition:ccp(cx,cy)];
         [currentNumber setString:[NSString stringWithFormat:@"%d",solutionNumber]];
+        [currentNumber setFontSize:400.0f];
         [toolHost doWinning];
     }
     else {

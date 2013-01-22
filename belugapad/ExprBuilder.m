@@ -241,7 +241,7 @@
         {
             descRow=row;
             //position at top, top aligned, with spacer underneath
-            row.position=ccp(cx, (cy*2) - 110);
+            row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;
             
             //question separator bar -- flow with bottom of row 0
@@ -372,13 +372,24 @@
             }
         }
     }
+}
 
-    
+-(SGBtxeRow*)descRow
+{
+    return descRow;
+}
+
+-(float)getRowPosY
+{
+    return descRow.position.y;
 }
 
 -(float)getDescriptionAreaHeight
 {
-    return (((cy*2) - 110) - sepYpos);
+    if(isContracted)
+        return (((cy*2) - 110) - sepYpos + 20.0f);
+    else
+        return (((cy*2) - 110) - sepYpos);
 }
 
 -(void)readOutProblemDescription
@@ -387,6 +398,37 @@
     toolHost.thisProblemDescription=[descRow2 returnRowStringForSpeech];
     
 //    [toolHost readOutProblemDescription];
+}
+
+-(void)contractDescAndCardRows
+{
+    isContracted=YES;
+    [descRow animateAndMoveToPosition:ccp(345.0f, (cy*2)-115)];
+    [descRow relayoutChildrenToWidth:600];
+    float hoffset=descRow.size.height;
+    [ncardRow animateAndMoveToPosition:ccp(345, ((cy*2) - 115) - hoffset - ncardRow.size.height / 2.0f)];
+    [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    
+    [toolHost sizeQuestionDescription];
+    [toolHost setReadProblemPosWithScale:0.65f];
+}
+
+-(void)expandDescAndCardRows
+{
+    isContracted=NO;
+    float hoffset=descRow.size.height;
+    
+    if(descRow){
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 115)];
+        [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
+    }
+    if(ncardRow){
+        [ncardRow animateAndMoveToPosition:ccp(cx, ((cy*2) - 115) - hoffset - ncardRow.size.height / 2.0f)];
+        [ncardRow relayoutChildrenToWidth:[toolHost questionTrayWidth]];
+    }
+    
+    [toolHost sizeQuestionDescription];
+    [toolHost setReadProblemPosWithScale:1.0f];
 }
 
 #pragma mark - touches events
@@ -445,15 +487,27 @@
  
                         }
                         toolHost.CurrentBTXE=o;
+                        if(!toolHost.pickerView && toolHost.CurrentBTXE)
+                        {
+                            [self contractDescAndCardRows];
+                            
+                        }
+                        
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        {
                             [toolHost showWheel];
-
+                            [toolHost showCornerTray];
+                            
+                            [self contractDescAndCardRows];
+                        }
                     }
                     else
                     {
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [toolHost tearDownNumberPicker];
+                            [self expandDescAndCardRows];
+                            [toolHost hideCornerTray];
                             toolHost.CurrentBTXE=nil;
                         }
                     }
@@ -471,7 +525,9 @@
     if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView){
+            [self expandDescAndCardRows];
             [toolHost disableWheel];
+            [toolHost hideCornerTray];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
     }
@@ -1007,10 +1063,12 @@
 {
     BOOL isWinning=[self evalExpression];
     
-    if(isWinning)
+    if(isWinning){
         [toolHost doWinning];
-    else
+    }else{
+        [self expandDescAndCardRows];
         [toolHost doIncomplete];
+    }
 }
 
 #pragma mark - problem state

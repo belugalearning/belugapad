@@ -105,12 +105,17 @@
 
     spriteMask.position=ccp(800,130);
     maskOuter.position=ccp(800,150);
-    [magnifyBar setPosition:ccp(150,70)];
+    [magnifyBar setPosition:ccp(150,74)];
     [clippingNode addChild:magnifyBar];
     [clippingNode addChild:spriteMask];
 
     [self.ForeLayer addChild:clippingNode];
     [self.ForeLayer addChild:maskOuter];
+    
+    [clippingNode setVisible:NO];
+    [magnifyBar setOpacity:0];
+    [spriteMask setOpacity:0];
+    [maskOuter setOpacity:0];
     
     //test for clipping
 //    CCDrawNode *drawTests=[CCDrawNode node];
@@ -127,34 +132,49 @@
     //    currentTotal=nWheel.OutputValue/(pow((double)startColValue,-1));
     currentTotal=[nWheel.StrOutputValue floatValue];
     
-    if(lastTotal!=currentTotal)
-    {
-        lastTotal=currentTotal;
-        renderingChanges=YES;
-    }
-    
     //effective 4-digit precision evaluation test
     int prec=10000;
     int sum=(int)(currentTotal*divisor*prec);
     int idividend=(int)(dividend*prec);
     expressionIsEqual=(sum==idividend);
     
+    if(lastTotal!=currentTotal)
+    {
+        if(currentTotal>lastTotal && currentTotal<(dividend/divisor) && !expressionIsEqual)
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_growing_block.wav")];
+        
+        lastTotal=currentTotal;
+        renderingChanges=YES;
+        
+        [loggingService logEvent:BL_PA_LD_TOUCH_END_CHANGE_WHEEL_VALUE withAdditionalData:[NSNumber numberWithFloat:currentTotal]];
+    }
+    
+    
+    
+    if(expressionIsEqual && !audioHasPlayedOnTarget)
+    {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_target_reached.wav")];
+        audioHasPlayedOnTarget=YES;
+        audioHasPlayedOverTarget=NO;
+    }
+    else if(currentTotal>(dividend/divisor) && !audioHasPlayedOverTarget){
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
+        audioHasPlayedOverTarget=YES;
+        audioHasPlayedOnTarget=NO;
+    }
+    else if(currentTotal<(dividend/divisor))
+    {
+        audioHasPlayedOnTarget=NO;
+        audioHasPlayedOverTarget=NO;
+    }
     // this sets the good/bad sum indicator if the mode is enabled
     if(goodBadHighlight)
     {
         if(expressionIsEqual)
         {
             [lblCurrentTotal setColor:ccc3(0, 255,0)];
-            audioHasPlayedOverTarget=NO;
-            audioHasPlayedOnTarget=YES;
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_target_reached.wav")];
         }else{
             [lblCurrentTotal setColor:ccc3(255,0,0)];
-            if(!audioHasPlayedOverTarget){
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
-                audioHasPlayedOverTarget=YES;
-                audioHasPlayedOnTarget=NO;
-            }
         }
     }
     
@@ -353,45 +373,50 @@
             CGPoint *firstCo=&block[0];
             ccColor3B curCol;
             ccColor3B sepLine=ccc3(68,71,72);
+            ccColor4F sepLine4=ccc4FFromccc3B(sepLine);
+            sepLine4=ccc4f(sepLine4.r, sepLine4.g, sepLine4.b, (float)maskOuter.opacity/255);
             
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
             else
-                curCol=kBTXEColour[(digits.length-i)-1];
+                curCol=kLongDivColour[(digits.length-i)-1];
+            
+            ccColor4F curCol4=ccc4FFromccc3B(curCol);
+            curCol4=ccc4f(curCol4.r, curCol4.g, curCol4.b, (float)maskOuter.opacity/255);
             
             // draw the current block
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
             
-            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
+            [scaleDrawNode drawPolyWithVerts:firstCo count:4 fillColor:curCol4 borderWidth:1 borderColor:curCol4];
             
             // and all of it's separators
             for(int i=0;i<[c intValue];i++)
             {
                 if(i<[c intValue]-1){
                     [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
-                    [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
+                    [scaleDrawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:sepLine4];
                     sectionStartPos+=sectionSize;
                 }
-                float curTot=0;
+//                float curTot=0;
                 
-                if(rem>0)
-                {
-                    curTot+=((i+1)*magMult)*divisor;
-                    NSLog(@"thislabel %g", curTot);
-//                    float barStart=magnifyBar.position.x-((magnifyBar.contentSize.width*magnifyBar.scale)/2);
-                    CGPoint relPos=[clippingNode convertToNodeSpace:ccp(sectionStartPos,block[1].y)];
-                    CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
-                    //[m setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height)];
-                    [m setPosition:ccp(relPos.x,relPos.y+5)];
-                    [clippingNode addChild:m];
-                    [allSprites addObject:m];
-                    
-                    CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", curTot] fontName:CHANGO fontSize:10.0f];
-                    //[u setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height+15)];
-                    [u setPosition:ccp(relPos.x,relPos.y+10)];
-                    [scaleDrawNode addChild:u];
-                    [allLabels addObject:u];
-                }
+//                if(rem>0)
+//                {
+//                    curTot+=((i+1)*magMult)*divisor;
+//                    NSLog(@"thislabel %g", curTot);
+////                    float barStart=magnifyBar.position.x-((magnifyBar.contentSize.width*magnifyBar.scale)/2);
+//                    CGPoint relPos=[clippingNode convertToNodeSpace:ccp(sectionStartPos,block[1].y)];
+//                    CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
+//                    //[m setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height)];
+//                    [m setPosition:ccp(relPos.x,relPos.y+5)];
+//                    [clippingNode addChild:m];
+//                    [allSprites addObject:m];
+//                    
+//                    CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", curTot] fontName:CHANGO fontSize:10.0f];
+//                    //[u setPosition:ccp(barStart+(lineSize*scaleDrawNode.scale),magnifyBar.position.y+(barH*scaleDrawNode.scale)+m.contentSize.height+15)];
+//                    [u setPosition:ccp(relPos.x,relPos.y+10)];
+//                    [scaleDrawNode addChild:u];
+//                    [allLabels addObject:u];
+//                }
             }
 
             // and the labelling stuffs
@@ -441,10 +466,13 @@
         verts[1]=ccp(xInset-1,yInset+1);
         verts[2]=ccp(xInset+lineSize,yInset+1);
         verts[3]=ccp(xInset+lineSize,yInset-1);
+        float myOpac=(maskOuter.opacity/255)*100;
+        
         
         CGPoint *firstVert=&verts[0];
         [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
-        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+        [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, myOpac)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, myOpac))];
+        
     }
 //    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
 //    [l setPosition:ccp(startBarPos,yInset-27)];
@@ -471,6 +499,11 @@
     scaleDrawNode.scale=1.8f;
     
     renderingChanges=NO;
+    
+    if(clippingNode.visible && currentTotal>=visTrigger && maskOuter.opacity<255)
+        renderingChanges=YES;
+    
+    NSLog(@"maskOuter.opacity %f", (float)maskOuter.opacity);
 }
 
 #pragma mark - gameworld setup and population
@@ -513,11 +546,11 @@
 //    [renderLayer addChild:multiplier];
     
     CCSprite *barBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar_Background.png")];
-    [barBg setPosition:ccp(cx,400)];
+    [barBg setPosition:ccp(cx,405)];
     [renderLayer addChild:barBg];
     
     CCSprite *barUnderneathThing=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar.png")];
-    [barUnderneathThing setPosition:ccp(cx, 355)];
+    [barUnderneathThing setPosition:ccp(cx, 356)];
     [renderLayer addChild:barUnderneathThing];
     
     CCLabelTTF *zeroLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:26.0f];
@@ -527,13 +560,6 @@
     CCLabelTTF *expectedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",dividend] fontName:CHANGO fontSize:26.0f];
     [expectedLabel setPosition:ccp(barUnderneathThing.position.x+barUnderneathThing.contentSize.width/2, barUnderneathThing.position.y-20)];
     [renderLayer addChild:expectedLabel];
-
-    
-
-//    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
-//    [questionLabel setAnchorPoint:ccp(0,0.5)];
-//    [questionLabel setPosition:ccp(20,ly-320)];
-//    [renderLayer addChild:questionLabel];
     
     [self setupNumberWheel];
     
@@ -541,9 +567,11 @@
     {
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
         [s setPosition:ccp(963.5-(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing))),568)];
-        [s setColor:kBTXEColour[i]];
+        [s setColor:kLongDivColour[i]];
         [renderLayer addChild:s z:50];
     }
+    
+    lastTotal=currentTotal;
 }
 
 -(void)setupNumberWheel

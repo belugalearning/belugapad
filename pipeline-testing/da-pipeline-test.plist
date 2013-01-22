@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
+	<string>/intro-problems/DISTRIBUTIONTOOL_REMOVE_TO_CAGE.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg6.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
@@ -24,7 +26,6 @@
 	<string>/Problems/tools-dev/da-pt/partition-test5.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test6.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test7.plist</string>
-	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt-numbervalues.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg6.plist</string>

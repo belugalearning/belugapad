@@ -47,15 +47,12 @@
 #define DRAW_DEPTH 3
 
 static float kNodeScale=0.5f;
-//static CGPoint kStartMapPos={-3576, -2557};
-static CGPoint kStartMapPos={-611, 3713};
-//static float kPropXNodeHitDist=0.065f;
-
-
 const float kLogOutBtnPadding = 8.0f;
-const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 
+static CGPoint kStartMapPos={-611, 3713};
+const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
+
 static BOOL debugRestrictMovement=NO;
 
 typedef enum {
@@ -164,8 +161,6 @@ typedef enum {
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
         
         [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
-                        
-        //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
         
         [TestFlight passCheckpoint:@"STARTED_JMAP"];
         
@@ -176,6 +171,29 @@ typedef enum {
 
 #pragma mark - transitions
 
+-(void)setUtdLabel:(NSString *)toThisString
+{
+    if(!utdHeaderLabel){
+        utdHeaderLabel=[CCLabelTTF labelWithString:@""
+                                          fontName:CHANGO
+                                          fontSize:14.0f
+                                        dimensions:CGSizeMake(575, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
+        [utdHeaderLabel setPosition:ccp(442,742)];
+        [foreLayer addChild:utdHeaderLabel z:10];
+    }
+    
+    int maxStringSize=100;
+    
+    if([toThisString length]>maxStringSize)
+    {
+        NSString *truncString=[toThisString substringToIndex: MIN(maxStringSize, [toThisString length])];
+        toThisString=[NSString stringWithFormat:@"%@...", truncString];
+    }
+
+    [utdHeaderLabel setString:toThisString];
+
+}
+
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos
 {
     
@@ -184,15 +202,10 @@ typedef enum {
 
 -(void)gotoToolHost:(ccTime)delta
 {
-    //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
-    
     [TestFlight passCheckpoint:@"PROCEEDING_TO_TOOLHOST_FROM_JMAP"];
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_enter_question.wav")];
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
-    
-//    [ac.searchBar removeFromSuperview];
-//    ac.searchBar=nil;
     
     if(ac.IsIpad1)
     {
@@ -213,17 +226,10 @@ typedef enum {
     
     gw.Blackboard.jmapInstance=self;
     
-//    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
-    
-    //used for debug draw of map positioning
-//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:99];
-    
 }
 
 -(void)populateImageCache
 {
-    //load some cached images
-    
     //island texture bases (determined id generated from mastery pos)
     for(int i=1; i<10; i++)
     {
@@ -260,11 +266,11 @@ typedef enum {
     //get nodes to calculate their offset from parent / mastery
     [gw handleMessage:kSGretainOffsetPosition];
     
-    //force layout mastery
-    for(int i=0; i<50; i++)
-    {
-        [gw handleMessage:kSGforceLayout];
-    }
+    //force layout mastery -- currently unused, this handles rating of the layout
+    //for(int i=0; i<50; i++)
+    //{
+    //    [gw handleMessage:kSGforceLayout];
+    //}
     
     //re-set node positions
     [gw handleMessage:kSGresetPositionUsingOffset];
@@ -274,18 +280,11 @@ typedef enum {
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
 
-    // position map so that bottom-most included node in view, bottom-left
-    if (!contentService.resetPositionAfterTH && !mapPositionSet)
+    // position map
+    if (!mapPositionSet)
     {
-        CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
-        for (id go in [gw AllGameObjects]) {
-            if([go isKindOfClass:[SGJmapMasteryNode class]])
-            {
-                CGPoint mnpos = ((SGJmapMasteryNode*)go).Position;
-                if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
-            }
-        }
-        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(512-p.x, 300-p.y)]; // offset to make most of node visible
+        CGPoint np=resumeAtNode.Position;
+        [mapLayer setPosition:ccp(512-np.x, 384-np.y)];
     }
     
     [self buildSearchIndex];
@@ -296,14 +295,10 @@ typedef enum {
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;
     
-    NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
-    
     if(playTransitionAudio)
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;
     
-//    SGJmapPaperPlane *plane=[[SGJmapPaperPlane alloc]initWithGameWorld:gw andRenderLayer:mapLayer andPosition:ccp(0,0) andDestination:ccp(100,100)];
-//    [plane setup];
 }
 
 -(void)setupContentRegions
@@ -337,11 +332,6 @@ typedef enum {
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
-    if(contentService.resetPositionAfterTH)
-        [mapLayer setPosition:contentService.lastMapLayerPosition];
-    else
-        [mapLayer setPosition:kStartMapPos];        
-
     [self addChild:mapLayer z:1];
     
     //setup render batch for nodes
@@ -501,6 +491,8 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
+    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:0];
+    
     //mastery>child relations
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {
@@ -639,6 +631,27 @@ typedef enum {
             
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
+        else if([go isKindOfClass:[SGJmapNode class]])
+        {
+            SGJmapNode *n=(SGJmapNode*)go;
+            if (n.ustate.lastPlayed)
+            {
+                if([resumeAtMaxDate compare:n.ustate.lastPlayed]==NSOrderedAscending)
+                {
+                    resumeAtMaxDate=n.ustate.lastPlayed;
+                    resumeAtNode=n;
+                }
+            }
+            else if([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180214"])
+            {
+                //if no other node set, we'll use this one -- so set an aritifically low date
+                if([resumeAtMaxDate compare:[NSDate dateWithTimeIntervalSince1970:1]]==NSOrderedAscending)
+                {
+                    resumeAtMaxDate=[NSDate dateWithTimeIntervalSince1970:1];
+                    resumeAtNode=n;
+                }
+            }
+        }
     }
     
     
@@ -771,7 +784,6 @@ typedef enum {
     int rindex=0;
     
     for (NSString *r in regions) {
-//        NSLog(@"region: %@", r);
         
         //create the region
         SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
@@ -834,8 +846,10 @@ typedef enum {
     //step over each group that includes a data-features and create a dictionary for it
     NSArray *nodes=[doc nodesForXPath:@"//svg:g[starts-with(@id, 'data-features')]" namespaceMappings:nsMappings error:nil];
     
+    int didx=0;
     
     for (CXMLElement *node in nodes) {
+        
         //this is a node
         //NSLog(@"parsing island group %@", [[node attributeForName:@"id"] stringValue]);
         
@@ -855,6 +869,9 @@ typedef enum {
         
         //step over all of the images in the group to infer types
         NSArray *dimages=[node nodesForXPath:@"svg:image" namespaceMappings:nsMappings error:nil];
+        
+        //NSLog(@"dimages in data found %d is %d", didx, dimages.count);
+        
         for(CXMLElement *dimg in dimages)
         {
             NSString *href=[[dimg attributeForName:@"xlink:href"] stringValue];
@@ -897,12 +914,15 @@ typedef enum {
                 
             }
         }
+        
+        didx++;
     }
     
 }
 
 -(NSValue*)getBoxedPosFromTransformString:(NSString*)t
 {
+    
     NSArray *ps=[t componentsSeparatedByString:@" "];
     NSString *sx=[ps objectAtIndex:4];
     NSString *sy=[ps objectAtIndex:5];
@@ -912,6 +932,8 @@ typedef enum {
     float fy=[sy floatValue];
     fy=768.0f-fy;
 
+    //NSLog(@"boxing %@ to %f, %f", t, fx, fy);
+    
     return [NSValue valueWithCGPoint:CGPointMake(fx, fy)];
 }
 
@@ -931,7 +953,7 @@ typedef enum {
     }
     
     NSNumber *res=[NSNumber numberWithBool:(set<0)];
-//    NSLog(@"res: %@", [res boolValue] ? @"true" : @"false");
+
     return res;
 }
 
@@ -970,19 +992,6 @@ typedef enum {
     //udpdate tap timer
     lastTapTime+=delta;
     
-//    //scrolling
-//    float friction=0.85f;
-//    
-//    if(!isDragging)
-//    {
-//        dragVel=[BLMath MultiplyVector:dragVel byScalar:friction];
-//        if(dragVel.x<100.0f && dragVel.y<100.0f)
-//            mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
-//    }
-//    else {
-//        dragVel=[BLMath SubtractVector:dragLast from:mapLayer.position];
-//        dragLast=mapLayer.position;
-//    }
 }
 
 -(void) doUpdateProximity:(ccTime)delta
@@ -1087,6 +1096,7 @@ typedef enum {
         
         ac.lastJmapViewUState=nil;
         ac.lastViewedNodeId=nil;
+        contentService.lastMapLayerPosition=CGPointZero;
         [ac returnToLogin];
         
         return;
@@ -1157,7 +1167,7 @@ typedef enum {
                 id<Transform>tgo=go;
                 float thisDistance=[BLMath DistanceBetween:lOnMap and:tgo.Position];
                 
-                if(first||thisDistance<bestDistance)
+                if((first||thisDistance<bestDistance) && thisDistance<40.0f)
                 {
                     first=NO;
                     bestDistance=thisDistance;
@@ -1165,19 +1175,18 @@ typedef enum {
                     lastSelectedNode=selected;
                 }
                 
-    //            id<Selectable>sgo=go;
-    //            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
-    //            {
-    //                selected=sgo;
-    //                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
-    //                break;
-    //            }
             }
             
         }
         
         if(selected)
+        {
+            [loggingService logEvent:BL_JS_PIN_SELECT withAdditionalData:nil];
             [((id<Selectable>)selected).NodeSelectComponent trySelectionForPosition:lOnMap];
+        }
+        else
+            [self setUtdLabel:@""];
+
         
         for (id go in [gw AllGameObjects]) {
             if([go conformsToProtocol:@protocol(Selectable)])
@@ -1241,7 +1250,7 @@ typedef enum {
             {
                 if (newpos.x > -282) newpos.x=-282;
                 if (newpos.y < -199) newpos.y=-199;
-                if (newpos.y > 260) newpos.y=260;
+                if (newpos.y > 560) newpos.y=560;
                 if (newpos.x < -282) newpos.x=-282;
             }
             else
@@ -1310,8 +1319,9 @@ typedef enum {
 
 -(void)zoomToCityViewAtPoint:(CGPoint)gesturePoint
 {
+    [loggingService logEvent:BL_JS_ZOOM_IN withAdditionalData:nil];
+    
     zoomedOut=NO;
-    //[backarrow setVisible:YES];
     [backarrow setFlipX:NO];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];
@@ -1337,26 +1347,20 @@ typedef enum {
 
 -(void)zoomToRegionView
 {
+    [loggingService logEvent:BL_JS_ZOOM_OUT withAdditionalData:nil];
+    
     zoomedOut=YES;
-//    [backarrow setVisible:NO];
     [backarrow setFlipX:YES];
     
     [mapLayer setAnchorPoint:ccp(0.5,0.5)];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:REGION_ZOOM_LEVEL] rate:2.0f]];
     
-    NSLog(@"pos at region view %@", NSStringFromCGPoint(mapLayer.position));
-    
-    //mapLayer.position=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
-    
     CGPoint newpos=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
     newpos=ccp(-282, newpos.y);
     if(newpos.y<-199)newpos=ccp(newpos.x, -199);
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
-    
-    //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
-//    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-257, 212.5)] rate:2.0f]];
     
     [gw handleMessage:kSGzoomOut];
 }
@@ -1401,7 +1405,7 @@ typedef enum {
 
 -(void)setupUI
 {
-    ac.searchBar=[[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)] autorelease];
+    ac.searchBar=[[[UISearchBar alloc] initWithFrame:CGRectMake(748, -2, 266, 58)] autorelease];
     ac.searchBar.barStyle=UIBarStyleBlackTranslucent;
     [[[ac.searchBar subviews] objectAtIndex:0] removeFromSuperview];
     ac.searchBar.backgroundColor=[UIColor clearColor];
@@ -1411,9 +1415,11 @@ typedef enum {
     [[CCDirector sharedDirector].view addSubview:ac.searchBar];
     
     
-    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)] autorelease];
+    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 56, 341, 360)] autorelease];
     ac.searchList.delegate=self;
     ac.searchList.dataSource=self;
+    
+    ac.searchList.backgroundColor=[UIColor colorWithRed:72.0f/255.0f green:76.0f/255.0f blue:77.0f/255.0f alpha:1];
 }
 
 -(void)resetUI
@@ -1430,8 +1436,6 @@ typedef enum {
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-//    [ac speakString:searchBar.text];
-    
     [ac.searchList removeFromSuperview];
 }
 
@@ -1462,14 +1466,13 @@ typedef enum {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"selected %@", [searchNodes objectAtIndex:indexPath.row]);
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
     
     id<CouchDerived, Transform>node;
     if(isFiltered)node=[filteredNodes objectAtIndex:indexPath.row];
     else node=[searchNodes objectAtIndex:indexPath.row];
 
     CGPoint moveto=ccp(300-node.Position.x, 600-node.Position.y);
-    //if(zoomedOut)moveto=ccp(300-node.Position.x*REGION_ZOOM_LEVEL, 600-node.Position.y*REGION_ZOOM_LEVEL);
     
     if(zoomedOut)moveto=[BLMath MultiplyVector:moveto byScalar:REGION_ZOOM_LEVEL];
     
@@ -1489,10 +1492,12 @@ typedef enum {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId] autorelease];
     }
     
+    cell.backgroundColor=[UIColor clearColor];
+    
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
-    cell.textLabel.textColor=[UIColor blackColor];
+    cell.textLabel.textColor=[UIColor whiteColor];
 
     id<CouchDerived> go;
     if(isFiltered)go=[filteredNodes objectAtIndex:indexPath.row];

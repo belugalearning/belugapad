@@ -59,7 +59,18 @@
 -(void)updatePosition:(CGPoint)position
 {
     self.sprite.position=position;
-//    NSLog(@"position at %@", NSStringFromCGPoint(position));
+    //NSLog(@"position at %@", NSStringFromCGPoint(position));
+}
+
+-(void)updatePositionWithAnimation:(CGPoint)position
+{
+    self.sprite.position=position;
+    
+    self.sprite.opacity=0;
+    [self.sprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.7f], nil]];
+    
+//    [self.sprite runAction:[CCMoveTo actionWithDuration:0.25f position:position]];
+    NSLog(@"position at %@", NSStringFromCGPoint(position));
 }
 
 -(void)inflateZindex

@@ -226,7 +226,7 @@
     for(int i=0;i<[initObjects count];i++)
     {
         NSDictionary *d=[initObjects objectAtIndex:i];
-        [self createShapeWith:d];
+        [self createShapeWith:d andObj:i of:[initObjects count]];
     }
     
     
@@ -274,18 +274,29 @@
 #pragma mark - interaction
 -(void)createShapeWith:(NSDictionary*)theseSettings
 {
+    [self createShapeWith:theseSettings andObj:1 of:1];
+}
+-(void)createShapeWith:(NSDictionary*)theseSettings andObj:(int)thisObj of:(int)thisMany
+{
     
     int numberInShape=[[theseSettings objectForKey:NUMBER]intValue];
     id<Group> thisGroup=[[[SGFBlockGroup alloc]initWithGameWorld:gw] autorelease];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    int farLeft=100;
-    int farRight=lx-60;
-    int topMost=ly-170;
-    int botMost=130;
+    int totalShapes=thisMany;
+    int thisShape=thisObj;
+    float sectWidth=lx/totalShapes;
     
-    float xStartPos=farLeft + arc4random() % (farRight - farLeft);
-    float yStartPos=botMost + arc4random() % (topMost - botMost);
+    float xStartPos=sectWidth*(thisShape+0.5);
+    float yStartPos=540;
+    
+    //int farLeft=100;
+    //int farRight=lx-60;
+    //int topMost=ly-170;
+    //int botMost=130;
+    
+    //float xStartPos=farLeft + arc4random() % (farRight - farLeft);
+    //float yStartPos=botMost + arc4random() % (topMost - botMost);
     
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
@@ -870,7 +881,7 @@
             {
                 pickupObject=thisGroup;
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_picking_up_blocks.wav")];
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_PICKUP_GROUP withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_PICKUP_GROUP withAdditionalData:[(NSObject*)thisGroup isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)thisGroup blocksInGroup]]:nil];
                 [thisGroup inflateZIndexOfMyObjects];
             }
         }
@@ -907,7 +918,7 @@
             isInBubble=[grp checkIfInBubbleAt:location];
             if(!hasLoggedMove){
                 hasLoggedMove=YES;
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:[(NSObject*)grp isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)grp blocksInGroup]]:nil];
             }
         }
     }
@@ -930,11 +941,11 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if(isInBubble && CGPointEqualToPoint(location, lastTouch)){
-       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:nil];
+    if(isInBubble && [BLMath DistanceBetween:location and:lastTouch]<15.0f){
+       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
     }else{
-       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_FREE_SPACE withAdditionalData:nil];
+       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_FREE_SPACE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_block_outside_of_mountable_area.wav")];
     }
     if(bubbleAutoOperate)
@@ -952,9 +963,9 @@
             
             if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
             {
-                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_pipe.wav")];
                 
-                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
                 [self evalProblem];
                 [self setTouchVarsToOff];
                 return;
@@ -979,6 +990,7 @@
     isTouching=NO;
     hasLoggedMove=NO;
     isInBubble=NO;
+    audioHasPlayedBubbleProx=NO;
 }
 
 #pragma mark - evaluation

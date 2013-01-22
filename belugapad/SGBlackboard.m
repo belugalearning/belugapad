@@ -16,6 +16,7 @@
 @synthesize islandData;
 @synthesize MaxObjectDistance;
 @synthesize jmapInstance;
+@synthesize playFailedBondOverMax;
 -(id) init
 {
     if((self=[super init]))

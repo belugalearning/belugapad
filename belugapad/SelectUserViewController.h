@@ -10,6 +10,7 @@
 #import "PassCodeView.h"
 
 @class AppDelegate;
+@class CODialog;
 
 @interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PassCodeViewDelegate>
 {
@@ -17,4 +18,7 @@
 }
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView;
 -(void)passCodeBecameValid:(PassCodeView*)passCodeView;
+
+@property (nonatomic, strong) CODialog *dialog;
+
 @end

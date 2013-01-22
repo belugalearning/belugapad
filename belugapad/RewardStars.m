@@ -63,7 +63,7 @@
     if(fireStar1)
         timeSinceFired+=delta;
     
-    if(!stopScore){
+    if(!stopScore && timeSinceFired>0.3f){
         scoreCounter+=scoreIncrementer;
     }
     
@@ -159,30 +159,42 @@
 
 -(void) setupStars;
 {
+    CCSprite *toolBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/background.png")];
+    [toolBg setPosition:ccp(cx,cy)];
+    [self addChild:toolBg];
+    
     stars=usersService.lastStarAcheived;
+    //stars=3;
     scoreAchieved=usersService.lastScoreAcheived;
+    //scoreAchieved=223523;
+    
     scoreCounter=0;
     scoreIncrementer=scoreAchieved/30;
     
     CCSprite *starBkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_bg.png")];
-    [starBkg setPosition:ccp(cx,cy)];
+    [starBkg setPosition:ccp(-lx,cy)];
     [self addChild:starBkg];
     
-    scoreLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
-    [scoreLabel setPosition:ccp(510,360)];
+    [starBkg runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(cx,cy)] rate:0.5f]];
+    
+    scoreLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:36.0f];
+    [scoreLabel setPosition:ccp(510,340)];
     [self addChild:scoreLabel];
+    [scoreLabel runAction:[CCFadeIn actionWithDuration:0.5f]];
     
     s1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_1.png")];
     s2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_2.png")];
     s3=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_star_3.png")];
     
     replayNode=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_replay.png")];
-    [replayNode setPosition:ccp(350,278)];
+    [replayNode setPosition:ccp(350-lx,278)];
     [self addChild:replayNode];
+    [replayNode runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(350,278)] rate:0.5f]];
     
     returnToMap=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/rewards/final_score_map.png")];
-    [returnToMap setPosition:ccp(668,278)];
+    [returnToMap setPosition:ccp(668-lx,278)];
     [self addChild:returnToMap];
+    [returnToMap runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(668,278)] rate:0.5f]];
     
 
     
@@ -214,8 +226,14 @@
     
 }
 
+-(void)playThud
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_reward_thud.wav")];
+}
+
 -(void)setupParticleAt:(CGPoint)position
 {
+    [self playThud];
     CCParticleSystemQuad *primaryParticle=[CCParticleSystemQuad particleWithFile:@"star_explosion2.plist"];
     [primaryParticle setPosition:position];
     [self addChild:primaryParticle];
@@ -251,10 +269,11 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(CGRectContainsPoint(returnToMap.boundingBox, location))
+    if(CGRectContainsPoint(returnToMap.boundingBox, location) && !returningToMap)
     {
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
         [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        returningToMap=YES;
     }
     else if(CGRectContainsPoint(replayNode.boundingBox, location))
     {

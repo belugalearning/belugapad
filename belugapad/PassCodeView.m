@@ -8,6 +8,8 @@
 
 #import "PassCodeView.h"
 #import "NumpadInputController.h"
+#import "SimpleAudioEngine.h"
+#import "global.h"
 
 @interface PassCodeView()
 {
@@ -25,6 +27,7 @@
 @implementation PassCodeView
 
 const uint numLabels = 4;
+const NSString *placeholderText = @"CODE";
 const uint firstLabelX = 12;
 const uint labelSpacing = 67;
 
@@ -133,11 +136,15 @@ const uint labelSpacing = 67;
     currentIndex = labelIx;
     [self positionCursor];
 }
-
+-(void)buttonTap
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_button_tap.wav")];
+}
 #pragma mark -
 #pragma mark NumpadInputControllerDelegate
 -(void)buttonTappedWithText:(NSString*)buttonText
 {
+    [self buttonTap];
     BOOL validBefore = self.isValid;
     BOOL isDigitButton = [singleDigitMatch numberOfMatchesInString:buttonText options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0,[buttonText length])] == 1;
     
@@ -190,7 +197,18 @@ const uint labelSpacing = 67;
 {
     for (uint i=0; i<numLabels; i++)
     {
-        ((UILabel*)[labels objectAtIndex:i]).text = [text substringWithRange:NSMakeRange(i,1)];
+        NSRange r = NSMakeRange(i,1);
+        UILabel *l = [labels objectAtIndex:i];
+        if ([[text substringWithRange:r] isEqualToString:@" "])
+        {
+            l.text = [placeholderText substringWithRange:r];
+            l.textColor = [UIColor lightGrayColor];
+        }
+        else
+        {
+            l.text = [text substringWithRange:r];
+            l.textColor = [UIColor whiteColor];
+        }
     }
 }
 

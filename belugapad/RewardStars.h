@@ -32,6 +32,8 @@
     BOOL shownStar3;
     BOOL stopScore;
     
+    BOOL returningToMap;
+    
     BOOL timeParticle1;
     BOOL timeParticle2;
     BOOL timeParticle3;

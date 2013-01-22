@@ -13,7 +13,9 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "PassCodeView.h"
+#import "SimpleAudioEngine.h"
 #import "UIView+UIView_DragLogPosition.h"
+#import "CODialog.h"
 
 @interface SelectUserViewController ()
 {
@@ -24,7 +26,9 @@
     // select user
     UIView *selectUserView;
     UIImageView *selectUserBG;
+    UILabel *noUsersAdvisoryText;
     UITableView *selectUserTableView;
+    UIImageView *selectUserTableMask;
     UIButton *playButton;
     UIButton *joinClassButton;
     
@@ -146,6 +150,11 @@
     
 }
 
+-(void)buttonTap
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_button_tap.wav")];
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -160,6 +169,8 @@
 -(void)setActiveView:(UIView *)view
 {
     freezeUI = YES;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
     
     UIView *currentView = nil;
     if (![selectUserView isHidden])
@@ -180,7 +191,7 @@
     
     // animate currentView off screen and hide
     if (currentView)
-    {
+    {        
         [UIView animateWithDuration:1.2
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseInOut
@@ -215,6 +226,17 @@
     // animate next view into position
     if (view)
     {
+        if (view == selectUserView)
+        {
+            BOOL deviceHasUsers = [deviceUsers count] && [((NSDictionary*)deviceUsers[0]) count];
+            [selectUserBG setImage:[UIImage imageNamed:deviceHasUsers ? @"/login-images/select_user_BG.png" : @"/login-images/Create_account_BG.png"]];
+            [noUsersAdvisoryText setHidden:deviceHasUsers];
+            [selectUserTableView setHidden:!deviceHasUsers];
+            [selectUserTableMask setHidden:!deviceHasUsers];
+            [joinClassButton setHidden:!deviceHasUsers];
+            [playButton setHidden:!deviceHasUsers];
+        }
+        
         [view setHidden:NO];
         [UIView animateWithDuration:1.0
                               delay:0.0
@@ -242,10 +264,23 @@
 }
 
 -(void)buildSelectUserView
-{    
-    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];    
+{
+    selectUserBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
     selectUserBG.center = CGPointMake(512, 364);
     [selectUserView addSubview:selectUserBG];
+    
+    noUsersAdvisoryText = [[[UILabel alloc] initWithFrame:CGRectMake(237, 286, 550, 50)] autorelease];
+    noUsersAdvisoryText.text = @"CREATE AN ACCOUNT TO BEGIN YOUR JOURNEY THROUGH THE WORLD OF MATHS";
+    noUsersAdvisoryText.lineBreakMode = UILineBreakModeWordWrap;
+    noUsersAdvisoryText.numberOfLines = 2;
+    noUsersAdvisoryText.textAlignment = UITextAlignmentCenter;
+    noUsersAdvisoryText.textColor = [UIColor whiteColor];
+    noUsersAdvisoryText.backgroundColor = [UIColor clearColor];
+    noUsersAdvisoryText.shadowColor = [UIColor blackColor];
+    noUsersAdvisoryText.shadowOffset = CGSizeMake(2,2);
+    noUsersAdvisoryText.font = [UIFont fontWithName:@"Chango" size:16];
+    [noUsersAdvisoryText setTransform:CGAffineTransformMakeRotation(-M_PI / 160)];
+    [selectUserView addSubview:noUsersAdvisoryText];
     
     selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];
     selectUserTableView.backgroundColor = [UIColor clearColor];
@@ -256,9 +291,9 @@
     selectUserTableView.delegate = self;
     [selectUserView addSubview:selectUserTableView];
     
-    UIImageView *mask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
-    mask.frame = CGRectMake(320.0f,243.0f,381.0f,146.0f);
-    [selectUserView addSubview:mask];
+    selectUserTableMask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
+    selectUserTableMask.frame = CGRectMake(320.0f,243.0f,381.0f,146.0f);
+    [selectUserView addSubview:selectUserTableMask];
     
     UIButton *newUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     newUserButton.frame = CGRectMake(331.0f, 403.0f, 131.0f, 51.0f);
@@ -394,7 +429,10 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *user = deviceUsers[indexPath.row];
-    if (user[@"nickName"]) [self enablePlayButton];// i.e. a real user, not empty one
+    if (user[@"nickName"]){
+        [self buttonTap];
+        [self enablePlayButton];
+    }// i.e. a real user, not empty one
 }
 
 #pragma mark interactions
@@ -417,6 +455,8 @@
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
 
     if (selectUserModalContainer) return;
+    
+    [self buttonTap];
     
     // TEMP way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
     NSDictionary *ur = deviceUsers[ip.row];
@@ -458,6 +498,13 @@
     [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserModalContainer addSubview:loginButton];
     
+    selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(100, 115, 245.0f, 46.0f)] autorelease];
+    selectUserPassCodeModalView.delegate = self;
+    [selectUserModalContainer addSubview:selectUserPassCodeModalView];
+    
+    tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
+    [self.view addSubview:tickCrossImg];
+    
     [UIView animateWithDuration:0.8
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseOut
@@ -467,27 +514,21 @@
                      completion:^(BOOL finished){
                          [selectUserPassCodeModalView becomeFirstResponder];
                      }];
-    
-    selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
-    selectUserPassCodeModalView.delegate = self;
-    [self.view addSubview:selectUserPassCodeModalView];
-    
-    tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
-    [self.view addSubview:tickCrossImg];
 }
 
 -(void)handleBackToSelectUserClicked:(id)button
 {
     if (freezeUI) return;
     
+    [self buttonTap];
+    
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
     [button removeFromSuperview];
     loginButton = nil;
+    selectUserPassCodeModalView = nil;
     [selectUserModalContainer removeFromSuperview];
     selectUserModalContainer = nil;
-    [selectUserPassCodeModalView removeFromSuperview];
-    selectUserPassCodeModalView = nil;
     [tickCrossImg removeFromSuperview];
     tickCrossImg = nil;
 }
@@ -496,8 +537,11 @@
 {
     if (freezeUI) return;
     
+    [loginButton setImage:[UIImage imageNamed:@"/login-images/loading_button.png"] forState:UIControlStateNormal];
+    
     if (!selectUserPassCodeModalView.isValid)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_login_failure.wav")];
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
         tickCrossImg.alpha = 1;
         [selectUserPassCodeModalView becomeFirstResponder];
@@ -509,6 +553,7 @@
     
     if ([ur[@"password"] isEqualToString:selectUserPassCodeModalView.text])
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_login_success.wav")];
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/correct_tick.png"]];
         tickCrossImg.alpha = 1;
         freezeUI = YES;
@@ -516,6 +561,7 @@
     }
     else
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_login_failure.wav")];
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
         tickCrossImg.alpha = 1;
         [selectUserPassCodeModalView clearText];
@@ -553,6 +599,7 @@
 -(void)handleCancelChangeNickClicked:(id)button
 {
     if (freezeUI) return;
+    [self buttonTap];
     freezeUI = YES;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
@@ -561,6 +608,7 @@
 -(void)handleSaveChangeNickClicked:(id)button
 {
     if (freezeUI) return;
+    [self buttonTap];
     freezeUI = YES;
     
     loadingImg.alpha = 1;
@@ -572,7 +620,6 @@
     __block typeof(self) bself = self;
     void (^changeNickCallback)() = ^(BL_USER_NICK_CHANGE_RESULT result) {
         bself->loadingImg.alpha = 0;
-        UIAlertView *alertView;
         
         switch (result) {
             case BL_USER_NICK_CHANGE_SUCCESS:
@@ -589,13 +636,18 @@
                 break;
             case BL_USER_NICK_CHANGE_ERROR:
                 bself->loadingImg.alpha = 0;
-                alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                        message:@"There was a problem connecting to the server. You can change your username next time you log in."
-                                                       delegate:bself
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil] autorelease];
-                alertView.tag = 999;
-                [alertView show];
+                
+                self.dialog=[CODialog dialogWithWindow:self.view.window];
+                [self.dialog resetLayout];
+                
+                self.dialog.dialogStyle=CODialogStyleDefault;
+                self.dialog.title=@"Sorry";
+                self.dialog.subtitle=@"There was a problem connecting to the server. You can change your username next time you log in.";
+                [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialogAndGoToIntro:)];
+                
+                [self.dialog sizeToFit];
+                [self.dialog showOrUpdateAnimated:YES];
+                
                 break;
         }
     };
@@ -605,6 +657,15 @@
 -(void)proceedAfterPause:(NSTimer*)timer
 {
     [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
+}
+
+- (void)hideDialog:(id)sender {
+    [self.dialog hideAnimated:YES];
+}
+
+- (void)hideDialogAndGoToIntro:(id)sender {
+    [self.dialog hideAnimated:YES];
     [app proceedFromLoginViaIntro:NO];
 }
 
@@ -632,7 +693,7 @@
     newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 288.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
-    newUserNameTF.placeholder = @"Username";
+    newUserNameTF.placeholder = @"USERNAME";
     newUserNameTF.clearButtonMode = UITextFieldViewModeNever;
     newUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     newUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -662,6 +723,7 @@
 -(void)handleCancelNewUserClicked:(id)button
 {
     if (freezeUI) return;
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_login_transition.wav")];
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -670,7 +732,7 @@
 -(void)handleSaveNewUserClicked:(id)button
 {
     if (freezeUI) return;
-    
+    [self buttonTap];
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
         [newUserNameTF becomeFirstResponder];
@@ -691,12 +753,17 @@
         
         if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
         {
-            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"This nickname is already in use. Please try another one."
-                                                                delegate:bself
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil] autorelease];
-            [alertView show];
+            self.dialog=[CODialog dialogWithWindow:self.view.window];
+            [self.dialog resetLayout];
+            
+            self.dialog.dialogStyle=CODialogStyleDefault;
+            self.dialog.title=@"Sorry";
+            self.dialog.subtitle=@"This nickname is already in use. Please try another one.";
+            [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialog:)];
+            
+            [self.dialog sizeToFit];
+            [self.dialog showOrUpdateAnimated:YES];
+            
         }
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {            
@@ -737,7 +804,7 @@
     existingUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 288.0f, 360.0f, 42.0f)] autorelease];
     existingUserNameTF.delegate = self;
     existingUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
-    existingUserNameTF.placeholder = @"Name";
+    existingUserNameTF.placeholder = @"USERNAME";
     existingUserNameTF.clearButtonMode = UITextFieldViewModeNever;
     existingUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     existingUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -775,7 +842,7 @@
 -(void)handleLoadExistingUserClicked:(id)button
 {
     if (freezeUI) return;
-    
+    [self buttonTap];
     if (!existingUserNameTF.text || !existingUserNameTF.text.length)
     {
         [existingUserNameTF becomeFirstResponder];
@@ -797,14 +864,20 @@
     void (^callback)() = ^(NSDictionary *ur) {
         if (!ur)
         {
-            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil] autorelease];
+            self.dialog=[CODialog dialogWithWindow:self.view.window];
+            [self.dialog resetLayout];
+            
+            self.dialog.dialogStyle=CODialogStyleDefault;
+            self.dialog.title=@"Sorry";
+            self.dialog.subtitle=@"We could not find a match for those login details. Please double-check and try again.";
+            [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialog:)];
+            
+            [self.dialog sizeToFit];
+            [self.dialog showOrUpdateAnimated:YES];
+            
+            
             bself->loadingImg.alpha = 0;
             bself->freezeUI = NO;
-            [alertView show];
             return;
         }
         

@@ -39,6 +39,7 @@ typedef enum {
     
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
+    float timeSinceInteractionOrShake;
     BOOL autoMoveToNextProblem;
     
     // and a default layer
@@ -60,6 +61,8 @@ typedef enum {
     // tool stuff
     CCSprite *buttonOfWin;
     CCSprite *numiconOne;
+    CCSprite *flasher;
+    CCSprite *flashingFlasher;
     CCLabelTTF *currentNumber;
     CCLabelTTF *tLabel;
     CCSpriteFrameCache *frameCache;

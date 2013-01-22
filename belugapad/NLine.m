@@ -156,6 +156,8 @@ float timerIgnoreFrog;
     
     timerIgnoreFrog=0.5f;
     
+    [loggingService logEvent:BL_PA_NL_TOUCH_END_JUMP_LINE withAdditionalData:[NSNumber numberWithInt:fabs(lastFrogLoc-lastBubbleLoc)]];
+    
     [self hideFrogTarget];
     
     [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp((lastFrogLoc-initStartLoc)*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
@@ -426,8 +428,6 @@ float timerIgnoreFrog;
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    lastBubbleLoc=initStartLoc;
-    
     rambler.Value=initStartVal;
     rambler.StartValue=rambler.Value;
     rambler.CurrentSegmentValue=initSegmentVal;
@@ -436,6 +436,8 @@ float timerIgnoreFrog;
     rambler.BubblePos=initStartVal;
     
     initStartLoc=initStartVal / initSegmentVal;
+    lastBubbleLoc=initStartLoc;
+    logLastBubblePos=initStartLoc;
 
     
     enableAudioCounting=YES;
@@ -802,10 +804,11 @@ float timerIgnoreFrog;
         
         [self animPickupBubble];
         
-        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:[NSNumber numberWithInt:logLastBubblePos]];
         
         //retain current pos to incr/decr log
         logLastBubblePos=lastBubbleLoc;
+        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:[NSNumber numberWithInt:logLastBubblePos]];
         
         timeSinceInteractionOrShake=0;
         
@@ -948,6 +951,8 @@ float timerIgnoreFrog;
         //determine whether or not to show the frog target
         if(lastBubbleLoc!=lastFrogLoc)
         {
+            NSLog(@"lastBubbleLoc = %d, logLastBubblePos = %d, lastFrogLoc = %d", lastBubbleLoc, logLastBubblePos, lastFrogLoc);
+            
             if(lastBubbleLoc>logLastBubblePos && lastBubbleLoc>lastFrogLoc)
                 [frogTargetSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")]];
             else if(lastBubbleLoc<logLastBubblePos && lastBubbleLoc<lastFrogLoc)
@@ -961,7 +966,7 @@ float timerIgnoreFrog;
         }
         
         //do some logging
-        [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:[NSNumber numberWithInt:lastBubbleLoc]];
         
         if(lastBubbleLoc>logLastBubblePos)
         {
@@ -975,7 +980,8 @@ float timerIgnoreFrog;
         //did we move the bubble, the line
         if(logBubbleDidMove)
         {
-            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_BUBBLE withAdditionalData:nil];
+            float moveDistance=fabsf(lastBubbleLoc-logLastBubblePos);
+            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_BUBBLE withAdditionalData:[NSNumber numberWithFloat:moveDistance]];
         }
         if(logBubbleDidMoveLine)
         {

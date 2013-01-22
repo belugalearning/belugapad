@@ -13,9 +13,9 @@
 	<key>thing_5</key>
 	<string>blue</string>
 	<key>thing_s</key>
-	<string>person</string>
+	<string>creature</string>
 	<key>thing_p</key>
-	<string>people</string>
+	<string>creatures</string>
 	<key>30_bubble</key>
 	<string>slider</string>
 	<key>30_commit</key>
@@ -27,7 +27,7 @@
 	<key>30_QM</key>
 	<string>question mark</string>
 	<key>30_LD_NP_Green</key>
-	<string>right wheel labelled green</string>
+	<string>green wheel</string>
 	<key>30_pv_block</key>
 	<string>blocks</string>
 	<key>30_pv_block_s</key>
@@ -71,9 +71,9 @@
 	<key>30_pause</key>
 	<string>pause button</string>
 	<key>30_DT_Shape_Circle</key>
-	<string>circles</string>
-	<key>30_DT_Shape_Circle_s</key>
 	<string>circle</string>
+	<key>30_DT_Shape_Circle_s</key>
+	<string>circles</string>
 	<key>30_DT_Shape_Ellipse</key>
 	<string>ellipses</string>
 	<key>30_DT_Shape_Square</key>
@@ -88,6 +88,8 @@
 	<string>ten circle</string>
 	<key>30_DT_2Circles</key>
 	<string>two circles</string>
+	<key>30_DT_Dock</key>
+	<string>dock</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
 	<key>30_TT_25</key>

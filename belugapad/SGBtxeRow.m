@@ -193,11 +193,16 @@
         
         if([c isKindOfClass:[SGBtxeObjectNumber class]])
         {
+            SGBtxeObjectNumber *bon=(SGBtxeObjectNumber*)c;
             
             NSNumberFormatter *nf = [NSNumberFormatter new];
             nf.numberStyle = NSNumberFormatterDecimalStyle;
-            NSNumber *thisNumber=[NSNumber numberWithFloat:[[(SGBtxeObjectNumber*)c numberText]floatValue]];
-            NSString *str = [nf stringFromNumber:thisNumber];
+//            NSNumber *thisNumber=[NSNumber numberWithFloat:[[(SGBtxeObjectNumber*)c numberText]floatValue]];
+//            NSString *str = [nf stringFromNumber:thisNumber];
+            NSString *str=bon.text;
+            
+            NSLog(@"text from db: %@", str);
+            
             [nf release];
             
             if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0)
@@ -229,6 +234,14 @@
 
 -(void)animateAndMoveToPosition:(CGPoint)thePosition
 {
+    for(id<NSObject> go in children)
+    {
+        if([go isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            ((SGBtxeObjectIcon*)go).animatePos=YES;
+        }
+    }
+    
     position=thePosition;
     [self.baseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:position] rate:2.0f]];
 }

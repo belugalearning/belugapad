@@ -237,6 +237,8 @@ typedef enum {
     
     BOOL quittingToMap;
     
+    SGBtxeRow *qDescRow;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -266,6 +268,8 @@ typedef enum {
 -(void)showHideCommit;
 -(void)disableWheel;
 -(void)showWheel;
+-(void)showCornerTray;
+-(void)hideCornerTray;
 -(void)hideWheel;
 -(void)readOutProblemDescription;
 -(void)doUpdateOnTick:(ccTime)delta;
@@ -274,13 +278,13 @@ typedef enum {
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
+-(float)questionTrayWidth;
 -(NSMutableArray*)randomizeAnswers:(NSMutableArray*)thisArray;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
 -(void)evalNumberPicker;
--(void)reorderNumberPickerSelections;
 -(BOOL)calcMetaQuestion;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
@@ -303,5 +307,7 @@ typedef enum {
 -(void)playAudioPress;
 
 -(void)resetScoreMultiplier;
+- (void)sizeQuestionDescription;
+-(void)setReadProblemPosWithScale:(float)ascale;
 
 @end

@@ -10,6 +10,7 @@
 #import "BLMath.h"
 #import "global.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
 
 #import "AppDelegate.h"
 #import "ContentService.h"
@@ -67,7 +68,7 @@
             
             [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:testParentPos];
         }
-        
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_overlay_panel_tap.wav")];
         NSLog(@"i'm starting! %@", ParentGO._id);
         ParentGO.Selected=YES;
     }
@@ -78,6 +79,7 @@
         //no longer hacky at all -- completely miss the mastery/node check (no chance of hitting this anyway as there are no mastery pins, and allow direct access
         
         //this is mastery -- pop the sign
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];
         [self showSignWithForce:NO];
     }
     else {
@@ -110,6 +112,7 @@
         if([gameObject isKindOfClass:[SGJmapNode class]])
         {
             SGJmapNode *n=(SGJmapNode*)gameObject;
+            float lastPlayedSize=10.0f;
             
             NSString *sScore=@"";
             if(n.ustate.highScore>0)sScore=[NSString stringWithFormat:@"%d", n.ustate.highScore];
@@ -121,7 +124,7 @@
 //            NSString *lastPlayedDate=[df stringFromDate:ParentGO.DateLastPlayed];
 //            [df release];
             
-            NSString *displayString=nil;
+            NSString *displayString=@"";
             
             NSDate *today=[NSDate date];
             NSDate *lastPlayed=ParentGO.DateLastPlayed;
@@ -140,15 +143,18 @@
                 displayString=[NSString stringWithFormat:@"%d WEEK AGO", numberOfWeeks];
             else if(numberOfDays>0 && numberOfWeeks>0)
                 displayString=[NSString stringWithFormat:@"%d WEEKS AGO", numberOfWeeks];
+
             
-            NSString *splayed=@"NOT PLAYED";
-            if(n.ustate.lastPlayed>0)splayed=[NSString stringWithFormat:@"LAST PLAYED\n%@", displayString];
-            
-            if(n.ustate.lastPlayed>0)
+            NSString *splayed=@"";
+            if(n.ustate.lastPlayed>0){
+                splayed=@"LAST PLAYED";
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-tall.png")];
-            else
+            }
+            else{
+                splayed=@"NOT PLAYED";
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-small.png")];
-            
+                lastPlayedSize=18.0f;
+            }
             //show play again
             CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/play-button-normal.png")];
             [playSprite setPosition:ccp(signSprite.contentSize.width / 2.0f, 40)];
@@ -165,26 +171,42 @@
             sScore = [nf stringFromNumber:thisNumber];
             [nf release];
 
-            if([thisNumber floatValue]>0)
-            {
-                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore fontName:@"Source Sans Pro" fontSize:15.0f dimensions:CGSizeMake(180,100) hAlignment:UITextAlignmentLeft];
+//            if([thisNumber floatValue]>0)
+//            {
+            if(![splayed isEqualToString:@"NOT PLAYED"]){
+                CCLabelTTF *lblBestScore=[CCLabelTTF labelWithString:@"BEST SCORE" fontName:CHANGO fontSize:10.0f dimensions:CGSizeMake(signSprite.contentSize.width,100) hAlignment:UITextAlignmentCenter];
+                [lblBestScore setPosition:ccp(100,90)];
+                [signSprite addChild:lblBestScore];
                 
-                [score setPosition:ccp(100, 85)];
-                [score setColor:ccc3(255, 255, 255)];
+                CCLabelTTF *score=[CCLabelTTF labelWithString:sScore fontName:CHANGO fontSize:18.0f dimensions:CGSizeMake(signSprite.contentSize.width,100) hAlignment:UITextAlignmentCenter];
+                [score setPosition:ccp(100, 75)];
+                [score setColor:ccc3(240, 230, 1)];
                 [signSprite addChild:score];
             }
-            CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
-            [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
-            [signSprite addChild:newSprite];
+//            }
+//            CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
+//            [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
+//            [signSprite addChild:newSprite];
 
             
-            CCLabelTTF *days=[CCLabelTTF labelWithString:splayed
-                                              fontName:@"Source Sans Pro"
-                                                fontSize:14.0f
-                                              dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft ];
-            [days setPosition:ccp(100, 50)];
-            [days setColor:ccc3(200, 200, 200)];
-            [signSprite addChild:days];
+            CCLabelTTF *lblLastPlayed=[CCLabelTTF labelWithString:splayed
+                                                         fontName:CHANGO
+                                                         fontSize:lastPlayedSize
+                                                       dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentCenter ];
+            [lblLastPlayed setPosition:ccp(100, 50)];
+            [lblLastPlayed setColor:ccc3(255, 255, 255)];
+            [signSprite addChild:lblLastPlayed];
+            
+            if(![splayed isEqualToString:@"NOT PLAYED"]){
+                CCLabelTTF *lblLastPlayedTime=[CCLabelTTF labelWithString:displayString
+                                                             fontName:CHANGO
+                                                             fontSize:12.0f
+                                                           dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentCenter ];
+                [lblLastPlayedTime setPosition:ccp(100, 35)];
+                [lblLastPlayedTime setColor:ccc3(240, 230, 1)];
+                [signSprite addChild:lblLastPlayedTime];
+            }
+            
         }
         else {
             //mastery node
@@ -199,40 +221,40 @@
             
             if(ParentGO.EnabledAndComplete)
             {
-                //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" fontName:@"Source Sans Pro" fontSize:14.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
-                [days setPosition:ccp(100, 45)];
-                [days setColor:ccc3(200, 200, 200)];
-                [signSprite addChild:days];
-                
-                CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:18.0f];
-                playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
-                [playSprite addChild:playlabel];
-                
-                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,418" fontName:@"Source Sans Pro" fontSize:15.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
-                [score setPosition:ccp(100, 85)];
-                [score setColor:ccc3(255, 255, 255)];
-                [signSprite addChild:score];
-                
-                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
-                [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
-                [signSprite addChild:newSprite];
+//                //days ago
+//                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" fontName:@"Source Sans Pro" fontSize:14.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
+//                [days setPosition:ccp(100, 45)];
+//                [days setColor:ccc3(255, 255, 255)];
+//                [signSprite addChild:days];
+//                
+//                CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:18.0f];
+//                playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
+//                [playSprite addChild:playlabel];
+//                
+//                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,418" fontName:@"Source Sans Pro" fontSize:15.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
+//                [score setPosition:ccp(100, 85)];
+//                [score setColor:ccc3(255, 255, 255)];
+//                [signSprite addChild:score];
+//                
+//                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
+//                [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
+//                [signSprite addChild:newSprite];
             }
             else {
-                CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY NOW" fontName:@"Chango" fontSize:18.0f];
-                playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
-                [playSprite addChild:playlabel];
-                
-                //new sprite
-                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-new.png")];
-                [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f) - 1, 83)];
-                [signSprite addChild:newSprite];
-        
-                //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" fontName:@"Source Sans Pro" fontSize:14.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
-                [days setPosition:ccp(100, 45)];
-                [days setColor:ccc3(255, 255, 255)];
-                [signSprite addChild:days];
+//                CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY NOW" fontName:@"Chango" fontSize:18.0f];
+//                playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
+//                [playSprite addChild:playlabel];
+//                
+//                //new sprite
+//                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-new.png")];
+//                [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f) - 1, 83)];
+//                [signSprite addChild:newSprite];
+//        
+//                //days ago
+//                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" fontName:@"Source Sans Pro" fontSize:14.0f dimensions:CGSizeMake(180, 100) hAlignment:UITextAlignmentLeft];
+//                [days setPosition:ccp(100, 45)];
+//                [days setColor:ccc3(255, 255, 255)];
+//                [signSprite addChild:days];
             }
         }
         
@@ -247,11 +269,16 @@
         placePos=((SGJmapMasteryNode*)ParentGO).MasteryPinPosition;
 
 
-    [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
+    if(((SGJmapNode*)ParentGO).flip)
+        [signSprite setPosition:[BLMath AddVector:ccp(-7, 33 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
+    else
+     [signSprite setPosition:[BLMath AddVector:ccp(7, 33 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
     
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     
     hitbox=CGRectMake(signSprite.position.x-(signSprite.contentSize.width / 2.0f), signSprite.position.y-(signSprite.contentSize.height / 2.0f), signSprite.contentSize.width, 60);
+    
+    [((JMap*)[gameWorld GameScene]) setUtdLabel:ParentGO.UserVisibleString];
     
     NSLog(@"i'm selected! %@", ParentGO._id);
 }

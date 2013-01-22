@@ -7,6 +7,7 @@
 //
 
 #import "SGDtoolBlock.h"
+#import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "SGDtoolBlockPairing.h"
 #import "global.h"
@@ -104,6 +105,13 @@
 
 -(BOOL)amIProximateTo:(CGPoint)location
 {
+    if(self.MyContainer && [self.MyContainer isKindOfClass:[SGDtoolContainer class]])
+    {
+        if(([(SGDtoolContainer*)self.MyContainer blocksInShape]>=20)){
+            gameWorld.Blackboard.playFailedBondOverMax=YES;
+            return NO;
+        }
+    }
     return [self.BlockRenderComponent amIProximateTo:location];
 }
 

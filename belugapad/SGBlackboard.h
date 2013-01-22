@@ -25,5 +25,6 @@
 @property (retain) JMap *jmapInstance;
 
 @property (retain) CCDrawNode *debugDrawNode;
+@property BOOL playFailedBondOverMax;
 
 @end

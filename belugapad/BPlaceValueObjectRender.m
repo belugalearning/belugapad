@@ -17,6 +17,7 @@
 #import "LoggingService.h"
 #import "LogPoller.h"
 #import "AppDelegate.h"
+#import "SimpleAudioEngine.h"
 
 @implementation BPlaceValueObjectRender
 
@@ -260,6 +261,7 @@
 
 -(void)resetSpriteToMountAndDestroy
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
     DWPlaceValueCageGameObject *c;
     
     if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
@@ -296,8 +298,8 @@
 
 -(void)unregisterLogger
 {
-    b.logPollId=nil;
-    NSLog(@"object %d unreg", (int)b);
+//    b.logPollId=nil;
+//    NSLog(@"object %d unreg", (int)b);
 }
 
 -(void)destroy

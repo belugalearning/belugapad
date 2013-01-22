@@ -121,7 +121,10 @@
         nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
     }
     
-    [nodeSprite setPosition:ParentGO.Position];
+    CGPoint offset=ccp(nodeSprite.contentSize.width / 2.0f, -nodeSprite.contentSize.height / 2.0f);
+    ParentGO.Position=ccpAdd(ParentGO.Position, offset);
+    
+    [nodeSprite setPosition:ccpAdd(ParentGO.Position, offset)];
     [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
@@ -143,6 +146,12 @@
     
     //if the node is on a 100% prqc island but isn't complete, bounce it
     if(pn.MasteryNode.PrereqPercentage>=50.0f && !pn.EnabledAndComplete && pn.MasteryNode.shouldBouncePins)
+    {
+        [self boundThisPin:nodeSprite];
+    }
+    
+    //or if this is the SPECIAL node && not complete
+    if([pn._id isEqualToString:@"5608a59d6797796ce9e11484fd180214"] && !pn.EnabledAndComplete)
     {
         [self boundThisPin:nodeSprite];
     }

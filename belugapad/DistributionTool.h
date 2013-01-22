@@ -61,6 +61,7 @@ typedef enum
     BOOL hasMovedCagedBlock;
     BOOL bondAllObjects;
     BOOL showTotalValue;
+    BOOL hasPlayedAudioCantBondOverMax;
     int cageObjectCount;
     
     id lastContainer;

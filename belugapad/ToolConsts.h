@@ -82,6 +82,7 @@ extern const CGRect kPauseMenuLogOut;
 extern const ccColor3B kNumberBondColour[10];
 extern const ccColor3B kNumiconColour[10];
 extern const ccColor3B kBTXEColour[8];
+extern const ccColor3B kLongDivColour[4];
 
 // fraction builder
 

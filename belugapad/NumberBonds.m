@@ -127,6 +127,10 @@ static float kNBFontSizeLarge=35.0f;
                 pogo.BaseNode.position=pogo.MountPosition;
         }
     }
+
+    for(int i=0;i<10;i++){
+        if(blocksUsedFromThisStore[i]<0)blocksUsedFromThisStore[i]=0;
+    }
     
     [self updateLabels];
 
@@ -963,7 +967,7 @@ static float kNBFontSizeLarge=35.0f;
                         CCFadeIn *fi=[CCFadeIn actionWithDuration:0.5f];
 
 
-                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome]; blocksUsedFromThisStore[po.IndexPos]--;}];
+                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];blocksUsedFromThisStore[po.IndexPos]--;}];
                         CCAction *remt=[CCCallBlock actionWithBlock:^{[[mountedObjects objectAtIndex:po.IndexPos] addObject:po];}];
                         CCSequence *sq=nil;
                         
@@ -1036,7 +1040,7 @@ static float kNBFontSizeLarge=35.0f;
                 
                 else{
                     [po handleMessage:kDWmoveSpriteToHome];
-                    blocksUsedFromThisStore[po.IndexPos]--;
+                        blocksUsedFromThisStore[po.IndexPos]--;
                 }
                 [self setTouchVarsToOff];
                 
@@ -1054,7 +1058,11 @@ static float kNBFontSizeLarge=35.0f;
 
             
                 [pogo handleMessage:kDWmoveSpriteToHome];
-                blocksUsedFromThisStore[pogo.IndexPos]--;
+            
+            //NSLog(@"blocksForThisStore=%d, blocksUsedFromThisStore=%d, storeCanCreate=%@", blocksForThisStore[pogo.IndexPos], blocksUsedFromThisStore[pogo.IndexPos], storeCanCreate[pogo.IndexPos]?@"YES":@"NO");
+            
+
+                //blocksUsedFromThisStore[pogo.IndexPos]--;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 
@@ -1374,6 +1382,7 @@ static float kNBFontSizeLarge=35.0f;
                     // set the current object and send it home - resetting the mount for any inited objects
                     DWNBondObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
                     [pogo handleMessage:kDWmoveSpriteToHome];
+
                     blocksUsedFromThisStore[pogo.IndexPos]--;
                     if(pogo.InitedObject) [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:0];
                 }

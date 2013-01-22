@@ -150,7 +150,7 @@
             <key>Feature_Stage1_Size4_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{446,1897},{141,127}}</string>
+                <string>{{445,1897},{141,127}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -163,7 +163,7 @@
             <key>Feature_Stage1_Size4_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{684,1883},{158,126}}</string>
+                <string>{{683,1883},{158,126}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -371,7 +371,7 @@
             <key>Feature_Stage3_Size4_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{575,1897},{133,107}}</string>
+                <string>{{574,1897},{133,107}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -449,7 +449,7 @@
             <key>Feature_Stage4_Size3_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{812,1883},{132,81}}</string>
+                <string>{{811,1883},{132,81}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -542,52 +542,52 @@
                 <key>frame</key>
                 <string>{{1915,533},{130,95}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{0,-15}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{130,95}}</string>
+                <string>{{10,30},{130,95}}</string>
                 <key>sourceSize</key>
-                <string>{130,95}</string>
+                <string>{150,125}</string>
             </dict>
             <key>Feature_Stage5_Size4_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{119,1900},{145,89}}</string>
+                <string>{{354,1897},{144,89}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{0,-18}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{145,89}}</string>
+                <string>{{3,36},{144,89}}</string>
                 <key>sourceSize</key>
-                <string>{145,89}</string>
+                <string>{150,125}</string>
             </dict>
             <key>Feature_Stage5_Size5_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{895,1854},{186,125}}</string>
+                <string>{{894,1854},{185,124}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-1,-63}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{186,125}}</string>
+                <string>{{69,126},{185,124}}</string>
                 <key>sourceSize</key>
-                <string>{186,125}</string>
+                <string>{325,250}</string>
             </dict>
             <key>Feature_Stage5_Size5_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{210,1900},{234,144}}</string>
+                <string>{{119,1900},{233,144}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{0,-53}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{234,144}}</string>
+                <string>{{46,106},{233,144}}</string>
                 <key>sourceSize</key>
-                <string>{234,144}</string>
+                <string>{325,250}</string>
             </dict>
             <key>Mastery_Complete_Left.png</key>
             <dict>
@@ -1054,7 +1054,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:022e6e6f88e6850b8a19ac1c02a28136$</string>
+            <string>$TexturePacker:SmartUpdate:dd092baa448a09349ec685c66bbbecf6$</string>
             <key>textureFileName</key>
             <string>jmapsm.png</string>
         </dict>

@@ -225,7 +225,12 @@ static float kTimeToButtonShake=7.0f;
         numIncrement=1;
     
     solutionNumber=[[pdef objectForKey:SOLUTION]intValue];
-    displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
+    
+    if([pdef objectForKey:USE_NUMICON_NUMBERS])
+        displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
+    else if([pdef objectForKey:USE_NUMICON_NUMBER])
+        displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBER]boolValue];
+    
     flashNumicon=[[pdef objectForKey:NUMICON_FLASH]boolValue];
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];

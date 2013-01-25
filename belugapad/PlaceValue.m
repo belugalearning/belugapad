@@ -669,7 +669,7 @@ static float kTimeToCageShake=7.0f;
             CGRect minus=CGRectMake(PosX, PosY, 70, 82);
             CGRect plus=CGRectMake(PosX+170, PosY, 70, 82);
             
-            [label setPosition:ccp(PosX+120,PosY+61)];
+            [label setPosition:ccp(PosX+120,PosY+66)];
             
             [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
             [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
@@ -721,7 +721,7 @@ static float kTimeToCageShake=7.0f;
             
             [currentBlockValues addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
-            [label setPosition:ccp(PosX+120,PosY+61)];
+            [label setPosition:ccp(PosX+120,PosY+66)];
             [blockLabels addObject:label];
             [label setTag:3];
             [label setOpacity:0];

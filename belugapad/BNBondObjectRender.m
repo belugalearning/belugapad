@@ -196,7 +196,6 @@
 -(void)setSpritePos:(BOOL) withAnimation
 {
     if(!CGPointEqualToPoint(pogo.MovePosition, CGPointZero))
-//    if(pogo.MovePosition.x || pogo.MovePosition.y)
     {
         if(!pogo.IsScaled)
         {
@@ -220,7 +219,6 @@
 }
 -(void)moveSpriteHome
 {
-//    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/")];
     CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;

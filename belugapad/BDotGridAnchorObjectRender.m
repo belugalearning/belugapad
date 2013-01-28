@@ -59,11 +59,6 @@
     {
         [[anch.mySprite parent] removeChild:anch.mySprite cleanup:YES];
     }
-    
-    if(messageType==kDWswitchSelection)
-    {
-        //[self switchSelection];
-    }
 }
 
 

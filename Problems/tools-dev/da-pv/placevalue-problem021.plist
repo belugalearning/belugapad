@@ -85,13 +85,6 @@
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>obj-placevalue-unit10.png</string>
-		<key>100</key>
-		<string>obj-placevalue-unit100.png</string>
-	</dict>
 	<key>COLUMN_ROWS</key>
 	<dict>
 		<key>10</key>

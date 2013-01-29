@@ -39,14 +39,11 @@
         int myRow = n.myRow;
         
         // if we haven't done the evaluation of the container to our left
-        //if(!evalLeft)
-        //{
         DWGameObject *moveToLeft = nil;
         
         // then if we're at a position > 0
         if(myRope > 0)
         {
-//            NSLog(@"start seek");
             
             for(int i=myRope; i>0; i--)
             {
@@ -57,18 +54,15 @@
                 {
                     moveToLeft = go;
                     
-//                    NSLog(@"found a valid object to the left");
                 }
                 else {
                     seek=NO;
                 }
             }
             
-//            NSLog(@"stop seek");
             
             if(moveToLeft)
             {
-//                NSLog(@"repositioning");
                 
                 DWPlaceValueBlockGameObject *mountedObject = (DWPlaceValueBlockGameObject*)n.MountedObject;
                 mountedObject.Mount=moveToLeft;
@@ -83,7 +77,6 @@
                 [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
             }
             
-//            NSLog(@"end reposition");
             
         }
         evalLeft=YES;
@@ -127,8 +120,6 @@
                 }
             }
         }            
-        //[gameObject handleMessage:kDWresetPositionEval];
-        //}
     }
 }
 
@@ -140,10 +131,7 @@
         evalLeft = NO;
         evalUp = NO;
         
-        
-        //        n.MountedObject=gameObject;
-//        [[gameWorld GameScene] problemStateChanged];
-        
+    
     }
     
     if(messageType==kDWunsetMountedObject)

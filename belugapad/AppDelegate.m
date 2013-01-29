@@ -71,7 +71,11 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Flurry startSession:@"MJS5MGYRRJ89729FTNPP"];
+    //release mode flurry key
+    //    [Flurry startSession:@"MJS5MGYRRJ89729FTNPP"];
+    
+    //dev mode flurry key
+    [Flurry startSession:@"VRZHYG5ZZJMX3FHMWJWW"];
     
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     

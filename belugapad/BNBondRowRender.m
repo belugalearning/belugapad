@@ -114,29 +114,14 @@
         
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
         [mySprite setPosition:ccp((i*50)-25,0)];
+    
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [mySprite setTag:1];
+            [mySprite setOpacity:0];
+        }
 
-//        [mySprite setPosition:ccp(xPos,0)];
-            
-        
-//        if(i==0)
-//            xPos+=32;
-//            
-//        else if(i==lengthWithStops-2 && pogo.Locked)
-//            xPos+=34;
-//        
-//        else if(i==lengthWithStops-2 && !pogo.Locked)
-//            xPos+=42;
-//        
-//        else
-//            xPos+=50;
-        
-            if(gameWorld.Blackboard.inProblemSetup)
-            {
-                [mySprite setTag:1];
-                [mySprite setOpacity:0];
-            }
-
-            [pogo.BaseNode addChild:mySprite z:2];
+        [pogo.BaseNode addChild:mySprite z:2];
 
     }
     pogo.BaseNode.position = pogo.Position;

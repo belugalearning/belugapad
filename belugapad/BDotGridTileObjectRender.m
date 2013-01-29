@@ -87,8 +87,6 @@
 
         [tile.mySprite removeFromParentAndCleanup:YES];
         [tile.selectedSprite removeFromParentAndCleanup:YES];
-//        [[s parent] removeChild:s cleanup:YES];
-//        [[ss parent] removeChild:ss cleanup:YES];
         [gameWorld delayRemoveGameObject:tile];
     }
 }
@@ -294,7 +292,6 @@
 -(void)resetSprite
 {
     tileProperties thisTile=[self decideTileType];
-    //NSLog(@"(resetsprite) filename %@", thisTile.spriteFileName);
     
     NSString *spriteFileName=[NSString stringWithFormat:@"%@%d.png", thisTile.spriteFileName, tile.tileSize];
     
@@ -302,8 +299,6 @@
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFileName)];
     [tile.mySprite setPosition:tile.Position];
     [tile.RenderLayer addChild:tile.mySprite];
-    
-//    [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
     [tile.mySprite setRotation:thisTile.Rotation];
     
     NSLog(@"tile type: %@, rotation %f, scaleX %g, scaleY %g", spriteFileName, thisTile.Rotation, tile.mySprite.scaleX, tile.mySprite.scaleY);
@@ -312,8 +307,6 @@
 -(void)setSprite
 {    
     tileProperties thisTile=[self decideTileType];
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
-    //NSLog(@"(setsprite) filename %@", thisTile.spriteFileName);
     NSString *spriteFileName=thisTile.spriteFileName;
     float reqRotation=thisTile.Rotation;
     

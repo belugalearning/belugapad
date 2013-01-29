@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Add the blocks by placing one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Block&quot;/&gt;&lt;b:t&gt;in each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Bubble&quot;/&gt;&lt;b:t&gt;. Place the answer into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Pipe_In&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Add the blocks by placing one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Block&quot;/&gt;&lt;b:t&gt;in each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Bubble&quot;/&gt;&lt;b:t&gt;. When the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Plus&quot;/&gt;&lt;b:t&gt;comes up, tap it. Place the answer into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_FB_Pipe_In&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>

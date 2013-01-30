@@ -485,8 +485,10 @@ static float kTimeSinceAction=7.0f;
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
-    BOOL isEvalTarget = [[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
-
+    BOOL isEvalTarget = NO;
+    
+    if([theseSettings objectForKey:IS_EVAL_TARGET])
+        isEvalTarget=[[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
     
     if(!thisColour)
         thisColour=@"WHITE";
@@ -581,7 +583,7 @@ static float kTimeSinceAction=7.0f;
         
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
         
-        NSLog(@"create block %d/%d at position %@", i+1, numBlocks, NSStringFromCGPoint(p));
+        NSLog(@"my container is eval target %@ / create block %d/%d at position %@", isEvalTarget?@"YES":@"NO", i+1, numBlocks, NSStringFromCGPoint(p));
         
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];

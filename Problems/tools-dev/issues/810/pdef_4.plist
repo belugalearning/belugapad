@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<string>9</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Which set is larger?</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>UNBREAKABLE_BONDS</key>
+	<true/>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<string>{$x}</string>
+			<key>IS_EVAL_TARGET</key>
+			<true/>
+			<key>UNBREAKABLE_BONDS</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<string>{$x-$y}</string>
+			<key>UNBREAKABLE_BONDS</key>
+			<true/>
+		</dict>
+	</array>
+	<key>HAS_CAGE</key>
+	<false/>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>15</string>
+			<key>MAX</key>
+			<string>20</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+	</array>
+</dict>
+</plist>

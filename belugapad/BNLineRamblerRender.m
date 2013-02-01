@@ -153,6 +153,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int jumpSpriteIndex=0;
     
     [labelLayer removeAllChildrenWithCleanup:YES];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [assStartTerminator setVisible:NO];
     [assEndTerminator setVisible:NO];
@@ -329,10 +331,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     if(writeText.length==4) fontSize=12;
                     if(writeText.length>4) fontSize=9;
                     
-                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
-                    [l setColor:ccBLACK];
-                    [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                    [labelLayer addChild:l z:99];
+                    CCLabelTTF *lex=[[CCLabelTTF alloc] initWithString:writeText fontName:@"Chango" fontSize:fontSize];
+                    
+//                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
+                    [lex setColor:ccBLACK];
+                    [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
+                    [labelLayer addChild:lex z:99];
+                    [lex release];
                 }
                 
             }

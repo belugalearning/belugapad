@@ -1448,6 +1448,7 @@ typedef enum {
     else
     {
         isFiltered = YES;
+        if(filteredNodes) [filteredNodes release];
         filteredNodes = [[NSMutableArray alloc] init];
         
         for (id<CouchDerived, Searchable> node in searchNodes)
@@ -1545,12 +1546,23 @@ typedef enum {
 
 -(void)dealloc
 {
+    [mapLayer removeAllChildrenWithCleanup:YES];
+    [foreLayer removeAllChildrenWithCleanup:YES];
+    [underwaterLayer removeAllChildrenWithCleanup:YES];
+    
     [mapLayer release];
     [foreLayer release];
+    [underwaterLayer release];
+    
     [kcmNodes release];
     [gw release];
     
-    [searchNodes release];
+    if(searchNodes) [searchNodes release];
+    if(filteredNodes) [filteredNodes release];
+    
+
+    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [super dealloc];
 }

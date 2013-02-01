@@ -116,12 +116,6 @@
     [magnifyBar setOpacity:0];
     [spriteMask setOpacity:0];
     [maskOuter setOpacity:0];
-    
-    //test for clipping
-//    CCDrawNode *drawTests=[CCDrawNode node];
-//    [drawTests drawSegmentFrom:ccp(0,0) to:ccp(2*cx,2*cy) radius:5.0f color:ccc4f(1, 0, 0, 1)];
-//    
-//    [clippingNode addChild:drawTests];
 }
 
 -(void)doUpdateOnTick:(ccTime)delta
@@ -216,8 +210,6 @@
         [magnifyBar runAction:[CCFadeIn actionWithDuration:1.0f]];
         [spriteMask runAction:[CCFadeIn actionWithDuration:1.0f]];
         [maskOuter runAction:[CCFadeIn actionWithDuration:1.0f]];
-//        [spriteMask setVisible:YES];
-//        [maskOuter setVisible:YES];
     }
     else if(clippingNode.visible && currentTotal<visTrigger)
     {
@@ -225,12 +217,8 @@
         [magnifyBar runAction:[CCFadeOut actionWithDuration:1.0f]];
         [spriteMask runAction:[CCFadeOut actionWithDuration:1.0f]];
         [maskOuter runAction:[CCFadeOut actionWithDuration:1.0f]];
-//        [spriteMask setVisible:NO];
-//        [maskOuter setVisible:NO];
     }
     
-//    [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
-//    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     float xInset=100.0f;
     float yInset=362.0f;
     float barW=824.0f;
@@ -244,27 +232,11 @@
     float lblStartXPos=xInset+tblSpriteSize;
     
     int colIndex=nWheel.Components;
-
-//    ccColor4F lineCol=ccc4f(1, 1, 1, 1);
-//    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
-//    float lineRad=3.0f;
     
     [drawNode clear];
     [scaleDrawNode clear];
     [scaleDrawNode setPosition:ccp(-760,-570)];
-    
-//    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
-    
-//    CGPoint verts[4];
-//    verts[0]=ccp(100,yInset);
-//    verts[1]=ccp(100,yInset+barH);
-//    verts[2]=ccp(924,yInset+barH);
-//    verts[3]=ccp(924,yInset);
-//    
-//    CGPoint *firstVert=&verts[0];
-//    
-//    [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4f(1, 1, 1, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
-    
+
 
     int magOrder=[self magnitudeOf:(int)currentTotal];
     int sigFigs=0;
@@ -474,10 +446,6 @@
         [scaleDrawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, myOpac)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, myOpac))];
         
     }
-//    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
-//    [l setPosition:ccp(startBarPos,yInset-27)];
-//    [renderLayer addChild:l];
-//    [allLabels addObject:l];
     
     if(currentTotal>0){
     
@@ -486,7 +454,6 @@
         [renderLayer addChild:tot];
         [allSprites addObject:tot];
         
-//        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:30.0f];
         CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:labelFontSize dimensions:CGSizeMake(tot.contentSize.width-8,tot.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 
         [lTot setAnchorPoint:ccp(0.5,0.5)];
@@ -533,17 +500,9 @@
 
 -(void)populateGW
 {
-//
     renderedBlocks=[[NSMutableArray alloc]init];
     allLabels=[[NSMutableArray alloc]init];
     allSprites=[[NSMutableArray alloc]init];
-    
-    
-    // add the big multiplier behind the numbers
-//    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:SOURCE fontSize:200.0f];
-//    [multiplier setPosition:ccp(820,202)];
-//    [multiplier setOpacity:25];
-//    [renderLayer addChild:multiplier];
     
     CCSprite *barBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar_Background.png")];
     [barBg setPosition:ccp(cx,405)];
@@ -613,11 +572,9 @@
 -(void)createClippingNode
 {
     CCClippingNode *clipper = [CCClippingNode clippingNode];
-//    clipper.tag = kTagClipperNode;
     clipper.contentSize = CGSizeMake(200, 200);
     clipper.anchorPoint = ccp(0.5, 0.5);
     clipper.position = ccp(800,500);
-    //[clipper runAction:[CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:1 angle:45]]];
     [renderLayer addChild:clipper];
     
     CCDrawNode *stencil = [CCDrawNode node];
@@ -627,7 +584,6 @@
     clipper.stencil = stencil;
     
     CCSprite *content = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
-//    content.tag = kTagContentNode;
     content.anchorPoint = ccp(0.5, 0.5);
     content.position = ccp(clipper.contentSize.width / 2, clipper.contentSize.height / 2);
     [clipper addChild:content];

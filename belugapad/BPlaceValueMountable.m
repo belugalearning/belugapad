@@ -67,7 +67,6 @@
 
     
         //update the sprite
-        //[gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
         [gameObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:0];
         
         

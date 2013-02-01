@@ -246,7 +246,7 @@ static int shadowSteps=5;
 
     if(self.islandStage>2)
     {
-        baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Green.png", self.islandShapeIdx];
+        baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Green.png", shapeIndex];
     }
     
     islandSprite=[CCSprite spriteWithSpriteFrameName:baseSpriteName];

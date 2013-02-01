@@ -45,7 +45,7 @@
         }
         
         CGRect newBndBox=CGRectMake(boundingBox.origin.x, boundingBox.origin.y-30, boundingBox.size.width, boundingBox.size.height+60);
-        //if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(boundingBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
+
         
         if(CGRectContainsPoint(newBndBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
             {

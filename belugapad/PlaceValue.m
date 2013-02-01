@@ -262,7 +262,12 @@ static float kTimeToCageShake=7.0f;
             
             CCSprite *s=[arrowsForColumn objectAtIndex:i];
             
-            NSString *thisNo=[NSString stringWithFormat:@"%c",[expNo characterAtIndex:i]];
+            NSString *thisNo=@"";
+            
+            if(numberOfColumns>1)
+                thisNo=[NSString stringWithFormat:@"%c",[expNo characterAtIndex:i]];
+            else
+                thisNo=[NSString stringWithFormat:@"%d", [expNo intValue]];
             
             int blocksNeeded=[thisNo intValue];
             
@@ -275,6 +280,11 @@ static float kTimeToCageShake=7.0f;
             }
             else if((int)blocksNeeded!=usedSpaces)
             {
+                float fontSize=20.0f;
+                
+                if(blocksNeeded-usedSpaces>=10)
+                    fontSize=16.0f;
+                
                 if(blocksNeeded>usedSpaces)
                 {
                     [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
@@ -282,6 +292,7 @@ static float kTimeToCageShake=7.0f;
                     CCLabelTTF *l=[s.children objectAtIndex:0];
                     [l setPosition:ccp(l.position.x, (s.contentSize.height/2)-2)];
                     [l setString:[NSString stringWithFormat:@"%d more", (int)blocksNeeded-usedSpaces]];
+                    [l setFontSize:fontSize];
                     
                 }
                 else if(blocksNeeded<usedSpaces)
@@ -291,6 +302,7 @@ static float kTimeToCageShake=7.0f;
                     CCLabelTTF *l=[s.children objectAtIndex:0];
                     [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
                     [l setString:[NSString stringWithFormat:@"%d less", usedSpaces-(int)blocksNeeded]];
+                    [l setFontSize:fontSize];
                 }
             }
             

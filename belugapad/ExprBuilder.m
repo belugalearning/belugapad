@@ -345,10 +345,13 @@
     if(ncardRow) [rows addObject:ncardRow];
     
     if([evalType isEqualToString:@"SEQUENCE_ASC"]||[evalType isEqualToString:@"SEQUENCE_DESC"])
-        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_SEQUENCING"];
-    else
+    {
+        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_SEQUENCING_1"];
+        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_SEQUENCING_2"];
+    }
+    else{
         [usersService notifyStartingFeatureKey:@"EXPRBUILDER_SENTENCEBUILDER"];
-    
+    }
     
     
     for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)

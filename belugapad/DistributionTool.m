@@ -205,8 +205,14 @@ static float kTimeSinceAction=7.0f;
     {
         SGDtoolBlock *b=(SGDtoolBlock*)nearestObject;
         SGDtoolBlock *c=(SGDtoolBlock*)currentPickupObject;
+        SGDtoolContainer *con=(SGDtoolContainer*)b.MyContainer;
         
         if(!bondDifferentTypes && b.blockType!=c.blockType)
+            return;
+        if([con isKindOfClass:[SGDtoolContainer class]])
+            NSLog(@"nearest Object container bond type: %@", con.LineType);
+        
+        if([con isKindOfClass:[SGDtoolContainer class]] && [con.LineType isEqualToString:@"Unbreakable"])
             return;
 
         
@@ -490,6 +496,8 @@ static float kTimeSinceAction=7.0f;
     
     if(!thisColour)
         thisColour=@"WHITE";
+    if(unbreakableBonds)
+        thisColour=@"RED";
     
     ccColor3B blockCol = ccc3(0,0,0);
     
@@ -733,6 +741,9 @@ static float kTimeSinceAction=7.0f;
     
     container.AllowDifferentTypes=YES;
     container.BlockType=((id<Configurable>)Object).blockType;
+    
+    container.LineType=@"Breakable";
+    
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
     [container repositionLabel];
@@ -1534,16 +1545,14 @@ static float kTimeSinceAction=7.0f;
             if([go conformsToProtocol:@protocol(Moveable)])
             {
                 if(go==currentPickupObject)continue;
+                if([((SGDtoolBlock*)go).MyContainer isKindOfClass:[SGDtoolCage class]])continue;
                 
                 float dist=[BLMath DistanceBetween:currentPickupObject.Position and:((id<Moveable>)go).Position];
                 
-                if(nearestObjectDistance==0){
+                if((dist<nearestObjectDistance)||(!foundFirstNearestObject&&dist<gw.Blackboard.MaxObjectDistance+50)){
                     nearestObjectDistance=dist;
                     nearestObject=go;
-                }
-                else if(dist<nearestObjectDistance){
-                    nearestObjectDistance=dist;
-                    nearestObject=go;
+                    foundFirstNearestObject=YES;
                 }
                 
                     
@@ -1896,6 +1905,7 @@ static float kTimeSinceAction=7.0f;
     hasMovedCagedBlock=NO;
     gw.Blackboard.playFailedBondOverMax=NO;
     hasPlayedAudioCantBondOverMax=NO;
+    foundFirstNearestObject=NO;
 
 }
 

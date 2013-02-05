@@ -604,7 +604,6 @@ static float kTimeSinceAction=7.0f;
         {
             if(i){
                 SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
-                [block pairMeWith:prevBlock];
                 [self returnNextMountPointForThisShape:container];
             }
         }

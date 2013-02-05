@@ -546,9 +546,6 @@ static float kTimeSinceAction=7.0f;
         int topMost=ly-200;
         int botMost=180;
         
-        //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
-        //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
-        
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
     
@@ -637,23 +634,11 @@ static float kTimeSinceAction=7.0f;
     for(int i=0;i<[activeRects count];i++)
     {
         CGRect r=[[activeRects objectAtIndex:i]CGRectValue];
-        
-        //NSLog(@"this rect: %@, this position %@", NSStringFromCGRect(r), NSStringFromCGPoint(thisPosition));
 
             if(CGRectIntersectsRect(thisRect, r))
             {
                 return YES;
             }
-//        for(int p=0;p<thisMany;p++)
-//        {
-//            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
-//            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
-//            
-//            if(CGRectContainsPoint(r, curPos))
-//            {
-//                return YES;
-//            }
-//        }
     }
 
     return NO;
@@ -725,13 +710,10 @@ static float kTimeSinceAction=7.0f;
 -(void)createContainerWithOne:(id)Object
 {
     id<ShapeContainer> container;
-    //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
+
     if([destroyedLabelledGroups count]==0)
     {
         container=[[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil]autorelease];
-//        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
-//        [container.Label setPosition:ccp(cx,cy)];
-//        [renderLayer addChild:container.Label];
     }
     else
     {
@@ -832,8 +814,6 @@ static float kTimeSinceAction=7.0f;
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
         [s runAction:sequence];
         currentPickupObject=nil;
-//        if(!spawnedNewObj)
-//            [cage spawnNewBlock];
     }
 }
 
@@ -850,11 +830,8 @@ static float kTimeSinceAction=7.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                //if(!thisCont.BTXERow)
-                //{
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
                     break;
-                //}
             }
         }
     }
@@ -1754,12 +1731,7 @@ static float kTimeSinceAction=7.0f;
                         diffX+=(60-b.Position.x);
                         goingRight=YES;
                     }
-                
-//                    else if(b.Position.x>lx-60 && !goingRight)
-//                    {
-//                        diffX-= (b.Position.x - (lx-60));
-//                    }
-                
+            
                     if(b.Position.y<100)
                         diffY+=20 + (100-b.Position.y);
                 
@@ -2140,22 +2112,6 @@ static float kTimeSinceAction=7.0f;
         
         NSLog(@"solutions found %d, expected %d, total shapes %d", solutionsFound, solutionsExpected, totalShapes);
         
-//        for(id cont in gw.AllGameObjects)
-//        {
-//            if([cont conformsToProtocol:@protocol(ShapeContainer)])
-//            {
-//                id <ShapeContainer> thisCont=cont;
-//                NSString *thisKey=[thisCont.Label string];
-//                if([d objectForKey:thisKey])
-//                {
-//                    
-//                    int thisVal=[[d objectForKey:thisKey] intValue];
-//                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
-//                    if([thisCont.BlocksInShape count]==thisVal)
-//                        solutionsFound++;
-//                }
-//            }
-//        }
         
         if (solutionsFound==solutionsExpected && solutionsFound==totalShapes)
             return YES;

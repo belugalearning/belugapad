@@ -603,7 +603,6 @@ static float kTimeSinceAction=7.0f;
         if(!hasInactiveArea)
         {
             if(i){
-                SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
                 [self returnNextMountPointForThisShape:container];
             }
         }

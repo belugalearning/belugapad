@@ -80,8 +80,6 @@
 
         tile.ansSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/TT_Label.png")];
         [tile.ansSprite setPosition:[tile.mySprite.parent convertToNodeSpace:ccp(tile.mySprite.position.x, tile.mySprite.position.y+55)]];
-        //[tile.ansSprite setPosition:ccp(tile.mySprite.position.x, tile.mySprite.position.y+55)];
-        //[tile.mySprite.parent addChild:tile.ansSprite z:9999];
         [tile.mySprite.parent addChild:tile.ansSprite z:9999];
         
         CCLabelTTF *myText=nil;
@@ -91,7 +89,6 @@
         else if(tile.operatorType==kOperatorSub)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d-%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:15.0f];
         else if(tile.operatorType==kOperatorMul)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%dx%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:15.0f];
         else if(tile.operatorType==kOperatorDiv)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d/%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:15.0f];
-        //[myText setPosition:[tile.mySprite convertToNodeSpace:ccp(tile.Position.x, tile.Position.y+55)]];
         [myText setPosition:ccp(tile.ansSprite.contentSize.width/2, (tile.ansSprite.contentSize.height/2)+5)];
         [myText setColor:ccc3(255,255,255)];
         [tile.ansSprite addChild:myText];

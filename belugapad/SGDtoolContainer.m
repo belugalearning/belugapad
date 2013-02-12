@@ -41,10 +41,6 @@
         self.Selected=NO;
         
         if(aLabel){
-//            self.Label=[CCLabelTTF labelWithString:aLabel fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-//            [self.Label setColor:ccc3(255,0,0)];
-//            [self.BaseNode addChild:self.Label];
-//            [self repositionLabel];
             
             NSString *answerLabelString=[NSString stringWithFormat:@"%@", aLabel];
             
@@ -132,7 +128,7 @@
 
 -(void)removeBlockFromMe:(id)thisBlock
 {
-    if(LineType==@"Unbreakable")return;
+    if([LineType isEqualToString:@"Unbreakable"])return;
     
     if(![((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType] && !self.AllowDifferentTypes)return;
     

@@ -418,6 +418,7 @@
     else if(showingOperatorBubble && isValid && [pickupObject isKindOfClass:[SGFBlockOpBubble class]])
     {
         [(SGFBlockOpBubble*)pickupObject fadeAndDestroy];
+
         // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {

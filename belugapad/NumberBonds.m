@@ -1002,7 +1002,7 @@ static float kNBFontSizeLarge=35.0f;
                 
                 else{
                     [po handleMessage:kDWmoveSpriteToHome];
-                        blocksUsedFromThisStore[po.IndexPos]--;
+                    blocksUsedFromThisStore[po.IndexPos]--;
                 }
                 [self setTouchVarsToOff];
                 
@@ -1020,7 +1020,7 @@ static float kNBFontSizeLarge=35.0f;
 
             
                 [pogo handleMessage:kDWmoveSpriteToHome];
-            
+                blocksUsedFromThisStore[pogo.IndexPos]--;
 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];

@@ -1043,7 +1043,7 @@
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        [self resetProblem];
     }
     
 }

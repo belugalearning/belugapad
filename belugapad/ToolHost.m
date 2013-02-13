@@ -1859,6 +1859,13 @@ static float kTimeToHintToolTray=0.0f;
     if(metaQuestionForThisProblem)
     {
         [self removeMetaQuestionButtons];
+        [metaQuestionBanner removeFromParentAndCleanup:YES];
+        
+        for(SGBtxeRow *r in metaQuestionAnswerLabels)
+        {
+            [r tagMyChildrenForIntro];
+        }
+        
         metaQuestionForceComplete=YES;
     }
     if(numberPickerForThisProblem)

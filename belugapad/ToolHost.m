@@ -1859,6 +1859,20 @@ static float kTimeToHintToolTray=0.0f;
     if(metaQuestionForThisProblem)
     {
         [self removeMetaQuestionButtons];
+        [metaQuestionBanner removeFromParentAndCleanup:YES];
+        
+        for(SGBtxeRow *r in metaQuestionAnswerLabels)
+        {
+            for(int i=0;i<r.children.count;i++)
+            {
+                if([[r.children objectAtIndex:i] conformsToProtocol:@protocol(MovingInteractive)])
+                {
+                    id<MovingInteractive> go=[r.children objectAtIndex:i];
+                    [go destroy];
+                }
+            }
+        }
+        
         metaQuestionForceComplete=YES;
     }
     if(numberPickerForThisProblem)

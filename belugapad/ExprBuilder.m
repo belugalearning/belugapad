@@ -1070,6 +1070,7 @@
         [toolHost doWinning];
     }else{
         [self expandDescAndCardRows];
+        [toolHost resetProblem];
         [toolHost doIncomplete];
     }
 }

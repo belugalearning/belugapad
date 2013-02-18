@@ -3,10 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>DSTRINGS</key>
-	<array>
+	<dict>
+		<key>@times</key>
 		<dict>
-			<key>VAR_NAME</key>
-			<string>@times</string>
+			<key>MODE</key>
+			<string>RANDOM</string>
 			<key>DATA</key>
 			<array>
 				<string>times</string>
@@ -15,7 +16,7 @@
 				<string>groups of</string>
 			</array>
 		</dict>
-	</array>
+	</dict>
 	<key>DVARS</key>
 	<array>
 		<dict>
@@ -23,6 +24,16 @@
 			<string>$x</string>
 			<key>VALUE</key>
 			<string>2</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>5</string>
+				<string>10</string>
+			</array>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -42,16 +53,6 @@
 				<string>{$x-1}</string>
 				<string>{$x+1}</string>
 				<string>{$x+2}</string>
-			</array>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$y</string>
-			<key>SELECT_FROM</key>
-			<array>
-				<string>2</string>
-				<string>5</string>
-				<string>10</string>
 			</array>
 		</dict>
 	</array>
@@ -79,13 +80,13 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$err1*$x}</string>
+				<string>{$x*$err1}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$err2*$y}</string>
+				<string>{$y*$err2}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

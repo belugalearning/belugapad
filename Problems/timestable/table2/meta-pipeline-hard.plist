@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/timestable/table2/hard/mq-np/table2-hard-1.plist</string>
+	<string>/Problems/timestable/table2/hard/mq-np/table2-hard-2.plist</string>
+	<string>/Problems/timestable/table2/hard/mq-np/table2-hard-3.plist</string>
+	<string>/Problems/timestable/table2/hard/tools/table2-hard-A.plist</string>
+	<string>/Problems/timestable/table2/hard/tools/table2-hard-A-1.plist</string>
+	<string>/Problems/timestable/table2/hard/tools/table2-hard-B.plist</string>
+	<string>/Problems/timestable/table2/hard/tools/table2-hard-C.plist</string>
+</array>
+</plist>

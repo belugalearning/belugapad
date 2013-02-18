@@ -2,11 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>xy</string>
 	<key>DSTRINGS</key>
-	<array>
+	<dict>
+		<key>@times</key>
 		<dict>
-			<key>VAR_NAME</key>
-			<string>@times</string>
+			<key>MODE</key>
+			<string>RANDOM</string>
 			<key>DATA</key>
 			<array>
 				<string>times</string>
@@ -15,7 +18,7 @@
 				<string>groups of</string>
 			</array>
 		</dict>
-	</array>
+	</dict>
 	<key>DVARS</key>
 	<array>
 		<dict>

@@ -108,6 +108,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         [gameWorld.Blackboard.ComponentRenderLayer addChild:numback z:4];
     }
     
+
 //    for (int i=0; i<baseSegs; i++) {
 //        //currently unused
 //        CCSprite *jump=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/jump_section.png")];
@@ -120,6 +121,15 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];
     [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer z:5];
+    
+    
+    bmlabels=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango24.fnt")];
+        [bmlabels addObject:f];
+        [labelLayer addChild:f z:99];
+    }
     
     if(ramblerGameObject.MarkerValuePositions)
     {
@@ -151,8 +161,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int assIndicatorIndex=0;
     int assNumberBackIndex=0;
     int jumpSpriteIndex=0;
+    int bmlabelindex=0;
     
-    [labelLayer removeAllChildrenWithCleanup:YES];
+    //[labelLayer removeAllChildrenWithCleanup:YES];
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
     [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
@@ -330,16 +341,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     if(writeText.length==3) fontSize=15;
                     if(writeText.length==4) fontSize=12;
                     if(writeText.length>4) fontSize=9;
-                    
-                    CCLabelBMFont *lex=[[CCLabelBMFont alloc]initWithString:writeText fntFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/fonts/chango%d.fnt"),fontSize]];
-                    
-//                    CCLabelTTF *lex=[[CCLabelTTF alloc] initWithString:writeText fontName:@"Chango" fontSize:fontSize];
-                    
-//                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
-                    [lex setColor:ccBLACK];
+
+                    CCLabelBMFont *lex=[bmlabels objectAtIndex:bmlabelindex];
+                    bmlabelindex++;
+                    lex.string=writeText;
+                    lex.visible=YES;
+            
                     [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                    [labelLayer addChild:lex z:99];
-                    [lex release];
                 }
                 
             }
@@ -404,6 +412,10 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for(int i=assNumberBackIndex; i<[assNumberBackgrounds count]; i++)
     {
         [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmlabelindex; i<[bmlabels count]; i++)
+    {
+        [[bmlabels objectAtIndex:i] setVisible:NO];
     }
     
     

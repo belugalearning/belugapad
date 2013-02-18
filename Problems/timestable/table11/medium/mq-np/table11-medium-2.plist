@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@times</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>times</string>
+				<string>multiplied by</string>
+				<string>lots of</string>
+				<string>groups of</string>
+			</array>
+		</dict>
+	</dict>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is {$y} {@times} {$x}?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$x*$y}</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>VALUE</key>
+			<string>11</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>5</string>
+				<string>10</string>
+				<string>3</string>
+				<string>4</string>
+				<string>6</string>
+				<string>11</string>
+				<string>9</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

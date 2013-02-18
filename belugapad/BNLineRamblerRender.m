@@ -331,7 +331,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     if(writeText.length==4) fontSize=12;
                     if(writeText.length>4) fontSize=9;
                     
-                    CCLabelTTF *lex=[[CCLabelTTF alloc] initWithString:writeText fontName:@"Chango" fontSize:fontSize];
+                    CCLabelBMFont *lex=[[CCLabelBMFont alloc]initWithString:writeText fntFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/fonts/chango%d.fnt"),fontSize]];
+                    
+//                    CCLabelTTF *lex=[[CCLabelTTF alloc] initWithString:writeText fontName:@"Chango" fontSize:fontSize];
                     
 //                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
                     [lex setColor:ccBLACK];

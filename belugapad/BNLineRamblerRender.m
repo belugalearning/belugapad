@@ -323,7 +323,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
             if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
             {
-                NSNumber *numRender=[NSNumber numberWithInt:iValue];        
+//                NSNumber *numRender=[NSNumber numberWithInt:iValue];
+                NSNumber *numRender=[[NSNumber alloc] initWithInt:iValue];
                 
                 float thisNumber=[numRender intValue];
                 BOOL renderNumber=NO;
@@ -353,14 +354,15 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     
                     int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    NSString *writeText=[NSString stringWithFormat:@"%d", displayNum];
+                    NSString *writeText=[[NSString alloc] initWithFormat:@"%d", displayNum];
                     
                     if(ramblerGameObject.DisplayNumberDP>0 && ramblerGameObject.DisplayNumberMultiplier!=1)
                     {
                         float multDisplayNum=displayNum * ramblerGameObject.DisplayNumberMultiplier;
                         
-                        NSString *fmt=[NSString stringWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
+                        NSString *fmt=[[NSString alloc] initWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
                         writeText=[NSString stringWithFormat:fmt, multDisplayNum];
+                        [fmt release];
                     }
                     
                     CCLabelBMFont *lex=nil;
@@ -386,7 +388,12 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     lex.visible=YES;
             
                     [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
+                    
+                    [writeText release];
                 }
+                
+                //tidy up number rendering
+                [numRender release];
                 
             }
             
@@ -428,8 +435,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 //            
 //            
 //            //-------------------------------------------------------------------------------------------------------------
-            
 
+            
         }
     }
     

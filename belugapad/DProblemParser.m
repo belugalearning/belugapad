@@ -229,6 +229,8 @@
             int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
             int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
             
+            if(min==0 && max==0) max=1;
+            
             int interval=max-min;
             int fbase=arc4random() % (int)interval;
             int ret=fbase+min;

@@ -296,7 +296,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
             if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
             {
-                NSNumber *numRender=[NSNumber numberWithInt:iValue];        
+//                NSNumber *numRender=[NSNumber numberWithInt:iValue];
+                NSNumber *numRender=[[NSNumber alloc] initWithInt:iValue];
                 
                 float thisNumber=[numRender intValue];
                 BOOL renderNumber=NO;
@@ -350,6 +351,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                 }
                 
+                //tidy up number rendering
+                [numRender release];
+                
             }
             
     //        CCLabelBMFont *lbl=[assLabels objectForKey:numRender];
@@ -390,8 +394,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 //            
 //            
 //            //-------------------------------------------------------------------------------------------------------------
-            
 
+            
         }
     }
     

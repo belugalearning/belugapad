@@ -123,11 +123,35 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer z:5];
     
     
-    bmlabels=[[NSMutableArray alloc] init];
+    bmlabels24=[[NSMutableArray alloc] init];
     for (int i=0; i<20; i++)
     {
         CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango24.fnt")];
-        [bmlabels addObject:f];
+        [bmlabels24 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
+    bmlabels15=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango15.fnt")];
+        [bmlabels15 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
+    bmlabels12=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango12.fnt")];
+        [bmlabels12 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
+    bmlabels9=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango9.fnt")];
+        [bmlabels9 addObject:f];
         [labelLayer addChild:f z:99];
     }
     
@@ -161,7 +185,10 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int assIndicatorIndex=0;
     int assNumberBackIndex=0;
     int jumpSpriteIndex=0;
-    int bmlabelindex=0;
+    int bmlabelindex24=0;
+    int bmlabelindex15=0;
+    int bmlabelindex12=0;
+    int bmlabelindex9=0;
     
     //[labelLayer removeAllChildrenWithCleanup:YES];
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
@@ -336,14 +363,25 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                         writeText=[NSString stringWithFormat:fmt, multDisplayNum];
                     }
                     
-                    int fontSize=24;
+                    CCLabelBMFont *lex=nil;
                     
-                    if(writeText.length==3) fontSize=15;
-                    if(writeText.length==4) fontSize=12;
-                    if(writeText.length>4) fontSize=9;
+                    if(writeText.length==3){
+                        lex=[bmlabels15 objectAtIndex:bmlabelindex15];
+                        bmlabelindex15++;
+                    }
+                    else if(writeText.length==4){
+                        lex=[bmlabels12 objectAtIndex:bmlabelindex12];
+                        bmlabelindex12++;
+                    }
+                    else if(writeText.length>4){
+                        lex=[bmlabels9 objectAtIndex:bmlabelindex9];
+                        bmlabelindex9++;
+                    }
+                    else{
+                        lex=[bmlabels24 objectAtIndex:bmlabelindex24];
+                        bmlabelindex24++;
+                    }
 
-                    CCLabelBMFont *lex=[bmlabels objectAtIndex:bmlabelindex];
-                    bmlabelindex++;
                     lex.string=writeText;
                     lex.visible=YES;
             
@@ -413,10 +451,23 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     {
         [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
     }
-    for(int i=bmlabelindex; i<[bmlabels count]; i++)
+    for(int i=bmlabelindex24; i<[bmlabels24 count]; i++)
     {
-        [[bmlabels objectAtIndex:i] setVisible:NO];
+        [[bmlabels24 objectAtIndex:i] setVisible:NO];
     }
+    for(int i=bmlabelindex15; i<[bmlabels15 count]; i++)
+    {
+        [[bmlabels15 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmlabelindex12; i<[bmlabels12 count]; i++)
+    {
+        [[bmlabels12 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmlabelindex9; i<[bmlabels9 count]; i++)
+    {
+        [[bmlabels9 objectAtIndex:i] setVisible:NO];
+    }
+    
     
     
 //    for(int i=0; i<[assNumberBackgrounds count]; i++)

@@ -41,7 +41,15 @@
 {
     [database open];
     FMResultSet *rs = [database executeQuery:@"SELECT * FROM Nodes WHERE id=?", nodeId];
-    self = [rs next] ? [self initWithUserId:userId resultSet:rs database:database] : nil;
+    if ([rs next])
+    {
+        self = [self initWithUserId:userId resultSet:rs database:database];
+    }
+    else
+    {
+        self.userId = userId;
+        self.nodeId = nodeId;
+    }
     [database close];
     return self;
 }

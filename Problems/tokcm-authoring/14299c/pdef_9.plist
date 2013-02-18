@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is 0.7 x 0.8?</string>
+	<key>CORE</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>2</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>80</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>DISABLE_DRAWING</key>
+	<true/>
+	<key>SHOW_DRAGGABLE_BLOCK</key>
+	<true/>
+	<key>SHAPE_BASE_SIZE</key>
+	<integer>10</integer>
+	<key>USE_SHAPE_GROUPS</key>
+	<true/>
+	<key>SELECT_WHOLE_SHAPE</key>
+	<true/>
+	<key>SHOW_NUMBERWHEEL_FOR_SHAPES</key>
+	<true/>
+	<key>SHOW_COUNT_BUBBLE</key>
+	<true/>
+	<key>RENDER_SHAPE_DIMENSIONS</key>
+	<true/>
+	<key>AUTO_UPDATE_WHEEL</key>
+	<false/>
+	<key>REQUIRED_SHAPES</key>
+	<array>
+		<array>
+			<string>{$a10}</string>
+			<string>{$c10}</string>
+		</array>
+		<array>
+			<string>{$c10}</string>
+			<string>{$b}</string>
+		</array>
+		<array>
+			<string>{$a10}</string>
+			<string>{$d}</string>
+		</array>
+		<array>
+			<string>{$b}</string>
+			<string>{$d}</string>
+		</array>
+	</array>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>56</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5.6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>0.56</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>0.056</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>What is 0.7 x 0.8?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+</dict>
+</plist>

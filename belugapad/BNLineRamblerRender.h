@@ -34,6 +34,11 @@
     
     CGPoint circleOffsetsFwd[STEPS];
     CGPoint circleOffsetsBwd[STEPS];
+    
+    NSMutableArray *bmlabels24;
+    NSMutableArray *bmlabels15;
+    NSMutableArray *bmlabels12;
+    NSMutableArray *bmlabels9;
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

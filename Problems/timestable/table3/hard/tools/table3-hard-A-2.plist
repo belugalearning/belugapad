@@ -24,6 +24,8 @@
 	<true/>
 	<key>SWITCH_XY_ANSWER</key>
 	<true/>
+	<key>SELECTION_MODE</key>
+	<integer>0</integer>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@times</key>
@@ -34,8 +36,7 @@
 			<array>
 				<string>times</string>
 				<string>multiplied by</string>
-				<string>lots of</string>
-				<string>groups of</string>
+
 			</array>
 		</dict>
 	</dict>
@@ -45,7 +46,7 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>VALUE</key>
-			<string>2</string>
+			<string>3</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -56,8 +57,6 @@
 			<string>12</string>
 		</dict>
 	</array>
-	<key>SELECTION_MODE</key>
-	<integer>0</integer>
 	<key>REVEAL_COLS</key>
 	<array>
 		<string>{$x}</string>
@@ -70,9 +69,9 @@
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<string>{$x}</string>
-			<key>POS_Y</key>
 			<string>{$y}</string>
+			<key>POS_Y</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>TIMER</key>

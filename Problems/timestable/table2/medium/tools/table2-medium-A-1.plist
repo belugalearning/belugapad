@@ -78,9 +78,9 @@
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<string>{$x}</string>
-			<key>POS_Y</key>
 			<string>{$y}</string>
+			<key>POS_Y</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>TIMER</key>

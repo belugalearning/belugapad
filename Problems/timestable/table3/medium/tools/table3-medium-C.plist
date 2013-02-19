@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is {$y} {@times} {$x}?</string>
+	<string>What is {$x} {@times} {$y}?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -26,6 +26,12 @@
 	<true/>
 	<key>SELECTION_MODE</key>
 	<integer>0</integer>
+	<key>REVEAL_ALL_TILES</key>
+	<false/>
+	<key>ALLOW_X_HIGHLIGHT</key>
+	<false/>
+	<key>ALLOW_Y_HIGHLIGHT</key>
+	<false/>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@times</key>
@@ -47,7 +53,7 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>VALUE</key>
-			<string>2</string>
+			<string>3</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -66,27 +72,19 @@
 			</array>
 		</dict>
 	</array>
-	<key>REVEAL_COLS</key>
-	<array>
-		<string>{$x}</string>
-	</array>
-	<key>REVEAL_ROWS</key>
-	<array>
-		<string>{$y}</string>
-	</array>
 	<key>SOLUTIONS</key>
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<string>{$x}</string>
-			<key>POS_Y</key>
 			<string>{$y}</string>
+			<key>POS_Y</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>TIMER</key>
 	<dict>
 		<key>TIMER_DURATION</key>
-		<integer>0</integer>
+		<integer>90</integer>
 		<key>TIMER_ACTIONS</key>
 		<dict>
 			<key>REVEAL_ROWS</key>
@@ -99,8 +97,6 @@
 			<false/>
 			<key>SHOW_Y_AXIS</key>
 			<false/>
-			<key>SHOW_CALC_BUBBLE</key>
-			<string></string>
 		</dict>
 	</dict>
 </dict>

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is {$x} times {$y}?</string>
+	<string>What is {$x} {@times} {$y}?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -15,7 +15,7 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>OPERATOR_MODE</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>SHOW_CALC_BUBBLE</key>
 	<true/>
 	<key>SHOW_X_AXIS</key>
@@ -32,7 +32,7 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>VALUE</key>
-			<string>2</string>
+			<string>3</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -73,9 +73,9 @@
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<string>{$x}</string>
-			<key>POS_Y</key>
 			<string>{$y}</string>
+			<key>POS_Y</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>TIMER</key>

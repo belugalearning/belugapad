@@ -17,7 +17,7 @@
 	<key>OPERATOR_MODE</key>
 	<integer>2</integer>
 	<key>SHOW_CALC_BUBBLE</key>
-	<true/>
+	<false/>
 	<key>SHOW_X_AXIS</key>
 	<true/>
 	<key>SHOW_Y_AXIS</key>
@@ -27,11 +27,11 @@
 	<key>SELECTION_MODE</key>
 	<integer>0</integer>
 	<key>REVEAL_ALL_TILES</key>
-	<false/>
+	<true/>
 	<key>ALLOW_X_HIGHLIGHT</key>
-	<false/>
+	<true/>
 	<key>ALLOW_Y_HIGHLIGHT</key>
-	<false/>
+	<true/>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@times</key>
@@ -53,7 +53,7 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>VALUE</key>
-			<string>2</string>
+			<string>3</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -76,15 +76,15 @@
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<string>{$x}</string>
-			<key>POS_Y</key>
 			<string>{$y}</string>
+			<key>POS_Y</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>TIMER</key>
 	<dict>
 		<key>TIMER_DURATION</key>
-		<integer>90</integer>
+		<integer>0</integer>
 		<key>TIMER_ACTIONS</key>
 		<dict>
 			<key>REVEAL_ROWS</key>
@@ -97,6 +97,8 @@
 			<false/>
 			<key>SHOW_Y_AXIS</key>
 			<false/>
+			<key>SHOW_CALC_BUBBLE</key>
+			<string></string>
 		</dict>
 	</dict>
 </dict>

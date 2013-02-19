@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/timestable/table12/easy/mq-np/table12-easy-1.plist</string>
+	<string>/Problems/timestable/table12/easy/mq-np/table12-easy-2.plist</string>
+	<string>/Problems/timestable/table12/easy/mq-np/table12-easy-3.plist</string>
+	<string>/Problems/timestable/table12/easy/tools/table12-easy-A-2.plist</string>
+	<string>/Problems/timestable/table12/easy/tools/table12-easy-A-1.plist</string>
+	<string>/Problems/timestable/table12/easy/tools/table12-easy-B.plist</string>
+	<string>/Problems/timestable/table12/easy/tools/table12-easy-C.plist</string>
+	<string>/Problems/timestable/table12/medium/mq-np/table12-medium-1.plist</string>
+	<string>/Problems/timestable/table12/medium/mq-np/table12-medium-2.plist</string>
+	<string>/Problems/timestable/table12/medium/mq-np/table12-medium-3.plist</string>
+	<string>/Problems/timestable/table12/medium/tools/table12-medium-A-2.plist</string>
+	<string>/Problems/timestable/table12/medium/tools/table12-medium-A-1.plist</string>
+	<string>/Problems/timestable/table12/medium/tools/table12-medium-B.plist</string>
+	<string>/Problems/timestable/table12/medium/tools/table12-medium-C.plist</string>
+	<string>/Problems/timestable/table12/hard/mq-np/table12-hard-1.plist</string>
+	<string>/Problems/timestable/table12/hard/mq-np/table12-hard-2.plist</string>
+	<string>/Problems/timestable/table12/hard/mq-np/table12-hard-3.plist</string>
+	<string>/Problems/timestable/table12/hard/tools/table12-hard-A-2.plist</string>
+	<string>/Problems/timestable/table12/hard/tools/table12-hard-A-1.plist</string>
+	<string>/Problems/timestable/table12/hard/tools/table12-hard-B.plist</string>
+	<string>/Problems/timestable/table12/hard/tools/table12-hard-C.plist</string>
+	<string>/Problems/timestable/table11/easy/mq-np/table11-easy-1.plist</string>
+	<string>/Problems/timestable/table11/easy/mq-np/table11-easy-2.plist</string>
+	<string>/Problems/timestable/table11/easy/mq-np/table11-easy-3.plist</string>
+	<string>/Problems/timestable/table11/easy/tools/table11-easy-A-2.plist</string>
+	<string>/Problems/timestable/table11/easy/tools/table11-easy-A-1.plist</string>
+	<string>/Problems/timestable/table11/easy/tools/table11-easy-B.plist</string>
+	<string>/Problems/timestable/table11/easy/tools/table11-easy-C.plist</string>
+	<string>/Problems/timestable/table11/medium/mq-np/table11-medium-1.plist</string>
+	<string>/Problems/timestable/table11/medium/mq-np/table11-medium-2.plist</string>
+	<string>/Problems/timestable/table11/medium/mq-np/table11-medium-3.plist</string>
+	<string>/Problems/timestable/table11/medium/tools/table11-medium-A-2.plist</string>
+	<string>/Problems/timestable/table11/medium/tools/table11-medium-A-1.plist</string>
+	<string>/Problems/timestable/table11/medium/tools/table11-medium-B.plist</string>
+	<string>/Problems/timestable/table11/medium/tools/table11-medium-C.plist</string>
+	<string>/Problems/timestable/table11/hard/mq-np/table11-hard-1.plist</string>
+	<string>/Problems/timestable/table11/hard/mq-np/table11-hard-2.plist</string>
+	<string>/Problems/timestable/table11/hard/mq-np/table11-hard-3.plist</string>
+	<string>/Problems/timestable/table11/hard/tools/table11-hard-A-2.plist</string>
+	<string>/Problems/timestable/table11/hard/tools/table11-hard-A-1.plist</string>
+	<string>/Problems/timestable/table11/hard/tools/table11-hard-B.plist</string>
+	<string>/Problems/timestable/table11/hard/tools/table11-hard-C.plist</string>
+</array>
+</plist>

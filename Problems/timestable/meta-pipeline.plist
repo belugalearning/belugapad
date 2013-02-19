@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/timestable/table1/easy/tools/table1-easy-A-2.plist</string>
+	<string>/Problems/timestable/table1/easy/tools/table1-easy-A-1.plist</string>
+	<string>/Problems/timestable/table1/easy/tools/table1-easy-B.plist</string>
+	<string>/Problems/timestable/table1/easy/tools/table1-easy-C.plist</string>
+	
+	<string>/Problems/timestable/table1/medium/tools/table1-medium-A-2.plist</string>
+	<string>/Problems/timestable/table1/medium/tools/table1-medium-A-1.plist</string>
+	<string>/Problems/timestable/table1/medium/tools/table1-medium-B.plist</string>
+	<string>/Problems/timestable/table1/medium/tools/table1-medium-C.plist</string>
+	
+	<string>/Problems/timestable/table1/hard/tools/table1-hard-A-2.plist</string>
+	<string>/Problems/timestable/table1/hard/tools/table1-hard-A-1.plist</string>
+	<string>/Problems/timestable/table1/hard/tools/table1-hard-B.plist</string>
+	<string>/Problems/timestable/table1/hard/tools/table1-hard-C.plist</string>
+</array>
+</plist>

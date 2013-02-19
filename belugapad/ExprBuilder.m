@@ -275,6 +275,8 @@
         //build the ncard row if we have one
         if(presentNumberCardRow && i==0)
         {
+            //this ivar is released in dealloc, but only if set
+            //should really be property based -- this assumes this is the only place it's alloc'd
             ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
             ncardRow.maxChildrenPerLine=10;
             
@@ -331,8 +333,6 @@
             
             row0base=sepYpos-QUESTION_SEPARATOR_PADDING;
             rowSpace=row0base / (rowcount + 1);
-            
-            [ncardRow release];
         }
         
         [row release];
@@ -1103,7 +1103,10 @@
 {
     [exprStages release];
     [evalType release];
+    
+    ///this is a managed ivar -- only set when used
     if(ncardRow)[ncardRow release];
+    
     [rows release];
     
     //write log on problem switch

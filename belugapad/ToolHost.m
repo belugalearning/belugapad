@@ -3124,6 +3124,8 @@ static float kTimeToHintToolTray=0.0f;
     
     if(self.pickerView)self.pickerView=nil;
     
+    if(followParticle)[followParticle release];
+    
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];

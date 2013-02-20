@@ -677,12 +677,13 @@
     {
         NSArray *vals=[self numbersFromRow:1];
         int phCount=[self getPlaceHolderCountOnRow:1];
+        int popPhCount=[self getPopulatedPlaceholderCountOnRow:1];
         
         //fail if there are no numbers
         if(vals.count==0)return NO;
         
         //fail if not all of the placeholders have numbers
-        if(phCount!=vals.count) return NO;
+        if(phCount!=popPhCount) return NO;
         
         for(int i=1; i<vals.count; i++)
         {
@@ -699,12 +700,13 @@
     {
         NSArray *vals=[self numbersFromRow:1];
         int phCount=[self getPlaceHolderCountOnRow:1];
+        int popPhCount=[self getPopulatedPlaceholderCountOnRow:1];
         
         //fail if there are no numbers
         if(vals.count==0)return NO;
         
         //fail if not all of the placeholders have numbers
-        if(phCount!=vals.count) return NO;
+        if(phCount!=popPhCount) return NO;
         
         for(int i=1; i<vals.count; i++)
         {
@@ -1035,6 +1037,23 @@
     return count;
 }
 
+-(int)getPopulatedPlaceholderCountOnRow:(int)rowIdx
+{
+    SGBtxeRow *row=[rows objectAtIndex:rowIdx];
+    
+    int count=0;
+    
+    for(id<BtxeMount, NSObject> mount in row.children)
+    {
+        if([mount conformsToProtocol:@protocol(BtxeMount)])
+        {
+            id<BtxeMount> m=(id<BtxeMount>)mount;
+            if(m.mountedObject) count++;
+        }
+    }
+    return count;
+}
+
 -(NSArray*)numbersFromRow:(int)rowIdx
 {
     SGBtxeRow *row=[rows objectAtIndex:rowIdx];
@@ -1042,10 +1061,12 @@
     
     //todo: look at placeholders and their value
     
-    for(id<BtxeMount, NSObject> mount in row.children)
+    for(id<NSObject> rowitem in row.children)
     {
-        if([mount conformsToProtocol:@protocol(BtxeMount)])
+        if([rowitem conformsToProtocol:@protocol(BtxeMount)])
         {
+            id<BtxeMount> mount=(id<BtxeMount>)rowitem;
+
             if(mount.mountedObject)
             {
                 if([mount.mountedObject conformsToProtocol:@protocol(Value)])
@@ -1055,7 +1076,18 @@
                 }
             }
         }
+        
+        else if([rowitem conformsToProtocol:@protocol(Value)] && [rowitem conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            id<Value, MovingInteractive>miv=(id<MovingInteractive, Value>)rowitem;
+            
+            if(!miv.mount)
+            {
+                [values addObject:miv.value];
+            }
+        }
     }
+    
     
     NSArray *ret=[NSArray arrayWithArray:values];
     [values release];

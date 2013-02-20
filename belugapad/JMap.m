@@ -566,6 +566,7 @@ typedef enum {
             
             int prqcount=0;
             int prqcomplete=0;
+            int prqeffectiveready=0;
             
             for(SGJmapNode *n in mgo.ChildNodes)
             {
@@ -573,6 +574,8 @@ typedef enum {
                     prqcount++;
                     if(prqn.EnabledAndComplete) prqcomplete++;
                 }
+                
+                if(n.PrereqNodes.count==0 && !n.EnabledAndComplete) prqeffectiveready++;
             }
             
             mgo.PrereqCount=prqcount;
@@ -580,7 +583,7 @@ typedef enum {
             
             if(mgo.PrereqCount>0)
             {
-                mgo.PrereqPercentage=(prqcomplete / (float)prqcount) * 100.0f;
+                mgo.PrereqPercentage=(prqcomplete + prqeffectiveready / (float)prqcount) * 100.0f;
             }
             else if(mgo.ChildNodes.count>0)
             {
@@ -598,6 +601,7 @@ typedef enum {
 
             //calculate old prqc
             int pprqcomplete=0;
+            int pprqeffectivecomplete=0;
             for(SGJmapNode *n in mgo.ChildNodes)
             {
                 for (SGJmapNode *prqn in n.PrereqNodes) {
@@ -614,11 +618,18 @@ typedef enum {
                             [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
                     }
                 }
+                
+                if(n.PrereqNodes.count==0 && !n.EnabledAndComplete)
+                {
+                    prqeffectiveready++;
+                    mgo.FreshlyCompleted=YES;
+                    pprqeffectivecomplete++;
+                }
             }
             
             if(mgo.PrereqCount>0)
             {
-                mgo.PreviousPreReqPercentage =(pprqcomplete / (float)prqcount) * 100.0f;
+                mgo.PreviousPreReqPercentage =(pprqcomplete + pprqeffectivecomplete / (float)prqcount) * 100.0f;
             }
             else if(mgo.ChildNodes.count>0)
             {

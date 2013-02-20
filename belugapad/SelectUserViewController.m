@@ -452,6 +452,8 @@
 {
     if (freezeUI) return;
     
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
+    
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
 
     if (selectUserModalContainer) return;
@@ -521,6 +523,7 @@
     if (freezeUI) return;
     
     [self buttonTap];
+    [self enablePlayButton];
     
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;

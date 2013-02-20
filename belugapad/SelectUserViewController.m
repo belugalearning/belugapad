@@ -908,16 +908,6 @@
 }
 
 #pragma mark -
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 999)
-    {
-        [app proceedFromLoginViaIntro:NO];
-    }
-}
-
-#pragma mark -
 #pragma mark PassCodeViewDelegate
 -(void)passCodeWasEdited:(PassCodeView*)passCodeView
 {

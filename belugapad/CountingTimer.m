@@ -133,7 +133,7 @@ static float kTimeToButtonShake=7.0f;
 //            CCFadeIn *ffi=[CCFadeIn actionWithDuration:0.3f];
 //            
 //            CCSequence *ff=[CCSequence actionOne:ffo two:ffi];
-//            
+//
 //            [flasher runAction:ff];
 
             CCFadeIn *fffi=[CCFadeIn actionWithDuration:0.1f];
@@ -145,13 +145,22 @@ static float kTimeToButtonShake=7.0f;
             
 //            [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
         }
+        
+        trackNumber=(int)timeKeeper;
+        
+        lastNumber+=numIncrement;
+        
         if(displayNumicon)
         {
-            if(trackNumber<=10.0f)
+            if(lastNumber<=10.0f)
             {
-                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", trackNumber+1]];
+                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", lastNumber]];
                 [numiconOne setOpacity:255];
                 [numiconOne setDisplayFrame:frame];
+            }
+            else
+            {
+                [numiconOne setVisible:NO];
             }
         }
         
@@ -161,10 +170,6 @@ static float kTimeToButtonShake=7.0f;
             [numiconOne runAction:[CCFadeOut actionWithDuration:0.5f]];
             
         }
-        
-        trackNumber=(int)timeKeeper;
-        
-        lastNumber+=numIncrement;
         
         // play sound if required
         if(countType==kCountBeep){

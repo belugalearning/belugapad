@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Split the circle into {$x}.</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>1</integer>
+	<key>DIVISOR</key>
+	<string>{$x}</string>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>1</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<string>{$x}</string>
+	<key>START_PROBLEM_SPLIT</key>
+	<false/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Count up in 1/{$x} to 1. </string>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>SOLUTION</key>
+	<integer>1</integer>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>COUNT_TYPE</key>
+	<integer>1</integer>
+	<key>INCREMENT</key>
+	<string>1/{$x}</string>
+	<key>COUNT_MIN</key>
+	<integer>0</integer>
+	<key>COUNT_MAX</key>
+	<integer>2</integer>
+	<key>REPEAT_SET</key>
+	<string>A</string>
+	<key>BUTTON_FLASH</key>
+	<true/>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>RECALL</key>
+			<string>{$x}</string>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+	</array>
+	<key>REPEAT_MY_SET_MIN</key>
+	<string>2</string>
+</dict>
+</plist>

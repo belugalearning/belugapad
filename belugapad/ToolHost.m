@@ -3160,8 +3160,8 @@ static float kTimeToHintToolTray=0.0f;
     //number wheel / picker view
     if(pickerView)[pickerView release];
     
-    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
-    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+//    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+//    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [super dealloc];
 }

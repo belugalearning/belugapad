@@ -1572,8 +1572,8 @@ typedef enum {
     if(filteredNodes) [filteredNodes release];
     
 
-    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
-    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+//    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+//    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [super dealloc];
 }

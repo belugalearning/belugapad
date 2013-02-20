@@ -239,6 +239,10 @@ typedef enum {
     
     SGBtxeRow *qDescRow;
     
+    CCParticleSystemQuad *followParticle;
+    CCParticleSystemQuad *explodeParticle;
+    
+    
 }
 
 @property (retain) Daemon *Zubi;

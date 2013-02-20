@@ -240,8 +240,6 @@ typedef enum {
     SGBtxeRow *qDescRow;
     
     CCParticleSystemQuad *followParticle;
-    CCParticleSystemQuad *explodeParticle;
-    
     
 }
 

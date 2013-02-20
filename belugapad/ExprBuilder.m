@@ -235,9 +235,10 @@
             //limit row to even division of cards
             if(row.children.count>5)
             {
-                if(row.children.count==6 || row.children.count==9 || row.children.count==18) row.maxChildrenPerLine=3;
+                if(row.children.count==9 || row.children.count==18) row.maxChildrenPerLine=3;
                 else if(row.children.count==8) row.maxChildrenPerLine=4;
-                else if(row.children.count % 5 == 0) row.maxChildrenPerLine=5;
+                else if(row.children.count==10 || row.children.count==15) row.maxChildrenPerLine=5;
+                else if (row.children.count==11) row.maxChildrenPerLine=6;
                 else if(row.children.count==12)row.maxChildrenPerLine=6;
             }
         }

@@ -201,7 +201,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     [currentUserStateDatabase close];
 }
 
--(NSMutableArray*)deviceUsersByNickName
+-(NSArray*)deviceUsersByNickName
 {    
     NSMutableArray *users = [NSMutableArray array];
     
@@ -212,9 +212,8 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     [rs close];
     [allUsersDatabase close];
     
-    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"nick" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
-    [users sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]];
-    return users;
+    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"nickName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
+    return [users sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]];
 }
 
 -(void)createNewUserWithNick:(NSString*)nick

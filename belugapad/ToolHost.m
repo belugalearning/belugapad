@@ -1143,6 +1143,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)setupFollowParticle
 {
+    if(followParticle)followParticle=nil;
+    
     followParticle=[CCParticleSystemQuad particleWithFile:@"bubble_trail.plist"];
     [self addChild:followParticle z:10];
     [followParticle setVisible:NO];
@@ -1222,6 +1224,11 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)tearDownProblemDef
 {
+    if([followParticle isKindOfClass:[CCParticleSystemQuad class]])
+        [followParticle removeFromParentAndCleanup:YES];
+    
+    followParticle=nil;
+    
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
@@ -2233,6 +2240,7 @@ static float kTimeToHintToolTray=0.0f;
     lastTouch=location;
 
     timeSinceInteractionOrShake=0.0f;
+    isTouching=YES;
     
     if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
@@ -2315,6 +2323,7 @@ static float kTimeToHintToolTray=0.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
+    
     [followParticle resetSystem];
     [followParticle setPosition:location];
     [followParticle setVisible:YES];
@@ -2376,7 +2385,9 @@ static float kTimeToHintToolTray=0.0f;
         //NSLog(@"scale: %f", scale);
     }
     else {
-        [followParticle setPosition:location];
+        if(isTouching)
+            [followParticle setPosition:location];
+        
         [currentTool ccTouchesMoved:touches withEvent:event];
     }
     
@@ -2391,7 +2402,8 @@ static float kTimeToHintToolTray=0.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    [followParticle stopSystem];
+    if(isTouching)
+        [followParticle stopSystem];
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
@@ -2401,6 +2413,7 @@ static float kTimeToHintToolTray=0.0f;
     if(isPaused)
     {
         [self checkPauseTouches:location];
+        isTouching=NO;
         return;
     }
     
@@ -2559,6 +2572,7 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     [currentTool ccTouchesEnded:touches withEvent:event];
+    isTouching=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -3124,7 +3138,6 @@ static float kTimeToHintToolTray=0.0f;
     
     if(self.pickerView)self.pickerView=nil;
     
-    if(followParticle)[followParticle release];
     
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];

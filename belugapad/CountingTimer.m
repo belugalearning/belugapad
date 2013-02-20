@@ -81,7 +81,7 @@ static float kTimeToButtonShake=7.0f;
         usersService = ac.usersService;
         loggingService = ac.loggingService;
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         [self readPlist:pdef];
         [self populateGW];

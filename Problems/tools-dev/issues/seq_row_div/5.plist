@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>6 to10</string>
+	<key>EVAL_TYPE</key>
+	<string>SEQUENCE_ASC</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>NUMBER_CARD_ROW_MIN</key>
+	<integer>6</integer>
+	<key>NUMBER_CARD_ROW_MAX</key>
+	<integer>10</integer>
+	<key>NUMBER_CARD_INTERVAL</key>
+	<integer>1</integer>
+	<key>NUMBER_CARD_RANDOMISE</key>
+	<true/>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Sort in the correct order 5.&lt;/b:t&gt;</string>
+		<string>&lt;b:ph/&gt;&lt;b:ph/&gt;&lt;b:on number=&quot;8&quot;/&gt;&lt;b:ph/&gt;&lt;b:ph/&gt;</string>
+	</array>
+</dict>
+</plist>

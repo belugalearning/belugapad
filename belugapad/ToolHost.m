@@ -921,7 +921,7 @@ static float kTimeToHintToolTray=0.0f;
     
     //this will overrider above np/mq and possible th setup
     [self setupToolTrays:pdef];
-
+    [self setupFollowParticle];
     
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
@@ -1138,6 +1138,14 @@ static float kTimeToHintToolTray=0.0f;
 
     traybtnPad.position=ccp(2*cx-(5*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
 
+    
+}
+
+-(void)setupFollowParticle
+{
+    followParticle=[CCParticleSystemQuad particleWithFile:@"bubble_trail.plist"];
+    [self addChild:followParticle z:10];
+    [followParticle setVisible:NO];
     
 }
 
@@ -2307,7 +2315,9 @@ static float kTimeToHintToolTray=0.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
-
+    [followParticle resetSystem];
+    [followParticle setPosition:location];
+    [followParticle setVisible:YES];
     
     [currentTool ccTouchesBegan:touches withEvent:event];
 }
@@ -2366,6 +2376,7 @@ static float kTimeToHintToolTray=0.0f;
         //NSLog(@"scale: %f", scale);
     }
     else {
+        [followParticle setPosition:location];
         [currentTool ccTouchesMoved:touches withEvent:event];
     }
     
@@ -2380,6 +2391,7 @@ static float kTimeToHintToolTray=0.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    [followParticle stopSystem];
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool

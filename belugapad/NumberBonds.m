@@ -616,6 +616,7 @@ static float kNBFontSizeLarge=35.0f;
                     NSLog(@"found other perfect parital -- swapping");
                     [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
                     foundAPerfectMatch=YES;
+                    break;
                 }
             }
         }

@@ -233,7 +233,7 @@
         if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
         {
             //limit row to even division of cards
-            if(row.children.count>5)
+            if(row.children.count>5 && i>0)
             {
                 if(row.children.count==9 || row.children.count==18) row.maxChildrenPerLine=3;
                 else if(row.children.count==8) row.maxChildrenPerLine=4;

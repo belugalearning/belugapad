@@ -435,7 +435,8 @@ static float kTimeToHintToolTray=0.0f;
     if(evalShowCommit)[self showHideCommit];
     
     //let tool do updates
-    if(!isPaused)[currentTool doUpdateOnTick:delta];
+    if(!isPaused)
+        [currentTool doUpdateOnTick:delta];
 }
 
 -(void)doUpdateOnSecond:(ccTime)delta
@@ -1143,11 +1144,19 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)setupFollowParticle
 {
-    if(followParticle)followParticle=nil;
+    if(followParticle)
+        followParticle=nil;
+    
+    if(explodeParticle)
+        explodeParticle=nil;
     
     followParticle=[CCParticleSystemQuad particleWithFile:@"bubble_trail.plist"];
     [self addChild:followParticle z:10];
     [followParticle setVisible:NO];
+    
+    explodeParticle=[CCParticleSystemQuad particleWithFile:@"bubbles.plist"];
+    [self addChild:explodeParticle z:10];
+    [explodeParticle setVisible:NO];
     
 }
 
@@ -1226,8 +1235,11 @@ static float kTimeToHintToolTray=0.0f;
 {
     if([followParticle isKindOfClass:[CCParticleSystemQuad class]])
         [followParticle removeFromParentAndCleanup:YES];
+    if([explodeParticle isKindOfClass:[CCParticleSystemQuad class]])
+        [explodeParticle removeFromParentAndCleanup:YES];
     
     followParticle=nil;
+    explodeParticle=nil;
     
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
@@ -2323,7 +2335,8 @@ static float kTimeToHintToolTray=0.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
-    
+    [explodeParticle setVisible:NO];
+    [explodeParticle stopSystem];
     [followParticle resetSystem];
     [followParticle setPosition:location];
     [followParticle setVisible:YES];
@@ -2385,9 +2398,10 @@ static float kTimeToHintToolTray=0.0f;
         //NSLog(@"scale: %f", scale);
     }
     else {
-        if(isTouching)
+        if(isTouching){
             [followParticle setPosition:location];
-        
+            [explodeParticle setPosition:location];
+        }
         [currentTool ccTouchesMoved:touches withEvent:event];
     }
     
@@ -2402,9 +2416,11 @@ static float kTimeToHintToolTray=0.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(isTouching)
+    if(isTouching){
         [followParticle stopSystem];
-    
+        [explodeParticle setVisible:YES];
+        [explodeParticle resetSystem];
+    }
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
     

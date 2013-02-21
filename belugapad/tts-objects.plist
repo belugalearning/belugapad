@@ -110,6 +110,8 @@
 	<string>block</string>
 	<key>30_FB_Plus</key>
 	<string>plus button</string>
+	<key>30_FB_Bubble_Plus</key>
+	<string>plus button</string>
 	<key>30_NB_grid</key>
 	<string>container</string>
 	<key>30_NB_Grid_1</key>

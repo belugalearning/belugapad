@@ -236,8 +236,11 @@ typedef enum {
     BOOL breakOutIntroProblemHasLoaded;
     
     BOOL quittingToMap;
+    BOOL isTouching;
     
     SGBtxeRow *qDescRow;
+    
+    CCParticleSystemQuad *followParticle;
     
 }
 

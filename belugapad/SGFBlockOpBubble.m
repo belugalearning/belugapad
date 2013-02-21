@@ -77,15 +77,59 @@
     if([self.ChildOperators count]==0)
     {
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_multiple_operators_appearing.wav")];
-        for(NSString *s in SupportedOperators)
+        
+        for(int i=0;i<[SupportedOperators count];i++)
         {
-            NSArray *a=[NSArray arrayWithObject:s];
-            id<Operator,Rendered>op=[[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y-100+([SupportedOperators indexOfObject:s]*80)) andOperators:a] autorelease];
+            CGPoint thisPos=CGPointZero;
+            
+            if([SupportedOperators count]==1)
+            {
+                thisPos=self.Position;
+            }
+            else if([SupportedOperators count]==2)
+            {
+                if(i==0)
+                    thisPos=ccp(self.Position.x-75, self.Position.y+30);
+                else if(i==1)
+                    thisPos=ccp(self.Position.x+75, self.Position.y+30);
+            }
+            else if([SupportedOperators count]==3)
+            {
+                if(i==0)
+                    thisPos=ccp(self.Position.x-75, self.Position.y+30);
+                else if(i==1)
+                    thisPos=ccp(self.Position.x+75, self.Position.y+30);
+                else if(i==2)
+                    thisPos=ccp(self.Position.x, self.Position.y+100);
+            }
+            else if([SupportedOperators count]==4)
+            {
+                if(i==0)
+                    thisPos=ccp(self.Position.x-120, self.Position.y+20);
+                else if(i==1)
+                    thisPos=ccp(self.Position.x-45, self.Position.y+80);
+                else if(i==2)
+                    thisPos=ccp(self.Position.x+45, self.Position.y+80);
+                else if(i==3)
+                    thisPos=ccp(self.Position.x+120, self.Position.y+20);
+            }
+            NSArray *a=[NSArray arrayWithObject:[SupportedOperators objectAtIndex:i]];
+            id<Operator,Rendered>op=[[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:thisPos andOperators:a] autorelease];
             
             [self.ChildOperators addObject:op];
             
             [op setup];
         }
+        
+//        for(NSString *s in SupportedOperators)
+//        {
+//            NSArray *a=[NSArray arrayWithObject:s];
+//            id<Operator,Rendered>op=[[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y-100+([SupportedOperators indexOfObject:s]*80)) andOperators:a] autorelease];
+//            
+//            [self.ChildOperators addObject:op];
+//            
+//            [op setup];
+//        }
     }
 }
 

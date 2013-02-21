@@ -77,6 +77,8 @@ typedef enum {
     CCSprite *introOverlay;
     CCSprite *introCommit;
     
+    NSMutableArray *activeDots;
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

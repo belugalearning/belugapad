@@ -21,6 +21,7 @@
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
 #import "SimpleAudioEngine.h"
+#import "NumberLayout.h"
 
 
 #define kEarliestHit 1.2
@@ -133,7 +134,7 @@ static float kTimeToButtonShake=7.0f;
 //            CCFadeIn *ffi=[CCFadeIn actionWithDuration:0.3f];
 //            
 //            CCSequence *ff=[CCSequence actionOne:ffo two:ffi];
-//            
+//
 //            [flasher runAction:ff];
 
             CCFadeIn *fffi=[CCFadeIn actionWithDuration:0.1f];
@@ -145,26 +146,53 @@ static float kTimeToButtonShake=7.0f;
             
 //            [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
         }
-        if(displayNumicon)
-        {
-            if(trackNumber<=10.0f)
-            {
-                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", trackNumber+1]];
-                [numiconOne setOpacity:255];
-                [numiconOne setDisplayFrame:frame];
-            }
-        }
-        
-        if(flashNumicon)
-        {
-            [numiconOne setOpacity:255];
-            [numiconOne runAction:[CCFadeOut actionWithDuration:0.5f]];
-            
-        }
         
         trackNumber=(int)timeKeeper;
         
         lastNumber+=numIncrement;
+        
+        if(displayNumicon)
+        {
+            NSArray *dotLayout=nil;
+            if(lastNumber<=100){
+                dotLayout=[NumberLayout physicalLayoutAcrossToNumber:lastNumber withSpacing:15.0f];
+                
+                for(CCSprite *s in activeDots)
+                {
+                    [s removeFromParentAndCleanup:YES];
+                }
+                
+                [activeDots removeAllObjects];
+                
+                for(int i=lastNumber-1;i>=0;i--)
+                {
+                    CGPoint thisPos=[[dotLayout objectAtIndex:i]CGPointValue];
+                    thisPos=ccp(thisPos.x+cx+((lastNumber/2)*7.5f),thisPos.y+130);
+                    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/Number_Dot_Standard.png")];
+                    [s setPosition:thisPos];
+                    [renderLayer addChild:s];
+                    if(!activeDots)activeDots=[[NSMutableArray alloc]init];
+                    [activeDots addObject:s];
+                }
+            }
+//            if(lastNumber<=10.0f)
+//            {
+//                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", lastNumber]];
+//                [numiconOne setOpacity:255];
+//                [numiconOne setDisplayFrame:frame];
+//            }
+//            else
+//            {
+//                [numiconOne setVisible:NO];
+//            }
+        }
+        
+//        if(flashNumicon)
+//        {
+//            [numiconOne setOpacity:255];
+//            [numiconOne runAction:[CCFadeOut actionWithDuration:0.5f]];
+//            
+//        }
         
         // play sound if required
         if(countType==kCountBeep){
@@ -188,6 +216,7 @@ static float kTimeToButtonShake=7.0f;
         NSLog(@"reach the end of the problem (hit count min on count-back number");
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
+        [currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber+numIncrement]];
         [self expireProblemForRestart];
     }
     
@@ -196,6 +225,7 @@ static float kTimeToButtonShake=7.0f;
         NSLog(@"reach the end of the problem (hit count max on count-on number");
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
         [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
+        [currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber-numIncrement]];
         [self expireProblemForRestart];
     }
         
@@ -313,23 +343,23 @@ static float kTimeToButtonShake=7.0f;
     else
         startNo=countMax;
     
-        currentNumber=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:50.0f];
+    currentNumber=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:50.0f];
     [currentNumber setString:[NSString stringWithFormat:@"%d", startNo]];
-        [currentNumber setPosition:ccp(flasher.position.x,flasher.position.y-8)];
-        [currentNumber setOpacity:0];
-        [currentNumber setTag:3];
-        [renderLayer addChild:currentNumber];
+    [currentNumber setPosition:ccp(flasher.position.x,flasher.position.y-8)];
+    [currentNumber setOpacity:0];
+    [currentNumber setTag:3];
+    [renderLayer addChild:currentNumber];
 //    }
     if(displayNumicon||flashNumicon)
     {
-        frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
-        [frameCache addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist") textureFilename:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
-        CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
-        numiconOne=[CCSprite spriteWithSpriteFrame:frame];
-        //[numiconOne setDisplayFrame:frame];
-        [numiconOne setPosition:ccp(cx,100)];
-        [numiconOne setOpacity:0];
-        [renderLayer addChild:numiconOne];
+//        frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+//        [frameCache addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist") textureFilename:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+//        CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
+//        numiconOne=[CCSprite spriteWithSpriteFrame:frame];
+//        //[numiconOne setDisplayFrame:frame];
+//        [numiconOne setPosition:ccp(cx,100)];
+//        [numiconOne setOpacity:0];
+//        [renderLayer addChild:numiconOne];
 
     }
 }
@@ -373,8 +403,8 @@ static float kTimeToButtonShake=7.0f;
     timeElapsed=0.0f;
     trackNumber=0;
     
-    if(numiconOne)
-        [numiconOne setOpacity:0];
+//    if(numiconOne)
+//        [numiconOne setOpacity:0];
     
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
     

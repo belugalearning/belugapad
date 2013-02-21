@@ -81,6 +81,9 @@
 		5529F4D11529EA940085492E /* BNBondStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BNBondMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BNBondMount.m */; };
 		5529F4D7152A05EB0085492E /* BNBondMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BNBondMountable.m */; };
+		552DF2E216D4EBA2007B1193 /* bubble_trail.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E016D4EBA2007B1193 /* bubble_trail.plist */; };
+		552DF2E316D4EBA2007B1193 /* bubbles.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E116D4EBA2007B1193 /* bubbles.plist */; };
+		552DF2E516D4EBBB007B1193 /* click_pin.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E416D4EBBB007B1193 /* click_pin.plist */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
 		553E80B8150FC57100263473 /* BNLineSelectorRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80B7150FC57100263473 /* BNLineSelectorRender.m */; };
 		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
@@ -591,6 +594,9 @@
 		5529F4D3152A04310085492E /* BNBondMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMount.m; sourceTree = "<group>"; };
 		5529F4D5152A05EB0085492E /* BNBondMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMountable.h; sourceTree = "<group>"; };
 		5529F4D6152A05EB0085492E /* BNBondMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMountable.m; sourceTree = "<group>"; };
+		552DF2E016D4EBA2007B1193 /* bubble_trail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bubble_trail.plist; sourceTree = "<group>"; };
+		552DF2E116D4EBA2007B1193 /* bubbles.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bubbles.plist; sourceTree = "<group>"; };
+		552DF2E416D4EBBB007B1193 /* click_pin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = click_pin.plist; sourceTree = "<group>"; };
 		5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValueConsts.h; sourceTree = "<group>"; };
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
 		553E80B6150FC57100263473 /* BNLineSelectorRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineSelectorRender.h; sourceTree = "<group>"; };
@@ -2385,6 +2391,9 @@
 		7F813D5914CCC38100C1E997 /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				552DF2E416D4EBBB007B1193 /* click_pin.plist */,
+				552DF2E016D4EBA2007B1193 /* bubble_trail.plist */,
+				552DF2E116D4EBA2007B1193 /* bubbles.plist */,
 				33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */,
 				557C1FBD16A20FF5000ED30A /* star_explosion2.plist */,
 				7FDBA56214EC4271004D1CC9 /* bm11.plist */,
@@ -3159,6 +3168,9 @@
 				7FA2A4E616A81B4500B50D07 /* Icon-Small.png in Resources */,
 				7FA2A4E716A81B4500B50D07 /* Icon-Small-50.png in Resources */,
 				7FA2A4E816A81B4500B50D07 /* Icon-Small@2x.png in Resources */,
+				552DF2E216D4EBA2007B1193 /* bubble_trail.plist in Resources */,
+				552DF2E316D4EBA2007B1193 /* bubbles.plist in Resources */,
+				552DF2E516D4EBBB007B1193 /* click_pin.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1154,7 +1154,7 @@ static float kTimeToHintToolTray=0.0f;
     [self addChild:followParticle z:10];
     [followParticle setVisible:NO];
     
-    explodeParticle=[CCParticleSystemQuad particleWithFile:@"bubbles.plist"];
+    explodeParticle=[CCParticleSystemQuad particleWithFile:@"bubbles_end.plist"];
     [self addChild:explodeParticle z:10];
     [explodeParticle setVisible:NO];
     
@@ -2417,6 +2417,7 @@ static float kTimeToHintToolTray=0.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     
     if(isTouching){
+        [explodeParticle setPosition:location];
         [followParticle stopSystem];
         [explodeParticle setVisible:YES];
         [explodeParticle resetSystem];

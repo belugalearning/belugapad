@@ -672,7 +672,6 @@ static float kNBFontSizeLarge=35.0f;
     
     for(DWNBondObjectGameObject *o in thisOne.HintObjects)
     {
-        
         for(CCSprite *s in o.BaseNode.children)
         {
             CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];

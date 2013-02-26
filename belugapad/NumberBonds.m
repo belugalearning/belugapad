@@ -500,86 +500,6 @@ static float kNBFontSizeLarge=35.0f;
     }
 }
 
-//-(void)compareHintsAndMountedObjectsOpposite:(BOOL)shouldMoveRows
-//{
-//
-//
-//    BOOL foundAMatch=NO;
-//    // for each row
-//    for(int i=0;i<[createdRows count];i++)
-//    {
-//        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
-//
-//        if(r.Locked)continue;
-//
-//        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
-//        NSMutableArray *mounted=r.MountedObjects;
-//
-//
-//        if(shouldMoveRows)
-//        {
-//            for(int f=0;f<[createdRows count];f++)
-//            {
-//                if([self checkIfTheseHints:hints GoToThisRow:f])
-//                {
-//                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
-//                    foundAMatch=YES;
-//                }
-//            }
-//            if(foundAMatch)return;
-//        }
-//
-//
-//
-//        // we need to look at it's hint objects and mounted objects
-//
-//        for(int h=0;h<[hints count];h++)
-//        {
-//            BOOL hasMatch=NO;
-//            int matchedNo=0;
-//            int matchedWithNo=0;
-//            float foundSoFar=0;
-//            DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
-//
-//            for(int m=0;m<[mounted count];m++)
-//            {
-//                DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
-//                foundSoFar+=thisMounted.Length;
-//                if(r.MyHeldValue==foundSoFar)break;
-//
-//                if(thisHint.Length==thisMounted.Length)
-//                {
-//                    NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
-//                    matchedNo=m;
-//                    matchedWithNo=h;
-//                    hasMatch=YES;
-//                    foundAMatch=YES;
-//                    break;
-//                }
-//            }
-//
-//
-//            if(hasMatch)
-//            {
-//                NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
-//
-//                if(matchedNo<[hints count])
-//                {
-//                    [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
-//
-//                    foundAMatch=YES;
-//                }
-//            }
-//
-//
-//        }
-//
-//        //[r handleMessage:kDWresetPositionEval];
-//    }
-//
-//}
-
-
 -(void)compareHintsAndMountedObjects
 {
     [self compareHintsAndMountedObjects:YES];
@@ -587,11 +507,18 @@ static float kNBFontSizeLarge=35.0f;
 
 -(void)compareHintsAndMountedObjects:(BOOL)shouldMoveRows
 {
+    NSMutableArray *swappedRowIndexes=[[NSMutableArray alloc] init];
     
     BOOL foundAMatch=NO;
     // for each row
     for(int i=0;i<[createdRows count];i++)
     {
+        if([swappedRowIndexes containsObject:[NSNumber numberWithInt:i]])
+        {
+            NSLog(@"already swapped");
+            continue;
+        }
+        
         DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
         
         if(r.Locked)continue;
@@ -604,6 +531,7 @@ static float kNBFontSizeLarge=35.0f;
         //check if I myself match
         if([self checkIfThisRowIsAPerfectPartialMatch:i ofTheseHints:hints])
         {
+            NSLog(@"found perfect match");
             foundAPerfectMatch=YES;
         }
         else
@@ -611,10 +539,15 @@ static float kNBFontSizeLarge=35.0f;
             //look for a perfect match elsewhere, and swap hints if one found
             for(int f=0;f<[createdRows count];f++)
             {
-                if([self checkIfThisRowIsAPerfectPartialMatch:f ofTheseHints:hints])
+                if([self checkIfThisRowIsAPerfectPartialMatch:f ofTheseHints:hints] && i!=f)
                 {
-                    NSLog(@"found other perfect parital -- swapping");
+                    NSLog(@"found other perfect parital -- swapping %d with %d", f, i);
                     [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+                    
+                    [swappedRowIndexes addObject:[NSNumber numberWithInt:f]];
+                    [swappedRowIndexes addObject:[NSNumber numberWithInt:i]];
+                    
+                    
                     foundAPerfectMatch=YES;
                     break;
                 }
@@ -665,6 +598,8 @@ static float kNBFontSizeLarge=35.0f;
         
     }
     
+    [swappedRowIndexes release];
+    
 }
 
 -(BOOL)checkIfThisRowIsAPerfectPartialMatch: (int)row ofTheseHints:(NSMutableArray*)hints
@@ -674,6 +609,7 @@ static float kNBFontSizeLarge=35.0f;
     
     DWNBondRowGameObject *r=[createdRows objectAtIndex:row];
     
+    if(r.MountedObjects.count ==0) return NO;
     if (r.Locked)return NO;
     
     NSMutableArray *mounted=r.MountedObjects;

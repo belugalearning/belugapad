@@ -43,7 +43,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is {$y} {@times} {$x}?</string>
+		<string>What is {$x} {@times} {$y}?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>0</integer>
 		<key>PICKER_ORIGIN_X</key>

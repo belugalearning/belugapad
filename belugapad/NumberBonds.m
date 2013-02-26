@@ -663,6 +663,17 @@ static float kNBFontSizeLarge=35.0f;
     DWNBondRowGameObject *thisOne=[createdRows objectAtIndex:thisRow];
     DWNBondRowGameObject *thatOne=[createdRows objectAtIndex:thatRow];
     
+    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+    {
+        NSLog(@"PRE this one: %d", o.Length);
+    }
+    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
+    {
+        NSLog(@"PRE that one: %d", o.Length);
+    }
+    
+    
+    
     NSMutableArray *thisOneHints=[NSMutableArray arrayWithArray:thisOne.HintObjects];
 
     thisOne.HintObjects=thatOne.HintObjects;
@@ -674,6 +685,8 @@ static float kNBFontSizeLarge=35.0f;
     {
         for(CCSprite *s in o.BaseNode.children)
         {
+            NSLog(@"this one: %d", o.Length);
+            
             CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
             CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
             CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thisOne handleMessage:kDWresetPositionEval];}];
@@ -688,6 +701,7 @@ static float kNBFontSizeLarge=35.0f;
     
     for(DWNBondObjectGameObject *o in thatOne.HintObjects)
     {
+        NSLog(@"that one: %d", o.Length);
 
         for(CCNode *s in o.BaseNode.children)
         {

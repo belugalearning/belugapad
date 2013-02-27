@@ -318,7 +318,7 @@ uint const kMaxConsecutiveSendFails = 3;
             }
         }
         
-        BOOL paEnded = [BL_PA_SUCCESS isEqualToString:eventType]   ||  [BL_PA_EXIT_TO_MAP isEqualToString:eventType]  || [BL_PA_USER_RESET isEqualToString:eventType] || [BL_PA_SKIP isEqualToString:eventType] || [BL_PA_SKIP_DEBUG isEqualToString:eventType] || [BL_PA_SKIP_WITH_SUGGESTION isEqualToString:eventType] || [BL_PA_FAIL isEqualToString:eventType] || [BL_PA_FAIL_WITH_CHILD_PROBLEM isEqualToString:eventType] || BL_PA_POSTPONE_FOR_INTRO_PROBLEM==eventType;
+        BOOL paEnded = [BL_PA_SUCCESS isEqualToString:eventType]   ||  [BL_PA_EXIT_TO_MAP isEqualToString:eventType]  || [BL_PA_USER_RESET isEqualToString:eventType] || [BL_PA_SKIP isEqualToString:eventType] || [BL_PA_SKIP_DEBUG isEqualToString:eventType] || [BL_PA_SKIP_WITH_SUGGESTION isEqualToString:eventType] || [BL_PA_FAIL isEqualToString:eventType] || [BL_PA_FAIL_WITH_CHILD_PROBLEM isEqualToString:eventType] || [BL_PA_POSTPONE_FOR_INTRO_PROBLEM isEqualToString:eventType];
         
         if (paEnded)
         {

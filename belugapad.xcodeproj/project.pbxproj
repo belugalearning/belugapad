@@ -825,7 +825,7 @@
 		7F50C4AC15DBCD44009345B5 /* ExprBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprBuilder.m; sourceTree = "<group>"; };
 		7F50C4AF15DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeTextBackgroundRender.m; sourceTree = "<group>"; };
 		7F50C4B015DBCDA3009345B5 /* SGBtxeTextBackgroundRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeTextBackgroundRender.h; sourceTree = "<group>"; };
-		7F5113BE14A9EE62001AF372 /* Beluga Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beluga Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5113BE14A9EE62001AF372 /* Beluga Maths.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beluga Maths.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7F5113C614A9EE62001AF372 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -2037,7 +2037,7 @@
 		7F5113BF14A9EE62001AF372 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7F5113BE14A9EE62001AF372 /* Beluga Dev.app */,
+				7F5113BE14A9EE62001AF372 /* Beluga Maths.app */,
 				7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */,
 			);
 			name = Products;
@@ -3087,7 +3087,7 @@
 			);
 			name = "Beluga Maths";
 			productName = belugapad;
-			productReference = 7F5113BE14A9EE62001AF372 /* Beluga Dev.app */;
+			productReference = 7F5113BE14A9EE62001AF372 /* Beluga Maths.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3823,7 +3823,7 @@
 					"\"$(SRCROOT)/libBabTTS.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "AE765118-FA97-485D-A1E1-22A33D8AAEC9";
+				PROVISIONING_PROFILE = "1702C801-0D07-44DA-9A3D-4A7E2130E5F6";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";

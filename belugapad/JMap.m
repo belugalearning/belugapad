@@ -53,8 +53,6 @@ static CGPoint kStartMapPos={-611, 3713};
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
 
-static BOOL debugRestrictMovement=NO;
-
 typedef enum {
     kJuiStateNodeMap,
     kJuiStateNodeSliceTransition,
@@ -375,7 +373,6 @@ typedef enum {
         nMinX=(float)n1.x;
         nMinY=(float)n1.y;
         nMaxX=nMinX;
-        nMaxY=nMaxY;
         
         for (int i=1; i<[kcmNodes count]; i++) {
             ConceptNode *n=[kcmNodes objectAtIndex:i];

@@ -55,7 +55,7 @@
 		</dict>
 	</array>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is {$x} {@times} {$y}?</string>
+	<string>What is {$y} {@times} {$x}?</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
@@ -90,7 +90,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>What is {$x} {@times} {$y}?</string>
+		<string>What is {$y} {@times} {$x}?</string>
 	</dict>
 </dict>
 </plist>

@@ -617,10 +617,13 @@ static float kNBFontSizeLarge=35.0f;
     int i=0;
     for(DWNBondObjectGameObject *o in mounted)
     {
-        DWNBondObjectGameObject *h=[hints objectAtIndex:i];
-        if(h.Length!=o.Length)
+        if(i<[hints count])
         {
-            return NO;
+            DWNBondObjectGameObject *h=[hints objectAtIndex:i];
+            if(h.Length!=o.Length)
+            {
+                return NO;
+            }
         }
         i++;
     }

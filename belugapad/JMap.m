@@ -1481,7 +1481,7 @@ typedef enum {
     if(isFiltered)node=[filteredNodes objectAtIndex:indexPath.row];
     else node=[searchNodes objectAtIndex:indexPath.row];
 
-    CGPoint moveto=ccp(300-node.Position.x, 600-node.Position.y);
+    CGPoint moveto=ccp(400-node.Position.x, 530-node.Position.y);
     
     if(zoomedOut)moveto=[BLMath MultiplyVector:moveto byScalar:REGION_ZOOM_LEVEL];
     

@@ -155,7 +155,7 @@ uint const kMaxConsecutiveSendFails = 3;
     BOOL restorePrevContextOnReturn = NO;
     BL_LOGGING_CONTEXT prevContext = currentContext;
     
-    if (BL_APP_START == eventType)
+    if ([BL_APP_START isEqualToString:eventType])
     {
         currentContext = BL_DEVICE_CONTEXT;
         
@@ -175,11 +175,11 @@ uint const kMaxConsecutiveSendFails = 3;
                             , installationId, @"device"
                             , nil];
     }
-    else if (BL_SUVC_LOAD == eventType)
+    else if ([BL_SUVC_LOAD isEqualToString:eventType])
     {
         currentContext = BL_DEVICE_CONTEXT;
     }
-    else if (BL_USER_LOGIN == eventType)
+    else if ([BL_USER_LOGIN isEqualToString:eventType])
     {
         currentContext = BL_USER_CONTEXT;
         if (userSessionDoc) [userSessionDoc release];
@@ -197,16 +197,16 @@ uint const kMaxConsecutiveSendFails = 3;
                           , [ac.usersService.currentUserClone objectForKey:@"id"], @"user"
                           , nil];
     }
-    else if (BL_JS_INIT == eventType)
+    else if ([BL_JS_INIT isEqualToString:eventType])
     {
         currentContext = BL_USER_CONTEXT;
     }
-    else if (BL_USER_ENCOUNTER_FEATURE_KEY == eventType)
+    else if ([BL_USER_ENCOUNTER_FEATURE_KEY isEqualToString:eventType])
     {
         restorePrevContextOnReturn = YES;
         currentContext = BL_USER_CONTEXT;
     }
-    else if (BL_EP_START == eventType)
+    else if ([BL_EP_START isEqualToString:eventType])
     {
         currentContext = BL_EPISODE_CONTEXT;
         if (episodeDoc) [episodeDoc release];
@@ -230,11 +230,11 @@ uint const kMaxConsecutiveSendFails = 3;
                       , @"score": @0
                       } mutableCopy];
     }
-    else if (BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION == eventType)
+    else if ([BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION isEqualToString:eventType])
     {
         currentContext = BL_EPISODE_CONTEXT;
     }
-    else if (BL_PA_START == eventType)
+    else if ([BL_PA_START isEqualToString:eventType])
     {
         currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
         
@@ -259,16 +259,16 @@ uint const kMaxConsecutiveSendFails = 3;
                              , p._rev, @"problemRev"
                              , nil];
     }
-    else if (BL_PA_PAUSE == eventType)
+    else if ([BL_PA_PAUSE isEqualToString:eventType])
     {
         [self.logPoller stopPolling];
     }
-    else if (BL_PA_RESUME == eventType)
+    else if ([BL_PA_RESUME isEqualToString:eventType])
     {
         [self.logPoller resumePolling];
     }
     
-    if (BL_PA_START == eventType)
+    if ([BL_PA_START isEqualToString:eventType])
     {
         self.currPAPollDocId = [self generateUUID];
         self.currPATouchDocId = [self generateUUID];
@@ -318,7 +318,7 @@ uint const kMaxConsecutiveSendFails = 3;
             }
         }
         
-        BOOL paEnded = BL_PA_SUCCESS == eventType   ||  BL_PA_EXIT_TO_MAP == eventType  || BL_PA_USER_RESET == eventType || BL_PA_SKIP == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_FAIL == eventType || BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType || BL_PA_POSTPONE_FOR_INTRO_PROBLEM==eventType;
+        BOOL paEnded = [BL_PA_SUCCESS isEqualToString:eventType]   ||  [BL_PA_EXIT_TO_MAP isEqualToString:eventType]  || [BL_PA_USER_RESET isEqualToString:eventType] || [BL_PA_SKIP isEqualToString:eventType] || [BL_PA_SKIP_DEBUG isEqualToString:eventType] || [BL_PA_SKIP_WITH_SUGGESTION isEqualToString:eventType] || [BL_PA_FAIL isEqualToString:eventType] || [BL_PA_FAIL_WITH_CHILD_PROBLEM isEqualToString:eventType] || BL_PA_POSTPONE_FOR_INTRO_PROBLEM==eventType;
         
         if (paEnded)
         {
@@ -366,7 +366,7 @@ uint const kMaxConsecutiveSendFails = 3;
     NSMutableArray *events = [doc objectForKey:@"events"];
     [events addObject:event];
     
-    if (BL_EP_START == eventType) nodePlay = [[NodePlay alloc] initWithEpisode:episodeDoc batchId:self.currentBatchId];
+    if ([BL_EP_START isEqualToString:eventType]) nodePlay = [[NodePlay alloc] initWithEpisode:episodeDoc batchId:self.currentBatchId];
     if (nodePlay)
     {
         NSError *error = nil;

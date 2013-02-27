@@ -462,6 +462,12 @@
 	emitCounter = 0;
 }
 
+-(void) startSystem
+{
+	active = YES;
+	elapsed = 0;
+}
+
 -(void) resetSystem
 {
 	active = YES;

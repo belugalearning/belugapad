@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@times</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>times</string>
+				<string>multiplied by</string>
+				<string>lots of</string>
+				<string>groups of</string>
+			</array>
+		</dict>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>VALUE</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$err1</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>{$y-1}</string>
+				<string>{$y+1}</string>
+				<string>{$y+2}</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$err2</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>{$x-1}</string>
+				<string>{$x+1}</string>
+				<string>{$x+2}</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>5</string>
+				<string>10</string>
+			</array>
+		</dict>
+	</array>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is {$y} {@times} {$x}?</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_TYPE</key>
+	<integer>1</integer>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$x*$y}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$err1*$x}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$err2*$y}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>What is {$y} {@times} {$x}?</string>
+	</dict>
+</dict>
+</plist>

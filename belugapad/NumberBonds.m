@@ -311,12 +311,11 @@ static float kNBFontSizeLarge=35.0f;
         }
         pogo.MountPosition = pogo.Position;
         
-//        if(showBadgesOnCages)
-//        {
+
         [mountedObjects addObject:[NSNull null]];
         [mountedObjectBadges addObject:[NSNull null]];
         [mountedObjectLabels addObject:[NSNull null]];
-//        }
+
     }
     
     
@@ -324,8 +323,6 @@ static float kNBFontSizeLarge=35.0f;
     {
         int thisLength=0;
         NSMutableArray *currentVal=[[NSMutableArray alloc]init];
-//        for (int ic=0;ic<qtyForThisStore;ic++)
-//        {
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
         [loggingService.logPoller registerPollee:(id<LogPolling>)pogo];
@@ -367,7 +364,7 @@ static float kNBFontSizeLarge=35.0f;
             
             
             [currentVal addObject:pogo];
-//        }
+
         [mountedObjects replaceObjectAtIndex:thisLength-1 withObject:currentVal];
         
         if(showBadgesOnCages)
@@ -390,8 +387,7 @@ static float kNBFontSizeLarge=35.0f;
             [thisBadge setOpacity:0];
             [thisLabel setOpacity:0];
             
-//            [mountedObjectLabels addObject:thisLabel];
-//            [mountedObjectBadges addObject:thisBadge];
+
             [mountedObjectLabels replaceObjectAtIndex:thisLength-1 withObject:thisLabel];
             [mountedObjectBadges replaceObjectAtIndex:thisLength-1 withObject:thisBadge];
         }
@@ -401,24 +397,16 @@ static float kNBFontSizeLarge=35.0f;
     
     for (int i=0;i<[initHints count]; i++)
     {
-        //pogo.Position=ccp(512,284);
         int insRow=[[[initHints objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
         int insLength=[[[initHints objectAtIndex:i] objectForKey:LENGTH] intValue];
-        //NSString *fillText=[[NSString alloc]init];
         DWNBondObjectGameObject *hint = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:hint withTemplateName:@"TnBondObject"];
         [loggingService.logPoller registerPollee:(id<LogPolling>)hint];
         
-        //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         hint.Length = insLength;
         
         hint.InitedObject=YES;
         hint.HintObject=YES;
-        
-        //if([[initHints objectAtIndex:i]objectForKey:LABEL]) fillText = [[initHints objectAtIndex:i]objectForKey:LABEL];
-        //else fillText=[NSString stringWithFormat:@"%d", insLength];
-        
-        //hint.Label = [CCLabelTTF labelWithString:fillText fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         
         DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
@@ -427,21 +415,18 @@ static float kNBFontSizeLarge=35.0f;
         hint.MountPosition = prgo.Position;
         [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
         
-//        [fillText release];
         [hint release];
     }
     
     // do stuff with our INIT_OBJECTS (DWNBondObjectGameObject)    
     for (int i=0;i<[initObjects count]; i++)
     {
-        //pogo.Position=ccp(512,284);
         int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
         int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
         NSString *fillText=@"";
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
         [loggingService.logPoller registerPollee:(id<LogPolling>)pogo];
-        //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
         
         pogo.InitedObject=YES;
@@ -475,7 +460,6 @@ static float kNBFontSizeLarge=35.0f;
 {
     for(int i=0;i<[mountedObjectLabels count];i++)
     {
-//        if(blocksUsedFromThisStore[i]<0)blocksUsedFromThisStore[i]=0;
         if([[mountedObjectLabels objectAtIndex:i] isKindOfClass:[NSNull class]])continue;
         CCLabelTTF *thisLabel=[mountedObjectLabels objectAtIndex:i];
         CCSprite *thisSprite=[mountedObjectBadges objectAtIndex:i];
@@ -516,253 +500,241 @@ static float kNBFontSizeLarge=35.0f;
     }
 }
 
--(void)compareHintsAndMountedObjects
-{
-    [self compareHintsAndMountedObjects:YES];
-}
-
--(void)compareHintsAndMountedObjects:(BOOL)shouldMoveRows
-{
-    
-    BOOL foundAMatch=NO;
-    // for each row
-    for(int i=0;i<[createdRows count];i++)
-    {
-        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
-        
-        if(r.Locked)continue;
-        
-        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
-        NSMutableArray *mounted=r.MountedObjects;
-        
-        // we need to look at it's hint objects and mounted objects
-        
-        for(int h=0;h<[hints count];h++)
-        {
-            BOOL hasMatch=NO;
-            int matchedNo=0;
-            int matchedWithNo=0;
-            DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
-            
-            for(int m=0;m<[mounted count];m++)
-            {
-                DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
-                
-                if(thisHint.Length==thisMounted.Length)
-                {
-                    NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
-                    matchedNo=m;
-                    matchedWithNo=h;
-                    hasMatch=YES;
-                    foundAMatch=YES;
-                    break;
-                }
-            }
-            
-
-            if(hasMatch)
-            {
-                NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
-                
-                if(matchedNo<[hints count])
-                {
-                    [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
-                    
-                    foundAMatch=YES;
-                }
-            }
-            
-            
-        }
-        
-        if(!foundAMatch&&shouldMoveRows)
-        {
-            for(int f=0;f<[createdRows count];f++)
-            {
-                if([self checkIfTheseHints:hints GoToThisRow:f])
-                {
-                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
-                }
-                [self compareHintsAndMountedObjects:NO];
-            }
-        }
-        
-        //[r handleMessage:kDWresetPositionEval];
-    }
-    
-}
-
--(void)compareHintsAndMountedObjectsOpposite:(BOOL)shouldMoveRows
-{
-    
-    
-    BOOL foundAMatch=NO;
-    // for each row
-    for(int i=0;i<[createdRows count];i++)
-    {
-        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
-        
-        if(r.Locked)continue;
-        
-        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
-        NSMutableArray *mounted=r.MountedObjects;
-        
-        
-        if(shouldMoveRows)
-        {
-            for(int f=0;f<[createdRows count];f++)
-            {
-                if([self checkIfTheseHints:hints GoToThisRow:f])
-                {
-                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
-                    foundAMatch=YES;
-                }
-            }
-            if(foundAMatch)return;
-        }
-        
-        
-        
-        // we need to look at it's hint objects and mounted objects
-        
-        for(int h=0;h<[hints count];h++)
-        {
-            BOOL hasMatch=NO;
-            int matchedNo=0;
-            int matchedWithNo=0;
-            float foundSoFar=0;
-            DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
-            
-            for(int m=0;m<[mounted count];m++)
-            {
-                DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
-                foundSoFar+=thisMounted.Length;
-                if(r.MyHeldValue==foundSoFar)break;
-                
-                if(thisHint.Length==thisMounted.Length)
-                {
-                    NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
-                    matchedNo=m;
-                    matchedWithNo=h;
-                    hasMatch=YES;
-                    foundAMatch=YES;
-                    break;
-                }
-            }
-            
-            
-            if(hasMatch)
-            {
-                NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
-                
-                if(matchedNo<[hints count])
-                {
-                    [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
-                    
-                    foundAMatch=YES;
-                }
-            }
-            
-            
-        }
-        
-        //[r handleMessage:kDWresetPositionEval];
-    }
-    
-}
-
-
--(BOOL)checkIfTheseHints:(NSMutableArray*)theseHints GoToThisRow:(int)thisRow
-{
-    DWNBondRowGameObject *r=[createdRows objectAtIndex:thisRow];
-    
-    if (r.Locked)return NO;
-    
-    NSMutableArray *mounted=r.MountedObjects;
-    
-    for(int h=0;h<[theseHints count];h++)
-    {
-        BOOL hasMatch=NO;
-        DWNBondObjectGameObject *thisHint=[theseHints objectAtIndex:h];
-        
-        for(int m=0;m<[mounted count];m++)
-        {
-            DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
-            
-            if(thisHint.Length==thisMounted.Length)
-            {
-                hasMatch=YES;
-                break;
-            }
-        }
-        
-        if(hasMatch)return YES;
-    }
-
-    return NO;
-}
-
--(void)exchangeHintsOnThisRow:(int)thisRow withHintsOnThisRow:(int)thatRow
-{
-    DWNBondRowGameObject *thisOne=[createdRows objectAtIndex:thisRow];
-    DWNBondRowGameObject *thatOne=[createdRows objectAtIndex:thatRow];
-    
-    NSMutableArray *thisOneHints=[NSMutableArray arrayWithArray:thisOne.HintObjects];
-
-    thisOne.HintObjects=thatOne.HintObjects;
-    thatOne.HintObjects=thisOneHints;
-    doNotSendPositionEval=YES;
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_assistance.wav")];
-    
-    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
-    {
+//-(void)compareHintsAndMountedObjects
+//{
+//    [self compareHintsAndMountedObjects:YES];
+//}
+//
+//-(void)compareHintsAndMountedObjects:(BOOL)shouldMoveRows
+//{
+//    NSMutableArray *swappedRowIndexes=[[NSMutableArray alloc] init];
+//    
+//    for(DWNBondRowGameObject *nbr in createdRows)
+//    {
+//        for(DWNBondObjectGameObject *o in nbr.HintObjects)
+//        {
+//            NSLog(@"row %d mount object %d is length %d", (int)nbr, (int)o, o.Length);
+//        }
+//    }
+//    
+//    BOOL foundAMatch=NO;
+//    // for each row
+//    for(int i=0;i<[createdRows count];i++)
+//    {
+//        NSLog(@"iterating over row %d", i);
+//        
+//        if([swappedRowIndexes containsObject:[NSNumber numberWithInt:i]])
+//        {
+//            NSLog(@"already swapped");
+//            continue;
+//        }
+//        
+//        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
+//        
+//        if(r.Locked)continue;
+//        
+//        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
+//        NSMutableArray *mounted=r.MountedObjects;
+//        
+//        BOOL foundAPerfectMatch=NO;
+//        
+//        //check if I myself match
+//        if([self checkIfThisRowIsAPerfectPartialMatch:i ofTheseHints:hints])
+//        {
+//            NSLog(@"found perfect match");
+//            foundAPerfectMatch=YES;
+//        }
+//        else
+//        {
+//            //look for a perfect match elsewhere, and swap hints if one found
+//            for(int f=0;f<[createdRows count];f++)
+//            {
+//                NSLog(@"looking for other perfect partial match from row %d on row %d", i, f);
+//                
+//                if([self checkIfThisRowIsAPerfectPartialMatch:f ofTheseHints:hints] && i!=f)
+//                {
+//                    NSLog(@"found other perfect parital -- swapping %d with %d", f, i);
+//                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+//                    
+//                    [swappedRowIndexes addObject:[NSNumber numberWithInt:f]];
+//                    [swappedRowIndexes addObject:[NSNumber numberWithInt:i]];
+//                    
+//                    
+//                    foundAPerfectMatch=YES;
+//                    break;
+//                }
+//            }
+//        }
+//        
+//        if(!foundAPerfectMatch)
+//        {
+//        
+//            // we need to look at it's hint objects and mounted objects
+//            
+//            for(int h=0;h<[hints count];h++)
+//            {
+//                    BOOL hasMatch=NO;
+//                    int matchedNo=0;
+//                    int matchedWithNo=0;
+//                    DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
+//                    
+//                    for(int m=0;m<[mounted count];m++)
+//                    {
+//                        DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
+//                        
+//                        if(thisHint.Length==thisMounted.Length)
+//                        {
+//                            NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
+//                            matchedNo=m;
+//                            matchedWithNo=h;
+//                            hasMatch=YES;
+//                            foundAMatch=YES;
+//                            break;
+//                        }
+//                    }
+//
+//                    if(hasMatch)
+//                    {
+//                        NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
+//                        
+//                        if(matchedNo<[hints count])
+//                        {
+//                            NSLog(@"exchanging objects on a row");
+////                            [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
+//                            
+//                            foundAMatch=YES;
+//                        }
+//                    }
+//
+//                }
+//            }
+//        
+//    }
+//    
+//    [swappedRowIndexes release];
+//    
+//}
+//
+//-(BOOL)checkIfThisRowIsAPerfectPartialMatch: (int)row ofTheseHints:(NSMutableArray*)hints
+//{
+//    if(!hints)return NO;
+//    if(hints.count==0)return NO;
+//    
+//    DWNBondRowGameObject *r=[createdRows objectAtIndex:row];
+//    
+//    if(r.MountedObjects.count ==0) return NO;
+//    if (r.Locked)return NO;
+//    
+//    NSMutableArray *mounted=r.MountedObjects;
+//
+//    int i=0;
+//    for(DWNBondObjectGameObject *o in mounted)
+//    {
+//        if(i<[hints count])
+//        {
+//            DWNBondObjectGameObject *h=[hints objectAtIndex:i];
+//            if(h.Length!=o.Length)
+//            {
+//                return NO;
+//            }
+//        }
+//        i++;
+//    }
+//    
+//    return YES;
+//}
+//
+//-(BOOL)checkIfTheseHints:(NSMutableArray*)theseHints GoToThisRow:(int)thisRow
+//{
+//    DWNBondRowGameObject *r=[createdRows objectAtIndex:thisRow];
+//    
+//    if (r.Locked)return NO;
+//    
+//    NSMutableArray *mounted=r.MountedObjects;
+//    
+//    for(int h=0;h<[theseHints count];h++)
+//    {
+//        BOOL hasMatch=NO;
+//        DWNBondObjectGameObject *thisHint=[theseHints objectAtIndex:h];
+//        
+//        for(int m=0;m<[mounted count];m++)
+//        {
+//            DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
+//            
+//            if(thisHint.Length==thisMounted.Length)
+//            {
+//                hasMatch=YES;
+//                break;
+//            }
+//        }
+//        
+//        if(hasMatch)return YES;
+//    }
+//
+//    return NO;
+//}
+//
+//-(void)exchangeHintsOnThisRow:(int)thisRow withHintsOnThisRow:(int)thatRow
+//{
+//    DWNBondRowGameObject *thisOne=[createdRows objectAtIndex:thisRow];
+//    DWNBondRowGameObject *thatOne=[createdRows objectAtIndex:thatRow];
+//    
+//    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+//    {
+//        NSLog(@"PRE (row address %d) this object (address %d): %d", (int)thisOne, (int)o, o.Length);
+//    }
+//    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
+//    {
+//        NSLog(@"PRE (row address %d) that object (address %d): %d", (int)thatOne, (int)o, o.Length);
+//    }
+//    
+//    
+//    
+//    NSMutableArray *thisOneHints=[NSMutableArray arrayWithArray:thisOne.HintObjects];
+//
+//    thisOne.HintObjects=thatOne.HintObjects;
+//    thatOne.HintObjects=thisOneHints;
+//    doNotSendPositionEval=YES;
+//    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_assistance.wav")];
+//    
+//    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+//    {
+//        for(CCSprite *s in o.BaseNode.children)
+//        {
+//            NSLog(@"this one: %d", o.Length);
+//            
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+//            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thisOne handleMessage:kDWresetPositionEval];}];
+//            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+//            
+//            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, nil];
+//            
+//            [s runAction:sequence];
+//    
+//        }
+//    }
+//    
+//    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
+//    {
+//        NSLog(@"that one: %d", o.Length);
+//
 //        for(CCNode *s in o.BaseNode.children)
 //        {
 //            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
-//            [s runAction:fadeOutAct];
+//            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+//            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thatOne handleMessage:kDWresetPositionEval];}];
+//            CCCallBlock *disallowEval=[CCCallBlock actionWithBlock:^{doNotSendPositionEval=NO;}];
+//            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+//            
+//            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, disallowEval, nil];
+//            
+//            [s runAction:sequence];
 //        }
-        
-
-        
-        
-        for(CCSprite *s in o.BaseNode.children)
-        {
-            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
-            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
-            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thisOne handleMessage:kDWresetPositionEval];}];
-            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
-            
-            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, nil];
-            
-            [s runAction:sequence];
-    
-        }
-    }
-    
-    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
-    {
-//        for(CCNode *s in o.BaseNode.children)
-//        {
-//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
-//            [s runAction:fadeOutAct];
-//        }
-        
-        for(CCNode *s in o.BaseNode.children)
-        {
-            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
-            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
-            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thatOne handleMessage:kDWresetPositionEval];}];
-            CCCallBlock *disallowEval=[CCCallBlock actionWithBlock:^{doNotSendPositionEval=NO;}];
-            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
-            
-            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, disallowEval, nil];
-            
-            [s runAction:sequence];
-        }
-    }
-
-
-}
+//    }
+//
+//
+//}
 
 
 #pragma mark - touches events
@@ -774,7 +746,6 @@ static float kNBFontSizeLarge=35.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-    //location=[self.ForeLayer convertToNodeSpace:location];
     timeSinceInteractionOrShake=0.0f;
     
     
@@ -812,8 +783,6 @@ static float kNBFontSizeLarge=35.0f;
         // remove it from being a mounted object -- if it's not an init object
         if(!pogo.InitedObject && [[mountedObjects objectAtIndex:pogo.IndexPos] containsObject:pogo])
             [[mountedObjects objectAtIndex:pogo.IndexPos] removeObject:pogo];
-        
-        //[self reorderMountedObjects];
         
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_picked_up_and_expanding.wav")];
         
@@ -864,7 +833,6 @@ static float kNBFontSizeLarge=35.0f;
             DWNBondObjectGameObject *newbar = [[DWNBondObjectGameObject alloc] autorelease];
             [gw populateAndAddGameObject:newbar withTemplateName:@"TnBondObject"];
             [loggingService.logPoller registerPollee:(id<LogPolling>)newbar];
-            //newbar.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
             newbar.Length=pogo.Length;
             newbar.IndexPos=newbar.Length-1;
 
@@ -895,7 +863,6 @@ static float kNBFontSizeLarge=35.0f;
         }
 
         //previously removex b/c of log perf - restored for testing with sans-Couchbase logging
-        //[loggingService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         
         hasMovedBlock=YES;
 
@@ -936,7 +903,7 @@ static float kNBFontSizeLarge=35.0f;
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
             [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_dropped.wav")];
-            [self compareHintsAndMountedObjects];
+            //[self compareHintsAndMountedObjects];
             hasUsedBlock=YES;
             
             // touch ended on a row so we've set it. log it's value
@@ -980,15 +947,12 @@ static float kNBFontSizeLarge=35.0f;
                     
                     for(int i=0;i<2;i++)
                     {
-                        //int insRow=[[[initHints objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
-                        //int insLength=[[[initHints objectAtIndex:i] objectForKey:LENGTH] intValue];
-                        //NSString *fillText=[[NSString alloc]init];
+
                         DWNBondObjectGameObject *no = [DWNBondObjectGameObject alloc];
                         [gw populateAndAddGameObject:no withTemplateName:@"TnBondObject"];
                         
                         [loggingService.logPoller registerPollee:(id<LogPolling>)no];
                         
-                        //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
                         if(i==0)
                             no.Length=pickupValueThatCanGoIn;
                         else
@@ -1040,7 +1004,7 @@ static float kNBFontSizeLarge=35.0f;
                 
                 else{
                     [po handleMessage:kDWmoveSpriteToHome];
-                        blocksUsedFromThisStore[po.IndexPos]--;
+                    blocksUsedFromThisStore[po.IndexPos]--;
                 }
                 [self setTouchVarsToOff];
                 
@@ -1058,11 +1022,8 @@ static float kNBFontSizeLarge=35.0f;
 
             
                 [pogo handleMessage:kDWmoveSpriteToHome];
-            
-            //NSLog(@"blocksForThisStore=%d, blocksUsedFromThisStore=%d, storeCanCreate=%@", blocksForThisStore[pogo.IndexPos], blocksUsedFromThisStore[pogo.IndexPos], storeCanCreate[pogo.IndexPos]?@"YES":@"NO");
-            
+                blocksUsedFromThisStore[pogo.IndexPos]--;
 
-                //blocksUsedFromThisStore[pogo.IndexPos]--;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 
@@ -1075,7 +1036,6 @@ static float kNBFontSizeLarge=35.0f;
         }
     }
     
-    //[self reorderMountedObjects];
     
     if(!doNotSendPositionEval)
         [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
@@ -1218,10 +1178,6 @@ static float kNBFontSizeLarge=35.0f;
         
         //loop rows
         for (DWNBondRowGameObject *prgo in createdRows) {
-
-            //create child to the equality
-            //BAAdditionOperator *rowAdd=[BAAdditionOperator operator];
-            //[toolHost.PpExpr.root addChild:rowAdd];
             
             int cumRowLength = [self getRowLengthFor:prgo];
             
@@ -1247,7 +1203,6 @@ static float kNBFontSizeLarge=35.0f;
         NSMutableArray *usedSolutions=[[[NSMutableArray alloc]init] autorelease];
         NSMutableArray *usedGOs=[[[NSMutableArray alloc] init] autorelease];
         
-//        NSMutableArray *solCopy=[NSMutableArray arrayWithArray:solutionsDef
         
         // for each row, we need to find whether their make-up is a solution
         for(DWNBondRowGameObject *r in createdRows)
@@ -1427,10 +1382,7 @@ static float kNBFontSizeLarge=35.0f;
     }
     
     //removing manual releases here -- causing msg_send issue
-//    if(initBars) [initBars release];
-//    if(initObjects) [initObjects release];
-//    if(initCages) [initCages release];
-//    if(solutionsDef) [solutionsDef release];
+
     initObjects=nil;
     initBars=nil;
     initCages=nil;

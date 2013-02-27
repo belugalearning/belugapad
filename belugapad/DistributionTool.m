@@ -205,9 +205,20 @@ static float kTimeSinceAction=7.0f;
     {
         SGDtoolBlock *b=(SGDtoolBlock*)nearestObject;
         SGDtoolBlock *c=(SGDtoolBlock*)currentPickupObject;
+        SGDtoolContainer *con=(SGDtoolContainer*)b.MyContainer;
         
         if(!bondDifferentTypes && b.blockType!=c.blockType)
             return;
+        if([con isKindOfClass:[SGDtoolContainer class]])
+            NSLog(@"nearest Object container bond type: %@", con.LineType);
+        
+        if([con isKindOfClass:[SGDtoolContainer class]] && [con.LineType isEqualToString:@"Unbreakable"])
+            return;
+        
+        if(lastTouch.y<cage.MySprite.contentSize.height&&([con.LineType isEqualToString:@"Unbreakable"]||bondAllObjects))
+           return;
+        
+    
 
         
         if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
@@ -485,11 +496,15 @@ static float kTimeSinceAction=7.0f;
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
-    BOOL isEvalTarget = [[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
-
+    BOOL isEvalTarget = NO;
+    
+    if([theseSettings objectForKey:IS_EVAL_TARGET])
+        isEvalTarget=[[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
     
     if(!thisColour)
         thisColour=@"WHITE";
+    if(unbreakableBonds)
+        thisColour=@"RED";
     
     ccColor3B blockCol = ccc3(0,0,0);
     
@@ -536,9 +551,6 @@ static float kTimeSinceAction=7.0f;
         int topMost=ly-200;
         int botMost=180;
         
-        //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
-        //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
-        
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
     
@@ -581,7 +593,7 @@ static float kTimeSinceAction=7.0f;
         
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
         
-        NSLog(@"create block %d/%d at position %@", i+1, numBlocks, NSStringFromCGPoint(p));
+        NSLog(@"my container is eval target %@ / create block %d/%d at position %@", isEvalTarget?@"YES":@"NO", i+1, numBlocks, NSStringFromCGPoint(p));
         
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
@@ -596,8 +608,6 @@ static float kTimeSinceAction=7.0f;
         if(!hasInactiveArea)
         {
             if(i){
-                SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
-                [block pairMeWith:prevBlock];
                 [self returnNextMountPointForThisShape:container];
             }
         }
@@ -627,23 +637,11 @@ static float kTimeSinceAction=7.0f;
     for(int i=0;i<[activeRects count];i++)
     {
         CGRect r=[[activeRects objectAtIndex:i]CGRectValue];
-        
-        //NSLog(@"this rect: %@, this position %@", NSStringFromCGRect(r), NSStringFromCGPoint(thisPosition));
 
             if(CGRectIntersectsRect(thisRect, r))
             {
                 return YES;
             }
-//        for(int p=0;p<thisMany;p++)
-//        {
-//            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
-//            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
-//            
-//            if(CGRectContainsPoint(r, curPos))
-//            {
-//                return YES;
-//            }
-//        }
     }
 
     return NO;
@@ -715,13 +713,10 @@ static float kTimeSinceAction=7.0f;
 -(void)createContainerWithOne:(id)Object
 {
     id<ShapeContainer> container;
-    //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
+
     if([destroyedLabelledGroups count]==0)
     {
         container=[[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil]autorelease];
-//        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
-//        [container.Label setPosition:ccp(cx,cy)];
-//        [renderLayer addChild:container.Label];
     }
     else
     {
@@ -733,6 +728,9 @@ static float kTimeSinceAction=7.0f;
     
     container.AllowDifferentTypes=YES;
     container.BlockType=((id<Configurable>)Object).blockType;
+    
+    container.LineType=@"Breakable";
+    
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
     [container repositionLabel];
@@ -819,8 +817,6 @@ static float kTimeSinceAction=7.0f;
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
         [s runAction:sequence];
         currentPickupObject=nil;
-//        if(!spawnedNewObj)
-//            [cage spawnNewBlock];
     }
 }
 
@@ -837,11 +833,8 @@ static float kTimeSinceAction=7.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                //if(!thisCont.BTXERow)
-                //{
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
                     break;
-                //}
             }
         }
     }
@@ -1534,16 +1527,14 @@ static float kTimeSinceAction=7.0f;
             if([go conformsToProtocol:@protocol(Moveable)])
             {
                 if(go==currentPickupObject)continue;
+                if([((SGDtoolBlock*)go).MyContainer isKindOfClass:[SGDtoolCage class]])continue;
                 
                 float dist=[BLMath DistanceBetween:currentPickupObject.Position and:((id<Moveable>)go).Position];
                 
-                if(nearestObjectDistance==0){
+                if((dist<nearestObjectDistance)||(!foundFirstNearestObject&&dist<gw.Blackboard.MaxObjectDistance+50)){
                     nearestObjectDistance=dist;
                     nearestObject=go;
-                }
-                else if(dist<nearestObjectDistance){
-                    nearestObjectDistance=dist;
-                    nearestObject=go;
+                    foundFirstNearestObject=YES;
                 }
                 
                     
@@ -1743,12 +1734,7 @@ static float kTimeSinceAction=7.0f;
                         diffX+=(60-b.Position.x);
                         goingRight=YES;
                     }
-                
-//                    else if(b.Position.x>lx-60 && !goingRight)
-//                    {
-//                        diffX-= (b.Position.x - (lx-60));
-//                    }
-                
+            
                     if(b.Position.y<100)
                         diffY+=20 + (100-b.Position.y);
                 
@@ -1896,6 +1882,7 @@ static float kTimeSinceAction=7.0f;
     hasMovedCagedBlock=NO;
     gw.Blackboard.playFailedBondOverMax=NO;
     hasPlayedAudioCantBondOverMax=NO;
+    foundFirstNearestObject=NO;
 
 }
 
@@ -2128,22 +2115,6 @@ static float kTimeSinceAction=7.0f;
         
         NSLog(@"solutions found %d, expected %d, total shapes %d", solutionsFound, solutionsExpected, totalShapes);
         
-//        for(id cont in gw.AllGameObjects)
-//        {
-//            if([cont conformsToProtocol:@protocol(ShapeContainer)])
-//            {
-//                id <ShapeContainer> thisCont=cont;
-//                NSString *thisKey=[thisCont.Label string];
-//                if([d objectForKey:thisKey])
-//                {
-//                    
-//                    int thisVal=[[d objectForKey:thisKey] intValue];
-//                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
-//                    if([thisCont.BlocksInShape count]==thisVal)
-//                        solutionsFound++;
-//                }
-//            }
-//        }
         
         if (solutionsFound==solutionsExpected && solutionsFound==totalShapes)
             return YES;

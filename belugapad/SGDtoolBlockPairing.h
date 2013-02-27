@@ -14,10 +14,4 @@
     id<Pairable> ParentGO;
 }
 
--(void)draw:(int)z;
--(void)pairMeWith:(id)thisObject;
--(void)pairPickupObjectToMe:(id)pickupObject;
--(void)unpairMeFrom:(id)thisObject;
--(void)unpairPickupObjectFromMe:(id)pickupObject;
-
 @end

@@ -41,16 +41,6 @@
     
 }
 
--(void)drawProximateLines:(CGPoint)location
-{
-
-}
-
--(void)drawNotProximateLines:(CGPoint)location
-{
-
-}
-
 
 -(void)setup
 {
@@ -115,17 +105,12 @@
 
     
     ParentGO.SeekingPair=YES;
+
     if([BLMath DistanceBetween:ParentGO.Position and:location]<gameWorld.Blackboard.MaxObjectDistance)
-    {
-        //[ParentGO.mySprite setColor:ccc3(0,255,0)];
-        //[self drawProximateLines:location];
         return YES;
-    }
-    else {
-        //[ParentGO.mySprite setColor:ccc3(255,255,255)];
-        //[self drawNotProximateLines:location];
+    else
         return NO;
-    }
+
     ParentGO.SeekingPair=NO;
 }
 

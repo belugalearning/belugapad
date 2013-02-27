@@ -68,7 +68,7 @@
 
 -(void)draw:(int)z
 {
-    [self.BlockPairComponent draw:z];
+
 }
 
 -(void)move
@@ -110,12 +110,12 @@
 
 -(void)pairMeWith:(id)thisObject
 {
-    [self.BlockPairComponent pairMeWith:thisObject];
+    
 }
 
 -(void)unpairMeFrom:(id)thisObject
 {
-    [self.BlockPairComponent unpairMeFrom:thisObject];
+
 }
 
 -(void)dealloc

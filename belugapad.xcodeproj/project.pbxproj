@@ -3072,9 +3072,9 @@
 			productReference = 7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		7F5113BD14A9EE62001AF372 /* Beluga Maths */ = {
+		7F5113BD14A9EE62001AF372 /* Beluga Dev */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "Beluga Maths" */;
+			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "Beluga Dev" */;
 			buildPhases = (
 				7F5113BA14A9EE62001AF372 /* Sources */,
 				7F5113BB14A9EE62001AF372 /* Frameworks */,
@@ -3085,7 +3085,7 @@
 			);
 			dependencies = (
 			);
-			name = "Beluga Maths";
+			name = "Beluga Dev";
 			productName = belugapad;
 			productReference = 7F5113BE14A9EE62001AF372 /* Beluga Maths.app */;
 			productType = "com.apple.product-type.application";
@@ -3110,7 +3110,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7F5113BD14A9EE62001AF372 /* Beluga Maths */,
+				7F5113BD14A9EE62001AF372 /* Beluga Dev */,
 				7F40D89614FFD8BE006A3A55 /* GeneralTests */,
 			);
 		};
@@ -3605,7 +3605,7 @@
 /* Begin PBXTargetDependency section */
 		7F40D90314FFECBE006A3A55 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7F5113BD14A9EE62001AF372 /* Beluga Maths */;
+			target = 7F5113BD14A9EE62001AF372 /* Beluga Dev */;
 			targetProxy = 7F40D90214FFECBE006A3A55 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -3853,7 +3853,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "Beluga Maths" */ = {
+		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "Beluga Dev" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7F51158F14A9EE67001AF372 /* Debug */,

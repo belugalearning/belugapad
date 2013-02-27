@@ -126,7 +126,6 @@
     }
     if(messageType==kDWresetToMountPositionAndDestroy)
     {
-        [self unregisterLogger];
         [self resetSpriteToMountAndDestroy];
     }
     if(messageType==kDWswitchBaseSelection)
@@ -139,17 +138,14 @@
     }
     if(messageType==kDWdestroy)
     {
-        [self unregisterLogger];
         [self destroy];
     }
     if(messageType==kDWfadeAndDestroy)
     {
-        [self unregisterLogger];
         [self fadeAndDestroy];
     }
     if(messageType==kDWdismantle)
     {
-        [self unregisterLogger];
         CCSprite *s=b.mySprite;
         [[s parent] removeChild:s cleanup:YES];
     }
@@ -160,7 +156,6 @@
 -(void)setSprite
 {
     NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
     if(!b.SpriteFilename)
     {
@@ -233,8 +228,6 @@
         x=n.PosX;
         y=n.PosY;
         
-//        gameObject=n.MountedObject;
-        //[n handleMessage:kDWresetPositionEval];
     }
         
     
@@ -294,12 +287,6 @@
         [curSprite runAction:sequence];
 
     }
-}
-
--(void)unregisterLogger
-{
-//    b.logPollId=nil;
-//    NSLog(@"object %d unreg", (int)b);
 }
 
 -(void)destroy
@@ -381,32 +368,6 @@
             
         }
         
-//        // Check whether selected
-//        if(b.Selected)
-//        {
-//            // then whether it's a +/- number
-//            if(b.ObjectValue<0)
-//            {
-//                //selection colour for a negative number
-//                [mySprite setColor:ccc3(255,0,255)];
-//            }
-//            else
-//            {
-//                [mySprite setColor:ccc3(128, 195, 194)];
-//            }
-//        }
-//        else
-//        {
-//            if(b.ObjectValue<0)
-//            {
-//                [mySprite setColor:ccc3(255,0,105)];
-//            }
-//            else
-//            {
-//                [mySprite setColor:ccc3(255,255,255)];
-//        
-//            }
-//        }
     }
 }
 

@@ -217,11 +217,6 @@
     }
     
     if (messageType==kDWmoveSpriteToPosition) {
-        
-        //GJ: these make no sense -- bool is never used
-        //BOOL useAnimation = NO;
-        //if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
         [self setPos];
     }
 

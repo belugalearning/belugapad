@@ -41,7 +41,15 @@
 {
     [database open];
     FMResultSet *rs = [database executeQuery:@"SELECT * FROM Nodes WHERE id=?", nodeId];
-    self = [rs next] ? [self initWithUserId:userId resultSet:rs database:database] : nil;
+    if ([rs next])
+    {
+        self = [self initWithUserId:userId resultSet:rs database:database];
+    }
+    else
+    {
+        self.userId = userId;
+        self.nodeId = nodeId;
+    }
     [database close];
     return self;
 }
@@ -106,24 +114,23 @@
         self.lastCompleted = self.lastPlayed;
         
         //for complete scene
-        us.lastScoreAcheived=self.lastScore;
-        
-        us.lastStarAcheived=0;
+        us.lastScoreAchieved = self.lastScore;
+        us.lastStarAchieved = 0;
     
         if (self.lastScore > SCORE_ARTIFACT_1)
         {
             self.artifact1LastAchieved = self.lastPlayed;
-            us.lastStarAcheived=1;
+            us.lastStarAchieved=1;
             
             if (self.lastScore > SCORE_ARTIFACT_2)
             {
                 self.artifact2LastAchieved = self.lastPlayed;
-                us.lastStarAcheived=2;
+                us.lastStarAchieved=2;
                 
                 if (self.lastScore > SCORE_ARTIFACT_3)
                 {
                     self.artifact3LastAchieved = self.lastPlayed;
-                    us.lastStarAcheived=3;
+                    us.lastStarAchieved=3;
                     
 //                    if (self.lastScore > SCORE_ARTIFACT_4)
 //                    {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Round 23.15 to the nearest whole number.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>dyn rounding numbers</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>80</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>78</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>71</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>83</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>75</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>88</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>86</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>74</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>90</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>put in number wheel</string>
+	</dict>
+</dict>
+</plist>

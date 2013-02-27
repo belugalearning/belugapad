@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is {$y} times {$x}?</string>
+	<key>TOOL_KEY</key>
+	<string>TimesTables</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>65</integer>
+	<key>START_X</key>
+	<integer>1</integer>
+	<key>START_Y</key>
+	<integer>1</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>OPERATOR_MODE</key>
+	<integer>3</integer>
+	<key>SHOW_CALC_BUBBLE</key>
+	<true/>
+	<key>SHOW_X_AXIS</key>
+	<true/>
+	<key>SHOW_Y_AXIS</key>
+	<true/>
+	<key>SWITCH_XY_ANSWER</key>
+	<true/>
+	<key>SELECTION_MODE</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>VALUE</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>5</string>
+				<string>10</string>
+			</array>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@times</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>times</string>
+				<string>multiplied by</string>
+				<string>lots of</string>
+				<string>groups of</string>
+			</array>
+		</dict>
+	</dict>
+	<key>REVEAL_ROWS</key>
+	<array>
+		<string>{$y}</string>
+	</array>
+	<key>REVEAL_COLS</key>
+	<array>
+		<string>{$x}</string>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<dict>
+			<key>POS_X</key>
+			<string>{$y}</string>
+			<key>POS_Y</key>
+			<string>{$x}</string>
+		</dict>
+	</array>
+	<key>TIMER</key>
+	<dict>
+		<key>TIMER_DURATION</key>
+		<integer>0</integer>
+		<key>TIMER_ACTIONS</key>
+		<dict>
+			<key>REVEAL_ROWS</key>
+			<array/>
+			<key>REVEAL_COLS</key>
+			<array/>
+			<key>REVEAL_TILES</key>
+			<array/>
+			<key>SHOW_X_AXIS</key>
+			<false/>
+			<key>SHOW_Y_AXIS</key>
+			<false/>
+			<key>SHOW_CALC_BUBBLE</key>
+			<string></string>
+		</dict>
+	</dict>
+</dict>
+</plist>

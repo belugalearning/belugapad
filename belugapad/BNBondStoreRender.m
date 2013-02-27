@@ -92,7 +92,6 @@
     
     for(int i=0;i<pogo.Length;i++) {
         NSString *spriteFileName=@"/images/partition/store.png";
-        //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
         
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];

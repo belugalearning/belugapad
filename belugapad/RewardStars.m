@@ -163,9 +163,9 @@
     [toolBg setPosition:ccp(cx,cy)];
     [self addChild:toolBg];
     
-    stars=usersService.lastStarAcheived;
+    stars=usersService.lastStarAchieved;
     //stars=3;
-    scoreAchieved=usersService.lastScoreAcheived;
+    scoreAchieved=usersService.lastScoreAchieved;
     //scoreAchieved=223523;
     
     scoreCounter=0;
@@ -298,6 +298,9 @@
 
 -(void)dealloc
 {
+//    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+//    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+    
     [super dealloc];
 }
 

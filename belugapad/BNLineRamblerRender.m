@@ -16,7 +16,6 @@ static float kIndicatorYOffset=0.0f;
 
 //static float kLabelOffset=-170.0f;
 static float kLabelOffset=0.0f;
-static NSString *kLabelFont=@"visgrad1.fnt";
 
 @implementation BNLineRamblerRender
 
@@ -108,6 +107,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         [gameWorld.Blackboard.ComponentRenderLayer addChild:numback z:4];
     }
     
+
 //    for (int i=0; i<baseSegs; i++) {
 //        //currently unused
 //        CCSprite *jump=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/jump_section.png")];
@@ -120,6 +120,39 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];
     [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer z:5];
+    
+    
+    bmlabels24=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango24.fnt")];
+        [bmlabels24 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
+    bmlabels15=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango15.fnt")];
+        [bmlabels15 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
+    bmlabels12=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango12.fnt")];
+        [bmlabels12 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
+    bmlabels9=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"0123456789.," fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango9.fnt")];
+        [bmlabels9 addObject:f];
+        [labelLayer addChild:f z:99];
+    }
     
     if(ramblerGameObject.MarkerValuePositions)
     {
@@ -151,8 +184,14 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int assIndicatorIndex=0;
     int assNumberBackIndex=0;
     int jumpSpriteIndex=0;
+    int bmlabelindex24=0;
+    int bmlabelindex15=0;
+    int bmlabelindex12=0;
+    int bmlabelindex9=0;
     
-    [labelLayer removeAllChildrenWithCleanup:YES];
+    //[labelLayer removeAllChildrenWithCleanup:YES];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [assStartTerminator setVisible:NO];
     [assEndTerminator setVisible:NO];
@@ -283,7 +322,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
             if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
             {
-                NSNumber *numRender=[NSNumber numberWithInt:iValue];        
+//                NSNumber *numRender=[NSNumber numberWithInt:iValue];
+                NSNumber *numRender=[[NSNumber alloc] initWithInt:iValue];
                 
                 float thisNumber=[numRender intValue];
                 BOOL renderNumber=NO;
@@ -313,27 +353,46 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     
                     int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    NSString *writeText=[NSString stringWithFormat:@"%d", displayNum];
+                    NSString *writeText=[[NSString alloc] initWithFormat:@"%d", displayNum];
                     
                     if(ramblerGameObject.DisplayNumberDP>0 && ramblerGameObject.DisplayNumberMultiplier!=1)
                     {
                         float multDisplayNum=displayNum * ramblerGameObject.DisplayNumberMultiplier;
                         
-                        NSString *fmt=[NSString stringWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
+                        NSString *fmt=[[NSString alloc] initWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
                         writeText=[NSString stringWithFormat:fmt, multDisplayNum];
+                        [fmt release];
                     }
                     
-                    int fontSize=24;
+                    CCLabelBMFont *lex=nil;
                     
-                    if(writeText.length==3) fontSize=15;
-                    if(writeText.length==4) fontSize=12;
-                    if(writeText.length>4) fontSize=9;
+                    if(writeText.length==3){
+                        lex=[bmlabels15 objectAtIndex:bmlabelindex15];
+                        bmlabelindex15++;
+                    }
+                    else if(writeText.length==4){
+                        lex=[bmlabels12 objectAtIndex:bmlabelindex12];
+                        bmlabelindex12++;
+                    }
+                    else if(writeText.length>4){
+                        lex=[bmlabels9 objectAtIndex:bmlabelindex9];
+                        bmlabelindex9++;
+                    }
+                    else{
+                        lex=[bmlabels24 objectAtIndex:bmlabelindex24];
+                        bmlabelindex24++;
+                    }
+
+                    lex.string=writeText;
+                    lex.visible=YES;
+            
+                    [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                     
-                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
-                    [l setColor:ccBLACK];
-                    [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                    [labelLayer addChild:l z:99];
+                    [writeText release];
                 }
+                
+                //tidy up number rendering
+                [numRender release];
                 
             }
             
@@ -375,8 +434,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 //            
 //            
 //            //-------------------------------------------------------------------------------------------------------------
-            
 
+            
         }
     }
     
@@ -398,6 +457,23 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     {
         [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
     }
+    for(int i=bmlabelindex24; i<[bmlabels24 count]; i++)
+    {
+        [[bmlabels24 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmlabelindex15; i<[bmlabels15 count]; i++)
+    {
+        [[bmlabels15 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmlabelindex12; i<[bmlabels12 count]; i++)
+    {
+        [[bmlabels12 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmlabelindex9; i<[bmlabels9 count]; i++)
+    {
+        [[bmlabels9 objectAtIndex:i] setVisible:NO];
+    }
+    
     
     
 //    for(int i=0; i<[assNumberBackgrounds count]; i++)
@@ -418,6 +494,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     //intended for in-loop draw
     if(ramblerGameObject.UserJumps)
     {
+        int fontSize=30;
         for(NSValue *jumpVal in ramblerGameObject.UserJumps)
         {
             CGPoint jump=[jumpVal CGPointValue];
@@ -426,11 +503,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             
             CGPoint origin=ccp(jumpStart, mid.y + yOffset);
                 if(ramblerGameObject.showJumpLabels){
-                NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
-                CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
-                [l setPosition:ccp(jumpStart+(jumpLength/2), mid.y+90)];
-                [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
-                [jumpLabels addObject:l];
+                    NSString *lString=[NSString stringWithFormat:@"%g", (jumpLength/ramblerGameObject.DefaultSegmentSize)*ramblerGameObject.CurrentSegmentValue];
+                        CCLabelBMFont *l=[[CCLabelBMFont alloc]initWithString:lString fntFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/fonts/chango%d.fnt"),fontSize]];
+                        //                CCLabelTTF *l=[CCLabelTTF labelWithString:lString fontName:CHANGO fontSize:30.0f];
+                    [l setPosition:ccp(jumpStart+(jumpLength/2), mid.y+90)];
+                    [l setColor:ccWHITE];
+                    [gameWorld.Blackboard.ComponentRenderLayer addChild:l];
+                    [jumpLabels addObject:l];
             }
             
             ccBezierConfig bc;

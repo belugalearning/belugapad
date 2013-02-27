@@ -19,8 +19,6 @@
 -(void)animateToPosition;
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)selectMe;
--(void)drawProximateLines:(CGPoint)location;
--(void)drawNotProximateLines:(CGPoint)location;
 -(void)destroyThisObject;
 
 @end

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ROWS_PER_COL</key>
+	<integer>2</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>NUMBER_COLS</key>
+	<integer>1</integer>
+	<key>ALLOW_CONDENSING</key>
+	<false/>
+	<key>SHOW_VALUE</key>
+	<true/>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>9</integer>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>ALLOW_MULCHING</key>
+	<false/>
+	<key>IS_NEGATIVE_PROBLEM</key>
+	<true/>
+	<key>CAGE_DEFAULT_VALUE</key>
+	<integer>-1</integer>
+	<key>SHOW_COUNT_BLOCK</key>
+	<true/>
+	<key>SOLUTION</key>
+	<dict>
+		<key>SOLUTION_TYPE</key>
+		<string>TOTAL_COUNT</string>
+		<key>INCOMPLETE_DISPLAY_TEXT</key>
+		<string>solution incomplete, try again.</string>
+		<key>SOLUTION_VALUE</key>
+		<integer>7</integer>
+	</dict>
+	<key>DEFAULT_COL</key>
+	<integer>1</integer>
+	<key>EXPLODE_MODE</key>
+	<true/>
+	<key>ROPES_PER_COL</key>
+	<integer>5</integer>
+	<key>FIRST_COL_VALUE</key>
+	<integer>1</integer>
+	<key>SHOW_CAGE</key>
+	<true/>
+	<key>COLUMN_NEG_CAGES</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>SHOW_COLUMN_USER_COUNT</key>
+	<true/>
+	<key>COL_BASE_VALUE</key>
+	<string>10</string>
+	<key>SHOW_BASE_SELECTION</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>This is 9. Make 7 using negative blocks.</string>
+	<key>DEFAULT_SCALE</key>
+	<integer>1</integer>
+	<key>SHOW_COLUMN_TOTAL_COUNT</key>
+	<false/>
+	<key>TOOL_KEY</key>
+	<string>PlaceValue</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>SHOW_COUNT</key>
+	<false/>
+</dict>
+</plist>

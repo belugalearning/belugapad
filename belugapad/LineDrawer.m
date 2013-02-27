@@ -393,7 +393,9 @@ typedef struct _LineVertex {
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-  const CGPoint point = [[CCDirector sharedDirector] convertToGL:[panGestureRecognizer locationInView:panGestureRecognizer.view]];
+    CGPoint point = [[CCDirector sharedDirector] convertToGL:[panGestureRecognizer locationInView:panGestureRecognizer.view]];
+    
+    point=ccp(point.x-50,point.y);
 
   if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
     [points removeAllObjects];

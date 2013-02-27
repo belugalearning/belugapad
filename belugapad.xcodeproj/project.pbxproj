@@ -81,6 +81,9 @@
 		5529F4D11529EA940085492E /* BNBondStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BNBondMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BNBondMount.m */; };
 		5529F4D7152A05EB0085492E /* BNBondMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BNBondMountable.m */; };
+		552DF2E216D4EBA2007B1193 /* bubble_trail.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E016D4EBA2007B1193 /* bubble_trail.plist */; };
+		552DF2E316D4EBA2007B1193 /* bubbles.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E116D4EBA2007B1193 /* bubbles.plist */; };
+		552DF2E516D4EBBB007B1193 /* click_pin.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E416D4EBBB007B1193 /* click_pin.plist */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
 		553E80B8150FC57100263473 /* BNLineSelectorRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80B7150FC57100263473 /* BNLineSelectorRender.m */; };
 		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
@@ -103,6 +106,7 @@
 		559846661627095B00554E8A /* MQDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 559846651627095B00554E8A /* MQDisplay.m */; };
 		5598466A162732CA00554E8A /* RatioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55984669162732CA00554E8A /* RatioTool.m */; };
 		559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A33D615DA382C00CA97E2 /* CountingTimer.m */; };
+		559C9DE816D79D71004893C0 /* bubbles_end.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559C9DE716D79D71004893C0 /* bubbles_end.plist */; };
 		55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A4156517FC00FF1886 /* TimesTables.m */; };
 		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
 		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
@@ -591,6 +595,9 @@
 		5529F4D3152A04310085492E /* BNBondMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMount.m; sourceTree = "<group>"; };
 		5529F4D5152A05EB0085492E /* BNBondMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMountable.h; sourceTree = "<group>"; };
 		5529F4D6152A05EB0085492E /* BNBondMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMountable.m; sourceTree = "<group>"; };
+		552DF2E016D4EBA2007B1193 /* bubble_trail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bubble_trail.plist; sourceTree = "<group>"; };
+		552DF2E116D4EBA2007B1193 /* bubbles.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bubbles.plist; sourceTree = "<group>"; };
+		552DF2E416D4EBBB007B1193 /* click_pin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = click_pin.plist; sourceTree = "<group>"; };
 		5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValueConsts.h; sourceTree = "<group>"; };
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
 		553E80B6150FC57100263473 /* BNLineSelectorRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineSelectorRender.h; sourceTree = "<group>"; };
@@ -633,6 +640,7 @@
 		55984669162732CA00554E8A /* RatioTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatioTool.m; sourceTree = "<group>"; };
 		559A33D515DA382C00CA97E2 /* CountingTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountingTimer.h; sourceTree = "<group>"; };
 		559A33D615DA382C00CA97E2 /* CountingTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountingTimer.m; sourceTree = "<group>"; };
+		559C9DE716D79D71004893C0 /* bubbles_end.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bubbles_end.plist; sourceTree = "<group>"; };
 		55AFD6A3156517FC00FF1886 /* TimesTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTables.h; sourceTree = "<group>"; };
 		55AFD6A4156517FC00FF1886 /* TimesTables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTables.m; sourceTree = "<group>"; };
 		55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWTTTileGameObject.m; sourceTree = "<group>"; };
@@ -2385,6 +2393,10 @@
 		7F813D5914CCC38100C1E997 /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				559C9DE716D79D71004893C0 /* bubbles_end.plist */,
+				552DF2E416D4EBBB007B1193 /* click_pin.plist */,
+				552DF2E016D4EBA2007B1193 /* bubble_trail.plist */,
+				552DF2E116D4EBA2007B1193 /* bubbles.plist */,
 				33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */,
 				557C1FBD16A20FF5000ED30A /* star_explosion2.plist */,
 				7FDBA56214EC4271004D1CC9 /* bm11.plist */,
@@ -3159,6 +3171,10 @@
 				7FA2A4E616A81B4500B50D07 /* Icon-Small.png in Resources */,
 				7FA2A4E716A81B4500B50D07 /* Icon-Small-50.png in Resources */,
 				7FA2A4E816A81B4500B50D07 /* Icon-Small@2x.png in Resources */,
+				552DF2E216D4EBA2007B1193 /* bubble_trail.plist in Resources */,
+				552DF2E316D4EBA2007B1193 /* bubbles.plist in Resources */,
+				552DF2E516D4EBBB007B1193 /* click_pin.plist in Resources */,
+				559C9DE816D79D71004893C0 /* bubbles_end.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3762,7 +3778,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Beluga Learning Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beluga Learning Ltd";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3807,8 +3823,8 @@
 					"\"$(SRCROOT)/libBabTTS.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "AE765118-FA97-485D-A1E1-22A33D8AAEC9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "1702C801-0D07-44DA-9A3D-4A7E2130E5F6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1702C801-0D07-44DA-9A3D-4A7E2130E5F6";
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";
 				VALIDATE_PRODUCT = YES;

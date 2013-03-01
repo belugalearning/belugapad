@@ -449,7 +449,6 @@
             // by looping over the childoperator array
             for(id<Operator,Rendered>oper in [opBubble ChildOperators])
             {
-                NSLog(@"checking for a hit at %@ in %@", NSStringFromCGPoint(touchStartPos), NSStringFromCGRect(oper.MySprite.boundingBox));
                 // then if we have a valid hit - check the string and run whichever operation's appropriate
                 if(CGRectContainsPoint(oper.MySprite.boundingBox, touchStartPos))
                 {

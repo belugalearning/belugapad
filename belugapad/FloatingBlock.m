@@ -417,8 +417,6 @@
     // but if we have an operator bubble, it's still valid and we have a pickupobject as such
     else if(showingOperatorBubble && isValid && [pickupObject isKindOfClass:[SGFBlockOpBubble class]])
     {
-        [(SGFBlockOpBubble*)pickupObject fadeAndDestroy];
-
         // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {
@@ -442,6 +440,7 @@
         else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)
         {
             [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_SHOW_MORE_OPERATORS withAdditionalData:nil];
+            [(SGFBlockOpBubble*)pickupObject fadeAndDestroy];
             [opBubble showOtherOperators];
         }
         // but if there's more and it's already showing the childoperators, then check for a touch on one of them
@@ -450,6 +449,7 @@
             // by looping over the childoperator array
             for(id<Operator,Rendered>oper in [opBubble ChildOperators])
             {
+                NSLog(@"checking for a hit at %@ in %@", NSStringFromCGPoint(touchStartPos), NSStringFromCGRect(oper.MySprite.boundingBox));
                 // then if we have a valid hit - check the string and run whichever operation's appropriate
                 if(CGRectContainsPoint(oper.MySprite.boundingBox, touchStartPos))
                 {

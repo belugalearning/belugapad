@@ -417,8 +417,6 @@
     // but if we have an operator bubble, it's still valid and we have a pickupobject as such
     else if(showingOperatorBubble && isValid && [pickupObject isKindOfClass:[SGFBlockOpBubble class]])
     {
-        [(SGFBlockOpBubble*)pickupObject fadeAndDestroy];
-
         // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {
@@ -442,6 +440,7 @@
         else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)
         {
             [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_SHOW_MORE_OPERATORS withAdditionalData:nil];
+            [(SGFBlockOpBubble*)pickupObject fadeAndDestroy];
             [opBubble showOtherOperators];
         }
         // but if there's more and it's already showing the childoperators, then check for a touch on one of them

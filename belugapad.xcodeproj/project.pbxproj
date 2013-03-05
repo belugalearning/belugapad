@@ -100,6 +100,7 @@
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		557C1FBE16A20FF5000ED30A /* star_explosion2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 557C1FBD16A20FF5000ED30A /* star_explosion2.plist */; };
+		5580C35616E61EB5000717FF /* TimesTableMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5580C35516E61EB5000717FF /* TimesTableMenu.m */; };
 		558ADA3616611B250000C448 /* tts-objects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA3516611B250000C448 /* tts-objects.plist */; };
 		558D79E7168893F800048B01 /* LineDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79E6168893F800048B01 /* LineDrawer.m */; };
 		558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */; };
@@ -629,6 +630,8 @@
 		5571BADF14E406630053A62B /* ToolConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolConsts.h; sourceTree = "<group>"; };
 		5571BAE014E406630053A62B /* ToolConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolConsts.m; sourceTree = "<group>"; usesTabs = 0; };
 		557C1FBD16A20FF5000ED30A /* star_explosion2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = star_explosion2.plist; sourceTree = "<group>"; };
+		5580C35416E61EB5000717FF /* TimesTableMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTableMenu.h; sourceTree = "<group>"; };
+		5580C35516E61EB5000717FF /* TimesTableMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTableMenu.m; sourceTree = "<group>"; };
 		558ADA3516611B250000C448 /* tts-objects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-objects.plist"; sourceTree = "<group>"; };
 		558D79E5168893F800048B01 /* LineDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineDrawer.h; sourceTree = "<group>"; };
 		558D79E6168893F800048B01 /* LineDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDrawer.m; sourceTree = "<group>"; };
@@ -825,7 +828,7 @@
 		7F50C4AC15DBCD44009345B5 /* ExprBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprBuilder.m; sourceTree = "<group>"; };
 		7F50C4AF15DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeTextBackgroundRender.m; sourceTree = "<group>"; };
 		7F50C4B015DBCDA3009345B5 /* SGBtxeTextBackgroundRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeTextBackgroundRender.h; sourceTree = "<group>"; };
-		7F5113BE14A9EE62001AF372 /* Beluga Maths.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beluga Maths.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5113BE14A9EE62001AF372 /* Beluga Maths.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Beluga Maths.app"; path = "Beluga Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7F5113C614A9EE62001AF372 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -1867,6 +1870,8 @@
 		7F2317CE1572B29400E2C941 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
+				5580C35416E61EB5000717FF /* TimesTableMenu.h */,
+				5580C35516E61EB5000717FF /* TimesTableMenu.m */,
 				7F5BD840154AB6A70092740B /* JMap.h */,
 				7F5BD841154AB6A70092740B /* JMap.m */,
 				5509D85316A08A5F0076A29F /* RewardStars.h */,
@@ -3597,6 +3602,7 @@
 				558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */,
 				5509D85516A08A5F0076A29F /* RewardStars.m in Sources */,
 				7FBA3A8016A7002700E4908F /* CODialog.m in Sources */,
+				5580C35616E61EB5000717FF /* TimesTableMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

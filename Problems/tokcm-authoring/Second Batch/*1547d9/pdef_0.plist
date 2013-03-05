@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Shade 1/3 of this rectangle.</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<integer>3</integer>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>START_X</key>
+			<string>2</string>
+			<key>END_X</key>
+			<string>8</string>
+			<key>START_Y</key>
+			<string>4</string>
+			<key>END_Y</key>
+			<string>5</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -123,20 +123,69 @@
     [original setZOrder:100];
     
     CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:ccp(cx,cy)];
-    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
-    [original runAction:ea];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:1.0f];
+    
+    CCSequence *sq=[CCSequence actions:mtc, st, nil];
+    CCEaseInOut *ea=[CCEaseInOut actionWithAction:sq rate:2.0f];
+    
+    NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/button_big_%d.png", thisNumber+1];
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+    [s setPosition:original.position];
+    [s setScale:0.38f];
+    [renderLayer addChild:s];
+    
+    [s runAction:ea];
+    //TODO: actually remove this sprite
+    [original runAction:[CCFadeOut actionWithDuration:0.5f]];
+    
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
+}
+
+-(void)returnCurrentBigNumber{
+    CCSprite *s=currentSelection;
+    CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
+    
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:thisPos];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:1.0f];
+    
+    CCEaseInOut *eiom=[CCEaseInOut actionWithAction:mtc rate:0.2f];
+    CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+    
+    [s runAction:eiom];
+    [s runAction:st];
+    
+    CCDelayTime *delay=[CCDelayTime actionWithDuration:1.0f];
+    CCFadeIn *fadein=[CCFadeIn actionWithDuration:0.5f];
+    CCSequence *sq=[CCSequence actions:delay, fadein, nil];
+    
+    
+    CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
+    
+    [o runAction:sq];
+    
+    currentSelection=nil;
+    currentSelectionIndex=0;
+    
 }
 
 -(void)checkForHitAt:(CGPoint)location
 {
+    BOOL gotHit=false;
+    
     for(int i=0;i<[sceneButtons count];i++)
     {
         CCSprite *s=[sceneButtons objectAtIndex:i];
-        if(CGRectContainsPoint(s.boundingBox, location))
+        if(CGRectContainsPoint(s.boundingBox, location) && currentSelection==nil && currentSelectionIndex!=i)
         {
+            gotHit=YES;
             [self createBigNumberOf:i];
             break;
         }
+    }
+    
+    if(!gotHit){
+        [self returnCurrentBigNumber];
     }
 }
 

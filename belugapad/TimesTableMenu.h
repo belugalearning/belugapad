@@ -24,6 +24,9 @@
     NSMutableArray *sceneButtonPositions;
     int lastZIndex;
     
+    CCSprite *currentSelection;
+    int currentSelectionIndex;
+    
 
 }
 +(CCScene *) scene;

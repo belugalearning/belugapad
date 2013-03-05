@@ -21,6 +21,8 @@
     NSString *gameState;
     
     NSMutableArray *sceneButtons;
+    NSMutableArray *sceneButtonPositions;
+    int lastZIndex;
     
 
 }

@@ -39,8 +39,7 @@
         cx=lx / 2.0f;
         cy=ly / 2.0f;
         
-
-        [[[CCDirector sharedDirector]touchDispatcher]addTargetedDelegate:self priority:0 swallowsTouches:NO];
+        self.isTouchEnabled=YES;
         
         renderLayer = [[[CCLayer alloc]init]autorelease];
         [self addChild:renderLayer];
@@ -56,6 +55,7 @@
 {
     gameState=@"SHOW_MAIN_MENU";
     sceneButtons=[[NSMutableArray alloc]init];
+    sceneButtonPositions=[[NSMutableArray alloc]init];
     
     float xStartPos=179.0f;
     float yStartPos=593.0f;
@@ -86,6 +86,7 @@
         }
         
         [sceneButtons addObject:s];
+        [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
     }
     
     // the 2 bottom buttons
@@ -102,14 +103,13 @@
         else if(i==1)
             name=@"challenging";
         
-        NSLog(@"name %@, currentcol %d posx %f, posy %f", name, i, thisXPos, thisYPos);
-        
         NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/button_small_%@.png", name];
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(thisXPos,thisYPos)];
         [renderLayer addChild:s];
         
-        [sceneButtons addObject:s];        
+        [sceneButtons addObject:s];
+        [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
     }
 }
 
@@ -118,8 +118,12 @@
     gameState=@"SHOW_TABLES";
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    lastZIndex=original.zOrder;
+    
+    [original setZOrder:100];
+    
     CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:ccp(cx,cy)];
-    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc];
+    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
     [original runAction:ea];
 }
 

@@ -1115,15 +1115,14 @@
         [toolHost doWinning];
     }else{
         [self expandDescAndCardRows];
-        [toolHost resetProblem];
-        [toolHost doIncomplete];
+        [self resetProblem];
     }
 }
 
 #pragma mark - problem state
 -(void)resetProblem
 {
-    [toolHost showProblemIncompleteMessage];
+    [toolHost doIncomplete];
     [toolHost resetProblem];
 }
 

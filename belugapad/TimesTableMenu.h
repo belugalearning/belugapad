@@ -27,6 +27,8 @@
     CCSprite *currentSelection;
     int currentSelectionIndex;
     
+    NSMutableArray *currentSelectionButtons;
+    
 
 }
 +(CCScene *) scene;

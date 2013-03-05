@@ -55,7 +55,13 @@
 {
     gameState=@"SHOW_MAIN_MENU";
     sceneButtons=[[NSMutableArray alloc]init];
+    currentSelectionButtons=[[NSMutableArray alloc]init];
     sceneButtonPositions=[[NSMutableArray alloc]init];
+    currentSelectionIndex=-1;
+    
+    CCSprite *background=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/menu_bg.png")];
+    [background setPosition:ccp(cx,cy)];
+    [renderLayer addChild:background];
     
     float xStartPos=179.0f;
     float yStartPos=593.0f;
@@ -118,54 +124,90 @@
     gameState=@"SHOW_TABLES";
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
-    lastZIndex=original.zOrder;
-    
-    [original setZOrder:100];
     
     CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:ccp(cx,cy)];
     CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:1.0f];
     
-    CCSequence *sq=[CCSequence actions:mtc, st, nil];
-    CCEaseInOut *ea=[CCEaseInOut actionWithAction:sq rate:2.0f];
+    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
+    CCCallBlock *numbers=[CCCallBlock actionWithBlock:^{[self setupOutsideButtons];}];
+    CCSequence *sq=[CCSequence actions:ea, numbers, nil];
     
-    NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/button_big_%d.png", thisNumber+1];
+    NSString *f=nil;
+    
+    if(thisNumber<12)
+        f=[NSString stringWithFormat:@"/images/timestables/menu/button_big_%d.png", thisNumber+1];
+    else if(thisNumber==12)
+        f=@"/images/timestables/menu/button_big_random.png";
+    else if(thisNumber==13)
+        f=@"/images/timestables/menu/button_big_challenging.png";
+    
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
     [s setPosition:original.position];
     [s setScale:0.38f];
-    [renderLayer addChild:s];
+    [renderLayer addChild:s z:20];
     
-    [s runAction:ea];
-    //TODO: actually remove this sprite
-    [original runAction:[CCFadeOut actionWithDuration:0.5f]];
+    [s runAction:sq];
+    [s runAction:st];
+    [original runAction:[CCFadeOut actionWithDuration:0.1f]];
     
     currentSelection=s;
     currentSelectionIndex=thisNumber;
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        [s runAction:[CCFadeTo actionWithDuration:1.0f opacity:50]];
+    }
 }
 
 -(void)returnCurrentBigNumber{
+    if(currentSelection==nil)return;
+    
+    float remTime=0.2f;
+    
+    for(int i=0;i<[currentSelectionButtons count];i++)
+    {
+        CCSprite *s=[currentSelectionButtons objectAtIndex:i];
+        CCMoveTo *mtc=[CCMoveTo actionWithDuration:remTime position:ccp(cx,cy)];
+        CCEaseBounceOut *bo=[CCEaseBounceOut actionWithAction:mtc];
+        CCCallBlock *remMe=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+        CCSequence *thisSQ=[CCSequence actions:bo, remMe, nil];
+        [s runAction:thisSQ];
+        remTime+=0.1;
+    }
+    
+    [currentSelectionButtons removeAllObjects];
+    
     CCSprite *s=currentSelection;
-    CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
-    
-    CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:thisPos];
-    CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:1.0f];
-    
-    CCEaseInOut *eiom=[CCEaseInOut actionWithAction:mtc rate:0.2f];
-    CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-    
-    [s runAction:eiom];
-    [s runAction:st];
-    
-    CCDelayTime *delay=[CCDelayTime actionWithDuration:1.0f];
-    CCFadeIn *fadein=[CCFadeIn actionWithDuration:0.5f];
-    CCSequence *sq=[CCSequence actions:delay, fadein, nil];
-    
-    
     CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
     
-    [o runAction:sq];
+    CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
+
+    CCDelayTime *dt=[CCDelayTime actionWithDuration:1.4f];
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:thisPos];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:0.38f];
+    
+    CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+    CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+    
+    CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, nil];
+    
+    [s runAction:sortbiggie];
+    [s runAction:st];
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        [s runAction:[CCFadeTo actionWithDuration:1.0f opacity:255]];
+    }
     
     currentSelection=nil;
-    currentSelectionIndex=0;
+    currentSelectionIndex=-1;
+    gameState=@"SHOW_MAIN_MENU";
     
 }
 
@@ -186,6 +228,57 @@
     
     if(!gotHit){
         [self returnCurrentBigNumber];
+    }
+}
+
+-(NSArray*)positionsInCircleWith:(int)points and:(double)radius and:(CGPoint)centre
+{
+    NSMutableArray *pointPos=[[NSMutableArray alloc]init];
+    
+    double slice = 2 * M_PI / points;
+    for (int i = 0; i < points; i++)
+    {
+        double angle = slice * i;
+        int newX = (int)(centre.x + radius * cos(angle));
+        int newY = (int)(centre.y + radius * sin(angle));
+        CGPoint p = ccp(newX, newY);
+        [pointPos addObject:[NSValue valueWithCGPoint:p]];
+    }
+    
+    return (NSArray*)pointPos;
+}
+
+-(void)setupOutsideButtons
+{
+    NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
+    int currentPoint=3;
+    float time=0.5f;
+    
+    for(int i=0;i<12;i++)
+    {
+        NSString *type=@"bronze";
+        NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
+        CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+        [s setPosition:ccp(cx,cy)];
+        [renderLayer addChild:s z:18];
+        
+        [currentSelectionButtons addObject:s];
+        
+        CGPoint endPoint=[[myPoints objectAtIndex:currentPoint]CGPointValue];
+        
+        CCMoveTo *mt=[CCMoveTo actionWithDuration:time position:endPoint];
+        CCEaseBounceOut *bi=[CCEaseBounceOut actionWithAction:mt];
+        
+        [s runAction:bi];
+        
+        time+=0.2f;
+        
+        currentPoint--;
+        
+        if(currentPoint<0)
+            currentPoint=11;
+        
+        NSLog(@"world position of sprite: %@", NSStringFromCGPoint([self convertToWorldSpace:s.position]));
     }
 }
 

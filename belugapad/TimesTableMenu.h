@@ -18,6 +18,10 @@
     
     CCLayer *renderLayer;
     
+    NSString *gameState;
+    
+    NSMutableArray *sceneButtons;
+    
 
 }
 +(CCScene *) scene;

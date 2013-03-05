@@ -39,9 +39,12 @@
         cx=lx / 2.0f;
         cy=ly / 2.0f;
         
+
+        [[[CCDirector sharedDirector]touchDispatcher]addTargetedDelegate:self priority:0 swallowsTouches:NO];
+        
         renderLayer = [[[CCLayer alloc]init]autorelease];
         [self addChild:renderLayer];
-        
+    
         [self populateMenu];
         
 	}
@@ -50,14 +53,15 @@
 
 
 -(void)populateMenu
-{//220,636 (110,318) -- 546, 495
-    //216,546 (108,273)
+{
+    gameState=@"SHOW_MAIN_MENU";
+    sceneButtons=[[NSMutableArray alloc]init];
+    
     float xStartPos=179.0f;
     float yStartPos=593.0f;
     float xSpacing=208.0f;
     float ySpacing=165.0f;
     int colPerRow=4;
-//    int rows=3;
     int currentCol=0;
     int currentRow=0;
     
@@ -80,6 +84,8 @@
             currentRow++;
             currentCol=0;
         }
+        
+        [sceneButtons addObject:s];
     }
     
     // the 2 bottom buttons
@@ -102,17 +108,51 @@
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(thisXPos,thisYPos)];
         [renderLayer addChild:s];
+        
+        [sceneButtons addObject:s];        
     }
+}
+
+-(void)createBigNumberOf:(int)thisNumber
+{
+    gameState=@"SHOW_TABLES";
+    
+    CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:ccp(cx,cy)];
+    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc];
+    [original runAction:ea];
+}
+
+-(void)checkForHitAt:(CGPoint)location
+{
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        if(CGRectContainsPoint(s.boundingBox, location))
+        {
+            [self createBigNumberOf:i];
+            break;
+        }
+    }
+}
+
+-(void)startPipelineFor:(int)thisNumber
+{
+    
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -121,8 +161,14 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    [self checkForHitAt:location];
+    
     
     
 }
-
+-(void)dealloc
+{
+    [sceneButtons release];
+    [super dealloc];
+}
 @end

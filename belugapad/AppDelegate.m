@@ -18,7 +18,7 @@
 #import "mach/mach.h"
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
-
+#import "TimesTableMenu.h"
 #import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
@@ -333,6 +333,9 @@ void uncaughtExceptionHandler(NSException *exception) {
         
         currentScene=[JMap scene];
     }
+    
+    currentScene=[TimesTableMenu scene];
+    
     [director_ pushScene:currentScene];
 }
 

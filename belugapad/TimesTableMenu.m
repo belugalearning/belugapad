@@ -9,6 +9,15 @@
 #import "TimesTableMenu.h"
 #import "global.h"
 
+const float moveToCentreTime=0.2f;
+const float moveBackToPositionTime=0.2f;
+const float backgroundFadeInTime=0.4f;
+const float backgroundFadeOutTime=0.3f;
+const float outerButtonPopOutTime=0.5f;
+const float outerButtonPopOutDelay=0.1f;
+const float outerButtonPopInTime=0.02f;
+const float outerButtonPopInDelay=0.05f;
+
 @implementation TimesTableMenu
 +(CCScene *) scene
 {
@@ -125,8 +134,8 @@
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
     
-    CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:ccp(cx,cy)];
-    CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:1.0f];
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveToCentreTime position:ccp(cx,cy)];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:moveToCentreTime scale:1.0f];
     
     CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
     CCCallBlock *numbers=[CCCallBlock actionWithBlock:^{[self setupOutsideButtons];}];
@@ -158,14 +167,14 @@
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
-        [s runAction:[CCFadeTo actionWithDuration:1.0f opacity:50]];
+        [s runAction:[CCFadeTo actionWithDuration:backgroundFadeOutTime opacity:50]];
     }
 }
 
 -(void)returnCurrentBigNumber{
     if(currentSelection==nil)return;
     
-    float remTime=0.2f;
+    float remTime=outerButtonPopInTime;
     
     for(int i=0;i<[currentSelectionButtons count];i++)
     {
@@ -175,7 +184,7 @@
         CCCallBlock *remMe=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
         CCSequence *thisSQ=[CCSequence actions:bo, remMe, nil];
         [s runAction:thisSQ];
-        remTime+=0.1;
+        remTime+=outerButtonPopInDelay;
     }
     
     [currentSelectionButtons removeAllObjects];
@@ -185,24 +194,26 @@
     
     CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
 
-    CCDelayTime *dt=[CCDelayTime actionWithDuration:1.4f];
-    CCMoveTo *mtc=[CCMoveTo actionWithDuration:1.00f position:thisPos];
-    CCScaleTo *st=[CCScaleTo actionWithDuration:1.00f scale:0.38f];
+    CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
+    CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
     
     CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
     CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
     
     CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, nil];
+    CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
     
     [s runAction:sortbiggie];
-    [s runAction:st];
+    [s runAction:sortbiggiescale];
     
     for(int i=0;i<[sceneButtons count];i++)
     {
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
-        [s runAction:[CCFadeTo actionWithDuration:1.0f opacity:255]];
+        [s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
     }
     
     currentSelection=nil;
@@ -220,6 +231,7 @@
         CCSprite *s=[sceneButtons objectAtIndex:i];
         if(CGRectContainsPoint(s.boundingBox, location) && currentSelection==nil && currentSelectionIndex!=i)
         {
+            
             gotHit=YES;
             [self createBigNumberOf:i];
             break;
@@ -252,7 +264,7 @@
 {
     NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
     int currentPoint=3;
-    float time=0.5f;
+    float time=outerButtonPopOutTime;
     
     for(int i=0;i<12;i++)
     {
@@ -271,7 +283,7 @@
         
         [s runAction:bi];
         
-        time+=0.2f;
+        time+=outerButtonPopOutDelay;
         
         currentPoint--;
         

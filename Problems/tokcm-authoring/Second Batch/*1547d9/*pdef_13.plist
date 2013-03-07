@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>piesplitter showin&apos; 3/4</string>
+	<string>Which is more?</string>
 	<key>TOOL_KEY</key>
 	<string>PieSplitter</string>
 	<key>EVAL_MODE</key>
@@ -13,10 +13,10 @@
 	<key>DIVISOR</key>
 	<integer>4</integer>
 	<key>NUMBER_ACTIVE_PIES</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>NUMBER_ACTIVE_SQUARES</key>
-	<integer>4</integer>
+	<integer>3</integer>
 	<key>SPLIT_WITH_CORRECT_NUMBERS</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

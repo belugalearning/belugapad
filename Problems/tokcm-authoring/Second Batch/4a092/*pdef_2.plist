@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make 1 5/8 in three different ways.</string>
+	<string>Show that 5 x 1/7 = 5/7 </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>equivalent fractions with cuisenaire rods</string>
 	<key>TOOL_KEY</key>
@@ -61,16 +61,26 @@
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>SOLUTION_VALUE</key>
-	<string>5</string>
-	<key>REJECT_MODE</key>
-	<integer>1</integer>
-	<key>REJECT_TYPE</key>
-	<integer>1</integer>
 	<key>SHOW_BADGES</key>
 	<false/>
 	<key>SOLUTION_MODE</key>
-	<integer>2</integer>
+	<integer>1</integer>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<integer>7</integer>
+		</array>
+		<array>
+			<integer>5</integer>
+		</array>
+		<array>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+		</array>
+	</array>
 	<key>BAR_ASSISTANCE</key>
 	<true/>
 </dict>

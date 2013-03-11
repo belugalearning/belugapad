@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Complete the equations.</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_EXCLUDE_ROWS</key>
+	<string>2</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Complete the equations.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;7/8&quot;/&gt;&lt;b:on number=&quot;4/8&quot;/&gt;&lt;b:on number=&quot;3/8&quot;/&gt;&lt;b:on number=&quot;1/8&quot;/&gt;</string>
+		<string>&lt;b:ph/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:ph/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;1 3/8&quot; enabled=&quot;yes&quot;/&gt;</string>
+		<string>&lt;b:ph/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:ph/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:ph/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;1 3/8&quot; enabled=&quot;yes&quot;/&gt;</string>
+		<string>&lt;b:ph/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:ph/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:ph/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:ph/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;1 3/8&quot; enabled=&quot;yes&quot;/&gt;</string>
+	</array>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+</dict>
+</plist>

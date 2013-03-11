@@ -3,6 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
+<<<<<<< HEAD
 	<string>Show that 3 x 2/9 = 6/9.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>equivalent fractions with cuisenaire rods</string>
@@ -65,10 +66,35 @@
 			<string>1/9</string>
 			<key>LENGTH</key>
 			<string>1</string>
+=======
+	<string>This is 2/9. What is 3 x 2/9 ?</string>
+	<key>TOOL_KEY</key>
+	<string>FractionBuilder</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_FRACTIONS</key>
+	<array>
+		<dict>
+			<key>MARKER_START_POSITION</key>
+			<string>9</string>
+			<key>CREATE_CHUNKS_ON_INIT</key>
+			<true/>
+			<key>POS_Y</key>
+			<integer>600</integer>
+			<key>FRACTION_MODE</key>
+			<integer>0</integer>
+			<key>VALUE</key>
+			<integer>1</integer>
+			<key>TAG</key>
+			<integer>1</integer>
+			<key>SHOW_CURRENT_FRACTIONS</key>
+			<true/>
+>>>>>>> e71202511a53c0b9d6b9fc99a0618622b18d803a
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
 	<array>
+<<<<<<< HEAD
 		<array>
 			<integer>9</integer>
 		</array>
@@ -98,5 +124,16 @@
 	<integer>1</integer>
 	<key>BAR_ASSISTANCE</key>
 	<true/>
+=======
+		<dict>
+			<key>TAG</key>
+			<integer>1</integer>
+			<key>DIVIDEND</key>
+			<integer>6</integer>
+			<key>DIVISOR</key>
+			<string>9</string>
+		</dict>
+	</array>
+>>>>>>> e71202511a53c0b9d6b9fc99a0618622b18d803a
 </dict>
 </plist>

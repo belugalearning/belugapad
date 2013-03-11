@@ -3,6 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
+<<<<<<< HEAD
 	<string>What is 2 x 3/11?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>equivalent fractions with cuisenaire rods</string>
@@ -94,5 +95,42 @@
 		<key>EVAL_VALUE</key>
 		<integer>611</integer>
 	</dict>
+=======
+	<string>What is 2 x 3/11 ?</string>
+	<key>TOOL_KEY</key>
+	<string>FractionBuilder</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_FRACTIONS</key>
+	<array>
+		<dict>
+			<key>MARKER_START_POSITION</key>
+			<string>0</string>
+			<key>CREATE_CHUNKS_ON_INIT</key>
+			<false/>
+			<key>POS_Y</key>
+			<integer>600</integer>
+			<key>FRACTION_MODE</key>
+			<integer>0</integer>
+			<key>VALUE</key>
+			<integer>1</integer>
+			<key>TAG</key>
+			<integer>1</integer>
+			<key>SHOW_CURRENT_FRACTIONS</key>
+			<true/>
+		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<dict>
+			<key>TAG</key>
+			<integer>1</integer>
+			<key>DIVIDEND</key>
+			<integer>6</integer>
+			<key>DIVISOR</key>
+			<string>11</string>
+		</dict>
+	</array>
+>>>>>>> e71202511a53c0b9d6b9fc99a0618622b18d803a
 </dict>
 </plist>

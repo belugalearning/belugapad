@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is {$x} {@times} {$y}?</string>
+	<string>What is {$y} {@times} {$x}?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>

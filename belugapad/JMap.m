@@ -53,8 +53,6 @@ static CGPoint kStartMapPos={-611, 3713};
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
 
-static BOOL debugRestrictMovement=NO;
-
 typedef enum {
     kJuiStateNodeMap,
     kJuiStateNodeSliceTransition,
@@ -375,7 +373,6 @@ typedef enum {
         nMinX=(float)n1.x;
         nMinY=(float)n1.y;
         nMaxX=nMinX;
-        nMaxY=nMaxY;
         
         for (int i=1; i<[kcmNodes count]; i++) {
             ConceptNode *n=[kcmNodes objectAtIndex:i];
@@ -566,6 +563,7 @@ typedef enum {
             
             int prqcount=0;
             int prqcomplete=0;
+            int prqeffectiveready=0;
             
             for(SGJmapNode *n in mgo.ChildNodes)
             {
@@ -573,6 +571,8 @@ typedef enum {
                     prqcount++;
                     if(prqn.EnabledAndComplete) prqcomplete++;
                 }
+                
+                if(n.PrereqNodes.count==0 && !n.EnabledAndComplete) prqeffectiveready++;
             }
             
             mgo.PrereqCount=prqcount;
@@ -580,7 +580,7 @@ typedef enum {
             
             if(mgo.PrereqCount>0)
             {
-                mgo.PrereqPercentage=(prqcomplete / (float)prqcount) * 100.0f;
+                mgo.PrereqPercentage=(prqcomplete + prqeffectiveready / (float)prqcount) * 100.0f;
             }
             else if(mgo.ChildNodes.count>0)
             {
@@ -598,6 +598,7 @@ typedef enum {
 
             //calculate old prqc
             int pprqcomplete=0;
+            int pprqeffectivecomplete=0;
             for(SGJmapNode *n in mgo.ChildNodes)
             {
                 for (SGJmapNode *prqn in n.PrereqNodes) {
@@ -614,11 +615,18 @@ typedef enum {
                             [prqn.MasteryNode.EffectedPathDestinationNodes addObject:mgo];
                     }
                 }
+                
+                if(n.PrereqNodes.count==0 && !n.EnabledAndComplete)
+                {
+                    prqeffectiveready++;
+                    mgo.FreshlyCompleted=YES;
+                    pprqeffectivecomplete++;
+                }
             }
             
             if(mgo.PrereqCount>0)
             {
-                mgo.PreviousPreReqPercentage =(pprqcomplete / (float)prqcount) * 100.0f;
+                mgo.PreviousPreReqPercentage =(pprqcomplete + pprqeffectivecomplete / (float)prqcount) * 100.0f;
             }
             else if(mgo.ChildNodes.count>0)
             {
@@ -1473,7 +1481,7 @@ typedef enum {
     if(isFiltered)node=[filteredNodes objectAtIndex:indexPath.row];
     else node=[searchNodes objectAtIndex:indexPath.row];
 
-    CGPoint moveto=ccp(300-node.Position.x, 600-node.Position.y);
+    CGPoint moveto=ccp(400-node.Position.x, 530-node.Position.y);
     
     if(zoomedOut)moveto=[BLMath MultiplyVector:moveto byScalar:REGION_ZOOM_LEVEL];
     
@@ -1561,8 +1569,8 @@ typedef enum {
     if(filteredNodes) [filteredNodes release];
     
 
-    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
-    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+//    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+//    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [super dealloc];
 }

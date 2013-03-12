@@ -230,6 +230,19 @@
             [row parseXML:[exprStages objectAtIndex:1]];
         }
         
+        if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+        {
+            //limit row to even division of cards
+            if(row.children.count>5 && i>0)
+            {
+                if(row.children.count==9 || row.children.count==18) row.maxChildrenPerLine=3;
+                else if(row.children.count==8) row.maxChildrenPerLine=4;
+                else if(row.children.count==10 || row.children.count==15) row.maxChildrenPerLine=5;
+                else if (row.children.count==11) row.maxChildrenPerLine=6;
+                else if(row.children.count==12)row.maxChildrenPerLine=6;
+            }
+        }
+        
         if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
             row.myAssetType = @"Large";
         
@@ -677,12 +690,13 @@
     {
         NSArray *vals=[self numbersFromRow:1];
         int phCount=[self getPlaceHolderCountOnRow:1];
+        int popPhCount=[self getPopulatedPlaceholderCountOnRow:1];
         
         //fail if there are no numbers
         if(vals.count==0)return NO;
         
         //fail if not all of the placeholders have numbers
-        if(phCount!=vals.count) return NO;
+        if(phCount!=popPhCount) return NO;
         
         for(int i=1; i<vals.count; i++)
         {
@@ -699,12 +713,13 @@
     {
         NSArray *vals=[self numbersFromRow:1];
         int phCount=[self getPlaceHolderCountOnRow:1];
+        int popPhCount=[self getPopulatedPlaceholderCountOnRow:1];
         
         //fail if there are no numbers
         if(vals.count==0)return NO;
         
         //fail if not all of the placeholders have numbers
-        if(phCount!=vals.count) return NO;
+        if(phCount!=popPhCount) return NO;
         
         for(int i=1; i<vals.count; i++)
         {
@@ -1035,6 +1050,23 @@
     return count;
 }
 
+-(int)getPopulatedPlaceholderCountOnRow:(int)rowIdx
+{
+    SGBtxeRow *row=[rows objectAtIndex:rowIdx];
+    
+    int count=0;
+    
+    for(id<BtxeMount, NSObject> mount in row.children)
+    {
+        if([mount conformsToProtocol:@protocol(BtxeMount)])
+        {
+            id<BtxeMount> m=(id<BtxeMount>)mount;
+            if(m.mountedObject) count++;
+        }
+    }
+    return count;
+}
+
 -(NSArray*)numbersFromRow:(int)rowIdx
 {
     SGBtxeRow *row=[rows objectAtIndex:rowIdx];
@@ -1042,10 +1074,12 @@
     
     //todo: look at placeholders and their value
     
-    for(id<BtxeMount, NSObject> mount in row.children)
+    for(id<NSObject> rowitem in row.children)
     {
-        if([mount conformsToProtocol:@protocol(BtxeMount)])
+        if([rowitem conformsToProtocol:@protocol(BtxeMount)])
         {
+            id<BtxeMount> mount=(id<BtxeMount>)rowitem;
+
             if(mount.mountedObject)
             {
                 if([mount.mountedObject conformsToProtocol:@protocol(Value)])
@@ -1055,7 +1089,18 @@
                 }
             }
         }
+        
+        else if([rowitem conformsToProtocol:@protocol(Value)] && [rowitem conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            id<Value, MovingInteractive>miv=(id<MovingInteractive, Value>)rowitem;
+            
+            if(!miv.mount)
+            {
+                [values addObject:miv.value];
+            }
+        }
     }
+    
     
     NSArray *ret=[NSArray arrayWithArray:values];
     [values release];
@@ -1070,15 +1115,14 @@
         [toolHost doWinning];
     }else{
         [self expandDescAndCardRows];
-        [toolHost resetProblem];
-        [toolHost doIncomplete];
+        [self resetProblem];
     }
 }
 
 #pragma mark - problem state
 -(void)resetProblem
 {
-    [toolHost showProblemIncompleteMessage];
+    [toolHost doIncomplete];
     [toolHost resetProblem];
 }
 

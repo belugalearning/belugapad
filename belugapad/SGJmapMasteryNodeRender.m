@@ -158,11 +158,11 @@ static int shadowSteps=5;
 
     //island stage
     self.islandStage=1;
-    if(ParentGO.PrereqPercentage>=30)self.islandStage=3;
+    if(ParentGO.PrereqPercentage>=16)self.islandStage=3;
     if(ParentGO.PrereqPercentage>=70)self.islandStage=5;
     
     self.previousIslandStage=1;
-    if(ParentGO.PreviousPreReqPercentage>=30)self.previousIslandStage=3;
+    if(ParentGO.PreviousPreReqPercentage>=16)self.previousIslandStage=3;
     if(ParentGO.PreviousPreReqPercentage>=70)self.previousIslandStage=5;
     
     [self createBaseNodes];

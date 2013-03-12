@@ -214,6 +214,11 @@ static float kTimeSinceAction=7.0f;
         
         if([con isKindOfClass:[SGDtoolContainer class]] && [con.LineType isEqualToString:@"Unbreakable"])
             return;
+        
+        if(lastTouch.y<cage.MySprite.contentSize.height&&([con.LineType isEqualToString:@"Unbreakable"]||bondAllObjects))
+           return;
+        
+    
 
         
         if(![b.MyContainer conformsToProtocol:@protocol(Cage)])

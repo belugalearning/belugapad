@@ -435,7 +435,8 @@ static float kTimeToHintToolTray=0.0f;
     if(evalShowCommit)[self showHideCommit];
     
     //let tool do updates
-    if(!isPaused)[currentTool doUpdateOnTick:delta];
+    if(!isPaused)
+        [currentTool doUpdateOnTick:delta];
 }
 
 -(void)doUpdateOnSecond:(ccTime)delta
@@ -921,7 +922,7 @@ static float kTimeToHintToolTray=0.0f;
     
     //this will overrider above np/mq and possible th setup
     [self setupToolTrays:pdef];
-
+    [self setupFollowParticle];
     
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
@@ -1141,6 +1142,24 @@ static float kTimeToHintToolTray=0.0f;
     
 }
 
+-(void)setupFollowParticle
+{
+    if(followParticle)
+        followParticle=nil;
+    
+    if(explodeParticle)
+        explodeParticle=nil;
+    
+    followParticle=[CCParticleSystemQuad particleWithFile:@"bubble_trail.plist"];
+    [self addChild:followParticle z:10];
+    [followParticle setVisible:NO];
+    
+    explodeParticle=[CCParticleSystemQuad particleWithFile:@"bubbles_end.plist"];
+    [self addChild:explodeParticle z:10];
+    [explodeParticle setVisible:NO];
+    
+}
+
 -(void) resetProblem
 {
     //if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
@@ -1214,6 +1233,14 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)tearDownProblemDef
 {
+    if([followParticle isKindOfClass:[CCParticleSystemQuad class]])
+        [followParticle removeFromParentAndCleanup:YES];
+    if([explodeParticle isKindOfClass:[CCParticleSystemQuad class]])
+        [explodeParticle removeFromParentAndCleanup:YES];
+    
+    followParticle=nil;
+    explodeParticle=nil;
+    
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
@@ -2225,6 +2252,7 @@ static float kTimeToHintToolTray=0.0f;
     lastTouch=location;
 
     timeSinceInteractionOrShake=0.0f;
+    isTouching=YES;
     
     if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
@@ -2307,7 +2335,11 @@ static float kTimeToHintToolTray=0.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
-
+    [explodeParticle setVisible:NO];
+    [explodeParticle stopSystem];
+    [followParticle resetSystem];
+    [followParticle setPosition:location];
+    [followParticle setVisible:YES];
     
     [currentTool ccTouchesBegan:touches withEvent:event];
 }
@@ -2366,6 +2398,10 @@ static float kTimeToHintToolTray=0.0f;
         //NSLog(@"scale: %f", scale);
     }
     else {
+        if(isTouching){
+            [followParticle setPosition:location];
+            [explodeParticle setPosition:location];
+        }
         [currentTool ccTouchesMoved:touches withEvent:event];
     }
     
@@ -2380,7 +2416,12 @@ static float kTimeToHintToolTray=0.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    
+    if(isTouching){
+        [explodeParticle setPosition:location];
+        [followParticle stopSystem];
+        [explodeParticle setVisible:YES];
+        [explodeParticle resetSystem];
+    }
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
     
@@ -2389,6 +2430,7 @@ static float kTimeToHintToolTray=0.0f;
     if(isPaused)
     {
         [self checkPauseTouches:location];
+        isTouching=NO;
         return;
     }
     
@@ -2547,6 +2589,7 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     [currentTool ccTouchesEnded:touches withEvent:event];
+    isTouching=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -3112,6 +3155,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(self.pickerView)self.pickerView=nil;
     
+    
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
@@ -3146,8 +3190,8 @@ static float kTimeToHintToolTray=0.0f;
     //number wheel / picker view
     if(pickerView)[pickerView release];
     
-    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
-    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+//    [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
+//    [[CCTextureCache sharedTextureCache] removeUnusedTextures];
     
     [super dealloc];
 }

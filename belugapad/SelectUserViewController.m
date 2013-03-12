@@ -259,7 +259,7 @@
 {
     if (deviceUsers) [deviceUsers release];
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
+    deviceUsers = [[ad.usersService deviceUsersByNickName] mutableCopy];
     while ([deviceUsers count] < 4) [deviceUsers addObject:@{}]; // add fake users -> produce extra table cells -> create alternating table cell background appearance
 }
 
@@ -452,6 +452,8 @@
 {
     if (freezeUI) return;
     
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
+    
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
 
     if (selectUserModalContainer) return;
@@ -521,6 +523,7 @@
     if (freezeUI) return;
     
     [self buttonTap];
+    [self enablePlayButton];
     
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
@@ -905,16 +908,6 @@
     
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
-}
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 999)
-    {
-        [app proceedFromLoginViaIntro:NO];
-    }
 }
 
 #pragma mark -

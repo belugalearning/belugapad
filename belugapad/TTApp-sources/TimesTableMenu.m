@@ -7,6 +7,7 @@
 //
 
 #import "TimesTableMenu.h"
+#import "ToolHost.h"
 #import "global.h"
 
 const float moveToCentreTime=0.2f;
@@ -284,6 +285,10 @@ const float outerButtonPopInDelay=0.05f;
                 // TODO: if is showing a number, show a pipeline
                 gotHit=YES;
                 NSLog(@"Got hit for number for %dx%d",currentSelectionIndex, i+1);
+                
+                //load toolhost
+                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+                
                 break;
             }
         }

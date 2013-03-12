@@ -18,6 +18,7 @@
 #import "mach/mach.h"
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
+#import "TimesTableMenu.h"
 
 #import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
@@ -151,11 +152,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     //[director_ enableRetinaDisplay:NO];
     
-    selectUserViewController = [[SelectUserViewController alloc] init];
+    //selectUserViewController = [[SelectUserViewController alloc] init];
     
     //[self.window addSubview:selectUserViewController.view];
-    [self.window setRootViewController:selectUserViewController];
-    [self.window makeKeyAndVisible];
+    //[self.window setRootViewController:selectUserViewController];
+    //[self.window makeKeyAndVisible];
     
     [TestFlight passCheckpoint:@"USER_LOGIN_INIT"];
     
@@ -259,6 +260,24 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     //Acapela TTS ---------------------------------------------------------------------
 #endif
+    
+    
+    // Create a Navigation Controller with the Director
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
+    
+	// set the Navigation Controller as the root view controller
+    [window_ setRootViewController:navController_];
+	//[window_ addSubview:navController_.view];
+    
+	// make main window visible
+	[window_ makeKeyAndVisible];
+    
+    CCScene *currentScene;
+    [TestFlight passCheckpoint:@"PROCEEDING_TO_TTAPP_MENU"];
+    currentScene=[TimesTableMenu scene];
+    
+    [director_ pushScene:currentScene];
     
     return YES;
 }

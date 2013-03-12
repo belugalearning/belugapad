@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Share 20 between 5.</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>20</integer>
+	<key>DIVISOR</key>
+	<integer>5</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>20</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>5</integer>
+	<key>SPLIT_WITH_CORRECT_NUMBERS</key>
+	<true/>
+</dict>
+</plist>

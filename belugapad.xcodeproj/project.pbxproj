@@ -100,7 +100,6 @@
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		557C1FBE16A20FF5000ED30A /* star_explosion2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 557C1FBD16A20FF5000ED30A /* star_explosion2.plist */; };
-		5580C35616E61EB5000717FF /* TimesTableMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 5580C35516E61EB5000717FF /* TimesTableMenu.m */; };
 		558ADA3616611B250000C448 /* tts-objects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA3516611B250000C448 /* tts-objects.plist */; };
 		558D79E7168893F800048B01 /* LineDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79E6168893F800048B01 /* LineDrawer.m */; };
 		558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */; };
@@ -348,6 +347,9 @@
 		7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F85187B1558E85F002E9F07 /* Pipeline.m */; };
 		7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */; };
 		7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */; };
+		7F89881016EF5830004A2C16 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F89880F16EF5830004A2C16 /* AppDelegate.m */; };
+		7F89881416EF5844004A2C16 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F89881316EF5844004A2C16 /* AppDelegate.m */; };
+		7F89881716EF58C2004A2C16 /* TimesTableMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F89881616EF58C2004A2C16 /* TimesTableMenu.m */; };
 		7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BD871620A8F800351CA0 /* DebugViewController.m */; };
 		7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F96BDE2162178D100351CA0 /* libChipmunkPro-iPhone.a */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
@@ -399,7 +401,6 @@
 		7FB5240316CD054100A1B79A /* ZAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51151914A9EE66001AF372 /* ZAttributedString.m */; };
 		7FB5240416CD054100A1B79A /* ZFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51151D14A9EE66001AF372 /* ZFont.m */; };
 		7FB5240516CD054100A1B79A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51157E14A9EE67001AF372 /* main.m */; };
-		7FB5240616CD054100A1B79A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158114A9EE67001AF372 /* AppDelegate.m */; };
 		7FB5240716CD054100A1B79A /* DWBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159C14A9EF67001AF372 /* DWBehaviour.m */; };
 		7FB5240816CD054100A1B79A /* DWBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159E14A9EF67001AF372 /* DWBlackboard.m */; };
 		7FB5240916CD054100A1B79A /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
@@ -1201,10 +1202,6 @@
 		7FB5273416CD054E00A1B79A /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FA2A4E316A81B4500B50D07 /* Icon-Small.png */; };
 		7FB5273516CD054E00A1B79A /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FA2A4E416A81B4500B50D07 /* Icon-Small-50.png */; };
 		7FB5273616CD054E00A1B79A /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FA2A4E516A81B4500B50D07 /* Icon-Small@2x.png */; };
-		7FB5274416CD05AB00A1B79A /* SAppRewards.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB5274316CD05AB00A1B79A /* SAppRewards.m */; };
-		7FB5274716CD068900A1B79A /* STTAppMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB5274616CD068900A1B79A /* STTAppMenu.m */; };
-		7FB5274C16CD06E500A1B79A /* SApp-AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB5274B16CD06E500A1B79A /* SApp-AppDelegate.m */; };
-		7FB5274D16CD071600A1B79A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158114A9EE67001AF372 /* AppDelegate.m */; };
 		7FB5275016CD072300A1B79A /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		7FB5275116CD072300A1B79A /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
 		7FB5275216CD072300A1B79A /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
@@ -1557,9 +1554,6 @@
 		7FB528AD16CD072300A1B79A /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = 558D79ED1688950300048B01 /* CCNode+SFGestureRecognizers.m */; };
 		7FB528AE16CD072300A1B79A /* RewardStars.m in Sources */ = {isa = PBXBuildFile; fileRef = 5509D85416A08A5F0076A29F /* RewardStars.m */; };
 		7FB528AF16CD072300A1B79A /* CODialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FBA3A7F16A7002700E4908F /* CODialog.m */; };
-		7FB528B016CD072300A1B79A /* SAppRewards.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB5274316CD05AB00A1B79A /* SAppRewards.m */; };
-		7FB528B116CD072300A1B79A /* STTAppMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB5274616CD068900A1B79A /* STTAppMenu.m */; };
-		7FB528B216CD072300A1B79A /* SApp-AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB5274B16CD06E500A1B79A /* SApp-AppDelegate.m */; };
 		7FB528B416CD072300A1B79A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C692E49157F973D009307DB /* libsqlite3.dylib */; };
 		7FB528B516CD072300A1B79A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA7154532360031E59D /* libz.dylib */; };
 		7FB528B616CD072300A1B79A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA51545322E0031E59D /* SystemConfiguration.framework */; };
@@ -1864,8 +1858,6 @@
 		5571BADF14E406630053A62B /* ToolConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolConsts.h; sourceTree = "<group>"; };
 		5571BAE014E406630053A62B /* ToolConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolConsts.m; sourceTree = "<group>"; usesTabs = 0; };
 		557C1FBD16A20FF5000ED30A /* star_explosion2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = star_explosion2.plist; sourceTree = "<group>"; };
-		5580C35416E61EB5000717FF /* TimesTableMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTableMenu.h; sourceTree = "<group>"; };
-		5580C35516E61EB5000717FF /* TimesTableMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTableMenu.m; sourceTree = "<group>"; };
 		558ADA3516611B250000C448 /* tts-objects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-objects.plist"; sourceTree = "<group>"; };
 		558D79E5168893F800048B01 /* LineDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineDrawer.h; sourceTree = "<group>"; };
 		558D79E6168893F800048B01 /* LineDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDrawer.m; sourceTree = "<group>"; };
@@ -2104,8 +2096,6 @@
 		7F51157B14A9EE67001AF372 /* LICENSE_Chipmunk.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE_Chipmunk.txt; path = libs/LICENSE_Chipmunk.txt; sourceTree = "<group>"; };
 		7F51157D14A9EE67001AF372 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		7F51157E14A9EE67001AF372 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		7F51158014A9EE67001AF372 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		7F51158114A9EE67001AF372 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7F51158914A9EE67001AF372 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		7F51159B14A9EF67001AF372 /* DWBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBehaviour.h; sourceTree = "<group>"; };
 		7F51159C14A9EF67001AF372 /* DWBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWBehaviour.m; sourceTree = "<group>"; };
@@ -2373,6 +2363,12 @@
 		7F85187B1558E85F002E9F07 /* Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pipeline.m; sourceTree = "<group>"; };
 		7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chango-Regular.ttf"; sourceTree = "<group>"; };
+		7F89880E16EF5830004A2C16 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7F89880F16EF5830004A2C16 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7F89881216EF5844004A2C16 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7F89881316EF5844004A2C16 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7F89881516EF58C2004A2C16 /* TimesTableMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTableMenu.h; sourceTree = "<group>"; };
+		7F89881616EF58C2004A2C16 /* TimesTableMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTableMenu.m; sourceTree = "<group>"; };
 		7F96BD861620A8F800351CA0 /* DebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugViewController.h; sourceTree = "<group>"; };
 		7F96BD871620A8F800351CA0 /* DebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugViewController.m; sourceTree = "<group>"; };
 		7F96BDB9162178D100351CA0 /* chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk.h; sourceTree = "<group>"; };
@@ -2480,12 +2476,6 @@
 		7FB5259716CD054200A1B79A /* Beluga Dev copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Beluga Dev copy-Info.plist"; path = "/Users/gareth/gcgh/beluga/belugapad/Beluga Dev copy-Info.plist"; sourceTree = "<absolute>"; };
 		7FB5273B16CD054E00A1B79A /* Beluga Dev copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beluga Dev copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB5273D16CD054E00A1B79A /* Beluga Dev copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Beluga Dev copy2-Info.plist"; path = "/Users/gareth/gcgh/beluga/belugapad/Beluga Dev copy2-Info.plist"; sourceTree = "<absolute>"; };
-		7FB5274216CD05AB00A1B79A /* SAppRewards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAppRewards.h; sourceTree = "<group>"; };
-		7FB5274316CD05AB00A1B79A /* SAppRewards.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAppRewards.m; sourceTree = "<group>"; };
-		7FB5274516CD068900A1B79A /* STTAppMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTAppMenu.h; sourceTree = "<group>"; };
-		7FB5274616CD068900A1B79A /* STTAppMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STTAppMenu.m; sourceTree = "<group>"; };
-		7FB5274A16CD06E500A1B79A /* SApp-AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SApp-AppDelegate.h"; sourceTree = "<group>"; };
-		7FB5274B16CD06E500A1B79A /* SApp-AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SApp-AppDelegate.m"; sourceTree = "<group>"; };
 		7FB528F216CD072300A1B79A /* ttapp Dev copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ttapp Dev copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB528F416CD072400A1B79A /* ttapp Dev copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ttapp Dev copy-Info.plist"; path = "/Users/gareth/gcgh/beluga/belugapad/ttapp Dev copy-Info.plist"; sourceTree = "<absolute>"; };
 		7FB9828F15116633006D31AE /* BAAdditionOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAdditionOperator.h; sourceTree = "<group>"; };
@@ -3182,8 +3172,6 @@
 		7F2317CE1572B29400E2C941 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				5580C35416E61EB5000717FF /* TimesTableMenu.h */,
-				5580C35516E61EB5000717FF /* TimesTableMenu.m */,
 				7F5BD840154AB6A70092740B /* JMap.h */,
 				7F5BD841154AB6A70092740B /* JMap.m */,
 				5509D85316A08A5F0076A29F /* RewardStars.h */,
@@ -3389,6 +3377,8 @@
 		7F5113D214A9EE63001AF372 /* belugapad */ = {
 			isa = PBXGroup;
 			children = (
+				7F89881116EF5844004A2C16 /* SApp-sources */,
+				7F89880D16EF5830004A2C16 /* TTApp-sources */,
 				7FB5273F16CD056E00A1B79A /* Classes-app-shared */,
 				7FB5273E16CD056500A1B79A /* Classes-ttapp */,
 				7F51159714A9EF21001AF372 /* Classes */,
@@ -3570,8 +3560,6 @@
 				7FBA3A7E16A7002700E4908F /* CODialog.h */,
 				7FBA3A7F16A7002700E4908F /* CODialog.m */,
 				7FABE69214B33E5800ED2D0C /* global.h */,
-				7F51158014A9EE67001AF372 /* AppDelegate.h */,
-				7F51158114A9EE67001AF372 /* AppDelegate.m */,
 				7F51158914A9EE67001AF372 /* GameConfig.h */,
 				5571BADF14E406630053A62B /* ToolConsts.h */,
 				5571BAE014E406630053A62B /* ToolConsts.m */,
@@ -3982,6 +3970,26 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
+		7F89880D16EF5830004A2C16 /* TTApp-sources */ = {
+			isa = PBXGroup;
+			children = (
+				7F89881516EF58C2004A2C16 /* TimesTableMenu.h */,
+				7F89881616EF58C2004A2C16 /* TimesTableMenu.m */,
+				7F89880E16EF5830004A2C16 /* AppDelegate.h */,
+				7F89880F16EF5830004A2C16 /* AppDelegate.m */,
+			);
+			path = "TTApp-sources";
+			sourceTree = "<group>";
+		};
+		7F89881116EF5844004A2C16 /* SApp-sources */ = {
+			isa = PBXGroup;
+			children = (
+				7F89881216EF5844004A2C16 /* AppDelegate.h */,
+				7F89881316EF5844004A2C16 /* AppDelegate.m */,
+			);
+			path = "SApp-sources";
+			sourceTree = "<group>";
+		};
 		7F96BDB7162178D100351CA0 /* ChipmunkPro-iPhone */ = {
 			isa = PBXGroup;
 			children = (
@@ -4169,7 +4177,6 @@
 		7FB5273E16CD056500A1B79A /* Classes-ttapp */ = {
 			isa = PBXGroup;
 			children = (
-				7FB5274016CD057900A1B79A /* Scenes */,
 			);
 			name = "Classes-ttapp";
 			sourceTree = "<group>";
@@ -4177,37 +4184,8 @@
 		7FB5273F16CD056E00A1B79A /* Classes-app-shared */ = {
 			isa = PBXGroup;
 			children = (
-				7FB5274916CD06A300A1B79A /* App */,
-				7FB5274116CD058000A1B79A /* Scenes */,
 			);
 			name = "Classes-app-shared";
-			sourceTree = "<group>";
-		};
-		7FB5274016CD057900A1B79A /* Scenes */ = {
-			isa = PBXGroup;
-			children = (
-				7FB5274516CD068900A1B79A /* STTAppMenu.h */,
-				7FB5274616CD068900A1B79A /* STTAppMenu.m */,
-			);
-			name = Scenes;
-			sourceTree = "<group>";
-		};
-		7FB5274116CD058000A1B79A /* Scenes */ = {
-			isa = PBXGroup;
-			children = (
-				7FB5274216CD05AB00A1B79A /* SAppRewards.h */,
-				7FB5274316CD05AB00A1B79A /* SAppRewards.m */,
-			);
-			name = Scenes;
-			sourceTree = "<group>";
-		};
-		7FB5274916CD06A300A1B79A /* App */ = {
-			isa = PBXGroup;
-			children = (
-				7FB5274A16CD06E500A1B79A /* SApp-AppDelegate.h */,
-				7FB5274B16CD06E500A1B79A /* SApp-AppDelegate.m */,
-			);
-			name = App;
 			sourceTree = "<group>";
 		};
 		7FB9828E15116612006D31AE /* BAExpression */ = {
@@ -4856,7 +4834,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FB5274D16CD071600A1B79A /* AppDelegate.m in Sources */,
 				5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */,
 				7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */,
 				7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */,
@@ -5209,7 +5186,7 @@
 				558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */,
 				5509D85516A08A5F0076A29F /* RewardStars.m in Sources */,
 				7FBA3A8016A7002700E4908F /* CODialog.m in Sources */,
-				5580C35616E61EB5000717FF /* TimesTableMenu.m in Sources */,
+				7F89881416EF5844004A2C16 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5234,7 +5211,6 @@
 				7FB5240316CD054100A1B79A /* ZAttributedString.m in Sources */,
 				7FB5240416CD054100A1B79A /* ZFont.m in Sources */,
 				7FB5240516CD054100A1B79A /* main.m in Sources */,
-				7FB5240616CD054100A1B79A /* AppDelegate.m in Sources */,
 				7FB5240716CD054100A1B79A /* DWBehaviour.m in Sources */,
 				7FB5240816CD054100A1B79A /* DWBlackboard.m in Sources */,
 				7FB5240916CD054100A1B79A /* DWGameObject.m in Sources */,
@@ -5929,9 +5905,8 @@
 				7FB526F916CD054E00A1B79A /* CCNode+SFGestureRecognizers.m in Sources */,
 				7FB526FA16CD054E00A1B79A /* RewardStars.m in Sources */,
 				7FB526FB16CD054E00A1B79A /* CODialog.m in Sources */,
-				7FB5274416CD05AB00A1B79A /* SAppRewards.m in Sources */,
-				7FB5274716CD068900A1B79A /* STTAppMenu.m in Sources */,
-				7FB5274C16CD06E500A1B79A /* SApp-AppDelegate.m in Sources */,
+				7F89881016EF5830004A2C16 /* AppDelegate.m in Sources */,
+				7F89881716EF58C2004A2C16 /* TimesTableMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6291,9 +6266,6 @@
 				7FB528AD16CD072300A1B79A /* CCNode+SFGestureRecognizers.m in Sources */,
 				7FB528AE16CD072300A1B79A /* RewardStars.m in Sources */,
 				7FB528AF16CD072300A1B79A /* CODialog.m in Sources */,
-				7FB528B016CD072300A1B79A /* SAppRewards.m in Sources */,
-				7FB528B116CD072300A1B79A /* STTAppMenu.m in Sources */,
-				7FB528B216CD072300A1B79A /* SApp-AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

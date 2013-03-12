@@ -28,7 +28,7 @@
 
 
 #import "babbelu.lic.h"
-#import "libs/Acapela/api/babbelu.lic.0166883f.password"
+#import "../libs/Acapela/api/babbelu.lic.0166883f.password"
 
 #import "Flurry.h"
 
@@ -66,7 +66,7 @@
 void uncaughtExceptionHandler(NSException *exception) {
     
     [Flurry logError:@"Uncaught" message:@"in global handler" exception:exception];
-
+    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -97,9 +97,9 @@ void uncaughtExceptionHandler(NSException *exception) {
     //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
     
     //init test flight
-
+    
 #if USE_TESTFLIGHT_SDK
-
+    
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
     [TestFlight takeOff:@"1131d68d003b6409566d9ada07cd6caa_NTg2MjMyMDEyLTAyLTA0IDEwOjU4OjI2LjI0NTYyNg"];
@@ -170,7 +170,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
 								   pixelFormat:kEAGLColorFormatRGB565	//kEAGLColorFormatRGBA8
-//								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
+                        //								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
 								   depthFormat:GL_DEPTH24_STENCIL8_OES
 							preserveBackbuffer:NO
 									sharegroup:nil
@@ -251,7 +251,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     SetupData = [[AcapelaSetup alloc] initialize];
 	
     //Create an AcapelaSpeech instance with the first voice found and the license
-//    self.acaSpeech = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+    //    self.acaSpeech = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
     self.acaSpeech=[[AcapelaSpeech alloc]initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
 	
     //Set the AcapelaSpeech delegates in order to receive events (not needed if you don't want events)
@@ -317,7 +317,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 	//[window_ addSubview:navController_.view];
     
 	// make main window visible
-	[window_ makeKeyAndVisible]; 
+	[window_ makeKeyAndVisible];
     
     CCScene *currentScene;
     
@@ -345,13 +345,13 @@ void uncaughtExceptionHandler(NSException *exception) {
     [self.window.rootViewController removeFromParentViewController];
     
     [[director_ runningScene] removeFromParentAndCleanup:YES];
-
+    
     if (selectUserViewController)
     {
         [selectUserViewController release];
         selectUserViewController = nil;
     }
-
+    
     [self.contentService updateContentDatabaseWithSettings:self.LocalSettings];
     
     selectUserViewController = [[SelectUserViewController alloc] init];
@@ -359,20 +359,20 @@ void uncaughtExceptionHandler(NSException *exception) {
     //[self.window addSubview:selectUserViewController.view];
     [self.window setRootViewController:selectUserViewController];
     [self.window makeKeyAndVisible];
-
     
-//    [navController_.view removeFromSuperview];
-//    if (selectUserViewController)
-//    {
-//        [selectUserViewController release];
-//        selectUserViewController = nil;
-//    }
-//    
-//    [self.contentService updateContentDatabaseWithSettings:self.LocalSettings];
-//    
-//    selectUserViewController = [[SelectUserViewController alloc] init];    
-//    [window_ addSubview:selectUserViewController.view];
-//    [window_ makeKeyAndVisible];
+    
+    //    [navController_.view removeFromSuperview];
+    //    if (selectUserViewController)
+    //    {
+    //        [selectUserViewController release];
+    //        selectUserViewController = nil;
+    //    }
+    //
+    //    [self.contentService updateContentDatabaseWithSettings:self.LocalSettings];
+    //
+    //    selectUserViewController = [[SelectUserViewController alloc] init];
+    //    [window_ addSubview:selectUserViewController.view];
+    //    [window_ makeKeyAndVisible];
 }
 
 
@@ -484,7 +484,7 @@ void logMemUsage(void) {
     
     self.lastJmapViewUState=nil;
     if(SetupData)[SetupData release];
-//    if(MyAcaTTS)[MyAcaTTS release];
+    //    if(MyAcaTTS)[MyAcaTTS release];
     
     self.acaSpeech=nil;
     

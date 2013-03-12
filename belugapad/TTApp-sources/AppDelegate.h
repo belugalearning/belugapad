@@ -26,7 +26,7 @@
     
     NSDictionary *speechReplacement;
     
-//    AcapelaSpeech *MyAcaTTS;
+    //    AcapelaSpeech *MyAcaTTS;
     AcapelaLicense *MyAcaLicense;
     AcapelaSetup *SetupData;
 }

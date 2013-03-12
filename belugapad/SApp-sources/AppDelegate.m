@@ -18,7 +18,7 @@
 #import "mach/mach.h"
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
-#import "TimesTableMenu.h"
+
 #import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
@@ -28,7 +28,7 @@
 
 
 #import "babbelu.lic.h"
-#import "libs/Acapela/api/babbelu.lic.0166883f.password"
+#import "../libs/Acapela/api/babbelu.lic.0166883f.password"
 
 #import "Flurry.h"
 
@@ -333,9 +333,6 @@ void uncaughtExceptionHandler(NSException *exception) {
         
         currentScene=[JMap scene];
     }
-    
-    currentScene=[TimesTableMenu scene];
-    
     [director_ pushScene:currentScene];
 }
 

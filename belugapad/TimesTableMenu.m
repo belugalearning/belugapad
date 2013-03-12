@@ -72,6 +72,11 @@ const float outerButtonPopInDelay=0.05f;
     [background setPosition:ccp(cx,cy)];
     [renderLayer addChild:background];
     
+    CCSprite *totalTab=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/total_score_tab.png")];
+//    [totalTab setAnchorPoint:ccp(1,0.5)];
+    [totalTab setPosition:ccp(lx-(totalTab.contentSize.width/2),ly-50)];
+    [renderLayer addChild:totalTab];
+    
     float xStartPos=179.0f;
     float yStartPos=593.0f;
     float xSpacing=208.0f;
@@ -92,6 +97,10 @@ const float outerButtonPopInDelay=0.05f;
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(thisXPos,thisYPos)];
         [renderLayer addChild:s];
+        
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"0%" fontName:CHANGO fontSize:17.0f];
+        [l setPosition:ccp(s.contentSize.width/2,23)];
+        [s addChild:l];
         
         currentCol++;
         if(currentCol>colPerRow-1)
@@ -133,6 +142,7 @@ const float outerButtonPopInDelay=0.05f;
     gameState=@"SHOW_TABLES";
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    CCLabelTTF *originalLabel=[original.children objectAtIndex:0];
     
     CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveToCentreTime position:ccp(cx,cy)];
     CCScaleTo *st=[CCScaleTo actionWithDuration:moveToCentreTime scale:1.0f];
@@ -155,9 +165,14 @@ const float outerButtonPopInDelay=0.05f;
     [s setScale:0.38f];
     [renderLayer addChild:s z:20];
     
+    CCLabelTTF *l=[CCLabelTTF labelWithString:originalLabel.string fontName:CHANGO fontSize:56.0f];
+    [l setPosition:ccp(s.contentSize.width/2,60)];
+    [s addChild:l];
+    
     [s runAction:sq];
     [s runAction:st];
     [original runAction:[CCFadeOut actionWithDuration:0.1f]];
+    [originalLabel runAction:[CCFadeOut actionWithDuration:0.1f]];
     
     currentSelection=s;
     currentSelectionIndex=thisNumber;
@@ -167,7 +182,9 @@ const float outerButtonPopInDelay=0.05f;
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
-        [s runAction:[CCFadeTo actionWithDuration:backgroundFadeOutTime opacity:50]];
+        CCSprite *sL=[s.children objectAtIndex:0];
+        [s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        [sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
 }
 
@@ -191,6 +208,7 @@ const float outerButtonPopInDelay=0.05f;
     
     CCSprite *s=currentSelection;
     CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
+    CCLabelTTF *oL=[o.children objectAtIndex:0];
     
     CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
 
@@ -201,8 +219,9 @@ const float outerButtonPopInDelay=0.05f;
     
     CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
     CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+    CCCallBlock *opacityLabel=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
     
-    CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, nil];
+    CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityLabel, nil];
     CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
     
     [s runAction:sortbiggie];
@@ -213,7 +232,10 @@ const float outerButtonPopInDelay=0.05f;
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
+        CCSprite *sL=[s.children objectAtIndex:0];
         [s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
+        [sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
+        
     }
     
     currentSelection=nil;
@@ -226,20 +248,50 @@ const float outerButtonPopInDelay=0.05f;
 {
     BOOL gotHit=false;
     
-    for(int i=0;i<[sceneButtons count];i++)
-    {
-        CCSprite *s=[sceneButtons objectAtIndex:i];
-        if(CGRectContainsPoint(s.boundingBox, location) && currentSelection==nil && currentSelectionIndex!=i)
+    if([gameState isEqualToString:@"SHOW_MAIN_MENU"]){
+        
+        for(int i=0;i<[sceneButtons count];i++)
         {
             
-            gotHit=YES;
-            [self createBigNumberOf:i];
-            break;
+            
+            CCSprite *s=[sceneButtons objectAtIndex:i];
+            if(CGRectContainsPoint(s.boundingBox, location) && currentSelection==nil && currentSelectionIndex!=i)
+            {
+                
+                if(i<=11){
+                    gotHit=YES;
+                    [self createBigNumberOf:i];
+                }
+                else {
+                    // TODO: if has random or challnging number - start that pipeline
+                    NSLog(@"has challenging or random problem");
+                }
+                
+                break;
+            }
         }
+
     }
+    else if([gameState isEqualToString:@"SHOW_TABLES"]){
+        
+        if([currentSelectionButtons count]==0)return;
+        
+        for(int i=0;i<[currentSelectionButtons count];i++)
+        {
+            CCSprite *s=[currentSelectionButtons objectAtIndex:i];
+            if(CGRectContainsPoint(s.boundingBox, location) && currentSelection!=nil)
+            {
+                // TODO: if is showing a number, show a pipeline
+                gotHit=YES;
+                NSLog(@"Got hit for number for %dx%d",currentSelectionIndex, i+1);
+                break;
+            }
+        }
+        
+        if(!gotHit){
+            [self returnCurrentBigNumber];
+        }
     
-    if(!gotHit){
-        [self returnCurrentBigNumber];
     }
 }
 

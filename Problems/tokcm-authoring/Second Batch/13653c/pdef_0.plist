@@ -27,11 +27,11 @@
 	<array>
 		<dict>
 			<key>LABEL</key>
-			<string>1</string>
+			<string>6</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<integer>6</integer>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>

@@ -100,6 +100,14 @@
 			<key>LENGTH</key>
 			<string>4</string>
 		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<string>5</string>
+			<key>LABEL</key>
+			<string>1</string>
+			<key>LENGTH</key>
+			<string>5</string>
+		</dict>
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>

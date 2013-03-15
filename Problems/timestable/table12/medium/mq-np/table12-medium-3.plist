@@ -40,6 +40,26 @@
 				<string>10</string>
 			</array>
 		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$err1</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>{$y-1}</string>
+				<string>{$y+1}</string>
+				<string>{$y+2}</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$err2</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>{$x-1}</string>
+				<string>{$x+1}</string>
+				<string>{$x+2}</string>
+			</array>
+		</dict>
 	</array>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is {$y} {@times} {$x}?</string>

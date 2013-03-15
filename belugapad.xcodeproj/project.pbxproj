@@ -350,6 +350,9 @@
 		7F89881016EF5830004A2C16 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F89880F16EF5830004A2C16 /* AppDelegate.m */; };
 		7F89881416EF5844004A2C16 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F89881316EF5844004A2C16 /* AppDelegate.m */; };
 		7F89881716EF58C2004A2C16 /* TimesTableMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F89881616EF58C2004A2C16 /* TimesTableMenu.m */; };
+		7F89881B16EF6871004A2C16 /* bubbles_end.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559C9DE716D79D71004893C0 /* bubbles_end.plist */; };
+		7F89881C16EF6871004A2C16 /* bubbles.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E116D4EBA2007B1193 /* bubbles.plist */; };
+		7F89881D16EF68D3004A2C16 /* bubble_trail.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552DF2E016D4EBA2007B1193 /* bubble_trail.plist */; };
 		7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BD871620A8F800351CA0 /* DebugViewController.m */; };
 		7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F96BDE2162178D100351CA0 /* libChipmunkPro-iPhone.a */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
@@ -4635,6 +4638,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F89881D16EF68D3004A2C16 /* bubble_trail.plist in Resources */,
+				7F89881B16EF6871004A2C16 /* bubbles_end.plist in Resources */,
+				7F89881C16EF6871004A2C16 /* bubbles.plist in Resources */,
 				7FB5270D16CD054E00A1B79A /* iTunesArtwork in Resources */,
 				7FB5270E16CD054E00A1B79A /* Default-Landscape~ipad.png in Resources */,
 				7FB5270F16CD054E00A1B79A /* templatedefs-general.plist in Resources */,
@@ -6390,6 +6396,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -6435,6 +6442,7 @@
 					"\"$(SRCROOT)/libMobilityStatic.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";

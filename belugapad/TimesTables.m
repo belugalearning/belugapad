@@ -208,6 +208,8 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)populateGW
 {
+    is12x12=YES;
+    
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Operator.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
     
@@ -215,15 +217,22 @@ static float kTimeToHeaderBounce=7.0f;
     
     int amtForX=10;
     int amtForY=10;
-
+    float yPos=(amtForY+1.5)*spaceBetweenAnchors;
     float xStartPos=300;
 
+    if(is12x12)
+    {
+        amtForX=12;
+        amtForY=12;
+        yPos=(amtForY+0.5)*spaceBetweenAnchors;
+    }
+    
     int xStartNumber=startX;
     int yStartNumber=amtForY-1;
     
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
-    float yPos=(amtForY+1.5)*spaceBetweenAnchors;
+    
     [operator setTag:1];
     [operator setOpacity:0];
     [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,yPos+15)];
@@ -249,6 +258,9 @@ static float kTimeToHeaderBounce=7.0f;
         {
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
+            
+            if(is12x12)yStartPos=(iCol+0.5)*spaceBetweenAnchors;
+            
             yStartPos+=15;
             
             DWTTTileGameObject *tile = [DWTTTileGameObject alloc];

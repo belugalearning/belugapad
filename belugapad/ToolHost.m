@@ -179,6 +179,8 @@ static float kTimeToHintToolTray=0.0f;
         contentService = ac.contentService;
         usersService = ac.usersService;
         
+        appType=[ac returnAppType];
+        
         [ac tearDownUI];
         
         [self scheduleOnce:@selector(gotoFirstProblem:) delay:0.0f];
@@ -1266,9 +1268,28 @@ static float kTimeToHintToolTray=0.0f;
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     isPaused = YES;
     
-    if(!pauseMenu)
+    if(!pauseMenu && [appType isEqualToString:@"APP_MAIN"])
     {
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
+        [pauseMenu setPosition:ccp(cx, cy)];
+        [pauseLayer addChild:pauseMenu z:10];
+        
+        muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
+        [muteBtn setPosition:ccp(250,250)];
+        [pauseLayer addChild:muteBtn z:20];
+        
+        if(contentService.pathToTestDef)
+        {
+            
+            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
+            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
+            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
+            [pauseLayer addChild:pauseTestPathLabel z:11];
+        }
+    }
+    else if(!pauseMenu && [appType isEqualToString:@"APP_TIMESTABLES"])
+    {
+        pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/menu_pause.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
         
@@ -1316,44 +1337,91 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void) checkPauseTouches:(CGPoint)location
 {
-    if(CGRectContainsPoint(kPauseMenuContinue, location))
-    {
-        //resume
-        [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self hidePauseMenu];
-    }
-    if(CGRectContainsPoint(kPauseMenuReset, location))
-    {
-        //reset
-        [loggingService logEvent:BL_PA_USER_RESET withAdditionalData:nil];
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self resetProblem];
-        [self hidePauseMenu];
-    }
-    if(CGRectContainsPoint(kPauseMenuMenu, location))
-    {
-        [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
-        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self returnToMap];
-    }
-    if(CGRectContainsPoint(muteBtn.boundingBox, location))
-    {
-        if(ac.IsMuted)
+    if([appType isEqualToString:@"APP_MAIN"]){
+        if(CGRectContainsPoint(kPauseMenuContinue, location))
         {
-            ac.IsMuted=NO;
-            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")]];
-            
-            [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
+            //resume
+            [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+            [self hidePauseMenu];
         }
-        else
+        if(CGRectContainsPoint(kPauseMenuReset, location))
         {
-            ac.IsMuted=YES;
-            [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
+            //reset
+            [loggingService logEvent:BL_PA_USER_RESET withAdditionalData:nil];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+            [self resetProblem];
+            [self hidePauseMenu];
+        }
+        if(CGRectContainsPoint(kPauseMenuMenu, location))
+        {
+            [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
+            [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+            [self returnToMap];
+        }
+        if(CGRectContainsPoint(muteBtn.boundingBox, location))
+        {
+            if(ac.IsMuted)
+            {
+                ac.IsMuted=NO;
+                [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")]];
+                
+                [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
+            }
+            else
+            {
+                ac.IsMuted=YES;
+                [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+                [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
+            }
         }
     }
+    if([appType isEqualToString:@"APP_TIMESTABLES"]){
+        if(CGRectContainsPoint(kPauseMenuContinue, location))
+        {
+            NSLog(@"tt continue");
+            //resume
+//            [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
+//            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+//            [self hidePauseMenu];
+        }
+        if(CGRectContainsPoint(kPauseMenuReset, location))
+        {
+            NSLog(@"tt reset");
+            //reset
+//            [loggingService logEvent:BL_PA_USER_RESET withAdditionalData:nil];
+//            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+//            [self resetProblem];
+//            [self hidePauseMenu];
+        }
+        if(CGRectContainsPoint(kPauseMenuMenu, location))
+        {
+            NSLog(@"tt menu");
+//            [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
+//            [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
+//            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+//            [self returnToMap];
+        }
+        if(CGRectContainsPoint(muteBtn.boundingBox, location))
+        {
+            NSLog(@"tt mute");
+            if(ac.IsMuted)
+            {
+                ac.IsMuted=NO;
+                [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")]];
+                
+                [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
+            }
+            else
+            {
+                ac.IsMuted=YES;
+                [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+                [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
+            }
+        }
+    }
+
     //top left tap for edit pdef
     if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(commitBtn.boundingBox, location))
     {

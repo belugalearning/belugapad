@@ -46,6 +46,8 @@
 @property BOOL AuthoringMode;
 @property BOOL IsMuted;
 @property BOOL IsIpad1;
+@property BOOL NumberShowing;
+@property int PreviousNumber;
 
 //uikit gubbins
 @property (retain) UISearchBar *searchBar;
@@ -64,5 +66,6 @@
 -(void)tearDownUI;
 -(void)speakString:(NSString*)speakThis;
 -(void)stopAllSpeaking;
+-(NSString*)returnAppType;
 
 @end

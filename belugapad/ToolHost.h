@@ -238,6 +238,8 @@ typedef enum {
     BOOL quittingToMap;
     BOOL isTouching;
     
+    NSString *appType;
+    
     SGBtxeRow *qDescRow;
     
     CCParticleSystemQuad *followParticle;

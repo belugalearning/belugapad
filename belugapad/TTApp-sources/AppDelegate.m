@@ -59,6 +59,8 @@
 @synthesize IsMuted;
 @synthesize IsIpad1;
 
+@synthesize PreviousNumber, NumberShowing;
+
 @synthesize searchBar, searchList;
 
 @synthesize lastJmapViewUState;
@@ -490,6 +492,10 @@ void logMemUsage(void) {
         prevMemUsage = curMemUsage;
         NSLog(@"Memory used %7.1f (%+5.0f), free %7.1f kb", curMemUsage/1000.0f, memUsageDiff/1000.0f, freeMemory()/1000.0f);
     }
+}
+
+-(NSString*)returnAppType{
+    return @"APP_TIMESTABLES";
 }
 
 - (void) dealloc

@@ -7,6 +7,7 @@
 //
 
 #import "cocos2d.h"
+#import "AppDelegate.h"
 #import <Foundation/Foundation.h>
 
 @interface TimesTableMenu : CCLayer {
@@ -28,6 +29,7 @@
     int currentSelectionIndex;
     
     NSMutableArray *currentSelectionButtons;
+    AppController *ac;
     
 
 }

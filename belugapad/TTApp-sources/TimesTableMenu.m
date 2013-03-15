@@ -7,6 +7,7 @@
 //
 
 #import "TimesTableMenu.h"
+#import "AppDelegate.h"
 #import "ToolHost.h"
 #import "global.h"
 
@@ -136,11 +137,22 @@ const float outerButtonPopInDelay=0.05f;
         [sceneButtons addObject:s];
         [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
     }
+    
+    
+    ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    
+    ac.PreviousNumber=6;
+    ac.NumberShowing=YES;
+
+    if(ac.NumberShowing)
+        [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
 }
 
 -(void)createBigNumberOf:(int)thisNumber
 {
     gameState=@"SHOW_TABLES";
+    ac.NumberShowing=YES;
+    ac.PreviousNumber=thisNumber;
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
     CCLabelTTF *originalLabel=[original.children objectAtIndex:0];
@@ -189,8 +201,55 @@ const float outerButtonPopInDelay=0.05f;
     }
 }
 
+-(void)createBigNumberWithoutAnimationOf:(int)thisNumber
+{
+    gameState=@"SHOW_TABLES";
+    
+    CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    CCLabelTTF *originalLabel=[original.children objectAtIndex:0];
+    
+    NSString *f=nil;
+    
+    if(thisNumber<12)
+        f=[NSString stringWithFormat:@"/images/timestables/menu/button_big_%d.png", thisNumber+1];
+    else if(thisNumber==12)
+        f=@"/images/timestables/menu/button_big_random.png";
+    else if(thisNumber==13)
+        f=@"/images/timestables/menu/button_big_challenging.png";
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+    [s setPosition:ccp(cx,cy)];
+    [s setScale:1.0f];
+    [self setupOutsideButtons];
+
+
+    [renderLayer addChild:s z:20];
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:originalLabel.string fontName:CHANGO fontSize:56.0f];
+    [l setPosition:ccp(s.contentSize.width/2,60)];
+    [s addChild:l];
+    
+    [original setOpacity:0];
+    [originalLabel setOpacity:0];
+    
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        CCSprite *sL=[s.children objectAtIndex:0];
+        [s setOpacity:50];
+        [sL setOpacity:50];
+    }
+}
+
 -(void)returnCurrentBigNumber{
     if(currentSelection==nil)return;
+    
+    ac.NumberShowing=NO;
     
     float remTime=outerButtonPopInTime;
     

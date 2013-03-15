@@ -473,6 +473,10 @@ void logMemUsage(void) {
     }
 }
 
+-(NSString*)returnAppType{
+    return @"APP_MAIN";
+}
+
 - (void) dealloc
 {
     [loggingService release];

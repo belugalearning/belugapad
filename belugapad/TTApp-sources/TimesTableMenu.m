@@ -403,7 +403,7 @@ const float outerButtonPopInDelay=0.05f;
 -(void)setupOutsideButtons
 {
     NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
-    int currentPoint=3;
+    int currentPoint=2;
     float time=outerButtonPopOutTime;
     
     for(int i=0;i<12;i++)

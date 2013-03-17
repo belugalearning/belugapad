@@ -128,23 +128,24 @@
 
 -(void)updateContentDatabaseWithSettings:(NSDictionary*)settings
 {
-    NSNumber *importContent = [settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+    BOOL releaseMode = [settings objectForKey:@"RELEASE_MODE"] && [[settings objectForKey:@"RELEASE_MODE"] boolValue];
+    BOOL importContent = [settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"] && [[settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"] boolValue];
     NSString *kcmLoginName = [settings objectForKey:@"KCM_LOGIN_NAME"];
     
     if (contentDatabase)
     {
-        if (importContent && [importContent boolValue] && kcmLoginName)
+        if (releaseMode || (importContent && kcmLoginName))
         {
             [contentDatabase close];
             [contentDatabase release];
         } else {
-            return; // no point continuing as this function was already called at init & would now def be replacing bundled database with itself
+            return;
         }
     }
     
     NSError *error = nil;
     
-    if (importContent && [importContent boolValue] && kcmLoginName)
+    if (!releaseMode && importContent && kcmLoginName)
     {
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"app-import-content/%@", kcmLoginName] relativeToURL:self.kcmServerBaseURL];
         NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
@@ -163,20 +164,21 @@
         }
     }
     
+    if (releaseMode && [fm fileExistsAtPath:contentDir])
+    {
+        error = nil;
+        [fm removeItemAtPath:contentDir error:&error];
+    }
+    
     if (![fm fileExistsAtPath:contentDir])
     {
         error = nil;
         NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");
         [fm copyItemAtPath:bundledContentDir toPath:contentDir error:&error];
     }
-
-    //tested without import
-//    NSError *error=nil;
-//    NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");
-//    [fm copyItemAtPath:bundledContentDir toPath:contentDir error:&error];
     
     contentDatabase = [FMDatabase databaseWithPath:[contentDir stringByAppendingString:@"/content.db"]];
-    [contentDatabase retain];    
+    [contentDatabase retain];
 }
 
 #pragma mark - dynamic pipeline creation

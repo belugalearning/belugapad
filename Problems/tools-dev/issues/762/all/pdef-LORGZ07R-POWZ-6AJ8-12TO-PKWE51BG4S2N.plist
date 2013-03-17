@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Complete the following expressions.</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Complete the expression.&lt;/b:t&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;&amp;lt;&lt;/b:ot&gt;&lt;b:ot tag=&quot;c&quot;&gt;=&lt;/b:ot&gt;&lt;b:ot tag=&quot;b&quot;&gt;&amp;gt;&lt;/b:ot&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;
+&lt;b:ph targetTag=&quot;a&quot;/&gt;
+&lt;b:on number=&quot;{$y}&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$y}&quot;/&gt;
+&lt;b:ph targetTag=&quot;b&quot;/&gt;
+&lt;b:on number=&quot;{$x}&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;
+&lt;b:ph targetTag=&quot;c&quot;/&gt;
+&lt;b:on number=&quot;{$x}&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$y}&quot;/&gt;
+&lt;b:ph targetTag=&quot;c&quot;/&gt;
+&lt;b:on number=&quot;{$y}&quot;/&gt;</string>
+	</array>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>1000</string>
+			<key>MAX</key>
+			<string>3000</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>3100</string>
+			<key>MAX</key>
+			<string>4000</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -31,9 +31,9 @@
     CCSprite *b=nil;
     
     if(appType==0)
-        [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/background.png")];
-    else if(appType==0)
-        [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sand_background.png")];
+        b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/background.png")];
+    else if(appType==1)
+        b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sand_background.png")];
     
     [b setPosition:ccp(cx, cy)];
     [backgroundLayer addChild:b];

@@ -1268,7 +1268,7 @@ static float kTimeToHintToolTray=0.0f;
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     isPaused = YES;
     
-    if(!pauseMenu && [appType isEqualToString:@"APP_MAIN"])
+    if(!pauseMenu && appType==0)
     {
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
@@ -1287,7 +1287,7 @@ static float kTimeToHintToolTray=0.0f;
             [pauseLayer addChild:pauseTestPathLabel z:11];
         }
     }
-    else if(!pauseMenu && [appType isEqualToString:@"APP_TIMESTABLES"])
+    else if(!pauseMenu && appType==1)
     {
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/menu_pause.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
@@ -1337,7 +1337,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void) checkPauseTouches:(CGPoint)location
 {
-    if([appType isEqualToString:@"APP_MAIN"]){
+    if(appType==0){
         if(CGRectContainsPoint(kPauseMenuContinue, location))
         {
             //resume
@@ -1377,7 +1377,7 @@ static float kTimeToHintToolTray=0.0f;
             }
         }
     }
-    if([appType isEqualToString:@"APP_TIMESTABLES"]){
+    if(appType==1){
         if(CGRectContainsPoint(kPauseMenuContinue, location))
         {
             NSLog(@"tt continue");

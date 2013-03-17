@@ -494,8 +494,8 @@ void logMemUsage(void) {
     }
 }
 
--(NSString*)returnAppType{
-    return @"APP_TIMESTABLES";
+-(int)returnAppType{
+    return 1;
 }
 
 - (void) dealloc

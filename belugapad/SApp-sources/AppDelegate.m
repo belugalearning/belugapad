@@ -473,8 +473,8 @@ void logMemUsage(void) {
     }
 }
 
--(NSString*)returnAppType{
-    return @"APP_MAIN";
+-(int)returnAppType{
+    return 0;
 }
 
 - (void) dealloc

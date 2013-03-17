@@ -7,6 +7,7 @@
 //
 
 #import "LRAnimator.h"
+#import "AppDelegate.h"
 #import "global.h"
 
 @implementation LRAnimator
@@ -23,7 +24,17 @@
 //    CCLayerGradient *gbkg=[CCLayerGradient layerWithColor:ccc4(181, 45, 153, 255) fadingTo:ccc4(156, 15, 153, 255)];
 //    [backgroundLayer addChild:gbkg];
     
-    CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/background.png")];
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    
+    int appType=[ac returnAppType];
+    
+    CCSprite *b=nil;
+    
+    if(appType==0)
+        [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/background.png")];
+    else if(appType==0)
+        [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sand_background.png")];
+    
     [b setPosition:ccp(cx, cy)];
     [backgroundLayer addChild:b];
 }

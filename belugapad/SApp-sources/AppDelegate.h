@@ -64,6 +64,6 @@
 -(void)tearDownUI;
 -(void)speakString:(NSString*)speakThis;
 -(void)stopAllSpeaking;
--(NSString*)returnAppType;
+-(int)returnAppType;
 
 @end

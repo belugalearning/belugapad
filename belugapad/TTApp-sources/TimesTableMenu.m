@@ -162,7 +162,8 @@ const float outerButtonPopInDelay=0.05f;
     
     CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
     CCCallBlock *numbers=[CCCallBlock actionWithBlock:^{[self setupOutsideButtons];}];
-    CCSequence *sq=[CCSequence actions:ea, numbers, nil];
+    CCCallBlock *playbtn=[CCCallBlock actionWithBlock:^{[self setupPlayButton];}];
+    CCSequence *sq=[CCSequence actions:ea, playbtn, numbers, nil];
     
     NSString *f=nil;
     
@@ -234,6 +235,8 @@ const float outerButtonPopInDelay=0.05f;
     
     currentSelection=s;
     currentSelectionIndex=thisNumber;
+    
+    [self setupPlayButtonWithAnimation:NO];
     
     for(int i=0;i<[sceneButtons count];i++)
     {
@@ -374,6 +377,27 @@ const float outerButtonPopInDelay=0.05f;
     }
     
     return (NSArray*)pointPos;
+}
+
+-(void)setupPlayButton
+{
+    [self setupPlayButtonWithAnimation:YES];
+}
+
+-(void)setupPlayButtonWithAnimation:(BOOL)animate
+{
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/play_button.png")];
+    [s setPosition:ccp((currentSelection.contentSize.width/2)+10,(currentSelection.contentSize.height/2)+5)];
+    [currentSelection addChild:s];
+    
+    if(animate){
+        [s setScale:0];
+        CCScaleTo *st=[CCScaleTo actionWithDuration:0.7f scale:1.0f];
+        CCEaseBounceOut *bo=[CCEaseBounceOut actionWithAction:st];
+        
+        [s runAction:bo];
+    }
+    
 }
 
 -(void)setupOutsideButtons

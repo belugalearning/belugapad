@@ -16,7 +16,7 @@
 @synthesize x, y, mastery, jtd, utd;
 @synthesize regions;
 @synthesize renderLayout, renderBase;
-@synthesize comingSoon;
+@synthesize comingSoon, comingSoon2;
 @synthesize isLit;
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet

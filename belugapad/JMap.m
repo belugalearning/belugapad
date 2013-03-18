@@ -414,7 +414,7 @@ typedef enum {
             
             comingSoonNode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
-            if(n.comingSoon) comingSoonNode.spriteSuffix=@"cs";
+            if(n.comingSoon) comingSoonNode.spriteSuffix=@"1";
             if(n.comingSoon2) comingSoonNode.spriteSuffix=@"cs2";
             
             newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;

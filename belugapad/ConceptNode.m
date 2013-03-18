@@ -32,6 +32,7 @@
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
         comingSoon=[resultSet boolForColumn:@"cs"];
+        comingSoon2=[resultSet boolForColumn:@"cs2"];
         
         NSArray *jtds=[[resultSet stringForColumn:@"jtd"] objectFromJSONString];
         if(jtds.count>0) jtd=[jtds objectAtIndex:0];

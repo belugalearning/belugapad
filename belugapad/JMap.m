@@ -408,11 +408,14 @@ typedef enum {
         
         //create a node go
         
-        if(n.comingSoon)
+        if(n.comingSoon || n.comingSoon2)
         {
             SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
             
             comingSoonNode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            if(n.comingSoon) comingSoonNode.spriteSuffix=@"1";
+            if(n.comingSoon2) comingSoonNode.spriteSuffix=@"cs2";
             
             newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
             

@@ -16,7 +16,7 @@
 @synthesize x, y, mastery, jtd, utd;
 @synthesize regions;
 @synthesize renderLayout, renderBase;
-@synthesize comingSoon;
+@synthesize comingSoon, comingSoon2;
 @synthesize isLit;
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet
@@ -32,6 +32,7 @@
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
         comingSoon=[resultSet boolForColumn:@"cs"];
+        comingSoon2=[resultSet boolForColumn:@"cs2"];
         
         NSArray *jtds=[[resultSet stringForColumn:@"jtd"] objectFromJSONString];
         if(jtds.count>0) jtd=[jtds objectAtIndex:0];

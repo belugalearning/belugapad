@@ -140,9 +140,6 @@ const float outerButtonPopInDelay=0.05f;
     
     
     ac = (AppController*)[[UIApplication sharedApplication] delegate];
-    
-    ac.PreviousNumber=6;
-    ac.NumberShowing=YES;
 
     if(ac.NumberShowing)
         [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];

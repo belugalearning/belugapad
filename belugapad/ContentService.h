@@ -64,4 +64,6 @@
 
 -(NSDictionary*)saveChangesToCurrentProblemPDef:(NSDictionary*)pdef;
 
+-(void)changeTestProblemListTo:(NSArray *)newProblems;
+
 @end

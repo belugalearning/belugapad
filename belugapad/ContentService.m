@@ -501,6 +501,15 @@
     NSLog(@"loaded test def: %@", self.pathToTestDef);
 }
 
+-(void)changeTestProblemListTo:(NSArray *)newProblems
+{
+    if(testProblemList) [testProblemList release];
+    
+    testProblemList=newProblems;
+    
+    [testProblemList retain];
+}
+
 #pragma mark - epsiode management, progression
 
 -(int)pipelineIndex

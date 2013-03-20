@@ -8,6 +8,7 @@
 
 #import "TimesTableMenu.h"
 #import "AppDelegate.h"
+#import "ContentService.h"
 #import "ToolHost.h"
 #import "global.h"
 
@@ -382,6 +383,8 @@ const float outerButtonPopInDelay=0.05f;
 
         if(CGRectContainsPoint(currentSelection.boundingBox, location))
         {
+            [self setupPipeline];
+            
             [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             gotHit=YES;
         }
@@ -391,6 +394,18 @@ const float outerButtonPopInDelay=0.05f;
         }
     
     }
+}
+
+-(void)setupPipeline
+{
+    NSMutableArray *pipe=[[NSMutableArray alloc] init];
+    
+    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-1.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+    
+    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-2.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+    
+    [ac.contentService changeTestProblemListTo:[NSArray arrayWithArray:pipe]];
+    [pipe release];
 }
 
 -(NSArray*)positionsInCircleWith:(int)points and:(double)radius and:(CGPoint)centre

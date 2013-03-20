@@ -400,10 +400,22 @@ const float outerButtonPopInDelay=0.05f;
 {
     NSMutableArray *pipe=[[NSMutableArray alloc] init];
     
-    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-1.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+    NSString *mps=[NSString stringWithFormat:@"/Problems/timestable/flat/%d/", currentSelectionIndex+1];
+    NSString *dirp=BUNDLE_FULL_PATH(mps);
+    NSArray *files=[[NSFileManager defaultManager] contentsOfDirectoryAtPath: dirp error:nil];
     
-    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-2.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+    for(int i=0;i<15;i++)
+    {
+        int max=files.count;
+        int r=arc4random()%max;
+        NSString *newp=[NSString stringWithFormat:@"%@/%@", dirp, [files objectAtIndex:r]];
+        [pipe addObject:newp];
+    }
     
+//    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-1.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+//    
+//    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-2.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+//
     [ac.contentService changeTestProblemListTo:[NSArray arrayWithArray:pipe]];
     [pipe release];
 }

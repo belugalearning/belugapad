@@ -488,7 +488,20 @@
 
 -(void)gotoNextProblemInTestPipeline
 {
-    currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
+    AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
+    if([ac returnAppType]==0)
+    {
+        currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
+    }
+    else
+    {
+        currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1);
+        if(currentPIndex>=testProblemList.count)
+        {
+            self.currentPDef=nil;
+            return;
+        }
+    }
     
     NSString *problemPath=[testProblemList objectAtIndex:currentPIndex];
     

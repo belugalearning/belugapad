@@ -779,7 +779,7 @@ static float kTimeToHintToolTray=0.0f;
             [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[RewardStars scene]]];
         }
     }
-    else if(appType==0){
+    else if(appType==1){
         if(ac.IsIpad1)
         {
             [[CCDirector sharedDirector] replaceScene:[TimesTableMenu scene]];

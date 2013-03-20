@@ -238,7 +238,7 @@ typedef enum {
     BOOL quittingToMap;
     BOOL isTouching;
     
-    NSString *appType;
+    int appType;
     
     SGBtxeRow *qDescRow;
     

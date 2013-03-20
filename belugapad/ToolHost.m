@@ -21,6 +21,7 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "JMap.h"
+#import "TimesTableMenu.h"
 #import "RewardStars.h"
 #import "DProblemParser.h"
 #import "Problem.h"
@@ -119,6 +120,14 @@ static float kTimeToHintToolTray=0.0f;
         scoreMultiplier=1;
         
         [TestFlight passCheckpoint:@"STARTING_TOOLHOST"];
+     
+        ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        contentService = ac.contentService;
+        usersService = ac.usersService;
+        
+        appType=[ac returnAppType];
+        
         
         //setup layer sequence
         backgroundLayer=[[CCLayer alloc] init];
@@ -173,13 +182,6 @@ static float kTimeToHintToolTray=0.0f;
         
         //dynamic problem parser (persists to end of pipeline)
         DynProblemParser=[[DProblemParser alloc] init];
-        
-        ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        loggingService = ac.loggingService;
-        contentService = ac.contentService;
-        usersService = ac.usersService;
-        
-        appType=[ac returnAppType];
         
         [ac tearDownUI];
         
@@ -513,16 +515,21 @@ static float kTimeToHintToolTray=0.0f;
 {
     Zubi=[[Daemon alloc] initWithLayer:contextProgressLayer andRestingPostion:ccp(cx, 2*cy-HD_SCORE_INSET) andLy:ly];
     [Zubi hideZubi];
-        
-    scoreLabel=[CCLabelTTF labelWithString:@"0" fontName:@"Chango" fontSize:18];;
-    [scoreLabel setPosition:ccp(cx, 2*cy-HD_SCORE_INSET)];
-    [perstLayer addChild:scoreLabel z:4];
+    
+    if(appType==0){
+        scoreLabel=[CCLabelTTF labelWithString:@"0" fontName:@"Chango" fontSize:18];
+        [scoreLabel setPosition:ccp(cx, 2*cy-HD_SCORE_INSET)];
+        [perstLayer addChild:scoreLabel z:4];
+    }
 }
 
 #pragma mark - scoring
 
 -(void)incrementScoreAndMultiplier
 {
+    // If we're in TT, return!
+    if(appType==1)return;
+    
     //increment the score if we're past init (e.g. in first scoring problem)
     if(multiplierStage>0)
     {
@@ -554,6 +561,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)setMultiplierButtonTo:(int)m
 {
+    // If we're in TT, return!
+    if(appType==1)return;
     if(!(m==2 || m==4 || m==8 || m==16)) return; // because there isn't a corresponding image in the project to display
     
     if(multiplierBadge)
@@ -582,6 +591,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)resetScoreMultiplier
 {
+    // If we're in TT, return!
+    if(appType==1)return;
     if(breakOutIntroProblemFK)return;
     scoreMultiplier=1;
     multiplierStage=1;
@@ -594,6 +605,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)scoreProblemSuccess
 {
+    // If we're in TT, return!
+    if(appType==1)return;
     if(breakOutIntroProblemFK)return;
     
     int newScore = ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseScore);
@@ -618,6 +631,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)updateScoreLabels
 {
+    // If we're in TT, return!
+    if(appType==1)return;
     //[multiplierLabel setString:[NSString stringWithFormat:@"(%dx)", (int)scoreMultiplier]];
     
     //show correct multiplier
@@ -633,6 +648,9 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)incrementDisplayScore: (id)sender
 {
+    // If we're in TT, return!
+    if(appType==1)return;
+    
     displayScore+=displayPerShard;
     [self updateScoreLabels];
 }
@@ -1268,7 +1286,7 @@ static float kTimeToHintToolTray=0.0f;
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     isPaused = YES;
     
-    if(!pauseMenu && [appType isEqualToString:@"APP_MAIN"])
+    if(!pauseMenu && appType==0)
     {
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
@@ -1287,7 +1305,7 @@ static float kTimeToHintToolTray=0.0f;
             [pauseLayer addChild:pauseTestPathLabel z:11];
         }
     }
-    else if(!pauseMenu && [appType isEqualToString:@"APP_TIMESTABLES"])
+    else if(!pauseMenu && appType==1)
     {
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/menu_pause.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
@@ -1337,7 +1355,7 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void) checkPauseTouches:(CGPoint)location
 {
-    if([appType isEqualToString:@"APP_MAIN"]){
+    if(appType==0){
         if(CGRectContainsPoint(kPauseMenuContinue, location))
         {
             //resume
@@ -1377,35 +1395,32 @@ static float kTimeToHintToolTray=0.0f;
             }
         }
     }
-    if([appType isEqualToString:@"APP_TIMESTABLES"]){
+    else if(appType==1){
         if(CGRectContainsPoint(kPauseMenuContinue, location))
         {
-            NSLog(@"tt continue");
             //resume
-//            [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
+            [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
 //            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-//            [self hidePauseMenu];
+            [self hidePauseMenu];
         }
         if(CGRectContainsPoint(kPauseMenuReset, location))
         {
-            NSLog(@"tt reset");
-            //reset
-//            [loggingService logEvent:BL_PA_USER_RESET withAdditionalData:nil];
-//            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-//            [self resetProblem];
-//            [self hidePauseMenu];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+            isPaused=NO;
+            [pauseLayer setVisible:NO];
+            [self gotoNewProblem];
         }
         if(CGRectContainsPoint(kPauseMenuMenu, location))
         {
-            NSLog(@"tt menu");
+
 //            [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
 //            [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
-//            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-//            [self returnToMap];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+            [self returnToTTMenu];
         }
         if(CGRectContainsPoint(muteBtn.boundingBox, location))
         {
-            NSLog(@"tt mute");
+
             if(ac.IsMuted)
             {
                 ac.IsMuted=NO;
@@ -1463,6 +1478,17 @@ static float kTimeToHintToolTray=0.0f;
     [contentService quitPipelineTracking];
     [self unscheduleAllSelectors];
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+}
+
+-(void)returnToTTMenu
+{
+    if(quittingToMap)return;
+    quittingToMap=YES;
+    
+    [self stopAllSpeaking];
+    [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_TIMESTABLE_MENU"];
+    [self unscheduleAllSelectors];
+    [[CCDirector sharedDirector] replaceScene:[TimesTableMenu scene]];
 }
 
 -(void)showProblemCompleteMessage

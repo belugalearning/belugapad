@@ -70,7 +70,7 @@ const float outerButtonPopInDelay=0.05f;
     sceneButtonPositions=[[NSMutableArray alloc]init];
     currentSelectionIndex=-1;
     
-    CCSprite *background=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/menu_bg.png")];
+    CCSprite *background=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sand_background.png")];
     [background setPosition:ccp(cx,cy)];
     [renderLayer addChild:background];
     
@@ -162,12 +162,13 @@ const float outerButtonPopInDelay=0.05f;
     
     CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
     CCCallBlock *numbers=[CCCallBlock actionWithBlock:^{[self setupOutsideButtons];}];
-    CCSequence *sq=[CCSequence actions:ea, numbers, nil];
+    CCCallBlock *playbtn=[CCCallBlock actionWithBlock:^{[self setupPlayButton];}];
+    CCSequence *sq=[CCSequence actions:ea, playbtn, numbers, nil];
     
     NSString *f=nil;
     
     if(thisNumber<12)
-        f=[NSString stringWithFormat:@"/images/timestables/menu/button_big_%d.png", thisNumber+1];
+        f=@"/images/timestables/menu/button_big_bg.png";
     else if(thisNumber==12)
         f=@"/images/timestables/menu/button_big_random.png";
     else if(thisNumber==13)
@@ -181,6 +182,14 @@ const float outerButtonPopInDelay=0.05f;
     CCLabelTTF *l=[CCLabelTTF labelWithString:originalLabel.string fontName:CHANGO fontSize:56.0f];
     [l setPosition:ccp(s.contentSize.width/2,60)];
     [s addChild:l];
+    
+    if(thisNumber<12){
+        // create the number label
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%dx", thisNumber+1] fontName:CHANGO fontSize:164.0f];
+        [l setPosition:ccp((s.contentSize.width/2),(s.contentSize.height/2)+15)];
+        [s addChild:l];
+        [self setupOutsideButtons];
+    }
     
     [s runAction:sq];
     [s runAction:st];
@@ -211,7 +220,7 @@ const float outerButtonPopInDelay=0.05f;
     NSString *f=nil;
     
     if(thisNumber<12)
-        f=[NSString stringWithFormat:@"/images/timestables/menu/button_big_%d.png", thisNumber+1];
+        f=@"/images/timestables/menu/button_big_bg.png";
     else if(thisNumber==12)
         f=@"/images/timestables/menu/button_big_random.png";
     else if(thisNumber==13)
@@ -220,8 +229,6 @@ const float outerButtonPopInDelay=0.05f;
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
     [s setPosition:ccp(cx,cy)];
     [s setScale:1.0f];
-    [self setupOutsideButtons];
-
 
     [renderLayer addChild:s z:20];
     
@@ -229,11 +236,21 @@ const float outerButtonPopInDelay=0.05f;
     [l setPosition:ccp(s.contentSize.width/2,60)];
     [s addChild:l];
     
+    if(thisNumber<12){
+        // create the number label
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%dx", thisNumber+1] fontName:CHANGO fontSize:164.0f];
+        [l setPosition:ccp(s.contentSize.width/2,(s.contentSize.height/2)+15)];
+        [s addChild:l];
+        [self setupOutsideButtons];
+    }
+    
     [original setOpacity:0];
     [originalLabel setOpacity:0];
     
     currentSelection=s;
     currentSelectionIndex=thisNumber;
+    
+    [self setupPlayButtonWithAnimation:NO];
     
     for(int i=0;i<[sceneButtons count];i++)
     {
@@ -270,8 +287,22 @@ const float outerButtonPopInDelay=0.05f;
     CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
     CCLabelTTF *oL=[o.children objectAtIndex:0];
     
+    CCSprite *play=[s.children objectAtIndex:2];
+    CCLabelTTF *playLabel=[s.children objectAtIndex:1];
+    
     CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
 
+    
+    CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
+    CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
+    [play runAction:bo];
+
+    
+    CCScaleTo *playlblscale=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
+    CCEaseBounceIn*boL=[CCEaseBounceIn actionWithAction:playlblscale];
+    [playLabel runAction:boL];
+
+    
     CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
     CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
     CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
@@ -351,10 +382,11 @@ const float outerButtonPopInDelay=0.05f;
 //                break;
 //            }
 //        }
+
         if(CGRectContainsPoint(currentSelection.boundingBox, location))
         {
-            gotHit=YES;
             [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+            gotHit=YES;
         }
         
         if(!gotHit){
@@ -381,11 +413,50 @@ const float outerButtonPopInDelay=0.05f;
     return (NSArray*)pointPos;
 }
 
+-(void)setupPlayButton
+{
+    [self setupPlayButtonWithAnimation:YES];
+}
+
+-(void)setupPlayButtonWithAnimation:(BOOL)animate
+{
+    CCLabelTTF *l=[currentSelection.children objectAtIndex:1];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/play_button.png")];
+    [s setPosition:ccp((currentSelection.contentSize.width/2)+10,(currentSelection.contentSize.height/2)+15)];
+    [currentSelection addChild:s];
+    
+    if(animate){
+        [s setScale:0];
+        CCScaleTo *st=[CCScaleTo actionWithDuration:0.7f scale:1.0f];
+        CCEaseBounceOut *bo=[CCEaseBounceOut actionWithAction:st];
+        
+        [s runAction:bo];
+        
+        CCScaleTo *stL=[CCScaleTo actionWithDuration:0.4f scale:0.3f];
+        CCEaseBounceOut *boL=[CCEaseBounceOut actionWithAction:stL];
+        [l runAction:boL];
+    
+    }
+    else{
+        [l setScale:0.3f];
+    }
+    
+}
+
 -(void)setupOutsideButtons
 {
     NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
-    int currentPoint=3;
+    int currentPoint=2;
     float time=outerButtonPopOutTime;
+    
+    if(currentSelectionButtons.count>0)
+    {
+        for(CCSprite *s in currentSelectionButtons)
+            [s removeFromParentAndCleanup:YES];
+        
+        [currentSelectionButtons removeAllObjects];
+    }
     
     for(int i=0;i<12;i++)
     {
@@ -410,8 +481,6 @@ const float outerButtonPopInDelay=0.05f;
         
         if(currentPoint<0)
             currentPoint=11;
-        
-        NSLog(@"world position of sprite: %@", NSStringFromCGPoint([self convertToWorldSpace:s.position]));
     }
 }
 

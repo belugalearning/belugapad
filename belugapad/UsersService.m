@@ -195,7 +195,12 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     if ([missingNodeIds count])
     {
-        [currentUserStateDatabase executeUpdate:[NSString stringWithFormat:@"INSERT INTO Nodes ('id') VALUES('%@')", [missingNodeIds componentsJoinedByString:@"'),('"]]];
+        [currentUserStateDatabase beginTransaction];
+        for (NSString *nodeId in missingNodeIds)
+        {
+            [currentUserStateDatabase executeUpdate:@"INSERT INTO Nodes (id) VALUES (?)", nodeId];
+        }
+        [currentUserStateDatabase commit];
     }
     
     [currentUserStateDatabase close];

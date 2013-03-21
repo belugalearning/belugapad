@@ -202,6 +202,16 @@
     }
 }
 
+-(void)setVarBoundsForKey:(NSString *)key withMin:(float)min andMax:(float)max
+{
+    
+}
+
+-(void)setVarValueForKey:(NSString*)key toValue:(float)val
+{
+    
+}
+
 -(NSNumber *)randomNumberWithParams:(NSDictionary*)params andKey:(NSString*)key
 {
     if([params objectForKey:@"SELECT_FROM"])
@@ -209,7 +219,12 @@
         //pick a random number from those listed
         NSArray *list=[params objectForKey:@"SELECT_FROM"];
         int p=arc4random() % list.count;
-        return [NSNumber numberWithFloat:[[list objectAtIndex:p] floatValue]];
+        
+        NSString *rawSelect=[list objectAtIndex:p];
+        float parsedF=[self parseFloatFromString:rawSelect];
+        NSNumber *parsedN=[NSNumber numberWithFloat:parsedF];
+        
+        return parsedN;
     }
     else {
         //create a random number between min and max

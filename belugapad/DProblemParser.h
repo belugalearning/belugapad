@@ -31,4 +31,7 @@
 
 -(NSMutableDictionary*) createStaticPdefFromPdef:(NSDictionary*)dpdef;
 
+-(void)setVarBoundsForKey:(NSString *)key withMin:(float)min andMax:(float)max;
+-(void)setVarValueForKey:(NSString*)key toValue:(float)val;
+
 @end

@@ -67,6 +67,7 @@ static float kTimeToHeaderBounce=7.0f;
         contentService = ac.contentService;
         usersService = ac.usersService;
         loggingService = ac.loggingService;
+        appType=[ac returnAppType];
         
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;
@@ -208,7 +209,8 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)populateGW
 {
-    is12x12=YES;
+    if(appType==1)
+        is12x12=YES;
     
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Operator.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
@@ -754,7 +756,18 @@ static float kTimeToHeaderBounce=7.0f;
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[toolHost doIncomplete];
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            [toolHost doIncomplete];
+            [toolHost resetProblem];
+        }
+        
+        if(appType==1)
+        {
+            [toolHost doIncomplete];
+            [toolHost gotoNewProblem];
+            
+        }
     }
 
 }

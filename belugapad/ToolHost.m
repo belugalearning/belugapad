@@ -1896,7 +1896,13 @@ static float kTimeToHintToolTray=0.0f;
     }
     else
     {
-        [self doIncomplete];
+        if(appType==0){
+            [self doIncomplete];
+        }
+        else if(appType==1){
+            [self doIncomplete];
+            [self gotoNewProblem];
+        }
     }
 }
 
@@ -2084,9 +2090,15 @@ static float kTimeToHintToolTray=0.0f;
         NSString *strNpEval=[NSString stringWithFormat:@"%g", npEval];
         
         if([pickerValue isEqualToString:strNpEval])
+        {
             [self doWinning];
-        else
+        }
+        else{
             [self doIncomplete];
+            
+            if(appType==1)
+                [self gotoNewProblem];
+        }
     }
 }
 

@@ -79,6 +79,7 @@ typedef enum {
     BOOL allowHighlightY;
     BOOL switchXYforAnswer;
     BOOL is12x12;
+    int appType;
     
     NSMutableArray *rowTints;
     NSMutableArray *colTints;

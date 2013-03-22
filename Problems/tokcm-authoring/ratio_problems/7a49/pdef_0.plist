@@ -4,23 +4,17 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>tom&apos;s apples</string>
 	<key>EVAL_TYPE</key>
-	<string>EXPRESSION_EQUALITIES</string>
+	<string>ALL_ENABLED</string>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
-	<key>NUMBER_CARD_ROW_MIN</key>
-	<integer>1</integer>
-	<key>NUMBER_CARD_ROW_MAX</key>
-	<integer>10</integer>
-	<key>NUMBER_CARD_INTERVAL</key>
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;There are 3 feet in 1 yard. Fill in the gaps.&lt;/b:t&gt;</string>
-		<string>&lt;b:t&gt;Yards&lt;/b:t&gt;  &lt;b:ph /&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:ph /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
-		<string>&lt;b:t&gt;Feet &lt;/b:t&gt;  &lt;b:ph /&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:ph /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
+		<string>&lt;b:on number=&quot;3&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;1&quot;/&gt;&lt;b:t&gt;yard&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;5&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;15&quot;/&gt;&lt;b:t&gt;yards&lt;/b:t&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;3&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;9&quot;/&gt;&lt;b:t&gt;yards&lt;/b:t&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;2&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;6&quot;/&gt;&lt;b:t&gt;yards&lt;/b:t&gt;</string>
 	</array>
 </dict>
 </plist>

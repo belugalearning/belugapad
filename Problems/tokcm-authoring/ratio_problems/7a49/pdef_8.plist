@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;{$x} {@obj} cost {$z} goobles. Fill in the gaps.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;&lt;b:t&gt;{@obj}&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;{$z}&quot;/&gt;&lt;b:t&gt;goobles&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x+3}&quot;/&gt;&lt;b:t&gt;{@obj}&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x3*$y}&quot;/&gt;&lt;b:t&gt;goobles&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x+2}&quot;/&gt;&lt;b:t&gt;{@obj}&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x2*$y}&quot;/&gt;&lt;b:t&gt;goobles&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x3</string>
+			<key>VALUE</key>
+			<string>{$x+3}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x2</string>
+			<key>VALUE</key>
+			<string>{$x+2}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>VALUE</key>
+			<string>{$y*$x}</string>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@obj</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>pens</string>
+				<string>cakes</string>
+				<string>sweets</string>
+				<string>crayons</string>
+			</array>
+		</dict>
+	</dict>
+	<key>REPEAT_AS_IS_MIN</key>
+	<string>3</string>
+</dict>
+</plist>

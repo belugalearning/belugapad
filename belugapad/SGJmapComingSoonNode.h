@@ -13,6 +13,7 @@
 
 @property (retain) CCLayer *RenderLayer;
 @property (retain) NSString *UserVisibleString;
+@property (retain) NSString *spriteSuffix;
 
 -(SGJmapComingSoonNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 

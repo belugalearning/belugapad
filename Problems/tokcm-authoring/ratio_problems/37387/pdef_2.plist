@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>This is {$x}. Make {$z}.</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>0</string>
+	<key>DOTGRID_EVAL_TOTALSIZE</key>
+	<string>($z*$y}</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>40</integer>
+	<key>DRAW_MODE</key>
+	<integer>2</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>SHOW_RESIZE</key>
+			<true/>
+			<key>START_X</key>
+			<string>0</string>
+			<key>END_X</key>
+			<string>{$number}</string>
+			<key>START_Y</key>
+			<string>7</string>
+			<key>END_Y</key>
+			<string>8</string>
+		</dict>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>{$x-1}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$number</string>
+			<key>VALUE</key>
+			<string>{$x*$y}</string>
+		</dict>
+	</array>
+	<key>REPEAT_AS_IS_MIN</key>
+	<string>4</string>
+	<key>SHOW_DRAGGABLE_BLOCK</key>
+	<false/>
+</dict>
+</plist>

@@ -521,6 +521,7 @@
     if(testProblemList) [testProblemList release];
     
     testProblemList=newProblems;
+    currentPIndex=NSUIntegerMax;
     
     [testProblemList retain];
 }

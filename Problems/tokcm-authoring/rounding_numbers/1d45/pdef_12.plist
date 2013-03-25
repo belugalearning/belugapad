@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>{$x} is in the middle of {$y} and {$z}. When rounding to the nearest ten, we round up. What is the nearest ten to {$x}?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>dyn rounding numbers</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>{$x}</string>
+	<key>MIN_VALUE</key>
+	<string>{$y-10}</string>
+	<key>MAX_VALUE</key>
+	<string>{$z+10}</string>
+	<key>EVAL_TARGET</key>
+	<string>{$z}</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>1</integer>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<true/>
+	<key>HIDE_ALL_NUMBERS</key>
+	<false/>
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>5</string>
+	</array>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>45</string>
+				<string>55</string>
+				<string>65</string>
+				<string>75</string>
+				<string>85</string>
+				<string>95</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>VALUE</key>
+			<string>{$x-5}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>VALUE</key>
+			<string>{$x+5}</string>
+		</dict>
+	</array>
+	<key>REPEAT_AS_IS_MIN</key>
+	<string>2</string>
+</dict>
+</plist>

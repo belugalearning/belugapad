@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>Which calculation gives x?</string>
+		<string>&lt;b:on number=&quot;{4*$x}&quot;/&gt;&lt;b:on number=&quot;{2*$x}&quot;/&gt;&lt;b:on number=&quot;{8*$x}&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{4*$y}&quot;/&gt;&lt;b:on number=&quot;{2*$y}&quot;/&gt;&lt;b:ot&gt;x&lt;/b:ot&gt;</string>
+	</array>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<true/>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>({4*$y}/{4*$x}) x {8*$x}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>({2*$y}/{2*$x}) x {8*$x})</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>({4*$x}/{4*$y}) x {8*$x}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>({2*$x}/{2*$y}) x {8*$x}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which calculation gives x?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>RECALL</key>
+			<string>$x</string>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+			</array>
+		</dict>
+		<dict>
+			<key>RECALL</key>
+			<string>$y</string>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>5</string>
+				<string>6</string>
+				<string>7</string>
+			</array>
+		</dict>
+	</array>
+	<key>REPEAT_MY_SET_MIN</key>
+	<string>3</string>
+</dict>
+</plist>

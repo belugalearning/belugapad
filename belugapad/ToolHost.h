@@ -251,6 +251,7 @@ typedef enum {
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
 @property BOOL toolCanEval;
+@property BOOL forceCommitOff;
 @property (retain) DProblemParser *DynProblemParser;
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) id CurrentBTXE;

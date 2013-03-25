@@ -694,7 +694,7 @@ static float kTimeToHeaderBounce=7.0f;
                 int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
                 NSLog(@"thisAnsX=%d, thisAnsY=%d, myXpos=%d, myYpos=%d", thisAnsX, thisAnsY, selTile.myXpos, selTile.myYpos);
                 
-                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)
+                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos)
                 {
                     answersFound++;
                 }

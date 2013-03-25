@@ -39,6 +39,7 @@
 #import "ExprBuilder.h"
 #import "LongDivision.h"
 #import "LineDrawer.h"
+#import <GameKit/GameKit.h>
 
 
 #define HD_HEADER_HEIGHT 65.0f

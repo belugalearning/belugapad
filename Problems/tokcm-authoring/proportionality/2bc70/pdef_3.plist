@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;What calculation can be used to find the missing number?&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;{$a} x table&lt;/b:t&gt;&lt;b:on number=&quot;{3*$a}&quot;/&gt;&lt;b:on number=&quot;{5*$a}&quot;/&gt;</string>
+		<string>&lt;b:t&gt;{$b} x table&lt;/b:t&gt;&lt;b:on number=&quot;{3*$b}&quot;/&gt;&lt;b:ot&gt;x&lt;/b:ot&gt;</string>
+	</array>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>( {3*$b}/{3*$a} ) x {5*$a}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>( {3*$a}/{5*$a} ) x {3*$b}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>( {5*$a}/{3*$a} ) x {3*$b}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>What calculation can be used to find the missing number?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$a</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+				<string>5</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$b</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>6</string>
+				<string>7</string>
+				<string>8</string>
+				<string>9</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

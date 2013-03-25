@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>580</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>550</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>644</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>650</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>When rounded to the nearest hundred, which of these numbers will round to 600?</string>
+	</dict>
+</dict>
+</plist>

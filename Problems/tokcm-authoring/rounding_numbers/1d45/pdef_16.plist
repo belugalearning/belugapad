@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Round {$x}</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>dyn rounding numbers</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>{$x}</string>
+	<key>MIN_VALUE</key>
+	<string>500</string>
+	<key>MAX_VALUE</key>
+	<string>700</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>1</integer>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<true/>
+	<key>HIDE_ALL_NUMBERS</key>
+	<false/>
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>1</string>
+	</array>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>500 is the closest hundred to {$x}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>600 is the closest hundred to {$x}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which of these statements is true?</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>551</string>
+			<key>MAX</key>
+			<string>599</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NODE_ID</key>
+	<string>5608a59d6797796ce9e11484fd161d45</string>
+	<key>PIPELINE_NAME</key>
+	<string>content_2.00-new</string>
+	<key>PROBLEMS</key>
+	<array>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_0.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_0a.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_1.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_1a.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_1b.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_2.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_3.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_4.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_6.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_7.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_8.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_9.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_11.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_12.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_13.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_14.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_15.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_16.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_17.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_18.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_19.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_20.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_21.plist</string>
+		<string>/Problems/tokcm-authoring/rounding_numbers/1d45/pdef_22.plist</string>
+	</array>
+</dict>
+</plist>

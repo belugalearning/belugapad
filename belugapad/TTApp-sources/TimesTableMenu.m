@@ -11,6 +11,7 @@
 #import "ContentService.h"
 #import "ToolHost.h"
 #import "global.h"
+#import "SimpleAudioEngine.h"
 
 const float moveToCentreTime=0.2f;
 const float moveBackToPositionTime=0.2f;
@@ -142,12 +143,15 @@ const float outerButtonPopInDelay=0.05f;
     
     ac = (AppController*)[[UIApplication sharedApplication] delegate];
 
-    if(ac.NumberShowing)
+    if(ac.NumberShowing){
         [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_success.wav")];
+    }
 }
 
 -(void)createBigNumberOf:(int)thisNumber
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
@@ -263,6 +267,8 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)returnCurrentBigNumber{
     if(currentSelection==nil)return;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_contract.wav")];
     
     ac.NumberShowing=NO;
     
@@ -383,6 +389,8 @@ const float outerButtonPopInDelay=0.05f;
         if(CGRectContainsPoint(currentSelection.boundingBox, location) && !gotHit)
         {
             [self setupPipeline];
+            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_play.wav")];
             
             [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             gotHit=YES;

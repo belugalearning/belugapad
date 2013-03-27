@@ -209,9 +209,10 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)populateGW
 {
-    if(appType==1)
+    if(appType==1){
+        toolHost.forceCommitOff=YES;
         is12x12=YES;
-    
+    }
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Operator.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
     
@@ -617,6 +618,9 @@ static float kTimeToHeaderBounce=7.0f;
     
     if(gw.Blackboard.LastSelectedObject)
     {
+        if(appType==1)
+            toolHost.forceCommitOff=NO;
+        
         if(selectionMode==kSelectSingle)
         {
             // if there's another selection, send the handletap message

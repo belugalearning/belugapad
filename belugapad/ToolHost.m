@@ -85,6 +85,7 @@
 @synthesize DynProblemParser;
 @synthesize pickerView;
 @synthesize CurrentBTXE;
+@synthesize forceCommitOff;
 @synthesize thisProblemDescription;
 
 static float kMoveToNextProblemTime=0.5f;
@@ -1881,6 +1882,10 @@ static float kTimeToHintToolTray=0.0f;
             showCommit=NO;
     }
     
+    if(appType==1&&!forceCommitOff)
+        showCommit=YES;
+    else if(appType==1&&forceCommitOff)
+        showCommit=NO;
     
     if(showCommit && commitBtn)
         [commitBtn setVisible:YES];

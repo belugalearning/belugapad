@@ -365,23 +365,22 @@ const float outerButtonPopInDelay=0.05f;
         
         if([currentSelectionButtons count]==0)return;
         
-//        for(int i=0;i<[currentSelectionButtons count];i++)
-//        {
-//            CCSprite *s=[currentSelectionButtons objectAtIndex:i];
-//            if(CGRectContainsPoint(s.boundingBox, location) && currentSelection!=nil)
-//            {
-//                // TODO: if is showing a number, show a pipeline
-//                gotHit=YES;
-//                NSLog(@"Got hit for number for %dx%d",currentSelectionIndex, i+1);
-//                
-//                //load toolhost
-//                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
-//                
-//                break;
-//            }
-//        }
+        for(int i=0;i<[currentSelectionButtons count];i++)
+        {
+            CCSprite *s=[currentSelectionButtons objectAtIndex:i];
+            if(CGRectContainsPoint(s.boundingBox, location) && currentSelection!=nil)
+            {
+                // TODO: if is showing a number, show a pipeline
+                gotHit=YES;
+                NSLog(@"Got hit for number for %dx%d",currentSelectionIndex+1, i+1);
+                
+                [ac speakString:[NSString stringWithFormat:@"%d times %d is %d",currentSelectionIndex+1,i+1, (currentSelectionIndex+1)*(i+1)]];
+                
+                break;
+            }
+        }
 
-        if(CGRectContainsPoint(currentSelection.boundingBox, location))
+        if(CGRectContainsPoint(currentSelection.boundingBox, location) && !gotHit)
         {
             [self setupPipeline];
             

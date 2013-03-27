@@ -107,6 +107,9 @@
 		5598466A162732CA00554E8A /* RatioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55984669162732CA00554E8A /* RatioTool.m */; };
 		559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A33D615DA382C00CA97E2 /* CountingTimer.m */; };
 		559C9DE816D79D71004893C0 /* bubbles_end.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559C9DE716D79D71004893C0 /* bubbles_end.plist */; };
+		55AF47B91703710B00E39ACD /* Multiplication_Icon_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 55AF47B61703710B00E39ACD /* Multiplication_Icon_1024.png */; };
+		55AF47BA1703710B00E39ACD /* Multiplication_Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 55AF47B71703710B00E39ACD /* Multiplication_Icon.png */; };
+		55AF47BB1703710B00E39ACD /* Multiplication_Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 55AF47B81703710B00E39ACD /* Multiplication_Icon@2x.png */; };
 		55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A4156517FC00FF1886 /* TimesTables.m */; };
 		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
 		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
@@ -1873,6 +1876,9 @@
 		559A33D515DA382C00CA97E2 /* CountingTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountingTimer.h; sourceTree = "<group>"; };
 		559A33D615DA382C00CA97E2 /* CountingTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountingTimer.m; sourceTree = "<group>"; };
 		559C9DE716D79D71004893C0 /* bubbles_end.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bubbles_end.plist; sourceTree = "<group>"; };
+		55AF47B61703710B00E39ACD /* Multiplication_Icon_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Multiplication_Icon_1024.png; sourceTree = "<group>"; };
+		55AF47B71703710B00E39ACD /* Multiplication_Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Multiplication_Icon.png; sourceTree = "<group>"; };
+		55AF47B81703710B00E39ACD /* Multiplication_Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Multiplication_Icon@2x.png"; sourceTree = "<group>"; };
 		55AFD6A3156517FC00FF1886 /* TimesTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTables.h; sourceTree = "<group>"; };
 		55AFD6A4156517FC00FF1886 /* TimesTables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTables.m; sourceTree = "<group>"; };
 		55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWTTTileGameObject.m; sourceTree = "<group>"; };
@@ -3342,6 +3348,9 @@
 				7FB5259716CD054200A1B79A /* Beluga Dev copy-Info.plist */,
 				7FB5273D16CD054E00A1B79A /* Beluga Dev copy2-Info.plist */,
 				7FB528F416CD072400A1B79A /* ttapp Dev copy-Info.plist */,
+				55AF47B61703710B00E39ACD /* Multiplication_Icon_1024.png */,
+				55AF47B71703710B00E39ACD /* Multiplication_Icon.png */,
+				55AF47B81703710B00E39ACD /* Multiplication_Icon@2x.png */,
 			);
 			sourceTree = "<group>";
 		};
@@ -4683,6 +4692,9 @@
 				7FB5273416CD054E00A1B79A /* Icon-Small.png in Resources */,
 				7FB5273516CD054E00A1B79A /* Icon-Small-50.png in Resources */,
 				7FB5273616CD054E00A1B79A /* Icon-Small@2x.png in Resources */,
+				55AF47B91703710B00E39ACD /* Multiplication_Icon_1024.png in Resources */,
+				55AF47BA1703710B00E39ACD /* Multiplication_Icon.png in Resources */,
+				55AF47BB1703710B00E39ACD /* Multiplication_Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

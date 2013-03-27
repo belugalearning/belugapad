@@ -483,7 +483,7 @@ const float outerButtonPopInDelay=0.05f;
     
     for(int i=0;i<12;i++)
     {
-        NSString *type=@"bronze";
+        NSString *type=@"empty";
         NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(cx,cy)];

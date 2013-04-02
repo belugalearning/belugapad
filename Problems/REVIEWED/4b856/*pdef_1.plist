@@ -3,13 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>EVAL_TYPE</key>
-	<string>ALL_ENABLED</string>
+	<string>EXPRESSION_EQUALITIES</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Complete the equations.</string>
 	<key>EVAL_MODE</key>
 	<string>1</string>
 	<key>EVAL_EXCLUDE_ROWS</key>
-	<string>2</string>
+	<array>
+		<string>2</string>
+	</array>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Complete the equations.&lt;/b:t&gt;</string>

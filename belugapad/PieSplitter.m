@@ -487,6 +487,7 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceLayer
 {
+    return;
     //NSLog(@"layer pos before: %@", NSStringFromCGPoint(movementLayer.position));
     float incOffset=50.0f;
     // first we need the average position of all of our nodes
@@ -509,6 +510,7 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceContainers
 {
+    return;
     //int maxPXtoMove=100;
     int stepper=20;
     BOOL isLess=NO;

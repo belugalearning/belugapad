@@ -43,6 +43,23 @@
     }
 }
 
+-(NSArray*)positionsInCircleWith:(int)points and:(double)radius and:(CGPoint)centre
+{
+    NSMutableArray *pointPos=[[NSMutableArray alloc]init];
+    
+    double slices = 2 * M_PI / points;
+    for (int i = 0; i < points; i++)
+    {
+        double angle = slices * i;
+        int newX = (int)(centre.x + radius * cos(angle));
+        int newY = (int)(centre.y + radius * sin(angle));
+        CGPoint p = ccp(newX, newY);
+        [pointPos addObject:[NSValue valueWithCGPoint:p]];
+    }
+    
+    return (NSArray*)pointPos;
+}
+
 -(void)mountMeToContainer
 {
  
@@ -67,6 +84,8 @@
 
         
         [p.slicesInMe removeObject:slice];
+
+        NSArray *points=[self positionsInCircleWith:10 and:(c.mySprite.contentSize.width/2)+25 and:ccp(c.mySprite.contentSize.width,c.mySprite.contentSize.height)];
         
         BOOL GotPlaceInNode=NO;
         
@@ -85,12 +104,17 @@
                 if([n.children count]<[p.mySlices count])
                 {
                     [n addChild:slice.mySprite];
+                    [n setScale:1.0f];
                     return;
                 }
                 if([n.children count]==[p.mySlices count])
                 {
-                    CGPoint adjPos=ccp(0,0);
-                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    //CGPoint adjPos=CGPointZero;
+//                    CGPoint adjPos=[c.BaseNode convertToWorldSpace:[[points objectAtIndex:[c.Nodes indexOfObject:n]]CGPointValue]];
+                    CGPoint adjPos=[[points objectAtIndex:[c.Nodes indexOfObject:n]]CGPointValue];
+                    [n setScale:0.4f];
+//                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    [n setPosition:ccp(adjPos.x-c.mySprite.contentSize.width,adjPos.y-c.mySprite.contentSize.height)];
                     for(CCSprite *s in n.children)
                     {
                         [s setOpacity:150];
@@ -136,6 +160,8 @@
         }
     }
     
+    NSArray *points=[self positionsInCircleWith:10 and:(c.mySprite.contentSize.width/2)+25 and:ccp(c.mySprite.contentSize.width,c.mySprite.contentSize.height)];
+    
     if([deleteNodes count]>0)[c.Nodes removeObjectsInArray:deleteNodes];
     [deleteNodes release];
 
@@ -148,6 +174,7 @@
             // if there's only 1 node then set opacity to full
             if([c.Nodes count]<=1){
                 [n setPosition:ccp(0,0)];
+                [n setScale:1.0f];
                 for(CCSprite *s in n.children)
                 {
                     [s setOpacity:255];
@@ -160,6 +187,7 @@
                 if([c.Nodes indexOfObject:n]==[c.Nodes count]-1)
                 {
                     [n setPosition:ccp(0,0)];
+                    [n setScale:1.0f];
                     for(CCSprite *s in n.children)
                     {
                         [s setOpacity:255];
@@ -167,8 +195,13 @@
                 }
                 // but if it's not, leave it tinted
                 else {
-                    CGPoint adjPos=ccp(0,0);
-                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    CGPoint adjPos=[[points objectAtIndex:[c.Nodes indexOfObject:n]]CGPointValue];
+                    [n setScale:0.4f];
+                    //                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    [n setPosition:ccp(adjPos.x-c.mySprite.contentSize.width,adjPos.y-c.mySprite.contentSize.height)];
+                    
+//                    CGPoint adjPos=ccp(0,0);
+//                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
                     for(CCSprite *s in n.children)
                     {
                         [s setOpacity:150];

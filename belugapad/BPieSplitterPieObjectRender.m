@@ -100,7 +100,7 @@
 {    
     
     NSString *spriteFileName=@"";
-    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/pie.png"];
+    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/pie_cover.png"];
     
     pie.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [pie.mySprite setPosition:pie.Position];
@@ -115,9 +115,9 @@
     
     if(!pie.HasSplit) {
         NSString *overlayFileName=@"";
-        overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/pie-split-overlay.png"];
+        overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/slice1.png"];
         pie.touchOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(overlayFileName)];
-        [pie.touchOverlay setPosition:ccp(50,50)];
+        [pie.touchOverlay setPosition:ccp(pie.mySprite.position.x+10, pie.mySprite.position.y+10)];
         [pie.mySprite addChild:pie.touchOverlay];
         if(gameWorld.Blackboard.inProblemSetup)
         {

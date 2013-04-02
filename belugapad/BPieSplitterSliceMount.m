@@ -45,6 +45,7 @@
 
 -(void)mountMeToContainer
 {
+ 
     if(slice.myCont){
         [slice.myCont handleMessage:kDWunsetMountedObject];
         slice.myCont=nil;
@@ -52,7 +53,6 @@
     
     if(gameWorld.Blackboard.DropObject)
     {
-
         slice.myCont=gameWorld.Blackboard.DropObject;      
         DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
         DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
@@ -62,6 +62,7 @@
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+        slice.mySprite.anchorPoint=ccp(0,0);
         [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
 
         
@@ -118,9 +119,12 @@
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+    slice.mySprite.anchorPoint=ccp(0,0);
     [p.mySprite addChild:slice.mySprite];
     [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
-    [p.slicesInMe addObject:slice];
+    
+    if(![p.slicesInMe containsObject:slice])
+        [p.slicesInMe addObject:slice];
     
     // remove dead nodes from teh nodes array
     NSMutableArray *deleteNodes=[[NSMutableArray alloc]init];

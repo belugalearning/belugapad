@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which of these is true?</string>
+	<string>Which of these are true?</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_RANDOMISE_ANSWERS</key>

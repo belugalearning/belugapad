@@ -176,6 +176,8 @@ static float kTimeToPieShake=7.0f;
         [self.ForeLayer addChild:resetBtn z:2];        
     }
     
+    showResetSlicesToPies=NO;
+    
     if(showResetSlicesToPies)
     {
         resetSlices=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/reset-slices.png")];
@@ -197,6 +199,11 @@ static float kTimeToPieShake=7.0f;
     activePie=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
+    
+    CCSprite *tabs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/drag_tabs.png")];
+    [tabs setAnchorPoint:ccp(0,0.5)];
+    [tabs setPosition:ccp(0,500)];
+    [renderLayer addChild:tabs];
     
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
@@ -267,7 +274,7 @@ static float kTimeToPieShake=7.0f;
     createdPies++;
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp(35,570);
+    pie.Position=ccp(52,543);
     pie.MountPosition=pie.Position;
     //if(hasSplit)[self splitPie:pie];
     newPie=pie; 
@@ -280,7 +287,7 @@ static float kTimeToPieShake=7.0f;
     createdCont++;
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
-    cont.Position=ccp(35,510);
+    cont.Position=ccp(62,455);
     cont.MountPosition=cont.Position;
     newCon=cont;
     

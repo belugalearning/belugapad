@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is the next fraction equivalent to 1/3?</string>
+	<key>TOOL_KEY</key>
+	<string>TimesTables</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>65</integer>
+	<key>START_X</key>
+	<integer>1</integer>
+	<key>START_Y</key>
+	<integer>1</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>OPERATOR_MODE</key>
+	<integer>2</integer>
+	<key>SHOW_CALC_BUBBLE</key>
+	<true/>
+	<key>SHOW_X_AXIS</key>
+	<true/>
+	<key>SHOW_Y_AXIS</key>
+	<true/>
+	<key>SWITCH_XY_ANSWER-IGNORE</key>
+	<true/>
+	<key>SELECTION_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION_MODE</key>
+	<integer>1</integer>
+	<key>SOLUTION_VALUE</key>
+	<integer>16</integer>
+	<key>SOLUTION_COMPONENT</key>
+	<integer>4</integer>
+	<key>REVEAL_TILES</key>
+	<array>
+		<dict>
+			<key>POS_X</key>
+			<integer>1</integer>
+			<key>POS_Y</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>POS_X</key>
+			<integer>2</integer>
+			<key>POS_Y</key>
+			<integer>6</integer>
+		</dict>
+		<dict>
+			<key>POS_X</key>
+			<integer>3</integer>
+			<key>POS_Y</key>
+			<integer>9</integer>
+		</dict>
+	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is the next fraction equivalent to 1/3?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>4/12</string>
+	</dict>
+</dict>
+</plist>

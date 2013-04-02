@@ -179,7 +179,7 @@ static float kTimeToPieShake=7.0f;
     if(showResetSlicesToPies)
     {
         resetSlices=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/reset-slices.png")];
-        [resetSlices setPosition:ccp(35,580)];
+        [resetSlices setPosition:ccp(35,450)];
         [resetSlices setTag:3];
         [resetSlices setOpacity:0];
         [resetSlices setScale:0.5f];
@@ -267,7 +267,7 @@ static float kTimeToPieShake=7.0f;
     createdPies++;
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp(35,700);
+    pie.Position=ccp(35,570);
     pie.MountPosition=pie.Position;
     //if(hasSplit)[self splitPie:pie];
     newPie=pie; 
@@ -280,7 +280,7 @@ static float kTimeToPieShake=7.0f;
     createdCont++;
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
-    cont.Position=ccp(35,640);
+    cont.Position=ccp(35,510);
     cont.MountPosition=cont.Position;
     newCon=cont;
     
@@ -292,7 +292,7 @@ static float kTimeToPieShake=7.0f;
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
     pie.Position=ccp(0,pieBox.position.y);
-    pie.MountPosition=ccp(35,700);
+    pie.MountPosition=ccp(35,570);
     [pie.mySprite setScale:1.0f];
     pie.ScaledUp=YES;
     if(hasSplit)
@@ -308,7 +308,7 @@ static float kTimeToPieShake=7.0f;
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(0,conBox.position.y);
-    cont.MountPosition=ccp(35,640);
+    cont.MountPosition=ccp(35,510);
     [cont.mySpriteTop setScale:1.0f];
     [cont.mySpriteMid setScale:1.0f];
     [cont.mySpriteBot setScale:1.0f];

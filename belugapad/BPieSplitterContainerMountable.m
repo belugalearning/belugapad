@@ -51,7 +51,7 @@
 -(void)checkDropTarget:(CGPoint)hitLoc
 {
     CGRect baseNodeBound=CGRectNull;
-    baseNodeBound=CGRectUnion(cont.mySpriteTop.boundingBox, cont.mySpriteBot.boundingBox);
+    baseNodeBound=CGRectUnion(cont.mySprite.boundingBox, cont.mySprite.boundingBox);
     
     if(CGRectContainsPoint(baseNodeBound, [cont.BaseNode convertToNodeSpace:hitLoc]))
    {
@@ -66,7 +66,7 @@
         if(!cont.mySlices)cont.mySlices=[[[NSMutableArray alloc]init] autorelease];
         
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
-        [self scaleMidSection];
+//        [self scaleMidSection];
     }
 }
 -(void)unMountObjectFromMe
@@ -76,7 +76,7 @@
         [cont.mySlices removeObject:gameWorld.Blackboard.PickupObject];
         if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
         
-        [self scaleMidSection];
+//        [self scaleMidSection];
         // reorder pie slices
         for(int i=0;i<[cont.mySlices count];i++)
         {
@@ -108,13 +108,8 @@
     NSLog(@"scaleForMid %f", scaleForMid); 
     if(scaleForMid>=1.0f)
     {
-        [cont.mySpriteMid setScaleY:scaleForMid];
-        
-        [cont.mySpriteMid setPosition:ccp(0,0-((cont.mySpriteTop.contentSize.height*[cont.Nodes count])+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];
-        [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];
-        //[cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.5f scaleX:cont.mySpriteMid.scaleX scaleY:scaleForMid]];
-        //[cont.mySpriteTop runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))]];
-        //[cont.mySpriteBot runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))]];
+        [cont.mySprite setScaleY:scaleForMid];
+
     }
 }
 

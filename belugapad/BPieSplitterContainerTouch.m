@@ -66,7 +66,7 @@
 -(void)checkTouch:(CGPoint)hitLoc
 {
     CGRect baseNodeBound=CGRectNull;
-    baseNodeBound=CGRectUnion(cont.mySpriteTop.boundingBox, cont.mySpriteBot.boundingBox);
+    baseNodeBound=CGRectUnion(cont.mySprite.boundingBox, cont.mySprite.boundingBox);
     
     if(CGRectContainsPoint(baseNodeBound, [cont.BaseNode convertToNodeSpace:hitLoc]) && [cont.mySlices count]==0)
     {

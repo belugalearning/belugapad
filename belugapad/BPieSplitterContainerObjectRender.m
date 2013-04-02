@@ -44,7 +44,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        if(!cont.mySpriteBot) 
+        if(!cont.mySprite) 
         {
             [self setSprite];     
         }
@@ -52,7 +52,7 @@
     
     if(messageType==kDWupdateSprite)
     {
-        if(!cont.mySpriteBot) { 
+        if(!cont.mySprite) { 
             [self setSprite];
         }
         
@@ -87,17 +87,18 @@
     }
     if(messageType==kDWdismantle)
     {
-        [[cont.mySpriteTop parent] removeChild:cont.mySpriteTop cleanup:YES];
-        [[cont.mySpriteMid parent] removeChild:cont.mySpriteMid cleanup:YES];
-        [[cont.mySpriteBot parent] removeChild:cont.mySpriteBot cleanup:YES];    
-    } 
+        [[cont.mySprite parent] removeChild:cont.mySprite cleanup:YES];
+//        [[cont.mySpriteMid parent] removeChild:cont.mySpriteMid cleanup:YES];
+//        [[cont.mySpriteBot parent] removeChild:cont.mySpriteBot cleanup:YES];
+    }
     
 }
 
 
 
 -(void)setSprite
-{    
+{
+
     
     if(!cont.BaseNode){
         cont.BaseNode=[[[CCNode alloc]init] autorelease];
@@ -111,46 +112,32 @@
     
 //    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
     
-    NSString *spriteFileNameTop=@"/images/piesplitter/container-t.png";
-    NSString *spriteFileNameMid=@"/images/piesplitter/container-m.png";
-    NSString *spriteFileNameBot=@"/images/piesplitter/container-b.png";
-    
-//    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    cont.mySpriteTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameTop]))];
-    cont.mySpriteMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameMid]))];
-    cont.mySpriteBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameBot]))];
-    [cont.mySpriteTop setAnchorPoint:ccp(0.5,-1)];    
-    [cont.mySpriteMid setAnchorPoint:ccp(0.5,-1)];
-    [cont.mySpriteBot setAnchorPoint:ccp(0.5,-1)];
+    NSString *spriteFileNameTop=@"/images/piesplitter/big_bubble.png";
+
+    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameTop]))];
+
     if(!cont.ScaledUp)[cont.BaseNode setScale:0.5f];
     else [cont.BaseNode setScale:1.0f];
 
-    //[cont.mySpriteTop setPosition:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))];
-    //[cont.mySpriteBot setPosition:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))];
-    
-    [cont.mySpriteMid setPosition:ccp(0,-50-(cont.mySpriteTop.contentSize.height))];
-    [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {
-            [cont.mySpriteTop setTag:1];
-            [cont.mySpriteMid setTag:1];
-            [cont.mySpriteBot setTag:1];
-            [cont.mySpriteTop setOpacity:0];
-            [cont.mySpriteMid setOpacity:0];
-            [cont.mySpriteBot setOpacity:0];
+            [cont.mySprite setTag:1];
+
+            [cont.mySprite setOpacity:0];
+
         }
     
     
-    [cont.BaseNode addChild:cont.mySpriteMid];
-    [cont.BaseNode addChild:cont.mySpriteTop];
-    [cont.BaseNode addChild:cont.mySpriteBot];
+
+    [cont.BaseNode addChild:cont.mySprite];
+
     
     if(!cont.myText && cont.ScaledUp)
     {
-        cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-        [cont.myText setPosition:ccp(50,40)];
-        [cont.mySpriteTop addChild:cont.myText];
+        cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
+        [cont.myText setPosition:ccp(50,cont.mySprite.contentSize.height+15)];
+        [cont.mySprite addChild:cont.myText];
         if(gameWorld.Blackboard.inProblemSetup)
         {
             [cont.myText setTag:1];

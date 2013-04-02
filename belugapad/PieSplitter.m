@@ -309,9 +309,7 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(0,conBox.position.y);
     cont.MountPosition=ccp(35,510);
-    [cont.mySpriteTop setScale:1.0f];
-    [cont.mySpriteMid setScale:1.0f];
-    [cont.mySpriteBot setScale:1.0f];
+    [cont.mySprite setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
     
@@ -321,7 +319,6 @@ static float kTimeToPieShake=7.0f;
 -(void)addGhostPie
 {
     [pieBox setVisible:YES];
-
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     ghost=pie;
     
@@ -349,15 +346,12 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(([activeCon count]+0.5)*(lx/[activeCon count]), conBox.position.y);
     cont.MountPosition=ccp(35,700);
-    [cont.mySpriteTop setScale:1.0f];
-    [cont.mySpriteMid setScale:1.0f];
-    [cont.mySpriteBot setScale:1.0f];
+    [cont.mySprite setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
     [cont handleMessage:kDWsetupStuff];
-    [cont.mySpriteTop setOpacity:25];
-    [cont.mySpriteMid setOpacity:25];
-    [cont.mySpriteBot setOpacity:25];
+    [cont.mySprite setOpacity:25];
+
     [self reorderActiveContainers];
     
     [cont release];
@@ -407,7 +401,9 @@ static float kTimeToPieShake=7.0f;
         {
             DWPieSplitterSliceGameObject *slice = [DWPieSplitterSliceGameObject alloc];
             [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
-            slice.Position=p.Position;
+            
+//            slice.Position=p.Position;
+            slice.Position=ccp(p.Position.x,p.Position.y+2);
             slice.myPie=p;
             if(!p.mySlices)p.mySlices=[[[NSMutableArray alloc]init]autorelease];
             slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
@@ -435,7 +431,7 @@ static float kTimeToPieShake=7.0f;
         {
             DWPieSplitterSliceGameObject *slice = [DWPieSplitterSliceGameObject alloc];
             [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
-            slice.Position=p.Position;
+            slice.Position=ccp(p.Position.x,p.Position.y+3);
             slice.myPie=p;
             if(!p.mySlices)p.mySlices=[[[NSMutableArray alloc]init] autorelease];
             slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
@@ -612,7 +608,7 @@ static float kTimeToPieShake=7.0f;
     // check the labels have been tapped, or not
     for(DWPieSplitterContainerGameObject *c in activeCon)
     {
-        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySpriteTop convertToNodeSpace:location]))
+        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySprite convertToNodeSpace:location]))
         {
             if(labelType==kLabelShowDecimal)labelType=kLabelShowFraction;
             else if(labelType==kLabelShowFraction)labelType=kLabelShowDecimal;
@@ -651,6 +647,11 @@ static float kTimeToPieShake=7.0f;
                 gw.Blackboard.PickupObject=nil;
             }
         }
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
+        {
+
+        }
+        
     }
 
     if (CGRectContainsPoint(kRectButtonReset, location) && showReset)
@@ -691,15 +692,17 @@ static float kTimeToPieShake=7.0f;
         [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
         
         // if we haven't yet created a new object, do it now
-        if(!createdNewCon && createdCont <= numberOfCagedContainers)
+        if(hasMovedSquare && !createdNewCon && createdCont <= numberOfCagedContainers)
         {
             [self createContainerAtMount];
             createdNewCon=YES;
+            NSLog(@"create new container at mount");
         }
-        if(!createdNewPie && createdPies <= numberOfCagedPies)
+        if(hasMovedPie && !createdNewPie && createdPies <= numberOfCagedPies)
         {
             [self createPieAtMount];
             createdNewPie=YES;
+            NSLog(@"create new pie at mount");
         }
         
         if(createdNewCon||createdNewPie)[gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];

@@ -37,7 +37,7 @@
         }
         
         //retain current udata as previous udata until told to purge
-        prevUdata=[NSDictionary dictionaryWithDictionary:udata];
+        prevUdata=[[NSDictionary dictionaryWithDictionary:udata] retain];
     }
     
     return self;
@@ -50,7 +50,7 @@
         [udata writeToFile:persistPath atomically:YES];
     }
     
-    NSLog(@"udata: %@", udata);
+//    NSLog(@"udata: %@", udata);
 }
 
 -(void) setLogMax:(int)logmax
@@ -99,7 +99,7 @@
 -(void)purgePreviousState
 {
     [prevUdata release];
-    prevUdata=[NSDictionary dictionaryWithDictionary:udata];
+    prevUdata=[[NSDictionary dictionaryWithDictionary:udata] retain];
 }
 
 -(NSString*) getPreviousMedalForX:(int)x andY:(int)y

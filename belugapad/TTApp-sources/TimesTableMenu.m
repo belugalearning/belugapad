@@ -153,7 +153,8 @@ const float outerButtonPopInDelay=0.05f;
         [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
     }
     
-    CCLabelTTF *totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:42.0f];
+    CCLabelTTF *totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:56.0f];
+
     [totalPercentage setPosition:totalTab.position];
     [renderLayer addChild:totalPercentage];
 
@@ -192,11 +193,11 @@ const float outerButtonPopInDelay=0.05f;
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
     [s setPosition:original.position];
     [s setScale:0.38f];
-    [renderLayer addChild:s z:20];
-    
     CCLabelTTF *l=[CCLabelTTF labelWithString:originalLabel.string fontName:CHANGO fontSize:56.0f];
     [l setPosition:ccp(s.contentSize.width/2,60)];
     [s addChild:l];
+    [renderLayer addChild:s z:20];
+    
     
     if(thisNumber<12){
         // create the number label

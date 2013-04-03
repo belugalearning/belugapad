@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Which one of these is equivalent to 0.1?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>0.1 = 1/10</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>1</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>10/1</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>1/10</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which one of these is equivalent to 0.1?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+</dict>
+</plist>

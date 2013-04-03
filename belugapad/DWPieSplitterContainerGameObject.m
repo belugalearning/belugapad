@@ -20,9 +20,8 @@
 @synthesize textString;
 @synthesize BaseNode;
 @synthesize Nodes;
-@synthesize mySpriteTop;
-@synthesize mySpriteMid;
-@synthesize mySpriteBot;
+@synthesize mySprite;
+
 
 -(void)dealloc
 {
@@ -31,9 +30,7 @@
     self.textString=nil;
     self.BaseNode=nil;
     self.Nodes=nil;
-    self.mySpriteTop=nil;
-    self.mySpriteMid=nil;
-    self.mySpriteBot=nil;
+    self.mySprite=nil;
     
     [super dealloc];
 }

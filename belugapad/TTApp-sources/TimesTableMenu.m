@@ -147,14 +147,13 @@ const float outerButtonPopInDelay=0.05f;
         [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_success.wav")];
     }
+    
 }
 
 -(void)createBigNumberOf:(int)thisNumber
 {
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
-    ac.NumberShowing=YES;
-    ac.PreviousNumber=thisNumber;
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
     CCLabelTTF *originalLabel=[original.children objectAtIndex:0];
@@ -210,6 +209,9 @@ const float outerButtonPopInDelay=0.05f;
         [s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
         [sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
+    
+    ac.NumberShowing=YES;
+    ac.PreviousNumber=thisNumber;
 }
 
 -(void)createBigNumberWithoutAnimationOf:(int)thisNumber
@@ -477,9 +479,11 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)setupOutsideButtons
 {
+    BOOL exitedPipeline=ac.NumberShowing;
     NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
     int currentPoint=2;
     float time=outerButtonPopOutTime;
+    TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
     
     if(currentSelectionButtons.count>0)
     {
@@ -491,11 +495,25 @@ const float outerButtonPopInDelay=0.05f;
     
     for(int i=0;i<12;i++)
     {
-        TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
         
-        NSString *type=[ttappu getMedalForX:currentSelectionIndex+1 andY:i+1];
+        int currentXNumber=0;
         
-        NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
+        if(ac.NumberShowing)
+            currentXNumber=ac.PreviousNumber+1;
+        else
+            currentXNumber=currentSelectionIndex+1;
+        
+        NSString *type=[ttappu getMedalForX:currentXNumber andY:i+1];
+        
+        NSString *prevtype=[ttappu getPreviousMedalForX:currentXNumber andY:i+1];
+        
+        NSString *f=nil;
+        
+        if(exitedPipeline)
+            f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", prevtype, i+1];
+        else
+            f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
+        
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(cx,cy)];
         [renderLayer addChild:s z:18];
@@ -509,6 +527,30 @@ const float outerButtonPopInDelay=0.05f;
         
         [s runAction:bi];
         
+        if(exitedPipeline && ![type isEqualToString:prevtype])
+        {
+            // TODO: set up a new button here to bounce in
+            NSLog(@"number %d / previous medal: %@, new medal %@", currentXNumber, prevtype, type);
+            NSString *nf=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
+            CCSprite *ns=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(nf)];
+            [ns setScale:0.0f];
+            [ns setPosition:endPoint];
+            [renderLayer addChild:ns z:19];
+            
+            [currentSelectionButtons addObject:ns];
+            
+            CCDelayTime *delayintro=[CCDelayTime actionWithDuration:time*2];
+            CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
+            CCEaseBounceOut *bounce=[CCEaseBounceOut actionWithAction:scaleto];
+            CCSequence *thisSequence=[CCSequence actionOne:delayintro two:bounce];
+            [ns runAction:thisSequence];
+            CCDelayTime *delayoutro=[CCDelayTime actionWithDuration:time*2];
+            CCFadeOut *fadeoutold=[CCFadeOut actionWithDuration:0.2f];
+            CCSequence *removeold=[CCSequence actionOne:delayoutro two:fadeoutold];
+            [s runAction:removeold];
+            
+        }
+        
         time+=outerButtonPopOutDelay;
         
         currentPoint--;
@@ -516,6 +558,8 @@ const float outerButtonPopInDelay=0.05f;
         if(currentPoint<0)
             currentPoint=11;
     }
+    
+    [ttappu purgePreviousState];
 }
 
 -(void)startPipelineFor:(int)thisNumber

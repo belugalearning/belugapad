@@ -148,6 +148,25 @@
     return @"empty";
 }
 
+-(float) getScoreForX:(int)x
+{
+    float tot=0;
+    for(int i=1; i<13; i++)
+    {
+        tot+=[self getScoreForX:x andY:i];
+    }
+    return tot/12.0f;
+}
+
+-(float) getScoreForX:(int)x andY:(int)y
+{
+    NSString *medal=[self getMedalForX:x andY:y];
+    if([medal isEqualToString:@"gold"]) return 100.0f;
+    else if([medal isEqualToString:@"silver"]) return 50.0f;
+    else if([medal isEqualToString:@"bronze"]) return 25.0f;
+    else return 0;
+}
+
 -(void)dealloc
 {
     [udata release];

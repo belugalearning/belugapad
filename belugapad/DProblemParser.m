@@ -363,6 +363,12 @@
     return nil;
 }
 
+-(NSNumber*)simpleDvarLookupForKey:(NSString*)key
+{
+    NSString *lookupKey=[NSString stringWithFormat:@"%@", key];
+    return [dVars objectForKey:lookupKey];
+}
+
 -(NSString*)parseStringFromString:(NSString *)input withRecall:(BOOL)recall
 {
     if(!input)

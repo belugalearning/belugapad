@@ -25,6 +25,8 @@
 -(int)parseIntFromString:(NSString*)input;
 -(float)parseFloatFromString:(NSString*)input;
 
+-(NSNumber*)simpleDvarLookupForKey:(NSString*)key;
+
 -(NSString *)parseStringFromValueWithKey: (NSString*)key inDef:(NSDictionary*)pdef;
 -(int)parseIntFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef;
 -(float)parseFloatFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef;

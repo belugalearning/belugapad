@@ -12,6 +12,7 @@
 #import "ToolHost.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
+#import "TTAppUState.h"
 
 const float moveToCentreTime=0.2f;
 const float moveBackToPositionTime=0.2f;
@@ -51,6 +52,8 @@ const float outerButtonPopInDelay=0.05f;
         ly=winsize.height;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
+        
+        ac = (AppController*)[[UIApplication sharedApplication] delegate];
         
         self.isTouchEnabled=YES;
         
@@ -139,9 +142,6 @@ const float outerButtonPopInDelay=0.05f;
         [sceneButtons addObject:s];
         [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
     }
-    
-    
-    ac = (AppController*)[[UIApplication sharedApplication] delegate];
 
     if(ac.NumberShowing){
         [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
@@ -491,7 +491,10 @@ const float outerButtonPopInDelay=0.05f;
     
     for(int i=0;i<12;i++)
     {
-        NSString *type=@"empty";
+        TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+        
+        NSString *type=[ttappu getMedalForX:currentSelectionIndex+1 andY:i+1];
+        
         NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(cx,cy)];

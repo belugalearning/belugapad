@@ -33,6 +33,9 @@
 
 #import "Flurry.h"
 
+#import "AppUState.h"
+#import "TTAppUState.h"
+
 @interface AppController()
 {
 @private
@@ -42,6 +45,7 @@
 @property (nonatomic, readwrite) LoggingService *loggingService;
 @property (nonatomic, readwrite) ContentService *contentService;
 @property (nonatomic, readwrite) UsersService *usersService;
+@property (nonatomic, readwrite) AppUState *appustateService;
 @end
 
 
@@ -52,6 +56,7 @@
 @synthesize loggingService;
 @synthesize contentService;
 @synthesize usersService;
+@synthesize appustateService;
 
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
@@ -133,6 +138,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
     contentService = [[ContentService alloc] initWithLocalSettings:self.LocalSettings];
     usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    
+    appustateService=(AppUState*)[[TTAppUState alloc] init];
+    
+    //setup some ttapp specifics
+    [appustateService setLogMax:5];
     
     //compile device info
     UIDevice *d=[UIDevice currentDevice];
@@ -503,6 +513,7 @@ void logMemUsage(void) {
     [loggingService release];
     [contentService release];
     [usersService release];
+    [appustateService release];
     
     self.searchBar=nil;
     self.searchList=nil;

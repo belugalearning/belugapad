@@ -164,6 +164,9 @@
 		7F0E32B9158E9D7800E42C7B /* SGJmapProximityEval.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */; };
 		7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */; };
 		7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */; };
+		7F1F28CC170C2722002B1DC0 /* AppUState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1F28CB170C2722002B1DC0 /* AppUState.m */; };
+		7F1F28CD170C2722002B1DC0 /* AppUState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1F28CB170C2722002B1DC0 /* AppUState.m */; };
+		7F1F28D0170C273D002B1DC0 /* TTAppUState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1F28CF170C273D002B1DC0 /* TTAppUState.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
@@ -1988,6 +1991,10 @@
 		7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxePlaceholder.m; sourceTree = "<group>"; };
 		7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderMarker.h; sourceTree = "<group>"; };
 		7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderMarker.m; sourceTree = "<group>"; };
+		7F1F28CA170C2722002B1DC0 /* AppUState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppUState.h; sourceTree = "<group>"; };
+		7F1F28CB170C2722002B1DC0 /* AppUState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppUState.m; sourceTree = "<group>"; };
+		7F1F28CE170C273D002B1DC0 /* TTAppUState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTAppUState.h; sourceTree = "<group>"; };
+		7F1F28CF170C273D002B1DC0 /* TTAppUState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTAppUState.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
 		7F2317C4156FA13400E2C941 /* NordicAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NordicAnimator.m; sourceTree = "<group>"; };
 		7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprSimplifyTests.m; sourceTree = "<group>"; };
@@ -3989,6 +3996,8 @@
 				7F89881616EF58C2004A2C16 /* TimesTableMenu.m */,
 				7F89880E16EF5830004A2C16 /* AppDelegate.h */,
 				7F89880F16EF5830004A2C16 /* AppDelegate.m */,
+				7F1F28CE170C273D002B1DC0 /* TTAppUState.h */,
+				7F1F28CF170C273D002B1DC0 /* TTAppUState.m */,
 			);
 			path = "TTApp-sources";
 			sourceTree = "<group>";
@@ -3998,6 +4007,8 @@
 			children = (
 				7F89881216EF5844004A2C16 /* AppDelegate.h */,
 				7F89881316EF5844004A2C16 /* AppDelegate.m */,
+				7F1F28CA170C2722002B1DC0 /* AppUState.h */,
+				7F1F28CB170C2722002B1DC0 /* AppUState.m */,
 			);
 			path = "SApp-sources";
 			sourceTree = "<group>";
@@ -5205,6 +5216,7 @@
 				5509D85516A08A5F0076A29F /* RewardStars.m in Sources */,
 				7FBA3A8016A7002700E4908F /* CODialog.m in Sources */,
 				7F89881416EF5844004A2C16 /* AppDelegate.m in Sources */,
+				7F1F28CC170C2722002B1DC0 /* AppUState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5925,6 +5937,8 @@
 				7FB526FB16CD054E00A1B79A /* CODialog.m in Sources */,
 				7F89881016EF5830004A2C16 /* AppDelegate.m in Sources */,
 				7F89881716EF58C2004A2C16 /* TimesTableMenu.m in Sources */,
+				7F1F28CD170C2722002B1DC0 /* AppUState.m in Sources */,
+				7F1F28D0170C273D002B1DC0 /* TTAppUState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

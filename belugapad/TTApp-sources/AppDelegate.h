@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
 
-@class RootViewController, LoggingService, ContentService, UsersService;
+@class RootViewController, LoggingService, ContentService, UsersService, AppUState;
 
 @class AcapelaLicense, AcapelaSpeech, AcapelaSetup;
 
@@ -38,6 +38,8 @@
 @property (nonatomic, readonly) LoggingService *loggingService;
 @property (nonatomic, readonly) ContentService *contentService;
 @property (nonatomic, readonly) UsersService *usersService;
+
+@property (nonatomic, readonly) AppUState *appustateService;
 
 @property (nonatomic, retain) NSDictionary *LocalSettings;
 @property (retain) NSDictionary *AdplineSettings;

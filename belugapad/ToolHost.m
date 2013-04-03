@@ -40,6 +40,7 @@
 #import "LongDivision.h"
 #import "LineDrawer.h"
 #import <GameKit/GameKit.h>
+#import "AppUState.h"
 
 
 #define HD_HEADER_HEIGHT 65.0f
@@ -280,6 +281,44 @@ static float kTimeToHintToolTray=0.0f;
         [self recurseSetIntroFor:cn withTime:time forTag:tag];
     }
     
+}
+
+
+#pragma mark - standalone app progress monitors
+
+-(void)writeSappProgressWithPass:(BOOL)pass
+{
+    //routing here is generic, need to get correct categories
+    NSMutableDictionary *categoryData=[[[NSMutableDictionary alloc] init] autorelease];
+    
+    BOOL doNotWrite=NO;
+    
+    if(appType==1) //times tables app
+    {
+        //categories are the x and y components of the question -- pull directly from dvars
+        NSNumber *xval=[self.DynProblemParser simpleDvarLookupForKey:@"x"];
+        NSNumber *yval=[self.DynProblemParser simpleDvarLookupForKey:@"y"];
+        
+        if(xval && yval)
+        {
+            [categoryData setObject:xval forKey:@"x"];
+            [categoryData setObject:yval forKey:@"y"];
+        }
+        else
+        {
+            NSLog(@"WARNING: cannot find x and y components in dvar set");
+            doNotWrite=YES;
+        }
+    }
+    
+    if(!doNotWrite)
+    {
+        [ac.appustateService saveCategorisedProgress:categoryData withPass:pass];
+    }
+    else
+    {
+        NSLog(@"WARNING: not writing appustate progress due to insufficient data");
+    }
 }
 
 
@@ -1995,6 +2034,8 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)doWinning
 {
+    if(appType>0) [self writeSappProgressWithPass:YES];
+    
     evalShowCommit=NO;
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
@@ -2031,6 +2072,8 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)doIncomplete
 {
+    if(appType>0)[self writeSappProgressWithPass:NO];
+    
     evalShowCommit=NO;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer_1.wav")];
     timeBeforeUserInteraction=kDisableInteractionTime;

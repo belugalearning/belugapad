@@ -32,6 +32,8 @@
 
 #import "Flurry.h"
 
+#import "AppUState.h"
+
 @interface AppController()
 {
 @private
@@ -41,6 +43,7 @@
 @property (nonatomic, readwrite) LoggingService *loggingService;
 @property (nonatomic, readwrite) ContentService *contentService;
 @property (nonatomic, readwrite) UsersService *usersService;
+@property (nonatomic, readwrite) AppUState *appustateService;
 @end
 
 
@@ -51,6 +54,7 @@
 @synthesize loggingService;
 @synthesize contentService;
 @synthesize usersService;
+@synthesize appustateService;
 
 @synthesize LocalSettings;
 @synthesize ReleaseMode;

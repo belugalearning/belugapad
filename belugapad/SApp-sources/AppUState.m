@@ -22,4 +22,9 @@
     
 }
 
+-(void)purgePreviousState
+{
+    @throw[NSException exceptionWithName:@"not implemented" reason:@"not supported in abstract base class" userInfo:nil];    
+}
+
 @end

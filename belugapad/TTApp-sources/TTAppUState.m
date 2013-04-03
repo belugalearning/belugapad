@@ -94,6 +94,16 @@
     
 }
 
+-(NSString*) getPreviousMedalForX:(int)x andY:(int)y
+{
+    return @"empty";
+}
+
+-(void)purgePreviousState
+{
+    
+}
+
 -(NSString*) getMedalForX:(int)x andY:(int)y
 {
     NSString *xlkp=[NSString stringWithFormat:@"%d", x];

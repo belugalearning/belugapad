@@ -21,5 +21,6 @@
 }
 
 -(NSString*) getMedalForX:(int)x andY:(int)y;
+-(NSString*) getPreviousMedalForX:(int)x andY:(int)y;
 
 @end

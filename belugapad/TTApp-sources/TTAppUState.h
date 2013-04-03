@@ -16,6 +16,7 @@
     
     NSString *persistPath;
     NSMutableDictionary *udata;
+    NSDictionary *prevUdata;
     
     
 }

@@ -36,8 +36,8 @@
             udata=[[NSMutableDictionary alloc] init];
         }
         
-        
-
+        //retain current udata as previous udata until told to purge
+        prevUdata=[NSDictionary dictionaryWithDictionary:udata];
     }
     
     return self;
@@ -94,23 +94,31 @@
     
 }
 
--(NSString*) getPreviousMedalForX:(int)x andY:(int)y
-{
-    return @"empty";
-}
+
 
 -(void)purgePreviousState
 {
-    
+    [prevUdata release];
+    prevUdata=[NSDictionary dictionaryWithDictionary:udata];
+}
+
+-(NSString*) getPreviousMedalForX:(int)x andY:(int)y
+{
+    return [self getMedalForX:x andY:y withData:prevUdata];
 }
 
 -(NSString*) getMedalForX:(int)x andY:(int)y
+{
+    return [self getMedalForX:x andY:y withData:udata];
+}
+
+-(NSString*) getMedalForX:(int)x andY:(int)y withData:(NSDictionary*)data
 {
     NSString *xlkp=[NSString stringWithFormat:@"%d", x];
     NSString *ylkp=[NSString stringWithFormat:@"%d", y];
     
     //find the x category
-    NSDictionary *xdict=[udata objectForKey:xlkp];
+    NSDictionary *xdict=[data objectForKey:xlkp];
     if(xdict)
     {
         //find the y array
@@ -143,6 +151,7 @@
 -(void)dealloc
 {
     [udata release];
+    [prevUdata release];
     [persistPath release];
     
     [super dealloc];

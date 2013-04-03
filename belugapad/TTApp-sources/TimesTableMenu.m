@@ -75,6 +75,8 @@ const float outerButtonPopInDelay=0.05f;
     sceneButtonPositions=[[NSMutableArray alloc]init];
     currentSelectionIndex=-1;
     
+    TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+    
     CCSprite *background=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sand_background.png")];
     [background setPosition:ccp(cx,cy)];
     [renderLayer addChild:background];
@@ -92,6 +94,8 @@ const float outerButtonPopInDelay=0.05f;
     int currentCol=0;
     int currentRow=0;
     
+    int totalPerc=0;
+    
     // the main buttons
     
     for(int i=0;i<12;i++)
@@ -105,7 +109,13 @@ const float outerButtonPopInDelay=0.05f;
         [s setPosition:ccp(thisXPos,thisYPos)];
         [renderLayer addChild:s];
         
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"0%" fontName:CHANGO fontSize:17.0f];
+        float thisPerc=([ttappu getScoreForX:i+1]+0.5f);
+        int roundPerc=(int)thisPerc;
+        totalPerc+=roundPerc;
+        
+        NSString *stringPerc=[NSString stringWithFormat:@"%d%%", roundPerc];
+        
+        CCLabelTTF *l=[CCLabelTTF labelWithString:stringPerc fontName:CHANGO fontSize:17.0f];
         [l setPosition:ccp(s.contentSize.width/2,23)];
         [s addChild:l];
         
@@ -142,6 +152,10 @@ const float outerButtonPopInDelay=0.05f;
         [sceneButtons addObject:s];
         [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
     }
+    
+    CCLabelTTF *totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:42.0f];
+    [totalPercentage setPosition:totalTab.position];
+    [renderLayer addChild:totalPercentage];
 
     if(ac.NumberShowing){
         [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];

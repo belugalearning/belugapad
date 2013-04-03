@@ -3,57 +3,36 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 1/3 is the same as 2/6.</string>
+	<string>Shade 2/4.</string>
 	<key>TOOL_KEY</key>
-	<string>FractionBuilder</string>
+	<string>DotGrid</string>
 	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<integer>2</integer>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
 	<integer>1</integer>
-	<key>INIT_FRACTIONS</key>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>DRAW_MODE</key>
+	<integer>2</integer>
+	<key>SHOW_DRAGGABLE_BLOCK</key>
+	<false/>
+	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
-			<key>POS_Y</key>
-			<integer>600</integer>
-			<key>FRACTION_MODE</key>
-			<integer>0</integer>
-			<key>VALUE</key>
-			<integer>1</integer>
-			<key>TAG</key>
-			<integer>1</integer>
-			<key>SHOW_CURRENT_FRACTIONS</key>
-			<true/>
-			<key>MARKER_START_POSITION</key>
-			<string>3</string>
-		</dict>
-		<dict>
-			<key>POS_Y</key>
-			<integer>300</integer>
-			<key>FRACTION_MODE</key>
-			<integer>0</integer>
-			<key>VALUE</key>
-			<integer>1</integer>
-			<key>TAG</key>
-			<integer>2</integer>
-			<key>SHOW_CURRENT_FRACTIONS</key>
+			<key>SHOW_RESIZE</key>
 			<false/>
-		</dict>
-	</array>
-	<key>SOLUTIONS</key>
-	<array>
-		<dict>
-			<key>TAG</key>
-			<integer>1</integer>
-			<key>DIVIDEND</key>
-			<integer>1</integer>
-			<key>DIVISOR</key>
+			<key>START_X</key>
+			<string>1</string>
+			<key>END_X</key>
+			<string>9</string>
+			<key>START_Y</key>
 			<string>3</string>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<integer>2</integer>
-			<key>DIVIDEND</key>
-			<integer>2</integer>
-			<key>DIVISOR</key>
-			<string>6</string>
+			<key>END_Y</key>
+			<string>5</string>
 		</dict>
 	</array>
 </dict>

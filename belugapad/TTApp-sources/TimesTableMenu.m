@@ -477,6 +477,11 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)setupOutsideButtons
 {
+    [self setupOutsideButtonsFromPipelineExit:NO];
+}
+
+-(void)setupOutsideButtonsFromPipelineExit:(BOOL)exitedPipeline
+{
     NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
     int currentPoint=2;
     float time=outerButtonPopOutTime;
@@ -495,6 +500,8 @@ const float outerButtonPopInDelay=0.05f;
         
         NSString *type=[ttappu getMedalForX:currentSelectionIndex+1 andY:i+1];
         
+        NSString *prevtype=[ttappu getPreviousMedalForX:currentSelectionIndex+1 andY:i+1];
+        
         NSString *f=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
         [s setPosition:ccp(cx,cy)];
@@ -508,6 +515,11 @@ const float outerButtonPopInDelay=0.05f;
         CCEaseBounceOut *bi=[CCEaseBounceOut actionWithAction:mt];
         
         [s runAction:bi];
+        
+        if(exitedPipeline && ![type isEqualToString:prevtype])
+        {
+            // TODO: set up a new button here to bounce in
+        }
         
         time+=outerButtonPopOutDelay;
         

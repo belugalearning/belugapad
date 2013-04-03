@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Arrange from smallest to largest.&lt;/b:t&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;0.1&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;0.3&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;0.07&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;0.03&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;e&quot;&gt;0.7&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;f&quot;&gt;0.01&lt;/b:ot&gt;</string>
+		<string>&lt;b:ph targetTag=&quot;f&quot;/&gt;&lt;b:ph targetTag=&quot;d&quot;/&gt;&lt;b:ph targetTag=&quot;c&quot;/&gt;&lt;b:ph targetTag=&quot;a&quot;/&gt;&lt;b:ph targetTag=&quot;b&quot;/&gt;&lt;b:ph targetTag=&quot;e&quot;/&gt;</string>
+	</array>
+</dict>
+</plist>

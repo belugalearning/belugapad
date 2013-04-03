@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 1.5 , add 1.2</string>
+	<string>Make 1.06 . </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -13,7 +13,7 @@
 	<key>FIRST_COL_VALUE</key>
 	<integer>1</integer>
 	<key>NUMBER_COLS</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>DEFAULT_COL</key>
 	<integer>0</integer>
 	<key>ROPES_PER_COL</key>
@@ -49,23 +49,10 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>2.7</string>
+		<string>1.06</string>
 	</dict>
 	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<string>1</string>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<string>5</string>
-		</dict>
-	</array>
+	<array/>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
@@ -86,8 +73,10 @@
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>
-		<true/>
+		<false/>
 		<key>1</key>
+		<false/>
+		<key>0.1</key>
 		<true/>
 	</dict>
 	<key>COLUMN_NEG_CAGES</key>

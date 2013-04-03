@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>EVAL_TYPE</key>
-	<string>EXPRESSION_EQUALITIES</string>
+	<string>ALL_ENABLED</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
@@ -14,7 +14,7 @@
 		<string>&lt;b:ot tag=&quot;a&quot;&gt;16&lt;/b:ot&gt;
 &lt;b:ot tag=&quot;b&quot;&gt;0.016&lt;/b:ot&gt;
 &lt;b:ot tag=&quot;c&quot;&gt;0.16&lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot;&gt;1.6&lt;/b:ot&gt;</string>
+&lt;b:ot tag=&quot;d&quot;&gt;1.6&lt;/b:ot&gt;</string>
 		<string>&lt;b:ph targetTag=&quot;b&quot;/&gt;&lt;b:ph targetTag=&quot;c&quot;/&gt;&lt;b:ph targetTag=&quot;d&quot;/&gt;&lt;b:ph targetTag=&quot;a&quot;/&gt;</string>
 	</array>
 </dict>

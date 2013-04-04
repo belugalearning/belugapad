@@ -3,86 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which of these are equivalent to 1/2?</string>
+	<string>Share 3 between 6. </string>
 	<key>TOOL_KEY</key>
-	<string>FractionBuilder</string>
+	<string>PieSplitter</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>INIT_FRACTIONS</key>
-	<array>
-		<dict>
-			<key>POS_Y</key>
-			<integer>600</integer>
-			<key>FRACTION_MODE</key>
-			<integer>0</integer>
-			<key>VALUE</key>
-			<integer>1</integer>
-			<key>TAG</key>
-			<integer>1</integer>
-			<key>MARKER_START_POSITION</key>
-			<string>2</string>
-			<key>SHOW_CURRENT_FRACTIONS</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>POS_Y</key>
-			<integer>400</integer>
-			<key>FRACTION_MODE</key>
-			<integer>0</integer>
-			<key>VALUE</key>
-			<integer>1</integer>
-			<key>TAG</key>
-			<integer>1</integer>
-			<key>SHOW_CURRENT_FRACTIONS</key>
-			<true/>
-		</dict>
-	</array>
-	<key>SOLUTIONS</key>
-	<array>
-		<dict>
-			<key>TAG</key>
-			<integer>1</integer>
-			<key>DIVIDEND</key>
-			<integer>1</integer>
-			<key>DIVISOR</key>
-			<string>2</string>
-		</dict>
-	</array>
-	<key>META_QUESTION</key>
-	<dict>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>1</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>1</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>1/4</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>3/6</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4/8</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>5/10</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>Which of these are equivalent to 1/2?</string>
-	</dict>
+	<key>DIVIDEND</key>
+	<integer>3</integer>
+	<key>DIVISOR</key>
+	<integer>6</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>3</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>6</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<true/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>0</integer>
 </dict>
 </plist>

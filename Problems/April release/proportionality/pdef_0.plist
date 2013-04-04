@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Fill in the gaps.</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Fill in the gaps.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;8&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:on number=&quot;4&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;16&quot; enabled=&quot;no&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;10&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:on usePicker=&quot;yes&quot; number=&quot;5&quot; enabled=&quot;no&quot;&gt;5&lt;/b:on&gt;
+&lt;b:on number=&quot;20&quot; enabled=&quot;yes&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>6</string>
+				<string>9</string>
+				<string>12</string>
+				<string>15</string>
+				<string>18</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>21</string>
+				<string>24</string>
+				<string>27</string>
+				<string>30</string>
+			</array>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@object</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>apples</string>
+				<string>sweets</string>
+				<string>pens</string>
+			</array>
+		</dict>
+	</dict>
+	<key>REPEAT_AS_IS_MIN</key>
+	<integer>2</integer>
+	<key>ENABLE_CALCULATOR</key>
+	<true/>
+</dict>
+</plist>

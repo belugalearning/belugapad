@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Complete the equations.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;&lt;b:oo value=&quot;/&quot;/&gt;&lt;b:on number=&quot;10&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;&lt;b:oo value=&quot;/&quot;/&gt;&lt;b:on number=&quot;100&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;&lt;b:oo value=&quot;/&quot;/&gt;&lt;b:on number=&quot;1000&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>0.23</string>
+				<string>0.19</string>
+				<string>0.46</string>
+				<string>0.38</string>
+				<string>0.69</string>
+				<string>0.85</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

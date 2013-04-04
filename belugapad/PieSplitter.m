@@ -328,13 +328,26 @@ static float kTimeToPieShake=7.0f;
     [pieBox setVisible:YES];
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     ghost=pie;
+    [activePie addObject:pie];
+    
+    int currentIndex=0;
+    int currentYPos=0;
+    
+    for(DWPieSplitterPieGameObject *p in activePie)
+    {
+        currentIndex++;
+        if(currentIndex>=5){
+            currentIndex=0;
+            currentYPos++;
+        }
+    }
+    
     
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp(([activePie count]+0.5)*(lx/[activePie count]), pieBox.position.y);
+    pie.Position=ccp((currentIndex+0.5)*(lx/[activePie count]), (pieBox.position.y+45)-(110*currentYPos));
     pie.MountPosition=ccp(35,700);
     [pie.mySprite setScale:1.0f];
     pie.ScaledUp=YES;
-    [activePie addObject:pie];
     [pie handleMessage:kDWsetupStuff];
     [pie.mySprite setOpacity:25];
     [pie.touchOverlay setOpacity:25];
@@ -377,24 +390,45 @@ static float kTimeToPieShake=7.0f;
 
 -(void)reorderActivePies
 {
-
+    int currentIndex=0;
+    int currentYPos=0;
+    int maxPerRow=5;
+    
+    if([activePie count]<5)
+        maxPerRow=[activePie count];
+    
     for(DWPieSplitterPieGameObject *p in activePie)
     {
-        p.Position=ccp(([activePie indexOfObject:p]+0.5)*(lx/[activePie count]), pieBox.position.y);
+        p.Position=ccp((currentIndex+0.5)*(lx/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
+//        NSLog(@"pie pos %@", NSStringFromCGPoint(p.Position));
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
+        currentIndex++;
+        
+        if(currentIndex>=5){
+            currentIndex=0;
+            currentYPos++;
+        }
     }
 }
 
 -(void)reorderActiveContainers
 {
     NSLog(@"current activeCon count %d", [activeCon count]);
+    int currentIndex=0;
+    int currentYPos=0;
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
         if(!c.ScaledUp)continue;
         
-        c.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
+        c.Position=ccp((currentIndex+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
         [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
+        currentIndex++;
+        
+        if(currentIndex>=5){
+            currentIndex=0;
+            currentYPos++;
+        }
     }
 }
 

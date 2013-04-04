@@ -117,7 +117,7 @@
         NSString *overlayFileName=@"";
         overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/slice1.png"];
         pie.touchOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(overlayFileName)];
-        [pie.touchOverlay setPosition:ccp(pie.mySprite.position.x+10, pie.mySprite.position.y+10)];
+        [pie.touchOverlay setPosition:ccp(pie.mySprite.contentSize.width/2, (pie.mySprite.contentSize.height/2)+2)];
         [pie.mySprite addChild:pie.touchOverlay];
         if(gameWorld.Blackboard.inProblemSetup)
         {

@@ -59,7 +59,9 @@
     }
     if(messageType==kDWupdateLabels)
     {
+//        if(!cont.myText)[self createMyLabel];
         if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
+        if(!cont.textString)cont.textString=@"";
         if(cont.ScaledUp)[cont.myText setString:cont.textString];
         else [cont.myText setVisible:NO];
     }
@@ -133,7 +135,7 @@
     [cont.BaseNode addChild:cont.mySprite];
 
     
-    if(!cont.myText && cont.ScaledUp)
+    if(!cont.myText)
     {
         cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
         [cont.myText setPosition:ccp(50,cont.mySprite.contentSize.height+15)];
@@ -143,10 +145,15 @@
             [cont.myText setTag:1];
             [cont.myText setOpacity:0];
         }
+        if(!cont.ScaledUp)
+        {
+            [cont.myText setVisible:NO];
+        }
     }
 //        [cont.BaseNode addChild:cont.mySprite];
     
 }
+
 -(void)moveSprite
 {
     if(!cont.ScaledUp){

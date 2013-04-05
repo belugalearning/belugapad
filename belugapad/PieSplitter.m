@@ -399,7 +399,7 @@ static float kTimeToPieShake=7.0f;
     
     for(DWPieSplitterPieGameObject *p in activePie)
     {
-        p.Position=ccp((currentIndex+0.5)*(lx/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
+        p.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
 //        NSLog(@"pie pos %@", NSStringFromCGPoint(p.Position));
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
         currentIndex++;
@@ -416,12 +416,17 @@ static float kTimeToPieShake=7.0f;
     NSLog(@"current activeCon count %d", [activeCon count]);
     int currentIndex=0;
     int currentYPos=0;
+    int maxPerRow=5;
+    
+    if([activeCon count]<5)
+        maxPerRow=[activeCon count];
+    
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
         if(!c.ScaledUp)continue;
-        
-        c.Position=ccp((currentIndex+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
+//        p.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
+        c.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (conBox.position.y+45)-(110*currentYPos));
         [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
         currentIndex++;
         

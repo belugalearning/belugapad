@@ -199,6 +199,7 @@ static float kTimeToPieShake=7.0f;
     activePie=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
+    startProblemSplit=YES;
     
     CCSprite *tabs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/drag_tabs.png")];
     [tabs setAnchorPoint:ccp(0,0.5)];
@@ -274,7 +275,7 @@ static float kTimeToPieShake=7.0f;
     createdPies++;
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp(52,543);
+    pie.Position=ccp(52,544);
     pie.MountPosition=pie.Position;
     //if(hasSplit)[self splitPie:pie];
     newPie=pie; 
@@ -287,7 +288,7 @@ static float kTimeToPieShake=7.0f;
     createdCont++;
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
-    cont.Position=ccp(62,455);
+    cont.Position=ccp(62,456);
     cont.MountPosition=cont.Position;
     newCon=cont;
     
@@ -299,7 +300,7 @@ static float kTimeToPieShake=7.0f;
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
     pie.Position=ccp(0,pieBox.position.y);
-    pie.MountPosition=ccp(35,570);
+    pie.MountPosition=ccp(52,544);
     [pie.mySprite setScale:1.0f];
     pie.ScaledUp=YES;
     if(hasSplit)
@@ -315,7 +316,7 @@ static float kTimeToPieShake=7.0f;
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(0,conBox.position.y);
-    cont.MountPosition=ccp(35,510);
+    cont.MountPosition=ccp(62,456);
     [cont.mySprite setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
@@ -716,35 +717,47 @@ static float kTimeToPieShake=7.0f;
     if(gw.Blackboard.PickupObject)
     {
 
+        BOOL needPieAtMount=NO;
+        BOOL needContAtMount=NO;
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
         {
             ((DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject).Position=location;
+            if(!((DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject).ScaledUp)
+                needContAtMount=YES;
+            
             hasMovedSquare=YES;
         }
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]])
         {
             ((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).Position=location;
+            if(!((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp)
+                needPieAtMount=YES;
+            
             hasMovedPie=YES;
         }
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
         {
-            ((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).Position=location;
-            hasMovedSlice=YES;
+            if(!((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).myCont){
+                ((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).Position=location;
+            
+                hasMovedSlice=YES;
+            }
         }
         
-        [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
+        if(hasMovedPie||hasMovedSlice||hasMovedSquare)
+            [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
         
         // if we haven't yet created a new object, do it now
-        if(hasMovedSquare && !createdNewCon && createdCont <= numberOfCagedContainers)
+        if(hasMovedSquare && !createdNewCon && createdCont <= numberOfCagedContainers && needContAtMount)
         {
             [self createContainerAtMount];
             createdNewCon=YES;
             NSLog(@"create new container at mount");
         }
-        if(hasMovedPie && !createdNewPie && createdPies <= numberOfCagedPies)
+        if(hasMovedPie && !createdNewPie && createdPies <= numberOfCagedPies && needPieAtMount)
         {
             [self createPieAtMount];
             createdNewPie=YES;
@@ -838,6 +851,8 @@ static float kTimeToPieShake=7.0f;
                 [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
             
+            [self splitPies];
+            
             [self reorderActivePies];
         }
         
@@ -850,7 +865,11 @@ static float kTimeToPieShake=7.0f;
             DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
             
             // if we have a dropobject then we need to be mounted to it
-            if(gw.Blackboard.DropObject)
+            if(slice.myCont)
+            {
+                // do nothing, skip t'other shit
+            }
+            else if(gw.Blackboard.DropObject)
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount];

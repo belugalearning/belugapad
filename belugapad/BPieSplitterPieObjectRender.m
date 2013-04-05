@@ -89,6 +89,17 @@
         //[lbl setPosition:ccp(50,50)];
         //[pie.mySprite addChild:lbl];
         [pie.mySprite removeChild:pie.touchOverlay cleanup:YES];
+        
+        if(pie.HasSplit)
+        {
+            for(DWPieSplitterSliceGameObject *s in pie.slicesInMe)
+            {
+                [s handleMessage:kDWdismantle];
+            }
+            
+            [pie.slicesInMe removeAllObjects];
+        }
+        
     }
     
     

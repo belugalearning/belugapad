@@ -149,7 +149,7 @@
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
-    [p.mySprite addChild:slice.mySprite];
+    [p.mySprite addChild:slice.mySprite z:-1];
     [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
     
     if(![p.slicesInMe containsObject:slice])

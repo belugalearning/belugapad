@@ -84,7 +84,7 @@
     {
         [cont.BaseNode.parent removeChild:cont.BaseNode cleanup:NO];
         [cont.BaseNode setPosition:[gameWorld.Blackboard.MovementLayer convertToNodeSpace:cont.Position]];
-        [gameWorld.Blackboard.MovementLayer addChild:cont.BaseNode];
+        [gameWorld.Blackboard.MovementLayer addChild:cont.BaseNode z:100];
         NSLog(@"this container changed parent (movement layer)");
     }
     if(messageType==kDWdismantle)

@@ -400,7 +400,7 @@ static float kTimeToPieShake=7.0f;
     
     for(DWPieSplitterPieGameObject *p in activePie)
     {
-        p.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
+        p.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (pieBox.position.y+45)-(110*currentYPos));
 //        NSLog(@"pie pos %@", NSStringFromCGPoint(p.Position));
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
         currentIndex++;
@@ -427,7 +427,7 @@ static float kTimeToPieShake=7.0f;
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
         if(!c.ScaledUp)continue;
 //        p.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
-        c.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (conBox.position.y+45)-(110*currentYPos));
+        c.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (conBox.position.y+45)-(110*currentYPos));
         [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
         currentIndex++;
         
@@ -493,6 +493,26 @@ static float kTimeToPieShake=7.0f;
         hasSplit=YES;
         gameState=kGameSlicesActive;
     }
+}
+
+-(void)resetSlicesToPies
+{
+        [loggingService logEvent:BL_PA_PS_RETURN_SLICES_TO_PIE withAdditionalData:nil];
+        
+        for(DWPieSplitterContainerGameObject *c in activeCon)
+        {
+            for(DWPieSplitterSliceGameObject *s in c.mySlices)
+            {
+                [s handleMessage:kDWunsetMount];
+                [s handleMessage:kDWmoveSpriteToHome];
+            }
+            [c handleMessage:kDWunsetAllMountedObjects];
+        }
+        
+        for(DWPieSplitterPieGameObject *p in activePie)
+        {
+            [p handleMessage:kDWreorderPieSlices];
+        }
 }
 
 -(void)removeSlices
@@ -603,6 +623,7 @@ static float kTimeToPieShake=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
+    
     timeSinceInteractionOrShake=0;
     
     gw.Blackboard.PickupObject=nil;
@@ -619,24 +640,8 @@ static float kTimeToPieShake=7.0f;
     {
         if(CGRectContainsPoint(resetSlices.boundingBox, location))
         {
-            [loggingService logEvent:BL_PA_PS_RETURN_SLICES_TO_PIE withAdditionalData:nil];
-            
-            for(DWPieSplitterContainerGameObject *c in activeCon)
-            {
-                for(DWPieSplitterSliceGameObject *s in c.mySlices)
-                {
-                    [s handleMessage:kDWunsetMount];
-                    [s handleMessage:kDWmoveSpriteToHome];
-                }
-                [c handleMessage:kDWunsetAllMountedObjects];
-            }
-            
-            for(DWPieSplitterPieGameObject *p in activePie)
-            {
-                [p handleMessage:kDWreorderPieSlices];
-            }
+            [self resetSlicesToPies];
         }
-
     }
     
     if(gameState==kGameReadyToSplit || gameState==kGameSlicesActive)
@@ -740,11 +745,10 @@ static float kTimeToPieShake=7.0f;
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
         {
-            if(!((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).myCont){
                 ((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).Position=location;
             
                 hasMovedSlice=YES;
-            }
+         
         }
         
         if(hasMovedPie||hasMovedSlice||hasMovedSquare)
@@ -850,6 +854,9 @@ static float kTimeToPieShake=7.0f;
                 // and if it wasn't - eject it back to it's mount
                 [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
+        
+            
+//            [self resetSlicesToPies];
             
             [self splitPies];
             
@@ -867,13 +874,30 @@ static float kTimeToPieShake=7.0f;
             // if we have a dropobject then we need to be mounted to it
             if(slice.myCont)
             {
-                // do nothing, skip t'other shit
+                if(gw.Blackboard.DropObject)
+                {
+                    [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
+                    [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
+                    [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
+                    hasASliceInCont=YES;
+                }
+                else if(!gw.Blackboard.DropObject)
+                {
+                    [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
+                    [slice.myCont handleMessage:kDWsetMountedObject];
+                    hasASliceInCont=YES;
+
+                }
+
             }
+            
             else if(gw.Blackboard.DropObject)
             {
-                [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
-                [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
-                [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
+                    [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
+                    [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
+                    [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
+                    hasASliceInCont=YES;
+                
             }
             else {
 
@@ -911,6 +935,7 @@ static float kTimeToPieShake=7.0f;
     numberOfCagedSlices=0;
     gw.Blackboard.PickupObject=nil;
     gw.Blackboard.DropObject=nil;
+
     
     
 }

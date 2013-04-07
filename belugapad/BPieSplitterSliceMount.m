@@ -86,6 +86,7 @@
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+        [slice.mySprite setRotation:slice.Rotation];
         [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
 
         
@@ -149,6 +150,7 @@
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+    [slice.mySprite setRotation:slice.Rotation];
     [p.mySprite addChild:slice.mySprite z:-1];
     [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
     

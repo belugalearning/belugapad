@@ -209,8 +209,8 @@ static float kTimeToPieShake=7.0f;
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     
-    [pieBox setPosition:ccp(cx+146,475)];
-    [conBox setPosition:ccp(cx+146,240)];
+    [pieBox setPosition:ccp(cx+96,475)];
+    [conBox setPosition:ccp(cx+96,240)];
     
     [pieBox setOpacity:50];
     [conBox setOpacity:50];

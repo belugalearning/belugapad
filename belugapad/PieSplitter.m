@@ -209,8 +209,8 @@ static float kTimeToPieShake=7.0f;
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     
-    [pieBox setPosition:ccp(cx,475)];
-    [conBox setPosition:ccp(cx,240)];
+    [pieBox setPosition:ccp(cx+146,475)];
+    [conBox setPosition:ccp(cx+146,240)];
     
     [pieBox setOpacity:50];
     [conBox setOpacity:50];
@@ -856,11 +856,12 @@ static float kTimeToPieShake=7.0f;
                 [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
         
-            
-            [self resetSlicesToPies];
-            
-            [self splitPies];
-            
+            if(createdNewPie){
+                [self resetSlicesToPies];
+                
+                [self splitPies];
+                
+            }
             [self reorderActivePies];
         }
         

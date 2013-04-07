@@ -64,9 +64,7 @@
     if(gameWorld.Blackboard.PickupObject)
     {
         if(!cont.mySlices)cont.mySlices=[[[NSMutableArray alloc]init] autorelease];
-        NSLog(@"before mounted objects: %d",[cont.mySlices count]);
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
-        NSLog(@"after mounted objects: %d",[cont.mySlices count]);
         //        [self scaleMidSection];
     }
 }

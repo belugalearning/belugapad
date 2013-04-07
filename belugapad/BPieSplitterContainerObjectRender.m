@@ -171,10 +171,10 @@
       
         cont.ScaledUp=NO;
     }
-    CCCallBlock *destroy=[CCCallBlock actionWithBlock:^{[cont.BaseNode removeFromParentAndCleanup:YES]; [gameWorld delayRemoveGameObject:cont];}];
+    CCCallBlock *destroy=[CCCallBlock actionWithBlock:^{if(cont.BaseNode)[cont.BaseNode removeFromParentAndCleanup:YES]; [gameWorld delayRemoveGameObject:cont];}];
     CCMoveTo *move=[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition];
     CCSequence *seq=[CCSequence actionOne:move two:destroy];
-    [cont.BaseNode runAction:seq];
+    [cont.BaseNode runAction:move];
 }
 -(void)handleTap
 {

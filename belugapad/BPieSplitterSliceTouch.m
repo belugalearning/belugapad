@@ -67,6 +67,7 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
+    if(slice.mySprite.parent.scale<1)return;
     
 //    CCDrawNode *dbg=[[CCDrawNode alloc]init];
 //    [slice.mySprite.parent addChild:dbg];

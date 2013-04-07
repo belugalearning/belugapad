@@ -878,6 +878,9 @@ static float kTimeToPieShake=7.0f;
                 if(gw.Blackboard.DropObject)
                 {
                     [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
+                    if(slice.myCont)
+                        [slice.myCont handleMessage:kDWunsetMountedObject];
+                    [slice handleMessage:kDWunsetMount];
                     [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
                     [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
                     hasASliceInCont=YES;
@@ -894,10 +897,12 @@ static float kTimeToPieShake=7.0f;
             
             else if(gw.Blackboard.DropObject)
             {
-                    [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
-                    [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
-                    [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
-                    hasASliceInCont=YES;
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
+                if(slice.myCont)[slice.myCont handleMessage:kDWunsetMountedObject];
+                [slice handleMessage:kDWunsetMount];
+                [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
+                [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
+                hasASliceInCont=YES;
                 
             }
             else {

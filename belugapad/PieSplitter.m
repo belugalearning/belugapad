@@ -470,6 +470,7 @@ static float kTimeToPieShake=7.0f;
 {
     for(DWPieSplitterPieGameObject *p in activePie)
     {
+        if(p.mySlices.count>0)[p.mySlices removeAllObjects];
         [p handleMessage:kDWsplitActivePies];
         p.numberOfSlices=[activeCon count];
         p.HasSplit=YES;
@@ -856,7 +857,7 @@ static float kTimeToPieShake=7.0f;
             }
         
             
-//            [self resetSlicesToPies];
+            [self resetSlicesToPies];
             
             [self splitPies];
             

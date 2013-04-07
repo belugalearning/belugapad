@@ -64,9 +64,10 @@
     if(gameWorld.Blackboard.PickupObject)
     {
         if(!cont.mySlices)cont.mySlices=[[[NSMutableArray alloc]init] autorelease];
-        
+        NSLog(@"before mounted objects: %d",[cont.mySlices count]);
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
-//        [self scaleMidSection];
+        NSLog(@"after mounted objects: %d",[cont.mySlices count]);
+        //        [self scaleMidSection];
     }
 }
 -(void)unMountObjectFromMe
@@ -94,6 +95,7 @@
 {
     [cont.mySlices removeAllObjects];
     [cont.Nodes removeAllObjects];
+    NSLog(@"basenode child count: %d",[cont.BaseNode.children count]);
     if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
     
     //[self scaleMidSection];

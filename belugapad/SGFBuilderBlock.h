@@ -12,7 +12,7 @@
 
 @class SGFBuilderBlockRender;
 
-@interface SGFBuilderBlock : SGGameObject <Block,RenderedObject>
+@interface SGFBuilderBlock : SGGameObject <Block,RenderedObject, Touchable>
 
 @property (retain) SGFBuilderBlockRender *BlockRenderComponent;
 

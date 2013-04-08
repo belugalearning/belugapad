@@ -7,6 +7,7 @@
 //
 
 #import "SGFBuilderBlock.h"
+#import "SGFBuilderBlockRender.h"
 
 @implementation SGFBuilderBlock
 @synthesize Denominator, TemporaryDenominator, TemporaryNumerator;
@@ -28,9 +29,14 @@
     return self;
 }
 
--(void)setupSprite
+-(void)checkTouch:(CGPoint)location
 {
     
+}
+
+-(void)setup
+{
+    [BlockRenderComponent setupSprite];
 }
 
 -(void)move

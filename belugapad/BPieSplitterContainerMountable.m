@@ -83,7 +83,7 @@
             DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)sl.myPie;
             
             CCSprite *s=sl.mySprite;
-            [s runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*i]];
+            [s runAction:[CCRotateTo actionWithDuration:0.2f angle:(360/p.numberOfSlices)*i]];
         }
         
     }

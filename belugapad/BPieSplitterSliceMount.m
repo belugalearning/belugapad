@@ -87,7 +87,7 @@
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
         [slice.mySprite setRotation:slice.Rotation];
-        [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
+        [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.2f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
 
         
         [p.slicesInMe removeObject:slice];

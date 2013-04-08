@@ -603,11 +603,19 @@ static float kTimeToPieShake=7.0f;
 
         }
         
+        CCMoveTo *mt=nil;
+        
         // then set the position using our offset
         if([c.mySlices count]==0)
-            [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset-lastLayerOffset)]];
+            //[c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset-lastLayerOffset)]];
+            mt=[CCMoveTo actionWithDuration:0.3f position:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset-lastLayerOffset)]];
         else
-            [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset)]];        
+            mt=[CCMoveTo actionWithDuration:0.3f position:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset-lastLayerOffset)]];
+//            [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset)]];
+        
+        CCEaseBounceOut *ebo=[CCEaseBounceOut actionWithAction:mt];
+        
+        [c.BaseNode runAction:ebo];
         
 
         isLess=NO;

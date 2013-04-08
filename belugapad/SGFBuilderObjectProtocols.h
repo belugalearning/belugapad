@@ -16,7 +16,7 @@
 @property (retain) CCSprite *MySprite;
 @property CGPoint Position;
 
--(void)setupSprite;
+-(void)setup;
 
 
 @end
@@ -26,7 +26,10 @@
 
 @property int Denominator;
 @property (retain) NSMutableArray *ContainedBlocks;
+@property (retain) CCSprite *DenominatorUpButton;
+@property (retain) CCSprite *DenominatorDownButton;
 
+-(void)setRowDenominator:(int)incr;
 
 @end
 
@@ -41,3 +44,10 @@
 
 @end
 
+@protocol Touchable
+
+@property CGPoint Position;
+
+-(void)checkTouch:(CGPoint)location;
+
+@end

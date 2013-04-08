@@ -6,8 +6,16 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#import "SGGameObject.h"
+#import "SGFBuilderObjectProtocols.h"
+#import "LogPollingProtocols.h"
 
-@interface SGFBuilderRow : NSObject
+@class SGFBuilderRowRender;
+
+@interface SGFBuilderRow : SGGameObject <Row,RenderedObject>
+
+@property (retain) SGFBuilderRowRender *RowRenderComponent;
+
+-(SGFBuilderRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
 @end

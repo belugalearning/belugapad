@@ -68,6 +68,8 @@
 		551430AF1712D72800A66657 /* FractionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430AE1712D72700A66657 /* FractionBuilder.m */; };
 		551430B51712E15D00A66657 /* SGFBuilderBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430B41712E15D00A66657 /* SGFBuilderBlock.m */; };
 		551430B81712E17200A66657 /* SGFBuilderRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430B71712E17200A66657 /* SGFBuilderRow.m */; };
+		551430BB1712E44100A66657 /* SGFBuilderBlockRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430BA1712E44100A66657 /* SGFBuilderBlockRender.m */; };
+		551430BE1712E45300A66657 /* SGFBuilderRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430BD1712E45300A66657 /* SGFBuilderRowRender.m */; };
 		551815631525EA920097E259 /* NumberBonds.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815621525EA920097E259 /* NumberBonds.m */; };
 		5518156C1525F7500097E259 /* BNBondRowDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815671525F7500097E259 /* BNBondRowDropTarget.m */; };
 		5518156D1525F7500097E259 /* BNBondObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815691525F7500097E259 /* BNBondObjectRender.m */; };
@@ -567,6 +569,10 @@
 		551430B41712E15D00A66657 /* SGFBuilderBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderBlock.m; sourceTree = "<group>"; };
 		551430B61712E17200A66657 /* SGFBuilderRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderRow.h; sourceTree = "<group>"; };
 		551430B71712E17200A66657 /* SGFBuilderRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderRow.m; sourceTree = "<group>"; };
+		551430B91712E44100A66657 /* SGFBuilderBlockRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderBlockRender.h; sourceTree = "<group>"; };
+		551430BA1712E44100A66657 /* SGFBuilderBlockRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderBlockRender.m; sourceTree = "<group>"; };
+		551430BC1712E45300A66657 /* SGFBuilderRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderRowRender.h; sourceTree = "<group>"; };
+		551430BD1712E45300A66657 /* SGFBuilderRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderRowRender.m; sourceTree = "<group>"; };
 		551815611525EA920097E259 /* NumberBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBonds.h; sourceTree = "<group>"; };
 		551815621525EA920097E259 /* NumberBonds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBonds.m; sourceTree = "<group>"; };
 		551815661525F7500097E259 /* BNBondRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondRowDropTarget.h; sourceTree = "<group>"; };
@@ -1745,6 +1751,10 @@
 		55FBB2F915BD6FAA0034B081 /* Fractions */ = {
 			isa = PBXGroup;
 			children = (
+				551430B91712E44100A66657 /* SGFBuilderBlockRender.h */,
+				551430BA1712E44100A66657 /* SGFBuilderBlockRender.m */,
+				551430BC1712E45300A66657 /* SGFBuilderRowRender.h */,
+				551430BD1712E45300A66657 /* SGFBuilderRowRender.m */,
 			);
 			name = Fractions;
 			sourceTree = "<group>";
@@ -3573,6 +3583,8 @@
 				551430AF1712D72800A66657 /* FractionBuilder.m in Sources */,
 				551430B51712E15D00A66657 /* SGFBuilderBlock.m in Sources */,
 				551430B81712E17200A66657 /* SGFBuilderRow.m in Sources */,
+				551430BB1712E44100A66657 /* SGFBuilderBlockRender.m in Sources */,
+				551430BE1712E45300A66657 /* SGFBuilderRowRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

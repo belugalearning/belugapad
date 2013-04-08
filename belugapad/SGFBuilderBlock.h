@@ -10,7 +10,11 @@
 #import "SGFBuilderObjectProtocols.h"
 #import "LogPollingProtocols.h"
 
-@interface SGFBuilderBlock : SGGameObject <Block>
+@class SGFBuilderBlockRender;
+
+@interface SGFBuilderBlock : SGGameObject <Block,RenderedObject>
+
+@property (retain) SGFBuilderBlockRender *BlockRenderComponent;
 
 -(SGFBuilderBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 

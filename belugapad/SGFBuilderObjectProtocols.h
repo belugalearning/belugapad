@@ -10,6 +10,18 @@
 #import "cocos2d.h"
 
 
+@protocol RenderedObject
+
+@property (retain) CCLayer *RenderLayer;
+@property (retain) CCSprite *MySprite;
+@property CGPoint Position;
+
+-(void)setupSprite;
+
+
+@end
+
+
 @protocol Row
 
 @property int Denominator;

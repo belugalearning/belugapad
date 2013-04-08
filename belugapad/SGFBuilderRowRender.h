@@ -11,7 +11,7 @@
 
 @interface SGFBuilderRowRender : SGComponent
 {
-    id<Row,RenderedObject>ParentGO;
+    id<Row,RenderedObject, Touchable>ParentGO;
 }
 
 -(void)setupSprite;

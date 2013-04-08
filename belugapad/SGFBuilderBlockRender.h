@@ -8,11 +8,10 @@
 
 #import "SGComponent.h"
 #import "SGFBuilderObjectProtocols.h"
-#import "SGComponent.h"
 
 @interface SGFBuilderBlockRender : SGComponent
 {
-    id<Block,RenderedObject>ParentGO;
+    id<Block,RenderedObject, Touchable>ParentGO;
 }
 
 -(SGFBuilderBlockRender*)initWithGameObject:(id<Block,RenderedObject>)aGameObject;

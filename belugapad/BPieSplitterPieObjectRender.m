@@ -79,8 +79,8 @@
         {
             DWPieSplitterSliceGameObject *s=[pie.slicesInMe objectAtIndex:i];
             s.Rotation=360/pie.numberOfSlices*i;
-            NSLog(@"thisSprite rotation %f", s.Rotation);
-            [s.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:s.Rotation]];
+//            NSLog(@"thisSprite rotation %f", s.Rotation);
+            [s.mySprite runAction:[CCRotateTo actionWithDuration:0.2f angle:s.Rotation]];
         }
     }
     if(messageType==kDWsplitActivePies)
@@ -89,6 +89,17 @@
         //[lbl setPosition:ccp(50,50)];
         //[pie.mySprite addChild:lbl];
         [pie.mySprite removeChild:pie.touchOverlay cleanup:YES];
+        
+        if(pie.HasSplit)
+        {
+            for(DWPieSplitterSliceGameObject *s in pie.slicesInMe)
+            {
+                [s handleMessage:kDWdismantle];
+            }
+            
+            [pie.slicesInMe removeAllObjects];
+        }
+        
     }
     
     
@@ -117,7 +128,7 @@
         NSString *overlayFileName=@"";
         overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/slice1.png"];
         pie.touchOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(overlayFileName)];
-        [pie.touchOverlay setPosition:ccp(pie.mySprite.position.x+10, pie.mySprite.position.y+10)];
+        [pie.touchOverlay setPosition:ccp(pie.mySprite.contentSize.width/2, (pie.mySprite.contentSize.height/2)+2)];
         [pie.mySprite addChild:pie.touchOverlay];
         if(gameWorld.Blackboard.inProblemSetup)
         {

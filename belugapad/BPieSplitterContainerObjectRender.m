@@ -59,7 +59,9 @@
     }
     if(messageType==kDWupdateLabels)
     {
+//        if(!cont.myText)[self createMyLabel];
         if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
+        if(!cont.textString)cont.textString=@"";
         if(cont.ScaledUp)[cont.myText setString:cont.textString];
         else [cont.myText setVisible:NO];
     }
@@ -82,7 +84,7 @@
     {
         [cont.BaseNode.parent removeChild:cont.BaseNode cleanup:NO];
         [cont.BaseNode setPosition:[gameWorld.Blackboard.MovementLayer convertToNodeSpace:cont.Position]];
-        [gameWorld.Blackboard.MovementLayer addChild:cont.BaseNode];
+        [gameWorld.Blackboard.MovementLayer addChild:cont.BaseNode z:100];
         NSLog(@"this container changed parent (movement layer)");
     }
     if(messageType==kDWdismantle)
@@ -133,7 +135,7 @@
     [cont.BaseNode addChild:cont.mySprite];
 
     
-    if(!cont.myText && cont.ScaledUp)
+    if(!cont.myText)
     {
         cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
         [cont.myText setPosition:ccp(50,cont.mySprite.contentSize.height+15)];
@@ -143,10 +145,15 @@
             [cont.myText setTag:1];
             [cont.myText setOpacity:0];
         }
+        if(!cont.ScaledUp)
+        {
+            [cont.myText setVisible:NO];
+        }
     }
 //        [cont.BaseNode addChild:cont.mySprite];
     
 }
+
 -(void)moveSprite
 {
     if(!cont.ScaledUp){
@@ -164,7 +171,10 @@
       
         cont.ScaledUp=NO;
     }
-    [cont.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];
+    CCCallBlock *destroy=[CCCallBlock actionWithBlock:^{if(cont.BaseNode)[cont.BaseNode removeFromParentAndCleanup:YES]; [gameWorld delayRemoveGameObject:cont];}];
+    CCMoveTo *move=[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition];
+    CCSequence *seq=[CCSequence actionOne:move two:destroy];
+    [cont.BaseNode runAction:move];
 }
 -(void)handleTap
 {

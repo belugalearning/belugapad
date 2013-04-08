@@ -64,9 +64,8 @@
     if(gameWorld.Blackboard.PickupObject)
     {
         if(!cont.mySlices)cont.mySlices=[[[NSMutableArray alloc]init] autorelease];
-        
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
-//        [self scaleMidSection];
+        //        [self scaleMidSection];
     }
 }
 -(void)unMountObjectFromMe
@@ -84,7 +83,7 @@
             DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)sl.myPie;
             
             CCSprite *s=sl.mySprite;
-            [s runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*i]];
+            [s runAction:[CCRotateTo actionWithDuration:0.2f angle:(360/p.numberOfSlices)*i]];
         }
         
     }
@@ -94,6 +93,7 @@
 {
     [cont.mySlices removeAllObjects];
     [cont.Nodes removeAllObjects];
+    NSLog(@"basenode child count: %d",[cont.BaseNode.children count]);
     if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
     
     //[self scaleMidSection];

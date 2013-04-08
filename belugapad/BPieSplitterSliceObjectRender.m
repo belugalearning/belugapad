@@ -91,7 +91,7 @@
     
     
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [slice.mySprite setAnchorPoint:ccp(0,0)];
+
     [slice.mySprite setRotation:slice.Rotation];
     [slice.mySprite setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
     
@@ -104,7 +104,7 @@
     
     
     
-    [p.mySprite addChild:slice.mySprite];
+    [p.mySprite addChild:slice.mySprite z:-1];
     [p.slicesInMe addObject:slice];
     
     

@@ -11,10 +11,12 @@
 #import "LogPollingProtocols.h"
 
 @class SGFBuilderRowRender;
+@class SGFBuilderRowTouch;
 
-@interface SGFBuilderRow : SGGameObject <Row,RenderedObject>
+@interface SGFBuilderRow : SGGameObject <Row,RenderedObject, Touchable>
 
 @property (retain) SGFBuilderRowRender *RowRenderComponent;
+@property (retain) SGFBuilderRowTouch *RowTouchComponent;
 
 -(SGFBuilderRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 

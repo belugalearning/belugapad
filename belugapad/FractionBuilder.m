@@ -17,6 +17,9 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
+#import "SGFBuilderObjectProtocols.h"
+#import "SGFBuilderRow.h"
+#import "SGFBuilderBlock.h"
 
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
@@ -102,19 +105,34 @@
     }
 }
 
--(void)draw
-{
-    
-}
-
 #pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
     
-    
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
     solutionType=[[pdef objectForKey:SOLUTION_TYPE] intValue];
+    
+    initFractions=[pdef objectForKey:INIT_FRACTIONS];
+    [initFractions retain];
+    
+    solutionsDef=[pdef objectForKey:SOLUTIONS];
+    [solutionsDef retain];
+    
+    dividend=[[pdef objectForKey:DIVIDEND] intValue];
+    divisor=[[pdef objectForKey:DIVISOR] intValue];
+    evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
+    solutionType=[[pdef objectForKey:SOLUTION_TYPE] intValue];
+    
+    if([pdef objectForKey:SOLUTION_DIVIDEND])
+        solutionDividend=[[pdef objectForKey:SOLUTION_DIVIDEND]intValue];
+    
+    if([pdef objectForKey:SOLUTION_DIVISOR])
+        solutionDivisor=[[pdef objectForKey:SOLUTION_DIVISOR]intValue];
+    
+    if([pdef objectForKey:SOLUTION_EVAL_FRACTION_TAG])
+        solutionTag=[[pdef objectForKey:SOLUTION_EVAL_FRACTION_TAG]intValue];
     
     
 }
@@ -124,6 +142,12 @@
     gw.Blackboard.RenderLayer = renderLayer;
     
     // loop through our init fractions
+    
+    for(NSDictionary *d in initFractions)
+    {
+        id <Row,RenderedObject> fraction=[[SGFBuilderRow alloc]initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)];
+        [fraction setup];
+    }
     
 }
 
@@ -144,7 +168,14 @@
     touchStartPos=location;
     
     // loop through to check for fraction touches or chunk touches
-    
+    for(id go in gw.AllGameObjectsCopy)
+    {
+        if([go conformsToProtocol:@protocol(Row)])
+        {
+            id<Touchable> thisRow=(id<Touchable>)go;
+            [thisRow checkTouch:location];
+        }
+    }
     
     
 }
@@ -170,7 +201,6 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    NSLog(@"touchendloc=%@", NSStringFromCGPoint(location));
     
     // if we were moving the marker
     

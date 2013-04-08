@@ -27,6 +27,15 @@ typedef enum {
     ProbjemRejectType rejectType;
     SolutionType solutionType;
     
+    // custom problem definition stuff
+    NSDictionary *solutionsDef;
+    NSMutableArray *initFractions;
+    int dividend;
+    int divisor;
+    int solutionDividend;
+    int solutionDivisor;
+    int solutionTag;
+    
     // default positional bits
     CGPoint winL;
     CGPoint touchStartPos;
@@ -48,7 +57,6 @@ typedef enum {
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
--(void)draw;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

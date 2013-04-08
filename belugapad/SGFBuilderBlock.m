@@ -44,5 +44,9 @@
     
 }
 
+-(void)destroy
+{
+    [BlockRenderComponent destroy];
+}
 
 @end

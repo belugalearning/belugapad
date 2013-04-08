@@ -34,4 +34,9 @@
     
 }
 
+-(void)destroy
+{
+    
+}
+
 @end

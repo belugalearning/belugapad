@@ -53,4 +53,10 @@
     
 }
 
+-(void)destroy
+{
+    [ParentGO.MySprite removeFromParentAndCleanup:YES];
+    [gameWorld delayRemoveGameObject:(SGGameObject*)ParentGO];
+}
+
 @end

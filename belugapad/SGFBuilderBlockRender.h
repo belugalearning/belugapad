@@ -16,6 +16,7 @@
 
 -(SGFBuilderBlockRender*)initWithGameObject:(id<Block,RenderedObject>)aGameObject;
 -(void)setupSprite;
+-(void)destroy;
 
 @end
 

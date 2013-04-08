@@ -10,6 +10,7 @@
 #import "SGFBuilderRowRender.h"
 #import "SGFBuilderRowTouch.h"
 
+
 @implementation SGFBuilderRow
 
 @synthesize ContainedBlocks;
@@ -29,6 +30,7 @@
     
     RowRenderComponent=[[SGFBuilderRowRender alloc] initWithGameObject:self];
     RowTouchComponent=[[SGFBuilderRowTouch alloc] initWithGameObject:self];
+    ContainedBlocks=[[NSMutableArray alloc]init];
     
     return self;
 }
@@ -43,14 +45,44 @@
     [RowRenderComponent setupSprite];
 }
 
+-(void)splitFraction
+{
+    NSLog(@"need to split fraction. current denominator is %d", Denominator);
+    
+    if([ContainedBlocks count]>0)
+    {
+        for(id<RenderedObject> go in ContainedBlocks)
+        {
+            [go destroy];
+        }
+    }
+    
+    for(int i=0;i<Denominator;i++)
+    {
+        NSLog(@"%d new block time!", i);
+    }
+}
+
 -(void)setRowDenominator:(int)incr
 {
+    int oldDenominator=Denominator;
+    
     Denominator+=incr;
     
     if(Denominator<0)
         Denominator=0;
     
-    NSLog(@"current denominator is %d", Denominator);
+    if(oldDenominator!=Denominator)
+    {
+        [self splitFraction];
+    }
+    
+
+}
+
+-(void)destroy
+{
+    [RowRenderComponent destroy];
 }
 
 @end

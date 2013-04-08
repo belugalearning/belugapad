@@ -15,5 +15,6 @@
 }
 
 -(void)setupSprite;
+-(void)destroy;
 
 @end

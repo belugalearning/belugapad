@@ -143,10 +143,14 @@
     
     // loop through our init fractions
     
+    float startYPos=cy+100;
+    
     for(NSDictionary *d in initFractions)
     {
-        id <Row,RenderedObject> fraction=[[SGFBuilderRow alloc]initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)];
+        id <Row,RenderedObject> fraction=[[SGFBuilderRow alloc]initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx+50,startYPos)];
         [fraction setup];
+        
+        startYPos-=110;
     }
     
 }

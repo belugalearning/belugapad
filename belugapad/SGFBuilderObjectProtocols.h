@@ -17,6 +17,7 @@
 @property CGPoint Position;
 
 -(void)setup;
+-(void)destroy;
 
 
 @end

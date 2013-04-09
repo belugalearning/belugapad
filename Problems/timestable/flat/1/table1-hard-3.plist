@@ -27,10 +27,17 @@
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>12</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
 			<string>$err1</string>
 			<key>SELECT_FROM</key>
 			<array>
-				<string>{$y-1}</string>
 				<string>{$y+1}</string>
 				<string>{$y+2}</string>
 			</array>
@@ -40,18 +47,8 @@
 			<string>$err2</string>
 			<key>SELECT_FROM</key>
 			<array>
-				<string>{$x-1}</string>
 				<string>{$x+1}</string>
-				<string>{$x+2}</string>
 			</array>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$y</string>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>12</string>
 		</dict>
 	</array>
 	<key>PROBLEM_DESCRIPTION</key>

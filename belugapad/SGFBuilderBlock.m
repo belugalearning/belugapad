@@ -8,6 +8,7 @@
 
 #import "SGFBuilderBlock.h"
 #import "SGFBuilderBlockRender.h"
+#import "SGFBuilderBlockTouch.h"
 
 @implementation SGFBuilderBlock
 @synthesize Denominator, TemporaryDenominator, TemporaryNumerator;
@@ -15,6 +16,7 @@
 
 @synthesize RenderLayer, MySprite, Position;
 @synthesize BlockRenderComponent;
+@synthesize BlockTouchComponent;
 
 -(SGFBuilderBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {
@@ -25,13 +27,14 @@
     }
     
     BlockRenderComponent=[[SGFBuilderBlockRender alloc]initWithGameObject:self];
+    BlockTouchComponent=[[SGFBuilderBlockTouch alloc]initWithGameObject:self];
     
     return self;
 }
 
--(void)checkTouch:(CGPoint)location
+-(BOOL)checkTouch:(CGPoint)location
 {
-    
+    return [BlockTouchComponent checkTouch:location];
 }
 
 -(void)setup
@@ -41,7 +44,7 @@
 
 -(void)move
 {
-    
+    [BlockRenderComponent move];
 }
 
 -(void)destroy

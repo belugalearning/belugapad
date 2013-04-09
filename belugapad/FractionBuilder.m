@@ -174,10 +174,14 @@
     // loop through to check for fraction touches or chunk touches
     for(id go in gw.AllGameObjectsCopy)
     {
-        if([go conformsToProtocol:@protocol(Row)])
+        if([go conformsToProtocol:@protocol(RenderedObject)])
         {
             id<Touchable> thisRow=(id<Touchable>)go;
-            [thisRow checkTouch:location];
+            if([thisRow checkTouch:location])
+            {
+                // this object is the object we want to manipulate
+                break;
+            }
         }
     }
     

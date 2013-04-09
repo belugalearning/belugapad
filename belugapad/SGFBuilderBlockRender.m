@@ -34,6 +34,13 @@
     
 }
 
+-(void)move
+{
+    if(!ParentGO.MySprite)[self setupSprite];
+    
+    [ParentGO.MySprite setPosition:ParentGO.Position];
+}
+
 -(void)destroy
 {
     [ParentGO.MySprite removeFromParentAndCleanup:YES];

@@ -24,7 +24,7 @@
     return self;
 }
 
--(void)checkTouch:(CGPoint)location
+-(BOOL)checkTouch:(CGPoint)location
 {
     CGPoint newLoc=[ParentGO.MySprite convertToNodeSpace:location];
     
@@ -33,6 +33,7 @@
         if(CGRectContainsPoint(ParentGO.DenominatorUpButton.boundingBox,newLoc))
         {
             [self touchDenominatorUp];
+            return YES;
         }
     }
     if(ParentGO.DenominatorDownButton)
@@ -40,8 +41,11 @@
         if(CGRectContainsPoint(ParentGO.DenominatorDownButton.boundingBox,newLoc))
         {
             [self touchDenominatorDown];
+            return YES;
         }
     }
+    
+    return NO;
 }
 
 -(void)touchDenominatorUp

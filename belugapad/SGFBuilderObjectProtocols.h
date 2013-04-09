@@ -49,6 +49,6 @@
 
 @property CGPoint Position;
 
--(void)checkTouch:(CGPoint)location;
+-(BOOL)checkTouch:(CGPoint)location;
 
 @end

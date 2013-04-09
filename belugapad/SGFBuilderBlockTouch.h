@@ -9,9 +9,9 @@
 #import "SGFBuilderObjectProtocols.h"
 #import "SGComponent.h"
 
-@interface SGFBuilderRowTouch : SGComponent
+@interface SGFBuilderBlockTouch : SGComponent
 {
-    id<Row,RenderedObject, Touchable>ParentGO;
+    id<Block,RenderedObject,Touchable>ParentGO;
 }
 
 -(BOOL)checkTouch:(CGPoint)location;

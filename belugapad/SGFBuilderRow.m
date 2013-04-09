@@ -85,13 +85,13 @@
         float leftPos=MySprite.position.x-(MySprite.contentSize.width/2);
         //    float sectionSize=MySprite.contentSize.width/Denominator;
         //    float startXPos=MySprite.position.x-(MySprite.contentSize.width/2);
-        float startYPos=MySprite.position.y-(MySprite.contentSize.height/2);
         float posOnFraction=MySprite.contentSize.width/(Denominator+1);
         float adjPosOnFraction=posOnFraction*([ContainedBlocks count]);
-        CGPoint startPos=ccp(leftPos+adjPosOnFraction,MySprite.position.y);
+        CGPoint startPos=ccp(leftPos+adjPosOnFraction,MySprite.position.y-10);
         
         
         id <Block,RenderedObject> block=[[SGFBuilderBlock alloc]initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:startPos];
+        block.MySprite.scaleX=20.0f/(Denominator);
         [block setup];
         
         [ContainedBlocks addObject:block];

@@ -212,6 +212,70 @@
     
 }
 
+-(NSNumber *)randomBoundedNumberWithParams:(NSDictionary*)params andKey:(NSString*)key
+{
+    //effective legacy implementation (could be used with alternate random seed, versioning or content update
+    
+    if([params objectForKey:@"SELECT_FROM"])
+    {
+        //pick a random number from those listed
+        NSArray *list=[params objectForKey:@"SELECT_FROM"];
+        int p=arc4random() % list.count;
+        
+        NSString *rawSelect=[list objectAtIndex:p];
+        float parsedF=[self parseFloatFromString:rawSelect];
+        NSNumber *parsedN=[NSNumber numberWithFloat:parsedF];
+        
+        return parsedN;
+    }
+    else {
+        //create a random number between min and max
+        //        int min=[[params objectForKey:@"MIN"] floatValue];
+        //        int max=[[params objectForKey:@"MAX"] floatValue];
+        
+        //see if we have a cache of numbers for this key
+        NSMutableArray *keyCache=[randomKeyCaches objectForKey:key];
+        
+        NSNumber *nret;
+        int tryCount=0;
+        BOOL noClash=NO;
+        
+        while(!noClash && tryCount<100)
+        {
+            //parse min and max using internal parser
+            int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
+            int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
+            
+            if(min==0 && max==0) max=1;
+            
+            int interval=max-min;
+            int fbase=arc4random() % (int)interval;
+            int ret=fbase+min;
+            
+            nret=[NSNumber numberWithInt:ret];
+            
+            
+            if(keyCache)
+            {
+                noClash=YES;
+                for (NSNumber *n in keyCache)
+                {
+                    if([n isEqualToNumber:nret]) noClash=NO;
+                    break;
+                }
+            }
+            else noClash=YES;
+            
+            tryCount++;
+        }
+        
+        if(!keyCache)
+            [randomKeyCaches setValue:[NSMutableArray arrayWithObject:nret] forKey:key];
+        
+        return nret;
+    }
+}
+
 -(NSNumber *)randomNumberWithParams:(NSDictionary*)params andKey:(NSString*)key
 {
     if([params objectForKey:@"SELECT_FROM"])
@@ -246,8 +310,13 @@
             
             if(min==0 && max==0) max=1;
             
-            int interval=max-min;
+            //range interval is diff of min/max
+            int interval=(max-min) + 1;
+            
+            //generate in range 0-interval
             int fbase=arc4random() % (int)interval;
+            
+            //offset by min
             int ret=fbase+min;
             
             nret=[NSNumber numberWithInt:ret];

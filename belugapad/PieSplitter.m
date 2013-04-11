@@ -106,7 +106,7 @@ static float kTimeToPieShake=7.0f;
             autoMoveToNextProblem=NO;
             timeToAutoMoveToNextProblem=0.0f;
         }
-    } 
+    }
     timeSinceInteractionOrShake+=delta;
     if(timeSinceInteractionOrShake>kTimeToPieShake)
     {
@@ -333,6 +333,10 @@ static float kTimeToPieShake=7.0f;
     
     int currentIndex=0;
     int currentYPos=0;
+    int maxPerRow=5;
+    
+    if([activePie count]<5)
+        maxPerRow=[activePie count];
     
     for(DWPieSplitterPieGameObject *p in activePie)
     {
@@ -345,7 +349,8 @@ static float kTimeToPieShake=7.0f;
     
     
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp((currentIndex+0.5)*(lx/[activePie count]), (pieBox.position.y+45)-(110*currentYPos));
+    //pie.Position=ccp((currentIndex+0.5)*(lx/[activePie count]), (pieBox.position.y+45)-(110*currentYPos));
+    pie.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (pieBox.position.y+45)-(110*currentYPos));
     pie.MountPosition=ccp(35,700);
     [pie.mySprite setScale:1.0f];
     pie.ScaledUp=YES;
@@ -365,6 +370,7 @@ static float kTimeToPieShake=7.0f;
     ghost=cont;
     
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
+    
     cont.Position=ccp(([activeCon count]+0.5)*(lx/[activeCon count]), conBox.position.y);
     cont.MountPosition=ccp(35,700);
     [cont.mySprite setScale:1.0f];
@@ -400,9 +406,19 @@ static float kTimeToPieShake=7.0f;
     
     for(DWPieSplitterPieGameObject *p in activePie)
     {
+        
         p.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (pieBox.position.y+45)-(110*currentYPos));
-//        NSLog(@"pie pos %@", NSStringFromCGPoint(p.Position));
-        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
+
+        NSLog(@"activepie %d / pie pos %@", [activePie count],NSStringFromCGPoint(p.Position));
+        
+        for(DWPieSplitterSliceGameObject *s in p.mySlices)
+        {
+            NSLog(@"slice pos (world) %@", NSStringFromCGPoint([s.mySprite convertToNodeSpace:p.Position]));
+//
+////            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[s.mySprite convertToNodeSpace:p.Position]]];
+        }
+        
+        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.1f position:p.Position]];
         currentIndex++;
         
         if(currentIndex>=5){
@@ -853,23 +869,26 @@ static float kTimeToPieShake=7.0f;
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_PIE withAdditionalData:nil];
                 // if this object isn't in the array, add it
-                if(![activePie containsObject:pie])[activePie addObject:pie];
+                if(![activePie containsObject:pie])
+                    [activePie addObject:pie];
             }
             else {
                 // if we're not landing on the dropzone and were previously there, remove object from array
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_RETURN_CAGED_PIE withAdditionalData:nil];
-                if([activePie containsObject:pie])[activePie removeObject:pie];
+                if([activePie containsObject:pie])
+                    [activePie removeObject:pie];
                 
                 // and if it wasn't - eject it back to it's mount
                 [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
-        
-            if(createdNewPie){
+
+//            if(createdNewPie){
                 [self resetSlicesToPies];
                 
                 [self splitPies];
                 
-            }
+//            }
+            
             [self reorderActivePies];
         }
         
@@ -928,6 +947,7 @@ static float kTimeToPieShake=7.0f;
         }
         
     }
+    
     
     //[self balanceLayer];
     [self balanceContainers];

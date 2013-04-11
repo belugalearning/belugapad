@@ -115,9 +115,26 @@ const float outerButtonPopInDelay=0.05f;
         
         NSString *stringPerc=[NSString stringWithFormat:@"%d%%", roundPerc];
         
+        NSString *percBadge=nil;
+        
+        if(roundPerc>=25 && roundPerc<=66)
+            percBadge=@"bronze";
+        else if(roundPerc>=67 && roundPerc<=99)
+            percBadge=@"silver";
+        else if(roundPerc==100)
+            percBadge=@"gold";
+        
         CCLabelTTF *l=[CCLabelTTF labelWithString:stringPerc fontName:CHANGO fontSize:17.0f];
         [l setPosition:ccp(s.contentSize.width/2,23)];
         [s addChild:l];
+        
+        NSString *percBadgeFile=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/menu/star_coin_%@.png"), percBadge];
+        
+        if(percBadge){
+            CCSprite *percProg=[CCSprite spriteWithFile:percBadgeFile];
+            [percProg setPosition:ccp(s.contentSize.width-10,15)];
+            [s addChild:percProg];
+        }
         
         currentCol++;
         if(currentCol>colPerRow-1)

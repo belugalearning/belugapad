@@ -87,6 +87,28 @@ const float outerButtonPopInDelay=0.05f;
             CountdownToPipeline=NO;
         }
     }
+    
+    if(IsCountingDownChallengeScore)
+    {
+        challengeCounter+=challengeDecrementer;
+        
+        if(challengeCounter<challengesLeft)
+        {
+            challengeCounter=challengesLeft;
+            IsCountingDownChallengeScore=NO;
+            challengeLabel=nil;
+        }
+        
+        NSString *sScore=@"";
+        NSNumberFormatter *nf = [NSNumberFormatter new];
+        nf.numberStyle = NSNumberFormatterDecimalStyle;
+        NSNumber *thisNumber=[NSNumber numberWithFloat:(int)challengeCounter];
+        sScore = [nf stringFromNumber:thisNumber];
+        [nf release];
+        
+        [challengeLabel setString:sScore];
+        
+    }
 }
 
 -(void)populateMenu
@@ -104,7 +126,7 @@ const float outerButtonPopInDelay=0.05f;
     [background setPosition:ccp(cx,cy)];
     [renderLayer addChild:background];
     
-    CCSprite *totalTab=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/total_score_tab.png")];
+    totalTab=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/total_score_tab.png")];
 //    [totalTab setAnchorPoint:ccp(1,0.5)];
     [totalTab setPosition:ccp(lx-(totalTab.contentSize.width/2),ly-50)];
     [renderLayer addChild:totalTab];
@@ -214,10 +236,13 @@ const float outerButtonPopInDelay=0.05f;
         }
     }
     
-    CCLabelTTF *totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:56.0f];
+    totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:56.0f];
 
     [totalPercentage setPosition:totalTab.position];
     [renderLayer addChild:totalPercentage];
+    
+    ac.PreviousNumber=12;
+    ac.NumberShowing=YES;
     
     if(ac.NumberShowing){
         if(ac.PreviousNumber<12)
@@ -231,8 +256,25 @@ const float outerButtonPopInDelay=0.05f;
     
 }
 
+-(void)slideScoreTab:(int)direction
+{
+    if(direction==1){
+        [totalTab runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x+250,totalTab.position.y)]]];
+        [totalPercentage runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x+250,totalPercentage.position.y)]]];
+    }
+    else if(direction==-1){
+        [totalTab runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x-250,totalTab.position.y)]]];
+        [totalPercentage runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x-250,totalPercentage.position.y)]]];
+    }
+    else if(direction==2){
+        [totalTab setPosition:ccp(totalTab.position.x+250,totalTab.position.y)];
+        [totalPercentage setPosition:ccp(totalPercentage.position.x+250,totalPercentage.position.y)];
+    }
+}
+
 -(void)createBigNumberOf:(int)thisNumber
 {
+    [self slideScoreTab:1];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
     
@@ -303,6 +345,7 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigRandom:(int)thisNumber
 {
+    [self slideScoreTab:1];
     RandomPipeline=YES;
     CountdownToPipeline=YES;
     CountdownToPipelineTime=moveToCentreTime+0.3f;
@@ -352,6 +395,7 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigChallenge:(int)thisNumber
 {
+    [self slideScoreTab:1];
     ChallengePipeline=YES;
     CountdownToPipeline=YES;
     CountdownToPipelineTime=moveToCentreTime+0.3f;
@@ -415,16 +459,21 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigRandomWithoutAnimationOf:(int)thisNumber
 {
+    [self slideScoreTab:2];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
     
     NSString *f=@"/images/timestables/menu/button_big_random.png";
     
+    CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
     [s setPosition:ccp(cx,cy)];
     
     [renderLayer addChild:s];
-        
+    
+    [original setOpacity:0];
+    
     currentSelection=s;
     currentSelectionIndex=thisNumber;
     
@@ -447,7 +496,18 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigChallengeWithoutAnimationOf:(int)thisNumber
 {
+    [self slideScoreTab:2];
     ChallengeReturnFromPipeline=YES;
+    challengeDecrementer=-0.7;
+    int previousRemaining=15;
+    int newRemaining=10;
+    
+    challengeCounter=previousRemaining;
+    challengesLeft=newRemaining;
+    
+    CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    CCSprite *originalNot=[original.children objectAtIndex:0];
+    CCLabelTTF *originalLabel=[[[original.children objectAtIndex:0] children]objectAtIndex:0];
     
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
@@ -457,16 +517,19 @@ const float outerButtonPopInDelay=0.05f;
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
     [s setPosition:ccp(cx,cy)];
     
-    int previousRemaining=15;
-    int newRemaining=10;
-    
     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", previousRemaining] fontName:CHANGO fontSize:56.0f];
     [l setPosition:ccp(1+(s.contentSize.width/2),2+(s.contentSize.height/2))];
     [s addChild:l];
     [renderLayer addChild:s z:20];
     
+    challengeLabel=l;
+    
     currentSelection=s;
     currentSelectionIndex=thisNumber;
+    
+    [original setOpacity:0];
+    [originalLabel setOpacity:0];
+    [originalNot setOpacity:0];
     
     for(int i=0;i<[sceneButtons count];i++)
     {
@@ -475,11 +538,12 @@ const float outerButtonPopInDelay=0.05f;
         CCSprite *s=[sceneButtons objectAtIndex:i];
         CCSprite *sL=[s.children objectAtIndex:0];
         CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
-        if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
-        if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
-        if(![sM isKindOfClass:[NSNull class]])[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(s)[s setOpacity:50];
+        if(sL)[sL setOpacity:50];
+        if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
     
+    IsCountingDownChallengeScore=YES;
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
 }
@@ -487,6 +551,7 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigNumberWithoutAnimationOf:(int)thisNumber
 {
+    [self slideScoreTab:2];
     gameState=@"SHOW_TABLES";
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
@@ -542,6 +607,8 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)returnCurrentBigNumber{
     if(currentSelection==nil)return;
+    
+    [self slideScoreTab:-1];
     
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_contract.wav")];
     
@@ -764,7 +831,7 @@ const float outerButtonPopInDelay=0.05f;
         }
 
     }
-    else if([gameState isEqualToString:@"SHOW_TABLES"]){
+    else if([gameState isEqualToString:@"SHOW_TABLES"] && !IsCountingDownChallengeScore){
         
         if([currentSelectionButtons count]==0 && currentSelectionIndex<12)return;
         
@@ -782,7 +849,7 @@ const float outerButtonPopInDelay=0.05f;
             }
         }
 
-        if(CGRectContainsPoint(currentSelection.boundingBox, location) && !gotHit)
+        if(CGRectContainsPoint(currentSelection.boundingBox, location) && !gotHit && currentSelectionIndex<12)
         {
             [self setupPipeline];
             

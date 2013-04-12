@@ -89,12 +89,17 @@
         contentService = ac.contentService;
         usersService = ac.usersService;
         loggingService = ac.loggingService;
+        appType=[ac returnAppType];
         
         rows=[[NSMutableArray alloc]init];
         
         [self readPlist:pdef];
         [self populateGW];
         
+        if(appType>0)
+        {
+            toolHost.forceCommitOff=YES;
+        }
         
         gw.Blackboard.inProblemSetup = NO;
         
@@ -477,6 +482,7 @@
             
             if(o.enabled && CGRectContainsPoint(hitbox, location))
             {
+                toolHost.forceCommitOff=NO;
                 NSLog(@"this hitbox = %@", NSStringFromCGRect(hitbox));
                 [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_PICKUP_CARD withAdditionalData:nil];
                 heldObject=o;

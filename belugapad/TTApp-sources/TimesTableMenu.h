@@ -27,6 +27,7 @@
     int lastZIndex;
     
     CCSprite *currentSelection;
+    CCSprite *totalTab;
     int currentSelectionIndex;
     
     NSMutableArray *currentSelectionButtons;
@@ -37,6 +38,13 @@
     BOOL CountdownToPipeline;
     float CountdownToPipelineTime;
     BOOL ChallengeReturnFromPipeline;
+    BOOL IsCountingDownChallengeScore;
+    
+    float challengeCounter;
+    float challengeDecrementer;
+    float challengesLeft;
+    CCLabelTTF *challengeLabel;
+    CCLabelTTF *totalPercentage;
     
 
 }

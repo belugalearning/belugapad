@@ -1841,6 +1841,8 @@ static float kTimeToHintToolTray=0.0f;
                 // and check its current selected value
                 BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
                 
+                if(appType>0)
+                    forceCommitOff=NO;
                 
                 if(!isSelected && !touchEnd)
                 {
@@ -2034,8 +2036,10 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)doWinning
 {
-    if(appType>0) [self writeSappProgressWithPass:YES];
-    
+    if(appType>0){
+        forceCommitOff=NO;
+        [self writeSappProgressWithPass:YES];
+    }
     evalShowCommit=NO;
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
@@ -2072,7 +2076,11 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)doIncomplete
 {
-    if(appType>0)[self writeSappProgressWithPass:NO];
+    
+    if(appType>0){
+        forceCommitOff=NO;
+        [self writeSappProgressWithPass:NO];
+    }
     
     evalShowCommit=NO;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer_1.wav")];
@@ -3137,6 +3145,9 @@ static float kTimeToHintToolTray=0.0f;
     CCLOG(@"didSelect row = %d, component = %d", row, component);
     [pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
     hasUsedPicker=YES;
+    
+    if(appType>0 && hasUsedPicker)
+        forceCommitOff=NO;
     
 }
 

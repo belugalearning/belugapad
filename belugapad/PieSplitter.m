@@ -406,19 +406,21 @@ static float kTimeToPieShake=7.0f;
     
     for(DWPieSplitterPieGameObject *p in activePie)
     {
+     
+        if([p.mySprite numberOfRunningActions]>0)
+            [p.mySprite stopAllActions];
         
         p.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (pieBox.position.y+45)-(110*currentYPos));
-
-        NSLog(@"activepie %d / pie pos %@", [activePie count],NSStringFromCGPoint(p.Position));
         
         for(DWPieSplitterSliceGameObject *s in p.mySlices)
         {
-            NSLog(@"slice pos (world) %@", NSStringFromCGPoint([s.mySprite convertToNodeSpace:p.Position]));
+            s.mySprite.position=ccp(p.mySprite.contentSize.width/2,2+(p.mySprite.contentSize.height/2));
+//            [s handleMessage:kDWmoveSpriteToHome];
 //
 ////            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[s.mySprite convertToNodeSpace:p.Position]]];
         }
         
-        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.1f position:p.Position]];
+        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
         currentIndex++;
         
         if(currentIndex>=5){

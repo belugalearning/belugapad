@@ -79,6 +79,7 @@
         {
             DWPieSplitterSliceGameObject *s=[pie.slicesInMe objectAtIndex:i];
             s.Rotation=360/pie.numberOfSlices*i;
+            
 //            NSLog(@"thisSprite rotation %f", s.Rotation);
             [s.mySprite runAction:[CCRotateTo actionWithDuration:0.2f angle:s.Rotation]];
         }

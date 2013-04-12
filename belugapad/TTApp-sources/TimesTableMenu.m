@@ -61,11 +61,33 @@ const float outerButtonPopInDelay=0.05f;
         [self addChild:renderLayer];
     
         [self populateMenu];
+        [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
         
 	}
 	return self;
 }
 
+-(void)doUpdateOnTick:(ccTime)delta
+{
+    if(CountdownToPipeline)
+    {
+        CountdownToPipelineTime-=delta;
+        
+        if(CountdownToPipelineTime<0)
+        {
+            if(RandomPipeline)
+            {
+                NSLog(@"i start random pipe here");
+            }
+            else if(ChallengePipeline)
+            {
+                NSLog(@"i start challenge pipe here");
+            }
+            
+            CountdownToPipeline=NO;
+        }
+    }
+}
 
 -(void)populateMenu
 {
@@ -73,6 +95,7 @@ const float outerButtonPopInDelay=0.05f;
     sceneButtons=[[NSMutableArray alloc]init];
     currentSelectionButtons=[[NSMutableArray alloc]init];
     sceneButtonPositions=[[NSMutableArray alloc]init];
+    sceneButtonMedals=[[NSMutableArray alloc]init];
     currentSelectionIndex=-1;
     
     TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
@@ -134,6 +157,11 @@ const float outerButtonPopInDelay=0.05f;
             CCSprite *percProg=[CCSprite spriteWithFile:percBadgeFile];
             [percProg setPosition:ccp(s.contentSize.width-10,15)];
             [s addChild:percProg];
+            [sceneButtonMedals addObject:percProg];
+        }
+        else
+        {
+            [sceneButtonMedals addObject:[NSNull null]];
         }
         
         currentCol++;
@@ -167,16 +195,37 @@ const float outerButtonPopInDelay=0.05f;
         [renderLayer addChild:s];
         
         [sceneButtons addObject:s];
+        [sceneButtonMedals addObject:[NSNull null]];
         [sceneButtonPositions addObject:[NSValue valueWithCGPoint:s.position]];
+        
+        if(i==1)
+        {
+            CCSprite *notLabel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/notification_small.png")];
+            [notLabel setPosition:ccp(s.contentSize.width/1.18,s.contentSize.height/1.5)];
+            [s addChild:notLabel];
+            
+            int numberOutstanding=15;
+            
+            NSString *numberLeft=[NSString stringWithFormat:@"%d", numberOutstanding];
+            
+            CCLabelTTF *l=[CCLabelTTF labelWithString:numberLeft fontName:CHANGO fontSize:20.0f];
+            [l setPosition:ccp(1+notLabel.contentSize.width/2,2+notLabel.contentSize.height/2)];
+            [notLabel addChild:l];
+        }
     }
     
     CCLabelTTF *totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:56.0f];
 
     [totalPercentage setPosition:totalTab.position];
     [renderLayer addChild:totalPercentage];
-
+    
     if(ac.NumberShowing){
-        [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
+        if(ac.PreviousNumber<12)
+            [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
+        else if(ac.PreviousNumber==12)
+            [self createBigRandomWithoutAnimationOf:ac.PreviousNumber];
+        else if(ac.PreviousNumber==13)
+            [self createBigChallengeWithoutAnimationOf:ac.PreviousNumber];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_success.wav")];
     }
     
@@ -210,6 +259,8 @@ const float outerButtonPopInDelay=0.05f;
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
     [s setPosition:original.position];
     [s setScale:0.38f];
+
+    
     CCLabelTTF *l=[CCLabelTTF labelWithString:originalLabel.string fontName:CHANGO fontSize:56.0f];
     [l setPosition:ccp(s.contentSize.width/2,60)];
     [s addChild:l];
@@ -234,17 +285,205 @@ const float outerButtonPopInDelay=0.05f;
     
     for(int i=0;i<[sceneButtons count];i++)
     {
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(![sM isKindOfClass:[NSNull class]] && i!=currentSelectionIndex)[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        else if(![sM isKindOfClass:[NSNull class]] && i==currentSelectionIndex)[sM runAction:[CCFadeOut actionWithDuration:backgroundFadeInTime]];
+        
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
         CCSprite *sL=[s.children objectAtIndex:0];
-        [s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
-        [sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
     
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
 }
+
+-(void)createBigRandom:(int)thisNumber
+{
+    RandomPipeline=YES;
+    CountdownToPipeline=YES;
+    CountdownToPipelineTime=moveToCentreTime+0.3f;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
+    gameState=@"SHOW_TABLES";
+    
+    CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveToCentreTime position:ccp(cx,cy)];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:moveToCentreTime scale:1.0f];
+    
+    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
+    CCSequence *sq=[CCSequence actions:ea, nil];
+    
+    NSString *f=@"/images/timestables/menu/button_big_random.png";
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+    [s setPosition:original.position];
+    [s setScale:0.38f];
+    
+    [renderLayer addChild:s];
+    
+    [s runAction:sq];
+    [s runAction:st];
+    [original runAction:[CCFadeOut actionWithDuration:0.1f]];
+    
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        CCSprite *sL=[s.children objectAtIndex:0];
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(![sM isKindOfClass:[NSNull class]])[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+    }
+    
+    ac.NumberShowing=YES;
+    ac.PreviousNumber=thisNumber;
+    
+}
+
+-(void)createBigChallenge:(int)thisNumber
+{
+    ChallengePipeline=YES;
+    CountdownToPipeline=YES;
+    CountdownToPipelineTime=moveToCentreTime+0.3f;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
+    gameState=@"SHOW_TABLES";
+    
+    CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
+    CCSprite *originalNotification=[original.children objectAtIndex:0];
+    CCLabelTTF *originalLabel=[[[original.children objectAtIndex:0] children]objectAtIndex:0];
+    
+    CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveToCentreTime position:ccp(cx,cy)];
+    CCScaleTo *st=[CCScaleTo actionWithDuration:moveToCentreTime scale:1.0f];
+    
+    CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
+    CCSequence *sq=[CCSequence actions:ea, nil];
+    
+    NSString *f=@"/images/timestables/menu/button_big_challenging.png";
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+    [s setPosition:original.position];
+    [s setScale:0.38f];
+    
+    CCSprite *n=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/notification_expanded.png")];
+    
+    
+    
+    [n setPosition:[s convertToNodeSpace:[original convertToWorldSpace:originalNotification.position]]];
+    [s addChild:n];
+    
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:originalLabel.string fontName:CHANGO fontSize:56.0f];
+    [l setPosition:ccp(1+(n.contentSize.width/2),2+(n.contentSize.height/2))];
+    [n addChild:l];
+    [renderLayer addChild:s z:20];
+    
+    [s runAction:sq];
+    [s runAction:st];
+    [original runAction:[CCFadeOut actionWithDuration:0.1f]];
+    [originalLabel runAction:[CCFadeOut actionWithDuration:0.1f]];
+    [originalNotification runAction:[CCFadeOut actionWithDuration:0.1f]];
+    
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        CCSprite *sL=[s.children objectAtIndex:0];
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(![sM isKindOfClass:[NSNull class]])[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+    }
+    
+    ac.NumberShowing=YES;
+    ac.PreviousNumber=thisNumber;
+}
+
+-(void)createBigRandomWithoutAnimationOf:(int)thisNumber
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
+    gameState=@"SHOW_TABLES";
+    
+    NSString *f=@"/images/timestables/menu/button_big_random.png";
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+    [s setPosition:ccp(cx,cy)];
+    
+    [renderLayer addChild:s];
+        
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        CCSprite *sL=[s.children objectAtIndex:0];
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(s)[s setOpacity:50];
+        if(sL)[sL setOpacity:50];
+        if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
+    }
+    
+    ac.NumberShowing=YES;
+    ac.PreviousNumber=thisNumber;
+    
+}
+
+-(void)createBigChallengeWithoutAnimationOf:(int)thisNumber
+{
+    ChallengeReturnFromPipeline=YES;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
+    gameState=@"SHOW_TABLES";
+    
+    NSString *f=@"/images/timestables/menu/notification_big.png";
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(f)];
+    [s setPosition:ccp(cx,cy)];
+    
+    int previousRemaining=15;
+    int newRemaining=10;
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", previousRemaining] fontName:CHANGO fontSize:56.0f];
+    [l setPosition:ccp(1+(s.contentSize.width/2),2+(s.contentSize.height/2))];
+    [s addChild:l];
+    [renderLayer addChild:s z:20];
+    
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
+    
+    for(int i=0;i<[sceneButtons count];i++)
+    {
+        if(i==currentSelectionIndex)continue;
+        
+        CCSprite *s=[sceneButtons objectAtIndex:i];
+        CCSprite *sL=[s.children objectAtIndex:0];
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+        if(![sM isKindOfClass:[NSNull class]])[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+    }
+    
+    ac.NumberShowing=YES;
+    ac.PreviousNumber=thisNumber;
+}
+
 
 -(void)createBigNumberWithoutAnimationOf:(int)thisNumber
 {
@@ -294,8 +533,10 @@ const float outerButtonPopInDelay=0.05f;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
         CCSprite *sL=[s.children objectAtIndex:0];
-        [s setOpacity:50];
-        [sL setOpacity:50];
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(s)[s setOpacity:50];
+        if(sL)[sL setOpacity:50];
+        if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
 }
 
@@ -305,68 +546,187 @@ const float outerButtonPopInDelay=0.05f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_contract.wav")];
     
     ac.NumberShowing=NO;
-    
     float remTime=outerButtonPopInTime;
     
-    for(int i=0;i<[currentSelectionButtons count];i++)
-    {
-        CCSprite *s=[currentSelectionButtons objectAtIndex:i];
-        CCMoveTo *mtc=[CCMoveTo actionWithDuration:remTime position:ccp(cx,cy)];
-        CCEaseBounceOut *bo=[CCEaseBounceOut actionWithAction:mtc];
-        CCCallBlock *remMe=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-        CCSequence *thisSQ=[CCSequence actions:bo, remMe, nil];
-        [s runAction:thisSQ];
-        remTime+=outerButtonPopInDelay;
+    if(currentSelectionIndex<12){
+        
+        for(int i=0;i<[currentSelectionButtons count];i++)
+        {
+            CCSprite *s=[currentSelectionButtons objectAtIndex:i];
+            CCMoveTo *mtc=[CCMoveTo actionWithDuration:remTime position:ccp(cx,cy)];
+            CCEaseBounceOut *bo=[CCEaseBounceOut actionWithAction:mtc];
+            CCCallBlock *remMe=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+            CCSequence *thisSQ=[CCSequence actions:bo, remMe, nil];
+            [s runAction:thisSQ];
+            remTime+=outerButtonPopInDelay;
+        }
+        
+        [currentSelectionButtons removeAllObjects];
+        
+        CCSprite *s=currentSelection;
+        CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
+        CCLabelTTF *oL=[o.children objectAtIndex:0];
+        
+        CCSprite *play=[s.children objectAtIndex:2];
+        CCLabelTTF *playLabel=[s.children objectAtIndex:1];
+        
+        CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
+
+        
+        CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
+        CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
+        [play runAction:bo];
+
+        
+        CCScaleTo *playlblscale=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
+        CCEaseBounceIn*boL=[CCEaseBounceIn actionWithAction:playlblscale];
+        [playLabel runAction:boL];
+
+        
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
+        CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
+        CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
+        CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
+        
+        CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+        CCCallBlock *opacityLabel=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
+        
+        CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityLabel, nil];
+        CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
+        
+        [s runAction:sortbiggie];
+        [s runAction:sortbiggiescale];
+        
+
     }
     
-    [currentSelectionButtons removeAllObjects];
-    
-    CCSprite *s=currentSelection;
-    CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
-    CCLabelTTF *oL=[o.children objectAtIndex:0];
-    
-    CCSprite *play=[s.children objectAtIndex:2];
-    CCLabelTTF *playLabel=[s.children objectAtIndex:1];
-    
-    CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
-
-    
-    CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
-    CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
-    [play runAction:bo];
-
-    
-    CCScaleTo *playlblscale=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
-    CCEaseBounceIn*boL=[CCEaseBounceIn actionWithAction:playlblscale];
-    [playLabel runAction:boL];
-
-    
-    CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
-    CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
-    CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
-    CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
-    
-    CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-    CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
-    CCCallBlock *opacityLabel=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
-    
-    CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityLabel, nil];
-    CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
-    
-    [s runAction:sortbiggie];
-    [s runAction:sortbiggiescale];
+    else if(currentSelectionIndex==12)
+    {
+        CCSprite *s=currentSelection;
+        CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
+        CCLabelTTF *oL=[o.children objectAtIndex:0];
+        
+        CCSprite *play=[s.children objectAtIndex:2];
+        CCLabelTTF *playLabel=[s.children objectAtIndex:1];
+        
+        CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
+        
+        
+        CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
+        CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
+        [play runAction:bo];
+        
+        
+        CCScaleTo *playlblscale=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
+        CCEaseBounceIn*boL=[CCEaseBounceIn actionWithAction:playlblscale];
+        [playLabel runAction:boL];
+        
+        
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
+        CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
+        CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
+        CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
+        
+        CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+        CCCallBlock *opacityLabel=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
+        
+        CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityLabel, nil];
+        CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
+        
+        [s runAction:sortbiggie];
+        [s runAction:sortbiggiescale];
+    }
+    else if(currentSelectionIndex==13 && !ChallengeReturnFromPipeline)
+    {
+        CCSprite *s=currentSelection;
+        CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
+        CCSprite *oN=[o.children objectAtIndex:0];
+        CCLabelTTF *oL=[[[o.children objectAtIndex:0] children]objectAtIndex:0];
+        
+        CCSprite *play=[s.children objectAtIndex:0];
+        
+        CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
+        
+        
+        CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
+        CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
+        [play runAction:bo];
+        
+        
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
+        CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
+        CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
+        CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
+        
+        CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+        CCCallBlock *opacityN=[CCCallBlock actionWithBlock:^{[oN setOpacity:255];}];
+        CCCallBlock *opacityL=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
+        
+        
+        CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityN, opacityL, nil];
+        CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
+        
+        [s runAction:sortbiggie];
+        [s runAction:sortbiggiescale];
+    }
+    else if(currentSelectionIndex==13 && ChallengeReturnFromPipeline)
+    {
+        CCSprite *s=currentSelection;
+        CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
+        CCSprite *oN=[o.children objectAtIndex:0];
+        CCLabelTTF *oL=[[[o.children objectAtIndex:0] children]objectAtIndex:0];
+        
+        CCSprite *play=[s.children objectAtIndex:0];
+        
+        CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
+        
+        
+        CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
+        CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
+        [play runAction:bo];
+        
+        
+        CCDelayTime *dt=[CCDelayTime actionWithDuration:remTime];
+        CCDelayTime *dt2=[CCDelayTime actionWithDuration:remTime];
+        CCMoveTo *mtc=[CCMoveTo actionWithDuration:moveBackToPositionTime position:thisPos];
+        CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
+        
+        CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+        CCCallBlock *opacityN=[CCCallBlock actionWithBlock:^{[oN setOpacity:255];}];
+        CCCallBlock *opacityL=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
+        
+        
+        CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityN, opacityL, nil];
+        CCSequence *sortbiggiescale=[CCSequence actions:dt2, st, nil];
+        
+        [s runAction:sortbiggie];
+        [s runAction:sortbiggiescale];
+    }
     
     for(int i=0;i<[sceneButtons count];i++)
     {
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(![sM isKindOfClass:[NSNull class]] && i!=currentSelectionIndex)[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
+        else if(![sM isKindOfClass:[NSNull class]] && i==currentSelectionIndex)[sM runAction:[CCFadeIn actionWithDuration:backgroundFadeInTime]];
+        
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
         CCSprite *sL=[s.children objectAtIndex:0];
-        [s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
-        [sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
+
+        if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
+        if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
+
         
     }
     
+    RandomPipeline=NO;
+    ChallengePipeline=NO;
+    CountdownToPipeline=NO;
     currentSelection=nil;
     currentSelectionIndex=-1;
     gameState=@"SHOW_MAIN_MENU";
@@ -391,9 +751,12 @@ const float outerButtonPopInDelay=0.05f;
                     gotHit=YES;
                     [self createBigNumberOf:i];
                 }
-                else {
+                else if(i==12){
                     // TODO: if has random or challnging number - start that pipeline
-                    NSLog(@"has challenging or random problem");
+                    [self createBigRandom:i];
+                }
+                else if(i==13){
+                    [self createBigChallenge:i];
                 }
                 
                 break;
@@ -403,14 +766,13 @@ const float outerButtonPopInDelay=0.05f;
     }
     else if([gameState isEqualToString:@"SHOW_TABLES"]){
         
-        if([currentSelectionButtons count]==0)return;
+        if([currentSelectionButtons count]==0 && currentSelectionIndex<12)return;
         
         for(int i=0;i<[currentSelectionButtons count];i++)
         {
             CCSprite *s=[currentSelectionButtons objectAtIndex:i];
             if(CGRectContainsPoint(s.boundingBox, location) && currentSelection!=nil)
             {
-                // TODO: if is showing a number, show a pipeline
                 gotHit=YES;
                 NSLog(@"Got hit for number for %dx%d",currentSelectionIndex+1, i+1);
                 

@@ -23,6 +23,7 @@
     
     NSMutableArray *sceneButtons;
     NSMutableArray *sceneButtonPositions;
+    NSMutableArray *sceneButtonMedals;
     int lastZIndex;
     
     CCSprite *currentSelection;
@@ -30,6 +31,12 @@
     
     NSMutableArray *currentSelectionButtons;
     AppController *ac;
+    
+    BOOL RandomPipeline;
+    BOOL ChallengePipeline;
+    BOOL CountdownToPipeline;
+    float CountdownToPipelineTime;
+    BOOL ChallengeReturnFromPipeline;
     
 
 }

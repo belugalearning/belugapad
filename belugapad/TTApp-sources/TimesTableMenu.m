@@ -251,9 +251,6 @@ const float outerButtonPopInDelay=0.05f;
     [totalPercentage setPosition:totalTab.position];
     [renderLayer addChild:totalPercentage];
     
-    ac.PreviousNumber=12;
-    ac.NumberShowing=YES;
-    
     if(ac.NumberShowing){
         if(ac.PreviousNumber<12)
             [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];

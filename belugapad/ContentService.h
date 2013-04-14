@@ -39,6 +39,9 @@
 @property (readonly) BOOL isUserAtEpisodeHead;
 @property (readonly) BOOL isUserPastEpisodeHead;
 
+@property (nonatomic, retain) NSArray *testPipelineDvarValueSubs;
+@property (nonatomic, retain) NSString *testPipelineDvarNameSub;
+
 -(id)initWithLocalSettings:(NSDictionary*)settings;
 -(BOOL)isUsingTestPipeline;
 

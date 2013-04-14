@@ -9,6 +9,7 @@
 #import "TTAppUState.h"
 #import "global.h"
 #import "AppDelegate.h"
+#import "ContentService.h"
 
 #define TTAPP_Q_COUNT 15
 
@@ -173,9 +174,40 @@
     else return 0;
 }
 
+-(int)countOfChallengingQuestions
+{
+    return [self countOfChallengingQuestionsWithData:udata];
+}
+
+-(int)prevCountOfChallengingQuestions
+{
+    return [self countOfChallengingQuestionsWithData:prevUdata];
+}
+
+-(int)countOfChallengingQuestionsWithData:(NSDictionary*)data
+{
+    int countOfC=0;
+    
+    for(NSDictionary *xdict in [data allValues])
+    {
+        for(NSArray *yarray in [xdict allValues])
+        {
+            //look at the most recent attempt and record as challenging if failed
+            NSDictionary *lastxy=[yarray objectAtIndex:0];
+            BOOL pass=[[lastxy objectForKey:@"pass"] boolValue];
+            if(!pass)countOfC++;
+        }
+    }
+    return countOfC;
+}
+
 -(void)setupPipelineFor:(int)pforIndex
 {
     NSMutableArray *pipe=[[NSMutableArray alloc] init];
+    
+    //clear value subs presumptively (set again at end of this if required)
+    ac.contentService.testPipelineDvarNameSub=nil;
+    ac.contentService.testPipelineDvarValueSubs=nil;
     
     if(pforIndex<12)
     {
@@ -217,13 +249,55 @@
     }
     else if (pforIndex==13)
     {
-        //populate with challenging questions
+        NSMutableArray *yvalsubs=[[NSMutableArray alloc]init];
         
+        //populate with challenging questions
+        for(NSNumber *nx in [udata allKeys])
+        {
+            int x=[nx integerValue];
+            NSDictionary *xdict=[udata objectForKey:nx];
+            
+            for(NSNumber *ny in [xdict allKeys])
+            {
+                int y=[ny integerValue];
+                NSArray *yarray=[xdict objectForKey:ny];
+                
+                NSLog(@"stepping %d, %d", x, y);
+                
+                NSDictionary *lastxy=[yarray objectAtIndex:0];
+                BOOL pass=[[lastxy objectForKey:@"pass"] boolValue];
+                if(!pass)
+                {
+                    NSLog(@"found fail in %d, %d", x, y);
+                    
+                    //insert this challenging question
+                    NSString *mps=[NSString stringWithFormat:@"/Problems/timestable/flat/%d/", x];
+                    NSString *dirp=BUNDLE_FULL_PATH(mps);
+                    NSArray *files=[[NSFileManager defaultManager] contentsOfDirectoryAtPath: dirp error:nil];
+                    
+                    int max=files.count;
+                    int r=arc4random()%max;
+                    NSString *newp=[NSString stringWithFormat:@"%@/%@", dirp, [files objectAtIndex:r]];
+                    [pipe addObject:newp];
+                    
+                    //insert the y value into the yvalsubs (for the times tables menu and/or content service to deal with later)
+                    [yvalsubs addObject:ny];
+                }
+            }
+        }
+        
+        if(yvalsubs.count>0)
+        {
+            ac.contentService.testPipelineDvarNameSub=@"$y";
+            ac.contentService.testPipelineDvarValueSubs=yvalsubs;
+        }
     }
 
     [ac.contentService changeTestProblemListTo:[NSArray arrayWithArray:pipe]];
     [pipe release];
 }
+
+
 
 -(void)dealloc
 {

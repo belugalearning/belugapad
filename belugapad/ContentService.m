@@ -534,6 +534,7 @@
             }
         }
         
+        self.currentPDef=procdef;
     }
     
     self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];

@@ -257,15 +257,19 @@
             int x=[nx integerValue];
             NSDictionary *xdict=[udata objectForKey:nx];
             
-            for(NSNumber *ny in [udata allKeys])
+            for(NSNumber *ny in [xdict allKeys])
             {
                 int y=[ny integerValue];
                 NSArray *yarray=[xdict objectForKey:ny];
+                
+                NSLog(@"stepping %d, %d", x, y);
                 
                 NSDictionary *lastxy=[yarray objectAtIndex:0];
                 BOOL pass=[[lastxy objectForKey:@"pass"] boolValue];
                 if(!pass)
                 {
+                    NSLog(@"found fail in %d, %d", x, y);
+                    
                     //insert this challenging question
                     NSString *mps=[NSString stringWithFormat:@"/Problems/timestable/flat/%d/", x];
                     NSString *dirp=BUNDLE_FULL_PATH(mps);

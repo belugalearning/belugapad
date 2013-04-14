@@ -75,6 +75,9 @@
 @synthesize lightUpProgressFromLastNode;
 @synthesize currentNode;
 
+@synthesize testPipelineDvarNameSub;
+@synthesize testPipelineDvarValueSubs;
+
 #pragma mark - init and setup
 
 // Designated initializer
@@ -511,6 +514,27 @@
         problemPath=BUNDLE_FULL_PATH(problemPath);
     
     self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:problemPath];
+    
+    //look for DVAR value subs and manually substitute them
+    if(testPipelineDvarNameSub)
+    {
+        NSMutableDictionary *procdef=[NSMutableDictionary dictionaryWithDictionary:self.currentPDef];
+        NSArray *dvarsArray=[procdef objectForKey:@"DVARS"];
+        if(dvarsArray)
+        {
+            for(NSMutableDictionary *dvardict in dvarsArray)
+            {
+                if([[dvardict objectForKey:@"VAR_NAME"] isEqualToString:self.testPipelineDvarNameSub])
+                {
+                    //replace the value with the one at the index of this problem
+                    [dvardict setObject:[self.testPipelineDvarValueSubs objectAtIndex:currentPIndex] forKey:@"VALUE"];
+                    [dvardict removeObjectForKey:@"MIN"];
+                    [dvardict removeObjectForKey:@"MAX"];
+                }
+            }
+        }
+        
+    }
     
     self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
     NSLog(@"loaded test def: %@", self.pathToTestDef);

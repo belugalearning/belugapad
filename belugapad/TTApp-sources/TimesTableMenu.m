@@ -236,7 +236,8 @@ const float outerButtonPopInDelay=0.05f;
             [notLabel setPosition:ccp(s.contentSize.width/1.18,s.contentSize.height/1.5)];
             [s addChild:notLabel];
             
-            int numberOutstanding=15;
+            TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+            int numberOutstanding=[ttappu countOfChallengingQuestions];
             
             NSString *numberLeft=[NSString stringWithFormat:@"%d", numberOutstanding];
             
@@ -506,8 +507,10 @@ const float outerButtonPopInDelay=0.05f;
     [self slideScoreTab:2];
     ChallengeReturnFromPipeline=YES;
     challengeDecrementer=-0.7;
-    int previousRemaining=15;
-    int newRemaining=10;
+    
+    TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+    int previousRemaining=[ttappu prevCountOfChallengingQuestions];
+    int newRemaining=[ttappu countOfChallengingQuestions];
     
     challengeCounter=previousRemaining;
     challengesLeft=newRemaining;

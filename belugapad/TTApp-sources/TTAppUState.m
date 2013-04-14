@@ -173,6 +173,33 @@
     else return 0;
 }
 
+-(int)countOfChallengingQuestions
+{
+    return [self countOfChallengingQuestionsWithData:udata];
+}
+
+-(int)prevCountOfChallengingQuestions
+{
+    return [self countOfChallengingQuestionsWithData:prevUdata];
+}
+
+-(int)countOfChallengingQuestionsWithData:(NSDictionary*)data
+{
+    int countOfC=0;
+    
+    for(NSDictionary *xdict in [data allValues])
+    {
+        for(NSArray *yarray in [xdict allValues])
+        {
+            //look at the most recent attempt and record as challenging if failed
+            NSDictionary *lastxy=[yarray objectAtIndex:0];
+            BOOL pass=[[lastxy objectForKey:@"pass"] boolValue];
+            if(!pass)countOfC++;
+        }
+    }
+    return countOfC;
+}
+
 -(void)setupPipelineFor:(int)pforIndex
 {
     NSMutableArray *pipe=[[NSMutableArray alloc] init];
@@ -224,6 +251,8 @@
     [ac.contentService changeTestProblemListTo:[NSArray arrayWithArray:pipe]];
     [pipe release];
 }
+
+
 
 -(void)dealloc
 {

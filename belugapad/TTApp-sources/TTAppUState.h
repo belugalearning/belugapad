@@ -31,4 +31,7 @@
 
 -(void)setupPipelineFor:(int)pforIndex;
 
+-(int)countOfChallengingQuestions;
+-(int)prevCountOfChallengingQuestions;
+
 @end

@@ -105,6 +105,7 @@ const float outerButtonPopInDelay=0.05f;
     
     if(IsCountingDownChallengeScore)
     {
+            NSLog(@"(upd) create biggie - counter = %d, left = %d", (int)challengeCounter, (int)challengesLeft);
         challengeCounter+=challengeDecrementer;
         
         if(challengeCounter<challengesLeft)
@@ -533,8 +534,6 @@ const float outerButtonPopInDelay=0.05f;
 -(void)createBigChallengeWithoutAnimationOf:(int)thisNumber
 {
     [self slideScoreTab:2];
-    ChallengeReturnFromPipeline=YES;
-    challengeDecrementer=-0.7;
     
     TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
     int previousRemaining=[ttappu prevCountOfChallengingQuestions];
@@ -542,6 +541,8 @@ const float outerButtonPopInDelay=0.05f;
     
     challengeCounter=previousRemaining;
     challengesLeft=newRemaining;
+    
+    NSLog(@"create biggie - counter = %d, left = %d", previousRemaining, newRemaining);
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
     CCSprite *originalNot=[original.children objectAtIndex:0];
@@ -580,7 +581,10 @@ const float outerButtonPopInDelay=0.05f;
         if(sL)[sL setOpacity:50];
         if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
-    
+
+    ChallengeReturnFromPipeline=YES;
+    challengeDecrementer=-0.7;
+
     IsCountingDownChallengeScore=YES;
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;

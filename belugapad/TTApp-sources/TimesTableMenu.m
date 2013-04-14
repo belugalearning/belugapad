@@ -107,6 +107,7 @@ const float outerButtonPopInDelay=0.05f;
             challengeCounter=challengesLeft;
             IsCountingDownChallengeScore=NO;
             challengeLabel=nil;
+            ReturnChallengeOrRandom=YES;
         }
         
         NSString *sScore=@"";
@@ -118,6 +119,15 @@ const float outerButtonPopInDelay=0.05f;
         
         [challengeLabel setString:sScore];
         
+    }
+    if(ReturnChallengeOrRandom)
+    {
+        ReturnChallengeRandomCountdown-=delta;
+        if(ReturnChallengeRandomCountdown<0)
+        {
+            [self returnCurrentBigNumber];
+            ReturnChallengeOrRandom=NO;
+        }
     }
 }
 
@@ -253,6 +263,9 @@ const float outerButtonPopInDelay=0.05f;
     [renderLayer addChild:totalPercentage];
     
     if(ac.NumberShowing){
+        
+        ReturnChallengeRandomCountdown=1.0f;
+        
         if(ac.PreviousNumber<12)
             [self createBigNumberWithoutAnimationOf:ac.PreviousNumber];
         else if(ac.PreviousNumber==12)
@@ -801,6 +814,7 @@ const float outerButtonPopInDelay=0.05f;
         
     }
     
+    ReturnChallengeOrRandom=NO;
     RandomPipeline=NO;
     ChallengePipeline=NO;
     CountdownToPipeline=NO;
@@ -812,6 +826,8 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)checkForHitAt:(CGPoint)location
 {
+    if(CountdownToPipeline)return;
+    
     BOOL gotHit=false;
     
     if([gameState isEqualToString:@"SHOW_MAIN_MENU"]){

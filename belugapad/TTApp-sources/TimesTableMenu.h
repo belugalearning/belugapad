@@ -39,6 +39,8 @@
     float CountdownToPipelineTime;
     BOOL ChallengeReturnFromPipeline;
     BOOL IsCountingDownChallengeScore;
+    BOOL ReturnChallengeOrRandom;
+    float ReturnChallengeRandomCountdown;
     
     float challengeCounter;
     float challengeDecrementer;

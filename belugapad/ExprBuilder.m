@@ -1120,8 +1120,16 @@
     if(isWinning){
         [toolHost doWinning];
     }else{
-        [self expandDescAndCardRows];
-        [self resetProblem];
+        
+        if(appType==0){
+            [self expandDescAndCardRows];
+            [self resetProblem];
+        }
+        else
+        {
+            [toolHost doIncomplete];
+            [toolHost gotoNewProblem];
+        }
     }
 }
 

@@ -86,6 +86,10 @@ const float outerButtonPopInDelay=0.05f;
             }
             else if(ChallengePipeline)
             {
+                if(challengeCounter==0){
+                    ReturnChallengeOrRandom=YES;
+                    return;
+                }
                 [self setupPipeline];
                 NSLog(@"i start challenge pipe here %d", currentSelectionIndex);
                 

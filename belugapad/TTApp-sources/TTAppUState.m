@@ -106,7 +106,8 @@
 -(void)purgePreviousState
 {
     [prevUdata release];
-    prevUdata=[[NSDictionary dictionaryWithDictionary:udata] retain];
+    
+    prevUdata = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)udata, kCFPropertyListMutableContainers);
 }
 
 -(NSString*) getPreviousMedalForX:(int)x andY:(int)y

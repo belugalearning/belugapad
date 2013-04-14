@@ -109,7 +109,6 @@ const float outerButtonPopInDelay=0.05f;
     
     if(IsCountingDownChallengeScore)
     {
-            NSLog(@"(upd) create biggie - counter = %d, left = %d", (int)challengeCounter, (int)challengesLeft);
         challengeCounter+=challengeDecrementer;
         
         if(challengeCounter<challengesLeft)
@@ -545,8 +544,8 @@ const float outerButtonPopInDelay=0.05f;
     
     challengeCounter=previousRemaining;
     challengesLeft=newRemaining;
-    
-    NSLog(@"create biggie - counter = %d, left = %d", previousRemaining, newRemaining);
+//    challengeCounter=15;
+//    challengesLeft=10;
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
     CCSprite *originalNot=[original.children objectAtIndex:0];

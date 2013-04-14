@@ -421,6 +421,15 @@ const float outerButtonPopInDelay=0.05f;
 -(void)createBigChallenge:(int)thisNumber
 {
     [self slideScoreTab:1];
+    
+    TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+    int previousRemaining=[ttappu prevCountOfChallengingQuestions];
+    int newRemaining=[ttappu countOfChallengingQuestions];
+    
+    challengeCounter=previousRemaining;
+    challengesLeft=newRemaining;
+    
+    
     ChallengePipeline=YES;
     CountdownToPipeline=YES;
     CountdownToPipelineTime=moveToCentreTime+0.3f;

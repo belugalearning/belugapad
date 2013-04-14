@@ -7,6 +7,10 @@
 //
 
 #import "TTAppUState.h"
+#import "global.h"
+#import "AppDelegate.h"
+
+#define TTAPP_Q_COUNT 15
 
 @implementation TTAppUState
 
@@ -14,6 +18,8 @@
 {
     if(self=[super init])
     {
+        ac=(AppController*)[[UIApplication sharedApplication] delegate];
+        
         //init defaults
         logRollover=5;
         
@@ -165,6 +171,58 @@
     else if([medal isEqualToString:@"silver"]) return 50.0f;
     else if([medal isEqualToString:@"bronze"]) return 25.0f;
     else return 0;
+}
+
+-(void)setupPipelineFor:(int)pforIndex
+{
+    NSMutableArray *pipe=[[NSMutableArray alloc] init];
+    
+    if(pforIndex<12)
+    {
+        //populate with index-selected questions
+        NSString *mps=[NSString stringWithFormat:@"/Problems/timestable/flat/%d/", pforIndex+1];
+        NSString *dirp=BUNDLE_FULL_PATH(mps);
+        NSArray *files=[[NSFileManager defaultManager] contentsOfDirectoryAtPath: dirp error:nil];
+        
+        for(int i=0;i<TTAPP_Q_COUNT;i++)
+        {
+            int max=files.count;
+            int r=arc4random()%max;
+            NSString *newp=[NSString stringWithFormat:@"%@/%@", dirp, [files objectAtIndex:r]];
+            [pipe addObject:newp];
+        }
+        
+        //    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-1.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+        //
+        //    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-2.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
+        //
+    }
+    else if (pforIndex==12)
+    {
+        //populate with random questions
+        for(int i=0; i<TTAPP_Q_COUNT; i++)
+        {
+            int rx=(arc4random()%12)+1;
+            
+            NSString *mps=[NSString stringWithFormat:@"/Problems/timestable/flat/%d/", rx];
+            NSString *dirp=BUNDLE_FULL_PATH(mps);
+            NSArray *files=[[NSFileManager defaultManager] contentsOfDirectoryAtPath: dirp error:nil];
+            
+            int max=files.count;
+            int r=arc4random()%max;
+            NSString *newp=[NSString stringWithFormat:@"%@/%@", dirp, [files objectAtIndex:r]];
+            [pipe addObject:newp];
+        }
+        
+    }
+    else if (pforIndex==13)
+    {
+        //populate with challenging questions
+        
+    }
+
+    [ac.contentService changeTestProblemListTo:[NSArray arrayWithArray:pipe]];
+    [pipe release];
 }
 
 -(void)dealloc

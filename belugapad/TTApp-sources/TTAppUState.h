@@ -8,6 +8,8 @@
 
 #import "AppUState.h"
 
+@class AppController;
+
 @interface TTAppUState : AppUState {
     
     int logRollover;
@@ -18,6 +20,7 @@
     NSMutableDictionary *udata;
     NSDictionary *prevUdata;
     
+    AppController *ac;
     
 }
 
@@ -25,5 +28,7 @@
 -(NSString*) getPreviousMedalForX:(int)x andY:(int)y;
 -(float) getScoreForX:(int)x andY:(int)y;
 -(float) getScoreForX:(int)x;
+
+-(void)setupPipelineFor:(int)pforIndex;
 
 @end

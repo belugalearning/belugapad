@@ -77,11 +77,21 @@ const float outerButtonPopInDelay=0.05f;
         {
             if(RandomPipeline)
             {
-                NSLog(@"i start random pipe here");
+                [self setupPipeline];
+                NSLog(@"i start random pipe here %d", currentSelectionIndex);
+                
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_play.wav")];
+                
+                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             }
             else if(ChallengePipeline)
             {
-                NSLog(@"i start challenge pipe here");
+                [self setupPipeline];
+                NSLog(@"i start challenge pipe here %d", currentSelectionIndex);
+                
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_play.wav")];
+                
+                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             }
             
             CountdownToPipeline=NO;
@@ -868,26 +878,9 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)setupPipeline
 {
-    NSMutableArray *pipe=[[NSMutableArray alloc] init];
+    TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+    [ttappu setupPipelineFor:currentSelectionIndex];
     
-    NSString *mps=[NSString stringWithFormat:@"/Problems/timestable/flat/%d/", currentSelectionIndex+1];
-    NSString *dirp=BUNDLE_FULL_PATH(mps);
-    NSArray *files=[[NSFileManager defaultManager] contentsOfDirectoryAtPath: dirp error:nil];
-    
-    for(int i=0;i<15;i++)
-    {
-        int max=files.count;
-        int r=arc4random()%max;
-        NSString *newp=[NSString stringWithFormat:@"%@/%@", dirp, [files objectAtIndex:r]];
-        [pipe addObject:newp];
-    }
-    
-//    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-1.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
-//    
-//    [pipe addObject:[NSString stringWithFormat:@"/Problems/timestable/flat/%d/table%d-hard-2.plist", currentSelectionIndex+1, currentSelectionIndex+1]];
-//
-    [ac.contentService changeTestProblemListTo:[NSArray arrayWithArray:pipe]];
-    [pipe release];
 }
 
 -(NSArray*)positionsInCircleWith:(int)points and:(double)radius and:(CGPoint)centre

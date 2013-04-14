@@ -1458,6 +1458,7 @@ static float kTimeToHintToolTray=0.0f;
         }
         if(CGRectContainsPoint(kPauseMenuReset, location))
         {
+            [self writeSappProgressWithPass:NO];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
             isPaused=NO;
             [pauseLayer setVisible:NO];

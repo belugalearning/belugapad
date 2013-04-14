@@ -88,6 +88,7 @@ const float outerButtonPopInDelay=0.05f;
             {
                 if(challengeCounter==0){
                     ReturnChallengeOrRandom=YES;
+                    [self returnCurrentBigNumber];
                     return;
                 }
                 [self setupPipeline];
@@ -493,6 +494,7 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigRandomWithoutAnimationOf:(int)thisNumber
 {
+    ReturnChallengeOrRandom=YES;
     [self slideScoreTab:2];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";

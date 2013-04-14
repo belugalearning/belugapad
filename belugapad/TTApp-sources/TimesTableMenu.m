@@ -57,12 +57,16 @@ const float outerButtonPopInDelay=0.05f;
         
         self.isTouchEnabled=YES;
         
+        TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
+        int prevNumberOutstanding=[ttappu prevCountOfChallengingQuestions];
+        int numberOutstanding=[ttappu countOfChallengingQuestions];
+        NSLog(@"COUNT OF PREVIOUS CHALLENGING / CURRNENT: %d / %d", prevNumberOutstanding, numberOutstanding);
+        
         renderLayer = [[[CCLayer alloc]init]autorelease];
         [self addChild:renderLayer];
     
         [self populateMenu];
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
-        
 	}
 	return self;
 }

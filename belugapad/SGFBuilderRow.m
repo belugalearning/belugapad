@@ -36,9 +36,9 @@
     return self;
 }
 
--(void)checkTouch:(CGPoint)location
+-(BOOL)checkTouch:(CGPoint)location
 {
-    [RowTouchComponent checkTouch:location];
+    return [RowTouchComponent checkTouch:location];
 }
 
 -(void)setup

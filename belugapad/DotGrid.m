@@ -272,6 +272,9 @@
         showDraggableBlock=YES;
     }
     
+    if(drawMode==2)
+        showDraggableBlock=NO;
+    
     if(showDraggableBlock)
         [usersService notifyStartingFeatureKey:@"DOTGRID_DRAG_TO_CREATE_BLOCK"];
         

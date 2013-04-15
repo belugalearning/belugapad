@@ -69,12 +69,7 @@
 {
     if(slice.mySprite.parent.scale<1)return;
     
-//    CCDrawNode *dbg=[[CCDrawNode alloc]init];
-//    [slice.mySprite.parent addChild:dbg];
-//    [dbg drawDot:[slice.mySprite.parent convertToNodeSpace:hitLoc] radius:10.0f color:ccc4f(1,0,0,1)];
-//    [dbg drawDot:[slice.mySprite.parent convertToNodeSpace:ccp(slice.mySprite.position.x-(slice.mySprite.contentSize.width/2), slice.mySprite.position.y-(slice.mySprite.contentSize.height/2))] radius:5.0f color:ccc4f(0,1,0,1)];
-//    [dbg drawDot:[slice.mySprite.parent convertToNodeSpace:ccp(slice.mySprite.position.x+(slice.mySprite.contentSize.width/2), slice.mySprite.position.y+(slice.mySprite.contentSize.height/2))] radius:5.0f color:ccc4f(0,1,0,1)];
-    
+
     // if the slice doesn't have a container it can respond to this message
     if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]))
     {

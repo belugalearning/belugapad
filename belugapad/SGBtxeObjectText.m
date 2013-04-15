@@ -101,6 +101,11 @@
     
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [textRenderComponent changeVisibility:visibility];
+}
+
 -(void)destroy
 {
     [loggingService.logPoller unregisterPollee:(id<LogPolling>)self];

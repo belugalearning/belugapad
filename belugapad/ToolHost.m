@@ -1632,6 +1632,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
+            [row rowVisible:NO];
         }
     
         if(row)[row release];
@@ -1888,18 +1889,6 @@ static float kTimeToHintToolTray=0.0f;
         [self removeMetaQuestionButtons];
         [metaQuestionBanner removeFromParentAndCleanup:YES];
         
-        for(SGBtxeRow *r in metaQuestionAnswerLabels)
-        {
-            for(int i=0;i<r.children.count;i++)
-            {
-                if([[r.children objectAtIndex:i] conformsToProtocol:@protocol(MovingInteractive)])
-                {
-                    id<MovingInteractive> go=[r.children objectAtIndex:i];
-                    [go destroy];
-                }
-            }
-        }
-        
         metaQuestionForceComplete=YES;
     }
     if(numberPickerForThisProblem)
@@ -1923,11 +1912,14 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)removeMetaQuestionButtons
 {
+    for(SGBtxeRow *r in metaQuestionAnswerLabels)
+    {
+        [r rowVisible:NO];
+    }
     for(int i=0;i<metaQuestionAnswerButtons.count;i++)
     {
         [trayLayerMq removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
-    } 
-    
+    }
 }
 
 #pragma mark - number picker
@@ -2718,6 +2710,10 @@ static float kTimeToHintToolTray=0.0f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_appears.wav")];
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
+    for(SGBtxeRow *r in metaQuestionAnswerLabels)
+    {
+        [r rowVisible:YES];
+    }
 //    [traybtnMq setColor:ccc3(247,143,6)];
     [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Selected.png")]];
 
@@ -2730,6 +2726,12 @@ static float kTimeToHintToolTray=0.0f;
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
     [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
+    
+    for(SGBtxeRow *r in metaQuestionAnswerLabels)
+    {
+        [r rowVisible:NO];
+    }
+
     trayMqShowing=NO;
     
     if(hasTrayMq)

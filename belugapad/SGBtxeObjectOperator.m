@@ -82,7 +82,11 @@
     return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
-
+-(void)changeVisibility:(BOOL)visibility
+{
+    [textRenderComponent changeVisibility:visibility];
+    [textBackgroundRenderComponent changeVisibility:visibility];
+}
 
 -(void)handleMessage:(SGMessageType)messageType
 {

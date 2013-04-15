@@ -637,7 +637,13 @@ static float kTimeToHintToolTray=0.0f;
 
 
 #pragma mark - tool and problem load
-
+-(BOOL)showingMetaQuestion
+{
+    if(metaQuestionForThisProblem||numberPickerForThisProblem)
+        return YES;
+    else
+        return NO;
+}
 -(void) loadTool
 {
     //reset multitouch
@@ -892,13 +898,6 @@ static float kTimeToHintToolTray=0.0f;
     //purge potential feature key cache
     [usersService purgePotentialFeatureKeys];
     
-    if(toolKey)
-    {
-        //initialize tool scene
-        currentTool=[NSClassFromString(toolKey) alloc];
-        [currentTool initWithToolHost:self andProblemDef:pdef];
-    }
-    
     //read our tool specific options
     [self readToolOptions:toolKey];
 
@@ -938,6 +937,13 @@ static float kTimeToHintToolTray=0.0f;
     }
     else {
         [self setupProblemOnToolHost:pdef];
+    }
+    
+    if(toolKey)
+    {
+        //initialize tool scene
+        currentTool=[NSClassFromString(toolKey) alloc];
+        [currentTool initWithToolHost:self andProblemDef:pdef];
     }
     
     NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];

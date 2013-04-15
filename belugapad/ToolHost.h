@@ -291,6 +291,7 @@ typedef enum {
 -(void)evalNumberPicker;
 -(BOOL)calcMetaQuestion;
 -(void)evalMetaQuestion;
+-(BOOL)showingMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;
 -(void)doIncomplete;

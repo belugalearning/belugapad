@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Which is bigger?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>comparing fractions of quantities</string>
+	<key>MASTERY</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>START_X</key>
+	<integer>0</integer>
+	<key>START_Y</key>
+	<integer>0</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<string>3</string>
+	<key>DOTGRID_EVAL_TOTALSIZE</key>
+	<string>15</string>
+	<key>SHOW_RESIZE</key>
+	<false/>
+	<key>INIT_OBJECTS</key>
+	<array/>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<false/>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>1/3 of 6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>1/2 of 6</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>&lt;b:t&gt;Which is bigger?&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;2&quot;/&gt;&lt;b:t&gt; of 6 or&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot;/&gt;&lt;b:t&gt; of 6?&lt;/b:t&gt;</string>
+	</dict>
+</dict>
+</plist>

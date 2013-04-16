@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many halves are there in 6?</string>
+	<string>&lt;b:t&gt;Show that there are six&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot;/&gt;&lt;b:t&gt;s in 2.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>equivalent fractions with cuisenaire rods</string>
 	<key>TOOL_KEY</key>
@@ -27,7 +27,7 @@
 	<array>
 		<dict>
 			<key>LABEL</key>
-			<string>6</string>
+			<string>2</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
@@ -40,9 +40,9 @@
 			<key>QUANTITY</key>
 			<string>20</string>
 			<key>LABEL</key>
-			<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;2&quot;/&gt;</string>
+			<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot;/&gt;</string>
 			<key>LENGTH</key>
-			<string>1</string>
+			<string>2</string>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>

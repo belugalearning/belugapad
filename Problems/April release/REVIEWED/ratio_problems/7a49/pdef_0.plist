@@ -11,10 +11,10 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;There are 3 feet in 1 yard. Fill in the gaps.&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;3&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;1&quot;/&gt;&lt;b:t&gt;yard&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;5&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;15&quot;/&gt;&lt;b:t&gt;yards&lt;/b:t&gt;</string>
-		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;3&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;9&quot;/&gt;&lt;b:t&gt;yards&lt;/b:t&gt;</string>
-		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;2&quot;/&gt;&lt;b:t&gt;feet&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;6&quot;/&gt;&lt;b:t&gt;yards&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;3&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;1&quot; suffix=&quot; yard&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;15&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;5&quot; suffix=&quot; yards&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; suffix=&quot; feet&quot; pickerTarget=&quot;27&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;9&quot; suffix=&quot; yards&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot;  suffix=&quot; feet&quot; pickerTarget=&quot;18&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;6&quot; suffix=&quot; yards&quot;/&gt;</string>
 	</array>
 </dict>
 </plist>

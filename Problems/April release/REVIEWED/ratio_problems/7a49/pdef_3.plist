@@ -11,9 +11,9 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;5 miles is around the same distance as 8 km. Fill in the gaps.&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;5&quot;/&gt;&lt;b:t&gt;miles&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;8&quot;/&gt;&lt;b:t&gt;km&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;15&quot;/&gt;&lt;b:t&gt;miles&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;24&quot;/&gt;&lt;b:t&gt;km&lt;/b:t&gt;</string>
-		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;10&quot;/&gt;&lt;b:t&gt;miles&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;16&quot;/&gt;&lt;b:t&gt;km&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;5&quot; suffix=&quot; miles&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;8&quot; suffix=&quot; km&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;15&quot; suffix=&quot; miles&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;24&quot; suffix=&quot; km&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;10&quot; suffix=&quot; miles&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;16&quot; suffix=&quot; km&quot;/&gt;</string>
 	</array>
 </dict>
 </plist>

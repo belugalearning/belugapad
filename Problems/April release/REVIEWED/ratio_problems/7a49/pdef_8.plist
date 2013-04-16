@@ -11,9 +11,9 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;{$x} {@obj} cost {$z} goobles. Fill in the gaps.&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;&lt;b:t&gt;{@obj}&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;{$z}&quot;/&gt;&lt;b:t&gt;goobles&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;{$x+3}&quot;/&gt;&lt;b:t&gt;{@obj}&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x3*$y}&quot;/&gt;&lt;b:t&gt;goobles&lt;/b:t&gt;</string>
-		<string>&lt;b:on number=&quot;{$x+2}&quot;/&gt;&lt;b:t&gt;{@obj}&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x2*$y}&quot;/&gt;&lt;b:t&gt;goobles&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot; suffix=&quot; {@obj}&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;{$z}&quot; suffix=&quot; goobles&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$x+3}&quot; suffix=&quot; {@obj}&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x3*$y}&quot; suffix=&quot; goobles&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;{$x+2}&quot; suffix=&quot; {@obj}&quot;/&gt;&lt;/b:t&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x2*$y}&quot; suffix=&quot; goobles&quot;/&gt;</string>
 	</array>
 	<key>DVARS</key>
 	<array>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Share {$x} between {$y}.</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>6</integer>
+	<key>DIVISOR</key>
+	<integer>3</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>6</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>3</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<true/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>RETAIN</key>
+			<true/>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>RETAIN</key>
+			<true/>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+	</array>
+</dict>
+</plist>

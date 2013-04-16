@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>EVAL_TYPE</key>
-	<string>ALL_ENABLED</string>
+	<string>ALL_CORRECT</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>

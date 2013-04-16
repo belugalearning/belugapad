@@ -230,13 +230,15 @@
     }
     
     
-    // and our commit pipe
-    commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_In.png")];
-    [commitPipe setPosition:ccp(cx,52)];
-    [commitPipe setOpacity:0];
-    [commitPipe setTag:1];
-    [renderLayer addChild:commitPipe z:1000];
-
+    if(![toolHost showingMetaQuestion])
+    {
+        // and our commit pipe
+        commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_In.png")];
+        [commitPipe setPosition:ccp(cx,52)];
+        [commitPipe setOpacity:0];
+        [commitPipe setTag:1];
+        [renderLayer addChild:commitPipe z:1000];
+    }
     if(showSolutionOnPipe)
     {
         CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:30.0f];

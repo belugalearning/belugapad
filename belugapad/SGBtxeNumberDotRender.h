@@ -23,6 +23,7 @@
 -(void)inflateZindex;
 -(void)deflateZindex;
 -(void)updatePosition:(CGPoint)thePosition;
+-(void)changeVisibility:(BOOL)visibility;
 
 
 @end

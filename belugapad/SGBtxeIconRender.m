@@ -62,6 +62,11 @@
     //NSLog(@"position at %@", NSStringFromCGPoint(position));
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [self.sprite setVisible:visibility];
+}
+
 -(void)updatePositionWithAnimation:(CGPoint)position
 {
     self.sprite.position=position;

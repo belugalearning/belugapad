@@ -1384,6 +1384,11 @@ static float kTimeToHintToolTray=0.0f;
         muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
         [muteBtn setPosition:ccp(800,275)];
         [pauseLayer addChild:muteBtn z:20];
+
+        adBanner = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/advert.png")];
+        [adBanner setAnchorPoint:ccp(0.5,0)];
+        [adBanner setPosition:ccp(cx, 0)];
+        [pauseLayer addChild:adBanner z:10];
         
         if(contentService.pathToTestDef)
         {

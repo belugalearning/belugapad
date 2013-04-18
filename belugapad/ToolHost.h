@@ -127,6 +127,7 @@ typedef enum {
     CCSprite *problemComplete;
     CCSprite *problemIncomplete;
     CCSprite *pbtn;
+    CCSprite *adBanner;
     
     BOOL autoMoveToNextProblem;
     float moveToNextProblemTime;

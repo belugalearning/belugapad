@@ -544,6 +544,8 @@ const float outerButtonPopInDelay=0.05f;
     int previousRemaining=[ttappu prevCountOfChallengingQuestions];
     int newRemaining=[ttappu countOfChallengingQuestions];
     
+    [ttappu purgePreviousState];
+    
     challengeCounter=previousRemaining;
     challengesLeft=newRemaining;
 //    challengeCounter=15;

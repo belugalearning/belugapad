@@ -1557,6 +1557,13 @@ static float kTimeToHintToolTray=0.0f;
                 [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
             }
         }
+        
+        if(CGRectContainsPoint(adBanner.boundingBox, location))
+        {
+            NSURL *url = [ [ NSURL alloc ] initWithString: @"https://itunes.apple.com/gb/app/learn-maths-with-beluga/id594402201" ];
+            [[UIApplication sharedApplication] openURL:url];
+            [url release];
+        }
     }
 
     //top left tap for edit pdef

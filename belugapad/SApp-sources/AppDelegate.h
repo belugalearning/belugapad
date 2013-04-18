@@ -65,6 +65,7 @@
 -(void)tearDownUI;
 -(void)speakString:(NSString*)speakThis;
 -(void)stopAllSpeaking;
+-(int)getToolhostNotifierCount;
 -(int)returnAppType;
 
 @end

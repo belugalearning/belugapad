@@ -129,6 +129,10 @@ typedef enum {
     CCSprite *pbtn;
     CCSprite *adBanner;
     
+    CCLabelTTF *progressLabelL;
+    CCLabelTTF *progressLabelR;
+    CCSprite *challengeNotification;
+    
     BOOL autoMoveToNextProblem;
     float moveToNextProblemTime;
     

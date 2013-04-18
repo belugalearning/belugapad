@@ -189,6 +189,42 @@ static float kTimeToHintToolTray=0.0f;
         [perstLayer addChild:unsavedEditsImage z:3];
         unsavedEditsImage.visible = NO;
         
+        if(appType==1)
+        {
+            NSString *l=[NSString stringWithFormat:@"%d",[contentService testPipelineQuestionNumber]];
+            NSString *r=[NSString stringWithFormat:@"/%d",[contentService testPipelineLength]];
+            
+            progressLabelR=[CCLabelTTF labelWithString:r fontName:CHANGO fontSize:22.0f];
+            progressLabelL=[CCLabelTTF labelWithString:l fontName:CHANGO fontSize:22.0f];
+            [progressLabelL setAnchorPoint:ccp(1,0.5)];
+            [progressLabelR setAnchorPoint:ccp(0,0.5)];
+            [progressLabelL setPosition:ccp(190,ly-25)];
+            [progressLabelR setPosition:ccp(progressLabelL.position.x+2,progressLabelL.position.y)];
+            [progressLabelL setColor:ccWHITE];
+            [progressLabelR setColor:ccGRAY];
+//            [progressLabelR setTag:2];
+//            [progressLabelL setTag:2];
+//            [progressLabelR setOpacity:0];
+//            [progressLabelL setOpacity:0];
+            
+            [perstLayer addChild:progressLabelL z:5];
+            [perstLayer addChild:progressLabelR z:5];
+            
+            challengeNotification=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/challenging_header.png")];
+            [challengeNotification setPosition:ccp(320,ly-25)];
+            [perstLayer addChild:challengeNotification z:5];
+            
+            CCLabelTTF *lblCCount=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [ac getToolhostNotifierCount]] fontName:CHANGO fontSize:20.0f];
+            [lblCCount setPosition:ccp(challengeNotification.contentSize.width-21,challengeNotification.contentSize.height-25)];
+            [challengeNotification addChild:lblCCount];
+            
+//            [challengeNotification setTag:2];
+//            [challengeNotification setOpacity:0];
+//            [lblCCount setTag:2];
+//            [lblCCount setOpacity:0];
+
+        }
+        
         //dynamic problem parser (persists to end of pipeline)
         DynProblemParser=[[DProblemParser alloc] init];
         
@@ -881,6 +917,13 @@ static float kTimeToHintToolTray=0.0f;
     }
     // ---------------- END TEAR DOWN --------------------------------
     
+    NSString *l=[NSString stringWithFormat:@"%d",[contentService testPipelineQuestionNumber]];
+    NSString *r=[NSString stringWithFormat:@"/%d",[contentService testPipelineLength]];
+    
+    [progressLabelR setString:r];
+    [progressLabelL setString:l];
+    [[challengeNotification.children objectAtIndex:0]setString:[NSString stringWithFormat:@"%d", [ac getToolhostNotifierCount]]];
+    
     if(multiplierStage>0 && breakOutIntroProblemFK)
         [multiplierBadge setVisible:NO];
     
@@ -1339,6 +1382,9 @@ static float kTimeToHintToolTray=0.0f;
     traybtnWheel=nil;
     traybtnPad=nil;
     commitBtn=nil;
+//    progressLabelR=nil;
+//    progressLabelL=nil;
+//    challengeNotification=nil;
     [descGw release];
     descGw=nil;
     

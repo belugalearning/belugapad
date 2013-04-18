@@ -477,6 +477,11 @@ void logMemUsage(void) {
     }
 }
 
+-(int)getToolhostNotifierCount
+{
+    return [(TTAppUState*)appustateService countOfChallengingQuestions];
+}
+
 -(int)returnAppType{
     return 0;
 }

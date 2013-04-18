@@ -639,14 +639,16 @@ const float outerButtonPopInDelay=0.05f;
     
     for(int i=0;i<[sceneButtons count];i++)
     {
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(![sM isKindOfClass:[NSNull class]] && i!=currentSelectionIndex)[sM setOpacity:50];
+        else if(![sM isKindOfClass:[NSNull class]] && i==currentSelectionIndex)[sM setOpacity:0];
+        
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
         CCSprite *sL=[s.children objectAtIndex:0];
-        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
         if(s)[s setOpacity:50];
         if(sL)[sL setOpacity:50];
-        if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
 }
 
@@ -822,8 +824,12 @@ const float outerButtonPopInDelay=0.05f;
     for(int i=0;i<[sceneButtons count];i++)
     {
         CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
-        if(![sM isKindOfClass:[NSNull class]] && i!=currentSelectionIndex)[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
-        else if(![sM isKindOfClass:[NSNull class]] && i==currentSelectionIndex)[sM runAction:[CCFadeIn actionWithDuration:backgroundFadeInTime]];
+        
+        CCDelayTime *di=[CCDelayTime actionWithDuration:moveBackToPositionTime+remTime];
+        CCFadeIn *fi=[CCFadeIn actionWithDuration:backgroundFadeInTime];
+        CCSequence *sq=[CCSequence actionOne:di two:fi];
+        
+        if(![sM isKindOfClass:[NSNull class]])[sM runAction:sq];
         
         if(i==currentSelectionIndex)continue;
         

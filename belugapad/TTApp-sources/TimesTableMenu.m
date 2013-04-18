@@ -160,6 +160,10 @@ const float outerButtonPopInDelay=0.05f;
     [totalTab setPosition:ccp(lx-(totalTab.contentSize.width/2),ly-50)];
     [renderLayer addChild:totalTab];
     
+    infoBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/info_button.png")];
+    [infoBtn setPosition:ccp(30,30)];
+    [renderLayer addChild:infoBtn];
+    
     float xStartPos=179.0f;
     float yStartPos=593.0f;
     float xSpacing=208.0f;
@@ -893,6 +897,18 @@ const float outerButtonPopInDelay=0.05f;
                 break;
             }
         }
+        
+        if(CGRectContainsPoint(infoBtn.boundingBox, location))
+        {
+            if(!infoPnl){
+                infoPnl=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/info_panel.png")];
+                [infoPnl setPosition:ccp(cx,cy)];
+                [renderLayer addChild:infoPnl];
+            }
+            
+            if(!infoPnl.visible)
+                infoPnl.visible=YES;
+        }
 
     }
     else if([gameState isEqualToString:@"SHOW_TABLES"] && !IsCountingDownChallengeScore){
@@ -1083,7 +1099,6 @@ const float outerButtonPopInDelay=0.05f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -1098,6 +1113,12 @@ const float outerButtonPopInDelay=0.05f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    if(infoPnl.visible)
+    {
+        infoPnl.visible=false;
+        return;
+    }
     
     [self checkForHitAt:location];
     

@@ -28,6 +28,8 @@
     
     CCSprite *currentSelection;
     CCSprite *totalTab;
+    CCSprite *infoBtn;
+    CCSprite *infoPnl;
     int currentSelectionIndex;
     
     NSMutableArray *currentSelectionButtons;

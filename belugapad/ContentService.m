@@ -491,6 +491,16 @@
     }
 }
 
+-(int)testPipelineQuestionNumber
+{
+    return currentPIndex+1;
+}
+
+-(int)testPipelineLength
+{
+    return [testProblemList count];
+}
+
 -(void)gotoNextProblemInTestPipeline
 {
     AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;

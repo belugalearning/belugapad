@@ -42,6 +42,9 @@
 @property (nonatomic, retain) NSArray *testPipelineDvarValueSubs;
 @property (nonatomic, retain) NSString *testPipelineDvarNameSub;
 
+@property (readonly) int testPipelineQuestionNumber;
+@property (readonly) int testPipelineLength;
+
 -(id)initWithLocalSettings:(NSDictionary*)settings;
 -(BOOL)isUsingTestPipeline;
 

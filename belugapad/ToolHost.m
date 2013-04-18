@@ -1517,14 +1517,14 @@ static float kTimeToHintToolTray=0.0f;
         }
     }
     else if(appType==1){
-        if(CGRectContainsPoint(kPauseMenuContinue, location))
+        if(CGRectContainsPoint(kTTPauseMenuContinue, location))
         {
             //resume
             [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
 //            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
             [self hidePauseMenu];
         }
-        if(CGRectContainsPoint(kPauseMenuReset, location))
+        if(CGRectContainsPoint(kTTPauseMenuSkip, location))
         {
             [self writeSappProgressWithPass:NO];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
@@ -1532,7 +1532,7 @@ static float kTimeToHintToolTray=0.0f;
             [pauseLayer setVisible:NO];
             [self gotoNewProblem];
         }
-        if(CGRectContainsPoint(kPauseMenuMenu, location))
+        if(CGRectContainsPoint(kTTPauseMenuMenu, location))
         {
 
 //            [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];

@@ -67,6 +67,10 @@ const CGRect kPauseMenuReset={{455.0f,358.0f},{120.0f,100.0f}};
 const CGRect kPauseMenuContinue={{410.0f,268.0f},{210.0f,90.0f}};
 const CGRect kPauseMenuMute={{750.0f,228.0f},{85.0f,80.0f}};
 
+const CGRect kTTPauseMenuMenu={{429.0f,444.0f},{168.0f,69.0f}};
+const CGRect kTTPauseMenuSkip={{469.0f,339.0f},{90.0f,90.0f}};
+const CGRect kTTPauseMenuContinue={{429.0f,251.0f},{179.0f,73.0f}};
+
 const ccColor3B kNumberBondColour[10]={{128,124,125},{216,12,52},{87,176,37},{230,51,131},{229,196,34},{49,142,76},{73,71,71},{166,54,198},{13,86,143},{241,72,0}};
 const ccColor3B kNumiconColour[10]={{191,255,193},{191,255,244},{223,191,255},{255,178,178},{204,240,255},{255,211,178},{254,255,204},{255,217,244},{220,244,222},{217,174,174}};
 const ccColor3B kBTXEColour[8]={{145,193,48},{245,82,82},{201,99,231},{244,167,47},{241,84,151},{19,189,183},{76,164,205},{239,224,55}};

@@ -79,6 +79,10 @@ extern const CGRect kPauseMenuReset;
 extern const CGRect kPauseMenuContinue;
 extern const CGRect kPauseMenuLogOut;
 
+extern const CGRect kTTPauseMenuMenu;
+extern const CGRect kTTPauseMenuSkip;
+extern const CGRect kTTPauseMenuContinue;
+
 extern const ccColor3B kNumberBondColour[10];
 extern const ccColor3B kNumiconColour[10];
 extern const ccColor3B kBTXEColour[8];

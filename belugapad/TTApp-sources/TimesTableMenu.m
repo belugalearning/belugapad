@@ -160,6 +160,10 @@ const float outerButtonPopInDelay=0.05f;
     [totalTab setPosition:ccp(lx-(totalTab.contentSize.width/2),ly-50)];
     [renderLayer addChild:totalTab];
     
+    infoBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/info_button.png")];
+    [infoBtn setPosition:ccp(30,30)];
+    [renderLayer addChild:infoBtn];
+    
     float xStartPos=179.0f;
     float yStartPos=593.0f;
     float xSpacing=208.0f;
@@ -304,6 +308,7 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigNumberOf:(int)thisNumber
 {
+    if(ReturningBigNumber)return;
     [self slideScoreTab:1];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
@@ -352,9 +357,6 @@ const float outerButtonPopInDelay=0.05f;
     [original runAction:[CCFadeOut actionWithDuration:0.1f]];
     [originalLabel runAction:[CCFadeOut actionWithDuration:0.1f]];
     
-    currentSelection=s;
-    currentSelectionIndex=thisNumber;
-    
     for(int i=0;i<[sceneButtons count];i++)
     {
         CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
@@ -369,12 +371,15 @@ const float outerButtonPopInDelay=0.05f;
         if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
     
+    currentSelection=s;
+    currentSelectionIndex=thisNumber;
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
 }
 
 -(void)createBigRandom:(int)thisNumber
 {
+    if(ReturningBigNumber)return;
     [self slideScoreTab:1];
     RandomPipeline=YES;
     CountdownToPipeline=YES;
@@ -425,6 +430,7 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigChallenge:(int)thisNumber
 {
+    if(ReturningBigNumber)return;
     [self slideScoreTab:1];
     
     TTAppUState *ttappu=(TTAppUState*)ac.appustateService;
@@ -542,6 +548,8 @@ const float outerButtonPopInDelay=0.05f;
     int previousRemaining=[ttappu prevCountOfChallengingQuestions];
     int newRemaining=[ttappu countOfChallengingQuestions];
     
+    [ttappu purgePreviousState];
+    
     challengeCounter=previousRemaining;
     challengesLeft=newRemaining;
 //    challengeCounter=15;
@@ -639,21 +647,28 @@ const float outerButtonPopInDelay=0.05f;
     
     for(int i=0;i<[sceneButtons count];i++)
     {
+        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
+        if(![sM isKindOfClass:[NSNull class]] && i!=currentSelectionIndex)[sM setOpacity:50];
+        else if(![sM isKindOfClass:[NSNull class]] && i==currentSelectionIndex)[sM setOpacity:0];
+        
         if(i==currentSelectionIndex)continue;
         
         CCSprite *s=[sceneButtons objectAtIndex:i];
         CCSprite *sL=[s.children objectAtIndex:0];
-        CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
         if(s)[s setOpacity:50];
         if(sL)[sL setOpacity:50];
-        if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
 }
 
 -(void)returnCurrentBigNumber{
     if(currentSelection==nil)return;
+    if([currentSelection numberOfRunningActions]>0)return;
+    
+    ReturningBigNumber=YES;
     
     [self slideScoreTab:-1];
+    
+    NSLog(@"returning big number - current selection index %d", currentSelectionIndex);
     
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_contract.wav")];
     
@@ -678,17 +693,18 @@ const float outerButtonPopInDelay=0.05f;
         CCSprite *s=currentSelection;
         CCSprite *o=[sceneButtons objectAtIndex:currentSelectionIndex];
         CCLabelTTF *oL=[o.children objectAtIndex:0];
-        
-        CCSprite *play=[s.children objectAtIndex:2];
         CCLabelTTF *playLabel=[s.children objectAtIndex:1];
+        CCSprite *play=nil;
+
         
         CGPoint thisPos=[[sceneButtonPositions objectAtIndex:currentSelectionIndex]CGPointValue];
 
-        
-        CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
-        CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
-        [play runAction:bo];
-
+        if(s.children.count>2){
+            play=[s.children objectAtIndex:2];
+            CCScaleTo *playbtnscale=[CCScaleTo actionWithDuration:0.3f scale:0.0f];
+            CCEaseBounceIn *bo=[CCEaseBounceIn actionWithAction:playbtnscale];
+            [play runAction:bo];
+        }
         
         CCScaleTo *playlblscale=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
         CCEaseBounceIn*boL=[CCEaseBounceIn actionWithAction:playlblscale];
@@ -701,7 +717,7 @@ const float outerButtonPopInDelay=0.05f;
         CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
         
         CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];ReturningBigNumber=NO;}];
         CCCallBlock *opacityLabel=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
         
         CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityLabel, nil];
@@ -741,7 +757,7 @@ const float outerButtonPopInDelay=0.05f;
         CCScaleTo *st=[CCScaleTo actionWithDuration:moveBackToPositionTime scale:0.38f];
         
         CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
+        CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];ReturningBigNumber=NO;}];
         CCCallBlock *opacityLabel=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
         
         CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityLabel, nil];
@@ -775,7 +791,7 @@ const float outerButtonPopInDelay=0.05f;
         CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
         CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
         CCCallBlock *opacityN=[CCCallBlock actionWithBlock:^{[oN setOpacity:255];}];
-        CCCallBlock *opacityL=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
+        CCCallBlock *opacityL=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];ReturningBigNumber=NO;}];
         
         
         CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityN, opacityL, nil];
@@ -809,7 +825,7 @@ const float outerButtonPopInDelay=0.05f;
         CCCallBlock *remove=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
         CCCallBlock *opacity=[CCCallBlock actionWithBlock:^{[o setOpacity:255];}];
         CCCallBlock *opacityN=[CCCallBlock actionWithBlock:^{[oN setOpacity:255];}];
-        CCCallBlock *opacityL=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];}];
+        CCCallBlock *opacityL=[CCCallBlock actionWithBlock:^{[oL setOpacity:255];ReturningBigNumber=NO;}];
         
         
         CCSequence *sortbiggie=[CCSequence actions:dt, mtc, remove, opacity, opacityN, opacityL, nil];
@@ -822,8 +838,12 @@ const float outerButtonPopInDelay=0.05f;
     for(int i=0;i<[sceneButtons count];i++)
     {
         CCSprite *sM=[sceneButtonMedals objectAtIndex:i];
-        if(![sM isKindOfClass:[NSNull class]] && i!=currentSelectionIndex)[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
-        else if(![sM isKindOfClass:[NSNull class]] && i==currentSelectionIndex)[sM runAction:[CCFadeIn actionWithDuration:backgroundFadeInTime]];
+        
+        CCDelayTime *di=[CCDelayTime actionWithDuration:moveBackToPositionTime+remTime];
+        CCFadeIn *fi=[CCFadeIn actionWithDuration:backgroundFadeInTime];
+        CCSequence *sq=[CCSequence actionOne:di two:fi];
+        
+        if(![sM isKindOfClass:[NSNull class]])[sM runAction:sq];
         
         if(i==currentSelectionIndex)continue;
         
@@ -832,9 +852,9 @@ const float outerButtonPopInDelay=0.05f;
 
         if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
         if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
-
-        
     }
+    
+    NSLog(@"returned big number - current selection index %d", currentSelectionIndex);
     
     ReturnChallengeOrRandom=NO;
     RandomPipeline=NO;
@@ -876,6 +896,18 @@ const float outerButtonPopInDelay=0.05f;
                 
                 break;
             }
+        }
+        
+        if(CGRectContainsPoint(infoBtn.boundingBox, location))
+        {
+            if(!infoPnl){
+                infoPnl=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/info_panel.png")];
+                [infoPnl setPosition:ccp(cx,cy)];
+                [renderLayer addChild:infoPnl];
+            }
+            
+            if(!infoPnl.visible)
+                infoPnl.visible=YES;
         }
 
     }
@@ -1030,6 +1062,7 @@ const float outerButtonPopInDelay=0.05f;
             [renderLayer addChild:ns z:19];
             
             [currentSelectionButtons addObject:ns];
+            [currentSelectionButtons exchangeObjectAtIndex:[currentSelectionButtons indexOfObject:ns] withObjectAtIndex:[currentSelectionButtons indexOfObject:s]];
             
             CCDelayTime *delayintro=[CCDelayTime actionWithDuration:time*2];
             CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
@@ -1038,8 +1071,10 @@ const float outerButtonPopInDelay=0.05f;
             [ns runAction:thisSequence];
             CCDelayTime *delayoutro=[CCDelayTime actionWithDuration:time*2];
             CCFadeOut *fadeoutold=[CCFadeOut actionWithDuration:0.2f];
-            CCSequence *removeold=[CCSequence actionOne:delayoutro two:fadeoutold];
+            CCCallBlock *remold=[CCCallBlock actionWithBlock:^{[currentSelectionButtons removeObject:s]; [s removeFromParentAndCleanup:YES];}];
+            CCSequence *removeold=[CCSequence actions:delayoutro,fadeoutold,remold,nil];
             [s runAction:removeold];
+            
             
         }
         
@@ -1079,8 +1114,13 @@ const float outerButtonPopInDelay=0.05f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    [self checkForHitAt:location];
+    if(infoPnl.visible)
+    {
+        infoPnl.visible=false;
+        return;
+    }
     
+    [self checkForHitAt:location];
     
     
 }

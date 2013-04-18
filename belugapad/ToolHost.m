@@ -161,7 +161,13 @@ static float kTimeToHintToolTray=0.0f;
         
         
         //add header
-        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        CCSprite *hd=nil;
+        
+        if(appType==0)
+            hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        else
+            hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar.png")];
+        
         hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
         [perstLayer addChild:hd z:3];
         
@@ -407,6 +413,16 @@ static float kTimeToHintToolTray=0.0f;
         {
             isAnimatingIn=NO;
             timeBeforeUserInteraction=kDisableInteractionTime;
+        }
+    }
+    
+    if(countdownToReadProblemDescription)
+    {
+        countdownToReadProblemDescriptionTime-=delta;
+        if(countdownToReadProblemDescriptionTime<0)
+        {
+            [self readOutProblemDescription];
+            countdownToReadProblemDescription=NO;
         }
     }
     
@@ -1068,7 +1084,8 @@ static float kTimeToHintToolTray=0.0f;
     if(!thisProblemDescription)
         self.thisProblemDescription=[descRow returnRowStringForSpeech];
     
-    [self readOutProblemDescription];
+    countdownToReadProblemDescription=YES;
+    countdownToReadProblemDescriptionTime=1.0f;
     
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
 }
@@ -1365,8 +1382,13 @@ static float kTimeToHintToolTray=0.0f;
         [pauseLayer addChild:pauseMenu z:10];
         
         muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
-        [muteBtn setPosition:ccp(250,250)];
+        [muteBtn setPosition:ccp(800,275)];
         [pauseLayer addChild:muteBtn z:20];
+
+        adBanner = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/advert.png")];
+        [adBanner setAnchorPoint:ccp(0.5,0)];
+        [adBanner setPosition:ccp(cx, 0)];
+        [pauseLayer addChild:adBanner z:10];
         
         if(contentService.pathToTestDef)
         {

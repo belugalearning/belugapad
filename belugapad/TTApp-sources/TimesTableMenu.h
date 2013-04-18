@@ -28,6 +28,8 @@
     
     CCSprite *currentSelection;
     CCSprite *totalTab;
+    CCSprite *infoBtn;
+    CCSprite *infoPnl;
     int currentSelectionIndex;
     
     NSMutableArray *currentSelectionButtons;
@@ -41,6 +43,8 @@
     BOOL IsCountingDownChallengeScore;
     BOOL ReturnChallengeOrRandom;
     float ReturnChallengeRandomCountdown;
+    
+    BOOL ReturningBigNumber;
     
     float challengeCounter;
     float challengeDecrementer;

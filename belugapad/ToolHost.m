@@ -831,7 +831,18 @@ static float kTimeToHintToolTray=0.0f;
         }
         else
         {
-            countUpToJmap=YES;
+            if(appType==0){
+                countUpToJmap=YES;
+            }
+            else if(appType==1){
+                    if(ac.IsIpad1)
+                    {
+                        [[CCDirector sharedDirector] replaceScene:[TimesTableMenu scene]];
+                    }
+                    else {
+                        [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[TimesTableMenu scene]]];
+                    }
+                }
         }
     }
     else
@@ -870,15 +881,6 @@ static float kTimeToHintToolTray=0.0f;
         }
         else {
             [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[RewardStars scene]]];
-        }
-    }
-    else if(appType==1){
-        if(ac.IsIpad1)
-        {
-            [[CCDirector sharedDirector] replaceScene:[TimesTableMenu scene]];
-        }
-        else {
-            [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[TimesTableMenu scene]]];
         }
     }
     

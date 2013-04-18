@@ -71,6 +71,8 @@
     NSNumber *xval=[categoryValues valueForKey:@"x"];
     NSNumber *yval=[categoryValues valueForKey:@"y"];
     
+    NSLog(@"logging cat prog with x %d y %d", [xval integerValue], [yval integerValue]);
+    
     //look for xval category (these are expressed as keys on the root dictionary)
     NSMutableDictionary *xdict=[udata valueForKey:[xval stringValue]];
     if(xdict==nil)

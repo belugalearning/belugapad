@@ -166,7 +166,7 @@ static float kTimeToHintToolTray=0.0f;
         if(appType==0)
             hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
         else
-            hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+            hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar.png")];
         
         hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
         [perstLayer addChild:hd z:3];

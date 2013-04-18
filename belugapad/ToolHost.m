@@ -1085,7 +1085,7 @@ static float kTimeToHintToolTray=0.0f;
         self.thisProblemDescription=[descRow returnRowStringForSpeech];
     
     countdownToReadProblemDescription=YES;
-    countdownToReadProblemDescriptionTime=0.8f;
+    countdownToReadProblemDescriptionTime=1.0f;
     
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
 }

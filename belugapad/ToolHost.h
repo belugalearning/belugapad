@@ -106,6 +106,9 @@ typedef enum {
     float timeSinceInteractionOrShake;
     float timeBeforeUserInteraction;
     
+    BOOL countdownToReadProblemDescription;
+    float countdownToReadProblemDescriptionTime;
+    
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;
     

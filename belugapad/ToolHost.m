@@ -161,7 +161,13 @@ static float kTimeToHintToolTray=0.0f;
         
         
         //add header
-        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        CCSprite *hd=nil;
+        
+        if(appType==0)
+            hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        else
+            hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        
         hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
         [perstLayer addChild:hd z:3];
         
@@ -407,6 +413,16 @@ static float kTimeToHintToolTray=0.0f;
         {
             isAnimatingIn=NO;
             timeBeforeUserInteraction=kDisableInteractionTime;
+        }
+    }
+    
+    if(countdownToReadProblemDescription)
+    {
+        countdownToReadProblemDescriptionTime-=delta;
+        if(countdownToReadProblemDescriptionTime<0)
+        {
+            [self readOutProblemDescription];
+            countdownToReadProblemDescription=NO;
         }
     }
     
@@ -1068,7 +1084,8 @@ static float kTimeToHintToolTray=0.0f;
     if(!thisProblemDescription)
         self.thisProblemDescription=[descRow returnRowStringForSpeech];
     
-    [self readOutProblemDescription];
+    countdownToReadProblemDescription=YES;
+    countdownToReadProblemDescriptionTime=0.8f;
     
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
 }

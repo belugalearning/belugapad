@@ -1382,7 +1382,7 @@ static float kTimeToHintToolTray=0.0f;
         [pauseLayer addChild:pauseMenu z:10];
         
         muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
-        [muteBtn setPosition:ccp(250,250)];
+        [muteBtn setPosition:ccp(800,275)];
         [pauseLayer addChild:muteBtn z:20];
         
         if(contentService.pathToTestDef)

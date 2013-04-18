@@ -42,6 +42,8 @@
     BOOL ReturnChallengeOrRandom;
     float ReturnChallengeRandomCountdown;
     
+    BOOL ReturningBigNumber;
+    
     float challengeCounter;
     float challengeDecrementer;
     float challengesLeft;

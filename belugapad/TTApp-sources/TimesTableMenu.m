@@ -1044,6 +1044,7 @@ const float outerButtonPopInDelay=0.05f;
             [renderLayer addChild:ns z:19];
             
             [currentSelectionButtons addObject:ns];
+            [currentSelectionButtons exchangeObjectAtIndex:[currentSelectionButtons indexOfObject:ns] withObjectAtIndex:[currentSelectionButtons indexOfObject:s]];
             
             CCDelayTime *delayintro=[CCDelayTime actionWithDuration:time*2];
             CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.4f scale:1.0f];
@@ -1052,8 +1053,10 @@ const float outerButtonPopInDelay=0.05f;
             [ns runAction:thisSequence];
             CCDelayTime *delayoutro=[CCDelayTime actionWithDuration:time*2];
             CCFadeOut *fadeoutold=[CCFadeOut actionWithDuration:0.2f];
-            CCSequence *removeold=[CCSequence actionOne:delayoutro two:fadeoutold];
+            CCCallBlock *remold=[CCCallBlock actionWithBlock:^{[currentSelectionButtons removeObject:s]; [s removeFromParentAndCleanup:YES];}];
+            CCSequence *removeold=[CCSequence actions:delayoutro,fadeoutold,remold,nil];
             [s runAction:removeold];
+            
             
         }
         
@@ -1078,6 +1081,7 @@ const float outerButtonPopInDelay=0.05f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -1094,7 +1098,6 @@ const float outerButtonPopInDelay=0.05f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     
     [self checkForHitAt:location];
-    
     
     
 }

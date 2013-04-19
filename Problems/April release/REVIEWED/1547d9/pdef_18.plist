@@ -16,25 +16,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4/5 &amp;lt; 4/6</string>
+				<string>&lt;b:on numerator=&quot;4&quot; denominator=&quot;5&quot; /&gt; &amp;lt; &lt;b:on numerator=&quot;4&quot; denominator=&quot;6&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4/5 &amp;gt; 4/6</string>
+				<string>&lt;b:on numerator=&quot;4&quot; denominator=&quot;5&quot; /&gt; &amp;gt; &lt;b:on numerator=&quot;4&quot; denominator=&quot;6&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5/4 &amp;gt; 6/4</string>
+				<string>&lt;b:on numerator=&quot;5&quot; denominator=&quot;4&quot; /&gt; &amp;lt; &lt;b:on numerator=&quot;6&quot; denominator=&quot;4&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5/4 &amp;lt; 6/4</string>
+				<string>&lt;b:on numerator=&quot;5&quot; denominator=&quot;4&quot; /&gt; &amp;lt; &lt;b:on numerator=&quot;6&quot; denominator=&quot;4&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

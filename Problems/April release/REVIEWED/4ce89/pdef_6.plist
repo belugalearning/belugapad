@@ -145,19 +145,19 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3/4 &amp;gt; 2/3</string>
+				<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;4&quot; /&gt; &amp;gt; &lt;b:on numerator=&quot;2&quot; denominator=&quot;3&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3/4 &amp;lt; 2/3</string>
+				<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;4&quot; /&gt; &amp;lt; &lt;b:on numerator=&quot;2&quot; denominator=&quot;3&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3/4 = 2/3</string>
+				<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;4&quot; /&gt; = &lt;b:on numerator=&quot;2&quot; denominator=&quot;3&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

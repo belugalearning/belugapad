@@ -41,19 +41,19 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2/3 &amp;lt; 3/5</string>
+				<string>&lt;b:on numerator=&quot;2&quot; denominator=&quot;3&quot; /&gt; &amp;lt; &lt;b:on numerator=&quot;3&quot; denominator=&quot;5&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2/3 &amp;gt; 3/5</string>
+				<string>&lt;b:on numerator=&quot;2&quot; denominator=&quot;3&quot; /&gt; &amp;gt; &lt;b:on numerator=&quot;3&quot; denominator=&quot;5&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2/3 = 3/5</string>
+				<string>&lt;b:on numerator=&quot;2&quot; denominator=&quot;3&quot; /&gt; = &lt;b:on numerator=&quot;3&quot; denominator=&quot;5&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

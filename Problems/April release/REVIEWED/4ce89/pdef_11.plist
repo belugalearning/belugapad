@@ -41,13 +41,13 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>1/3</string>
+				<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3/8</string>
+				<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;8&quot; /&gt;</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

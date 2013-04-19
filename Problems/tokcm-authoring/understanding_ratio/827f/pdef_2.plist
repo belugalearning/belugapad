@@ -10,8 +10,8 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Fill in the gaps&lt;/b:t&gt;</string>
-		<string>&lt;b:t&gt;A car travels 40 miles in one hour. This means that it will travel&lt;/b:t&gt;&lt;b:on number=&quot;{40*$x}&quot;&lt;/b:ot&gt;&lt;b:t&gt;miles in&lt;/b:t&gt;&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;{$x}&quot; enabled=&quot;no&quot;&gt;{$x}&lt;/b:ot&gt;&lt;b:t&gt;hours.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;Fill in the gaps.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;A hill rises&lt;/b:t&gt;&lt;b:ot&gt;1&lt;/b:ot&gt;&lt;b:t&gt;metre for every&lt;/b:t&gt;&lt;b:ot&gt;10&lt;/b:ot&gt;&lt;b:t&gt;metres it goes along. This means that if I walked&lt;/b:t&gt;&lt;b:on number=&quot;{10*$x}&quot;/&gt;&lt;b:t&gt;metres, I would be&lt;/b:t&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$x}&quot;/&gt;&lt;b:t&gt;metres above where I started.&lt;/b:t&gt;</string>
 	</array>
 	<key>DVARS</key>
 	<array>
@@ -19,9 +19,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>2</string>
+			<string>4</string>
 			<key>MAX</key>
-			<string>6</string>
+			<string>9</string>
 		</dict>
 	</array>
 </dict>

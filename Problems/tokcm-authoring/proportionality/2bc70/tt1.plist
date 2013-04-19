@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;What is the number in the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_TT_Tile_Black&quot;/&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>TimesTables</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>65</integer>
+	<key>START_X</key>
+	<integer>1</integer>
+	<key>START_Y</key>
+	<integer>1</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>OPERATOR_MODE</key>
+	<integer>2</integer>
+	<key>SHOW_CALC_BUBBLE</key>
+	<true/>
+	<key>SHOW_X_AXIS</key>
+	<true/>
+	<key>SHOW_Y_AXIS</key>
+	<true/>
+	<key>SWITCH_XY_ANSWER-IGNORE</key>
+	<true/>
+	<key>SELECTION_MODE</key>
+	<integer>1</integer>
+	<key>REVEAL_ROWS</key>
+	<array>
+		<string>3</string>
+		<integer>2</integer>
+	</array>
+	<key>REVEAL_COLS</key>
+	<array>
+		<integer>3</integer>
+		<string>2</string>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<dict>
+			<key>POS_X</key>
+			<integer>6</integer>
+			<key>POS_Y</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>POS_X</key>
+			<integer>2</integer>
+			<key>POS_Y</key>
+			<integer>6</integer>
+		</dict>
+	</array>
+	<key>DISABLED_TILES</key>
+	<array>
+		<dict>
+			<key>X</key>
+			<integer>2</integer>
+			<key>Y</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>X</key>
+			<integer>3</integer>
+			<key>Y</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>&lt;b:t&gt;What is the number in the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_TT_Tile_Black&quot;/&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>6</integer>
+	</dict>
+</dict>
+</plist>

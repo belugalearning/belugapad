@@ -11,7 +11,7 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Fill in the gaps&lt;/b:t&gt;</string>
-		<string>&lt;b:t&gt;A recipe for 12 muffins uses 120g of butter. This means that&lt;/b:t&gt;&lt;b:on number=&quot;{12*$x}&quot;&lt;/b:ot&gt;&lt;b:t&gt;muffins will need&lt;/b:t&gt;&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;{120*$x}&quot; enabled=&quot;no&quot;&gt;{120*$x}&lt;/b:ot&gt;&lt;b:t&gt;grams of butter.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;A recipe for&lt;/b:t&gt;&lt;b:ot&gt;12&lt;/b:ot&gt;&lt;b:t&gt;muffins uses&lt;/b:t&gt;&lt;b:ot&gt;120g&lt;/b:ot&gt;&lt;b:t&gt;of butter. This means that&lt;/b:t&gt;&lt;b:on number=&quot;{12*$x}&quot;/&gt;&lt;b:t&gt;muffins will need&lt;/b:t&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{120*$x}&quot;/&gt;</string>
 	</array>
 	<key>DVARS</key>
 	<array>

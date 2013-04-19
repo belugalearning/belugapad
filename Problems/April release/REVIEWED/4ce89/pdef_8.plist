@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-    <dict>
-        <key>PROBLEM_DESCRIPTION</key>
-        <string>Shade 3/5 of this shape.</string>
-        <key>TOOL_KEY</key>
-        <string>DotGrid</string>
-        <key>EVAL_MODE</key>
-        <string>1</string>
-        <key>DOTGRID_EVAL_TYPE</key>
-        <string>1</string>
-        <key>DOTGRID_EVAL_DIVIDEND</key>
-        <integer>3</integer>
-        <key>DOTGRID_EVAL_DIVISOR</key>
-        <integer>5</integer>
-        <key>ANCHOR_SPACE</key>
-        <integer>85</integer>
-        <key>DRAW_MODE</key>
-        <integer>0</integer>
-        <key>INIT_OBJECTS</key>
-        <array>
-            <dict>
-                <key>START_X</key>
-                <string>2</string>
-                <key>END_X</key>
-                <string>7</string>
-                <key>START_Y</key>
-                <string>3</string>
-                <key>END_Y</key>
-                <string>6</string>
-            </dict>
-        </array>
-    </dict>
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Shade&lt;/b:t&gt;&lt;b:on numerator=&quot;3&quot; denominator=&quot;5&quot; /&gt;&lt;b:t&gt;of this shape.&lt;/b:t&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
+	<integer>3</integer>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<integer>5</integer>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>START_X</key>
+			<string>2</string>
+			<key>END_X</key>
+			<string>7</string>
+			<key>START_Y</key>
+			<string>3</string>
+			<key>END_Y</key>
+			<string>6</string>
+		</dict>
+	</array>
+</dict>
 </plist>

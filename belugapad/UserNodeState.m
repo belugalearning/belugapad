@@ -32,6 +32,7 @@
 @property (nonatomic, readwrite, retain) NSDate *artifact3LastAchieved;
 @property (nonatomic, readwrite, retain) NSDate *artifact4LastAchieved;
 @property (nonatomic, readwrite, retain) NSDate *artifact5LastAchieved;
+@property (nonatomic, readwrite, retain) NSArray *assignmentFlags;
 @end
 
 
@@ -90,6 +91,12 @@
         if (artifact4Date > 0) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact4Date];
         if (artifact5Date > 0) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact5Date];
         
+        // TEMP!
+        self.assignmentFlags = @{
+                                 @"5608a59d6797796ce9e11484fd11e438": @[ @"homework" ],
+                                 @"5608a59d6797796ce9e11484fd180214": @[ @"doNow" ],
+                                 @"5608a59d6797796ce9e11484fd180be3": @[ @"homework", @"doNow" ]  }[self.nodeId];
+        if (!self.assignmentFlags) self.assignmentFlags = @[];
     }
     return self;
 }
@@ -182,6 +189,7 @@
     self.artifact3LastAchieved = nil;
     self.artifact4LastAchieved = nil;
     self.artifact5LastAchieved = nil;
+    self.assignmentFlags = nil;
     if (db)
     {
         [db close];

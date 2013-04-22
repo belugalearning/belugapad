@@ -44,9 +44,11 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>DEFAULT_SCALE</key>
-	<real>0.85</real>
+	<integer>1</integer>
 	<key>COLUMN_SPRITES</key>
 	<dict>
+		<key>1</key>
+		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 		<key>0.1</key>
 		<string>/images/placevalue/obj-placevalue-unit1tenth.png</string>
 		<key>0.01</key>

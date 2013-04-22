@@ -13,9 +13,9 @@
 	<key>COL_BASE_VALUE</key>
 	<integer>10</integer>
 	<key>FIRST_COL_VALUE</key>
-	<integer>10</integer>
+	<real>0.1</real>
 	<key>NUMBER_COLS</key>
-	<integer>4</integer>
+	<integer>2</integer>
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
@@ -29,11 +29,9 @@
 	<key>ALLOW_PANNING</key>
 	<false/>
 	<key>X_OFFSET</key>
-	<string>0.12</string>
-	<key>COLUMN_SPACING</key>
-	<string>0.25</string>
+	<string>0.28</string>
 	<key>DEFAULT_SCALE</key>
-	<string>0.9</string>
+	<string>1</string>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>
@@ -59,7 +57,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>0.2</string>
+		<string>0.20</string>
 		<key>PLAY_SOUND</key>
 		<string>complete.wav</string>
 	</dict>
@@ -67,14 +65,10 @@
 	<integer>1</integer>
 	<key>COLUMN_SPRITES</key>
 	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit10percent.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1percent.png</string>
 		<key>0.1</key>
-		<string>/images/placevalue/obj-placevalue-unit1tenthpercent.png</string>
+		<string>/images/placevalue/obj-placevalue-unit10percent.png</string>
 		<key>0.01</key>
-		<string>/images/placevalue/obj-placevalue-unit1hundredthpercent.png</string>
+		<string>/images/placevalue/obj-placevalue-unit1percent.png</string>
 	</dict>
 </dict>
 </plist>

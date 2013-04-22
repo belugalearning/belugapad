@@ -42,7 +42,7 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>DEFAULT_SCALE</key>
-	<real>0.85</real>
+	<integer>1</integer>
 	<key>DVARS</key>
 	<array>
 		<dict>

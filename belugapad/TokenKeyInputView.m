@@ -21,13 +21,12 @@
 
 @implementation TokenKeyInputView
 
-static const uint numLabels = 9;
-static const uint labelsPerGroup = 3;
-static const uint firstLabelX = 0;
-static const uint labelsY = 12;
-static const uint labelWidth = 24;
-static const uint labelSpacing = 20;
-static const uint groupSpacing = labelWidth + labelSpacing;
+static const uint numLabels = 10;
+static const uint groupends[] = { 2, 6 };
+static const uint labelWidth = 36;
+static const uint labelSpacing = 4;
+static const uint groupSpacing = 34;
+static const uint fontSize = 24;
 static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transforms text to uppercase
 
 #pragma mark -
@@ -40,15 +39,29 @@ static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transfo
         self.backgroundColor = [UIColor blackColor];
         
         labels = [NSMutableArray array];
+        
+        uint x = 0;
+        const uint *grpend = groupends;
+        
+        NSLog(@"%ld %ld", sizeof(groupends), sizeof(groupends[0]));
+        
         for (uint i=0; i<numLabels; i++)
         {
-            uint x = firstLabelX   +   i * (labelWidth+labelSpacing)   +   (i / labelsPerGroup) * groupSpacing;
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(x, 11, 24, 24)] autorelease];
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(x, 0, labelWidth, fontSize)] autorelease];
             [label setTextColor:[UIColor whiteColor]];
             [label setBackgroundColor:[UIColor clearColor]];
-            [label setFont:[UIFont fontWithName:@"Chango" size:24]];
+            [label setFont:[UIFont fontWithName:@"Chango" size:fontSize]];
+            label.textAlignment = NSTextAlignmentCenter;
             [self addSubview:label];
             [(NSMutableArray*)labels addObject:label];
+
+            x += labelWidth + labelSpacing;
+            
+            if (grpend < groupends + sizeof(groupends) && i == *grpend)
+            {
+                x += groupSpacing;
+                ++grpend;
+            }
         }
         labels = [labels copy];
         
@@ -116,6 +129,13 @@ static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transfo
 
 -(void)insertText:(NSString *)s
 {
+    // lose focus if key was return
+    if ([s isEqualToString:@"\n"])
+    {
+        [self resignFirstResponder];
+        return;
+    }
+    
     // validate insertion text
     if (currentIndex + [s length] > numLabels) return;
     if ([validCharsMatch numberOfMatchesInString:[s uppercaseString] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [s length])] != 1) return;
@@ -223,7 +243,7 @@ static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transfo
 {
     [cursor setAlpha:0]; // start with cursor off. N.B. also ensures that after char entered for last space, there isn't a momentary flash of the cursor back in the first space.
     UILabel *currIndexLabel = labels[currentIndex];
-    [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x - 4, 36, 29, 3)];
+    [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x, fontSize + 2, labelWidth, 3)];
 }
 
 @end

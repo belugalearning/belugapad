@@ -13,6 +13,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "PassCodeView.h"
+#import "TokenKeyInputView.h"
 #import "SimpleAudioEngine.h"
 #import "UIView+UIView_DragLogPosition.h"
 #import "CODialog.h"
@@ -37,6 +38,10 @@
     UIButton *loginButton;
     PassCodeView *selectUserPassCodeModalView;
     UIImageView *tickCrossImg;
+    
+    UIView *tokenModalContainer;
+    TokenKeyInputView *tokenModalView;
+    BOOL joiningClass;
     
     NSMutableArray *deviceUsers;
     
@@ -311,10 +316,10 @@
     playButton.frame = CGRectMake(698.0f, 502.0f, 138.0f, 66.0f);
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateHighlighted];
-    [playButton addTarget:self action:@selector(handlePlayButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
-    [playButton addTarget:self action:@selector(handlePlayButtonTouchEnd:) forControlEvents:UIControlEventTouchUpOutside];
-    [playButton addTarget:self action:@selector(handlePlayButtonTouchEnd:) forControlEvents:UIControlEventTouchUpInside];
-    [playButton addTarget:self action:@selector(handlePlayButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [playButton addTarget:self action:@selector(handleUserActionButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
+    [playButton addTarget:self action:@selector(handleUserActionButtonTouchEnd:) forControlEvents:UIControlEventTouchUpOutside];
+    [playButton addTarget:self action:@selector(handleUserActionButtonTouchEnd:) forControlEvents:UIControlEventTouchUpInside];
+    [playButton addTarget:self action:@selector(handleUserActionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:playButton];
     playButton.enabled = NO;
     
@@ -322,7 +327,12 @@
     joinClassButton.frame = CGRectMake(220.0f, 447.0f, 100.0f, 95.0f);
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateHighlighted];
+    [joinClassButton addTarget:self action:@selector(handleUserActionButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
+    [joinClassButton addTarget:self action:@selector(handleUserActionButtonTouchEnd:) forControlEvents:UIControlEventTouchUpOutside];
+    [joinClassButton addTarget:self action:@selector(handleUserActionButtonTouchEnd:) forControlEvents:UIControlEventTouchUpInside];
+    [joinClassButton addTarget:self action:@selector(handleUserActionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:joinClassButton];
+    joinClassButton.enabled = NO;
     
     changeNickView = [[UIView alloc]  initWithFrame:CGRectMake(0, 0, 699, 459)];
     [changeNickView setCenter:CGPointMake(511.0f, 377.0f)];
@@ -362,11 +372,15 @@
     
 }
 
--(void)enablePlayButton
+-(void)enableUserActions
 {
     playButton.enabled = YES;
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
+    
+    joinClassButton.enabled = YES;
+    [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_enabled.png"] forState:UIControlStateNormal];
+    [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_enabled.png"] forState:UIControlStateHighlighted];
 }
 
 #pragma mark UITableViewDataSource
@@ -431,28 +445,32 @@
     NSDictionary *user = deviceUsers[indexPath.row];
     if (user[@"nickName"]){
         [self buttonTap];
-        [self enablePlayButton];
+        [self enableUserActions];
     }// i.e. a real user, not empty one
 }
 
 #pragma mark interactions
--(void)handlePlayButtonTouchDown:(id)button
+-(void)handleUserActionButtonTouchDown:(id)button
 {
     if (freezeUI) return;
     ((UIButton*)button).transform = CGAffineTransformMakeScale(1.2, 1.2);
 }
 
--(void)handlePlayButtonTouchEnd:(id)button
+-(void)handleUserActionButtonTouchEnd:(id)button
 {
     if (freezeUI) return;
     ((UIButton*)button).transform = CGAffineTransformIdentity;
 }
 
--(void)handlePlayButtonClicked:(id)button
+-(void)handleUserActionButtonClicked:(id)button
 {
     if (freezeUI) return;
+    freezeUI = YES;
+    
+    if (button == joinClassButton) joiningClass = YES;
     
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
+    [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
     
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
 
@@ -514,6 +532,7 @@
                          selectUserModalContainer.center = CGPointMake(512.0f, 354.0f);
                      }
                      completion:^(BOOL finished){
+                         freezeUI = NO;
                          [selectUserPassCodeModalView becomeFirstResponder];
                      }];
 }
@@ -522,8 +541,10 @@
 {
     if (freezeUI) return;
     
+    joiningClass = NO;
+    
     [self buttonTap];
-    [self enablePlayButton];
+    [self enableUserActions];
     
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
@@ -577,8 +598,12 @@
     
     [usersService setCurrentUserToUserWithId:ur[@"id"]];
     
+    if (joiningClass)
+    {
+        [self showJoinClassTokenModal];
+    }
     // does user need to change their nick
-    if ([ur[@"nickClash"] integerValue] == 2)
+    else if ([ur[@"nickClash"] integerValue] == 2)
     {
         [selectUserModalUnderlay removeFromSuperview];
         [selectUserPassCodeModalView removeFromSuperview];
@@ -597,6 +622,93 @@
         [self.view removeFromSuperview];
         [app proceedFromLoginViaIntro:NO];
     }
+}
+
+-(void)showJoinClassTokenModal
+{
+    tokenModalContainer = [[[UIView alloc] initWithFrame:CGRectMake(260, -283, 504, 266)] autorelease];
+    tokenModalContainer.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:tokenModalContainer];
+    
+    tokenModalView = [[[TokenKeyInputView alloc] initWithFrame:CGRectMake(20, 40, 464, 30)] autorelease];
+    [tokenModalContainer addSubview:tokenModalView];
+    
+    UILabel *l = [[[UILabel alloc] initWithFrame:CGRectMake(136, 40, 38, 24)] autorelease];
+    [l setFont:[UIFont fontWithName:@"Chango" size:24]];
+    l.text = @"-";
+    l.textColor = [UIColor whiteColor];
+    l.backgroundColor = [UIColor clearColor];
+    l.textAlignment = NSTextAlignmentCenter;
+    [tokenModalContainer addSubview:l];
+    
+    l = [[[UILabel alloc] initWithFrame:CGRectMake(330, 40, 38, 24)] autorelease];
+    [l setFont:[UIFont fontWithName:@"Chango" size:24]];
+    l.text = @"-";
+    l.textColor = [UIColor whiteColor];
+    l.backgroundColor = [UIColor clearColor];
+    l.textAlignment = NSTextAlignmentCenter;
+    [tokenModalContainer addSubview:l];
+    
+    UIButton *cancel = [[[UIButton alloc] initWithFrame:CGRectMake(20, 120, 90, 30)] autorelease];
+    [cancel setTitle:@"CANCEL" forState:UIControlStateNormal];
+    cancel.enabled = YES;
+    [cancel addTarget:self action:@selector(cancelJoinClass:) forControlEvents:UIControlEventTouchUpInside];
+    [tokenModalContainer addSubview:cancel];
+    
+    UIButton *send = [[[UIButton alloc] initWithFrame:CGRectMake(110, 120, 200, 30)] autorelease];
+    [send setTitle:@"SEND TOKEN" forState:UIControlStateNormal];
+    send.enabled = YES;
+    [send addTarget:self action:@selector(sendJoinClassToken:) forControlEvents:UIControlEventTouchUpInside];
+    [tokenModalContainer addSubview:send];
+    
+    [UIView animateWithDuration:0.6
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         tokenModalContainer.center = CGPointMake(512.0f, 354.0f);
+                     }
+                     completion:^(BOOL finished){
+                         freezeUI = NO;
+                     }];
+}
+
+-(void)cancelJoinClass:(id)button
+{
+    [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
+}
+
+-(void)sendJoinClassToken:(id)button
+{
+    if (!tokenModalView.isValid)
+    {
+        [tokenModalView becomeFirstResponder];
+        return;
+    }
+    
+    [tokenModalView resignFirstResponder];
+    
+    __block typeof(self) bself = self;
+    __block SEL bHideDialog = @selector(hideDialog:);
+    __block SEL bProceed = @selector(hideDialogAndGoToIntro:);
+    
+    void (^callback)() = ^(uint statusCode, NSString *message) {        
+        bself.dialog=[CODialog dialogWithWindow:self.view.window];
+        [bself.dialog resetLayout];
+        
+        bself.dialog.dialogStyle=CODialogStyleDefault;
+        bself.dialog.title = statusCode == 201 ? @"Success!" : @"Sorry";
+        bself.dialog.subtitle = message;
+        
+        [bself.dialog addButtonWithTitle:@"OK" target:self selector:statusCode == 201 ? bProceed : bHideDialog];
+        
+        [bself.dialog sizeToFit];
+        [bself.dialog showOrUpdateAnimated:YES];
+        return;
+    };
+    
+    [usersService joinClassWithToken:tokenModalView.text
+                            callback:callback];
 }
 
 -(void)handleCancelChangeNickClicked:(id)button
@@ -779,7 +891,7 @@
                     NSUInteger indexPath[] = {0,i};
                     NSIndexPath *ip = [NSIndexPath indexPathWithIndexes:indexPath length:2];
                     [bself->selectUserTableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
-                    [bself enablePlayButton];
+                    [bself enableUserActions];
                     break;
                 }
             }

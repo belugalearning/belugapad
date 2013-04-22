@@ -20,6 +20,7 @@
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
 		0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4CD67A15E3A5430037BBD0 /* LogPoller.m */; };
 		0C51649715D9068F008E7C72 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 0C51649615D9068D008E7C72 /* settings */; };
+		0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C52CDFE17243FF500B9D9B5 /* TokenKeyInputView.m */; };
 		0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */; };
 		0C58DE9A1631774700DD9A01 /* edit-pdef-client-files in Resources */ = {isa = PBXBuildFile; fileRef = 0C58DE991631774700DD9A01 /* edit-pdef-client-files */; };
 		0C692E4A157F973D009307DB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C692E49157F973D009307DB /* libsqlite3.dylib */; };
@@ -486,6 +487,8 @@
 		0C4CD67915E3A5430037BBD0 /* LogPoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogPoller.h; sourceTree = "<group>"; };
 		0C4CD67A15E3A5430037BBD0 /* LogPoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogPoller.m; sourceTree = "<group>"; };
 		0C51649615D9068D008E7C72 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
+		0C52CDFD17243FF500B9D9B5 /* TokenKeyInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenKeyInputView.h; sourceTree = "<group>"; };
+		0C52CDFE17243FF500B9D9B5 /* TokenKeyInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokenKeyInputView.m; sourceTree = "<group>"; };
 		0C58DE8516308B6F00DD9A01 /* EditPDefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPDefViewController.h; sourceTree = "<group>"; };
 		0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPDefViewController.m; sourceTree = "<group>"; };
 		0C58DE991631774700DD9A01 /* edit-pdef-client-files */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "edit-pdef-client-files"; path = "edit-pdef/edit-pdef-client-files"; sourceTree = SOURCE_ROOT; };
@@ -2797,6 +2800,8 @@
 				0CA32F0D166506DD00FC5423 /* NumpadInputController.h */,
 				0CA32F0E166506DD00FC5423 /* NumpadInputController.m */,
 				0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */,
+				0C52CDFD17243FF500B9D9B5 /* TokenKeyInputView.h */,
+				0C52CDFE17243FF500B9D9B5 /* TokenKeyInputView.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -3597,6 +3602,7 @@
 				551430BE1712E45300A66657 /* SGFBuilderRowRender.m in Sources */,
 				551430C117133ADB00A66657 /* SGFBuilderRowTouch.m in Sources */,
 				551430C41713631300A66657 /* SGFBuilderBlockTouch.m in Sources */,
+				0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

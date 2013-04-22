@@ -51,6 +51,9 @@ typedef enum {
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback;
 
+-(void)joinClassWithToken:(NSString*)token
+                 callback:(void(^)(uint, NSString*))callback;
+
 -(void)applyDownloadedStateUpdatesForCurrentUser;
 
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;

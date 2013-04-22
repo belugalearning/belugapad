@@ -382,6 +382,29 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     [opQueue addOperation:reqOp];
 }
 
+-(void)joinClassWithToken:(NSString*)token
+                 callback:(void(^)(uint, NSString*))callback
+{
+    NSMutableURLRequest *req = [httpClient requestWithMethod:@"PUT"
+                                                        path:[NSString stringWithFormat:@"app-users/%@/tokens/%@", self.currentUserId, token]
+                                                  parameters:nil];
+
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id o)
+    {
+        NSHTTPURLResponse *res = [op response];
+        
+        uint statusCode = res ? [res statusCode] : 0;
+        NSString *message = res ? [res allHeaderFields][@"X-Response-Text"] : nil;
+        if (!message) message = @"An error was encountered";
+        
+        callback(statusCode, message);
+    };
+    
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
+}
+
 -(void)downloadStateForUser:(NSString*)userId
 {
     if (![contentSource isEqualToString:@"DATABASE"]) return;

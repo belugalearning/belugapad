@@ -5,7 +5,7 @@
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Which of these is equal to 18 + 27 ?</string>
+	<string>Which of these are equal to 18 + 27 ?</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_ANSWERS</key>

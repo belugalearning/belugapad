@@ -17,7 +17,5 @@
 &lt;b:oo value=&quot;=&quot;/&gt;
 &lt;b:on usePicker=&quot;yes&quot; pickerTargetNumerator=&quot;3&quot; pickerTargetDenominator=&quot;8&quot; /&gt;</string>
 	</array>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>3x2=6</string>
 </dict>
 </plist>

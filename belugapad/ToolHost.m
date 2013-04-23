@@ -1438,14 +1438,14 @@ static float kTimeToHintToolTray=0.0f;
         [adBanner setPosition:ccp(cx, 0)];
         [pauseLayer addChild:adBanner z:10];
         
-        if(contentService.pathToTestDef)
-        {
-            
-            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
-            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
-            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
-            [pauseLayer addChild:pauseTestPathLabel z:11];
-        }
+//        if(contentService.pathToTestDef)
+//        {
+//            
+//            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
+//            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
+//            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
+//            [pauseLayer addChild:pauseTestPathLabel z:11];
+//        }
     }
     else {
         [pauseLayer setVisible:YES];

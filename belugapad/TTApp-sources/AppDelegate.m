@@ -119,7 +119,8 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     if ([[self.LocalSettings valueForKey:@"RELEASE_MODE"] boolValue])
     {
-        [self.LocalSettings setValue:@"DATABASE" forKey:@"PROBLEM_PIPELINE"];
+        //don't overwrite db setting for ttapp
+        //[self.LocalSettings setValue:@"DATABASE" forKey:@"PROBLEM_PIPELINE"];
         [self.LocalSettings setValue:NO forKey:@"IMPORT_CONTENT_ON_LAUNCH"];
     }
     

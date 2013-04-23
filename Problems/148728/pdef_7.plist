@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>&lt;b:t&gt;is going swimming. She wasnts to swim 64 lengths. So far she has managed&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;8&quot;/&gt;&lt;b:t&gt;of this. Howmany lengths has she done so far?&lt;/b:t&gt;</string>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>40</integer>
+	</dict>
+</dict>
+</plist>

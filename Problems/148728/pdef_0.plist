@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;8&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;5&quot; denominator=&quot;11&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;15&quot; denominator=&quot;24&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;15&quot; denominator=&quot;8&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>&lt;b:t&gt;1 km is about&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;8&quot;/&gt;&lt;b:t&gt;of a mile. How many miles is 3km?&lt;/b:t&gt;</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;10&quot; denominator=&quot;5&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;2&quot; denominator=&quot;11&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;2&quot; denominator=&quot;25&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;12&quot; denominator=&quot;5&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>&lt;b:t&gt; is cooking dinner for himself and 5 others. Each of them needs&lt;/b:t&gt;&lt;b:on numerator=&quot;2&quot; denominator=&quot;5&quot;/&gt;&lt;b:t&gt; of a bottle of water. How many bottles of water do they need?&lt;/b:t&gt;</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;7/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;10&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;7&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>&lt;b:on numerator=&quot;7&quot; denominator=&quot;3&quot;/&gt;</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>&lt;b:t&gt;is baking cakes for a party. Each cake needs&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot;/&gt;&lt;b:t&gt;of a packet of butter.&lt;/b:t&gt;&lt;b:t&gt;is making 7 cakes. How many packets of butter are needed?&lt;/b:t&gt;</string>
+	</dict>
+</dict>
+</plist>

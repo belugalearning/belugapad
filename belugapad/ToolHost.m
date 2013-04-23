@@ -198,7 +198,7 @@ static float kTimeToHintToolTray=0.0f;
             progressLabelL=[CCLabelTTF labelWithString:l fontName:CHANGO fontSize:22.0f];
             [progressLabelL setAnchorPoint:ccp(1,0.5)];
             [progressLabelR setAnchorPoint:ccp(0,0.5)];
-            [progressLabelL setPosition:ccp(190,ly-25)];
+            [progressLabelL setPosition:ccp(190,ly-28)];
             [progressLabelR setPosition:ccp(progressLabelL.position.x+2,progressLabelL.position.y)];
             [progressLabelL setColor:ccWHITE];
             [progressLabelR setColor:ccGRAY];
@@ -211,7 +211,7 @@ static float kTimeToHintToolTray=0.0f;
             [perstLayer addChild:progressLabelR z:5];
             
             challengeNotification=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/challenging_header.png")];
-            [challengeNotification setPosition:ccp(320,ly-25)];
+            [challengeNotification setPosition:ccp(320,ly-28)];
             [perstLayer addChild:challengeNotification z:5];
             
             CCLabelTTF *lblCCount=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [ac getToolhostNotifierCount]] fontName:CHANGO fontSize:20.0f];

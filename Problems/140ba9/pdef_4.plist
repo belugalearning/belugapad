@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>Fill in the gaps.</string>
+		<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;2&quot;/&gt;
+&lt;b:t&gt;of&lt;/b:t&gt;
+&lt;b:on numerator=&quot;2&quot; denominator=&quot;5&quot;/&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on usePicker=&quot;yes&quot; pickerTargetNumerator=&quot;1&quot; pickerTargetDenominator=&quot;5&quot; /&gt;</string>
+	</array>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>3x2=6</string>
+</dict>
+</plist>

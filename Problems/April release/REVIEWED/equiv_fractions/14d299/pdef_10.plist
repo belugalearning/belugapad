@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 4/6, make 1. </string>
+	<string>&lt;b:t&gt;This is&lt;/b:t&gt;&lt;b:on numerator=&quot;4&quot; denominator=&quot;6&quot;/&gt;&lt;b:t&gt;, make 1. &lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>EVAL_MODE</key>

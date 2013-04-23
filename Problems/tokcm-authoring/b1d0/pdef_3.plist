@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Start at&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;4&quot;/&gt;&lt;b:t&gt;and count on&lt;/b:t&gt;&lt;b:on numerator=&quot;7&quot; denominator=&quot;4&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>SOLUTION</key>
+	<string>&lt;b:on numerator=&quot;12&quot; denominator=&quot;4&quot;/&gt;</string>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>COUNT_TYPE</key>
+	<integer>2</integer>
+	<key>INCREMENT</key>
+	<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;4&quot;/&gt;</string>
+	<key>COUNT_MIN</key>
+	<integer>0</integer>
+	<key>COUNT_MAX</key>
+	<integer>3</integer>
+</dict>
+</plist>

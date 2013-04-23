@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Show that&lt;/b:t&gt;&lt;b:on numerator=&quot;3&quot; denominator=&quot;2&quot; showAsMixedFraction=&quot;yes&quot;/&gt;&lt;b:t&gt;+&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;2&quot; showAsMixedFraction=&quot;yes&quot;/&gt;&lt;b:t&gt;=&lt;/b:t&gt;&lt;b:on numerator=&quot;8&quot; denominator=&quot;2&quot; showAsMixedFraction=&quot;yes&quot;/&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>NumberBonds</string>
+	<key>SOLUTION_MODE</key>
+	<string>1</string>
+	<key>INIT_BARS</key>
+	<array>
+		<dict>
+			<key>LOCKED</key>
+			<true/>
+			<key>LENGTH</key>
+			<integer>8</integer>
+		</dict>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<integer>8</integer>
+		</dict>
+	</array>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+			<key>LENGTH</key>
+			<integer>8</integer>
+			<key>LABEL</key>
+			<string>&lt;b:on numerator=&quot;8&quot; denominator=&quot;2&quot;/&gt;</string>
+		</dict>
+	</array>
+	<key>INIT_CAGES</key>
+	<array>
+		<dict>
+			<key>LENGTH</key>
+			<integer>1</integer>
+			<key>LABEL</key>
+			<string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;2&quot;/&gt;</string>
+			<key>QUANTITY</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>LABEL</key>
+			<string>2</string>
+			<key>QUANTITY</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<string>3</string>
+			<key>LABEL</key>
+			<string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;2&quot;/&gt;</string>
+			<key>QUANTITY</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>4</integer>
+			<key>LABEL</key>
+			<string>2</string>
+			<key>QUANTITY</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>5</integer>
+			<key>LABEL</key>
+			<string>&lt;b:on numerator=&quot;5&quot; denominator=&quot;2&quot;/&gt;</string>
+			<key>QUANTITY</key>
+			<integer>10</integer>
+		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<string>3</string>
+			<string>5</string>
+		</array>
+		<array>
+			<string>5</string>
+			<string>3</string>
+		</array>
+	</array>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+</dict>
+</plist>

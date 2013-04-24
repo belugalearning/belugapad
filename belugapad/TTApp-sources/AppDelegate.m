@@ -311,12 +311,13 @@ void uncaughtExceptionHandler(NSException *exception) {
             // Perform additional tasks for the authenticated player.
 
             //PURGE ACHIEVEMENTS FOR LOCAL PLAYER WITH THIS
-//            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
-//            {
-//             if (error != nil)
-//             {}
-//                 // handle the error.
-//            }];
+            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
+            {
+             if (error != nil)
+             {}
+                 // handle the error.
+            }];
+            //END PURGE BIT
             
             [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error)
              {

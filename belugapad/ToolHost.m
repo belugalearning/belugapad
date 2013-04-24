@@ -363,6 +363,12 @@ static float kTimeToHintToolTray=0.0f;
     }
 }
 
+-(void)exitSappProgressWithFullPipeline
+{
+    NSLog(@"exiting sapp progress state");
+    [ac.appustateService exitPipeline];
+}
+
 
 #pragma mark
 
@@ -835,6 +841,9 @@ static float kTimeToHintToolTray=0.0f;
                 countUpToJmap=YES;
             }
             else if(appType==1){
+                    //mark progress
+                    [self exitSappProgressWithFullPipeline];
+                
                     if(ac.IsIpad1)
                     {
                         [[CCDirector sharedDirector] replaceScene:[TimesTableMenu scene]];

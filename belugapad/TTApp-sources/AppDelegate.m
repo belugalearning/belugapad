@@ -35,6 +35,7 @@
 
 #import "AppUState.h"
 #import "TTAppUState.h"
+#import "GameKit/GameKit.h"
 
 @interface AppController()
 {
@@ -88,6 +89,8 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     
     [self writeLogMemoryUsage];
+    
+    achievementsDictionary = [[NSMutableDictionary alloc] init];
     
     launchOptionsCache=launchOptions;
     speechReplacement=[[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-replace.plist")]retain];
@@ -292,8 +295,76 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     [director_ pushScene:currentScene];
     
+    //gc
+    [self authenticateLocalPlayer];
+    
     return YES;
 }
+
+- (void) authenticateLocalPlayer
+{
+    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    [localPlayer authenticateWithCompletionHandler:^(NSError *error) {
+        if (localPlayer.isAuthenticated)
+        {
+            // Player was successfully authenticated.
+            // Perform additional tasks for the authenticated player.
+
+            //PURGE ACHIEVEMENTS FOR LOCAL PLAYER WITH THIS
+//            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
+//            {
+//             if (error != nil)
+//             {}
+//                 // handle the error.
+//            }];
+            
+            [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error)
+             {
+                 if (error == nil)
+                 {
+                     for (GKAchievement* achievement in achievements)
+                         [achievementsDictionary setObject: achievement forKey: achievement.identifier];
+                 }
+             }];
+        }
+    }];
+}
+
+- (void) reportAchievement:(NSString*)identifier
+{
+    NSString *fi=[NSString stringWithFormat:@"com.belugalearning.practicetimestables.%@", identifier];
+    [self reportAchievementIdentifier:fi percentComplete:100.0f];
+}
+
+- (void) reportAchievementIdentifier: (NSString*) identifier percentComplete: (float) percent
+{
+    GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
+    if (achievement)
+    {
+        achievement.percentComplete = percent;
+        [achievement reportAchievementWithCompletionHandler:^(NSError *error)
+         {
+             if (error != nil)
+             {
+                 // Log the error.
+                 NSLog(@"error reporting achievement");
+             }
+         }];
+    }
+}
+
+- (GKAchievement*) getAchievementForIdentifier: (NSString*) identifier
+{
+    GKAchievement *achievement = [achievementsDictionary objectForKey:identifier];
+    if (achievement == nil)
+    {
+        achievement = [[GKAchievement alloc] initWithIdentifier:identifier];
+        achievement.showsCompletionBanner=YES;
+        [achievementsDictionary setObject:achievement forKey:achievement.identifier];
+    }
+    return achievement;
+}
+
 
 - (NSString *) platform{
     size_t size;

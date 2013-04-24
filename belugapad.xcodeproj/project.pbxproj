@@ -171,6 +171,7 @@
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
 		7F268AE514F2A2A300F1F65F /* ToolScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268AE414F2A2A200F1F65F /* ToolScene.m */; };
+		7F2E36171727F44400AF59D2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2E36161727F44300AF59D2 /* GameKit.framework */; };
 		7F2F2D74158F754600862302 /* SGJmapNodeSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */; };
 		7F2F2D7815908FE000862302 /* LRAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D7715908FE000862302 /* LRAnimator.m */; };
 		7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3367DC155FC38A00A2E656 /* DProblemParser.m */; };
@@ -2002,6 +2003,7 @@
 		7F268ADD14F28DE500F1F65F /* ToolHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolHost.m; sourceTree = "<group>"; };
 		7F268AE314F2A2A200F1F65F /* ToolScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolScene.h; sourceTree = "<group>"; };
 		7F268AE414F2A2A200F1F65F /* ToolScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolScene.m; sourceTree = "<group>"; };
+		7F2E36161727F44300AF59D2 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		7F2F2D72158F754500862302 /* SGJmapNodeSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapNodeSelect.h; sourceTree = "<group>"; };
 		7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeSelect.m; sourceTree = "<group>"; };
 		7F2F2D7615908FDF00862302 /* LRAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRAnimator.h; sourceTree = "<group>"; };
@@ -2661,6 +2663,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F2E36171727F44400AF59D2 /* GameKit.framework in Frameworks */,
 				7FB526FD16CD054E00A1B79A /* libsqlite3.dylib in Frameworks */,
 				7FB526FE16CD054E00A1B79A /* libz.dylib in Frameworks */,
 				7FB526FF16CD054E00A1B79A /* SystemConfiguration.framework in Frameworks */,
@@ -3376,6 +3379,7 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F2E36161727F44300AF59D2 /* GameKit.framework */,
 				7FAF143F165FCB39008BEE03 /* libMobilityStatic.a */,
 				7FAF143E165FCB39008BEE03 /* libBabTTS.a */,
 				7FA38AA51545322E0031E59D /* SystemConfiguration.framework */,

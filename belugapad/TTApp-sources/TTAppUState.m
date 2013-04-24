@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import "ContentService.h"
 
-#define TTAPP_Q_COUNT 15
+#define TTAPP_Q_COUNT 3
 
 @implementation TTAppUState
 
@@ -45,6 +45,8 @@
         
         //retain current udata as previous udata until told to purge
         prevUdata=[[NSDictionary dictionaryWithDictionary:udata] retain];
+        
+        incorrectBeforePipelinePurge=0;
     }
     
     return self;
@@ -101,8 +103,23 @@
     
     [self progressUpdated];
     
+    //increment incorrect count for perfect pipeline
+    if(!pass)incorrectBeforePipelinePurge++;
+    
 }
 
+-(void)exitPipeline
+{
+    if(incorrectBeforePipelinePurge==0)
+    {
+        //fire perfect pipeline achievement
+        [ac reportAchievement:@"perfectpipeline"];
+        
+        NSLog(@"writing achivement for perfectpipeline");
+    }
+    
+    incorrectBeforePipelinePurge=0;
+}
 
 
 -(void)purgePreviousState

@@ -13,5 +13,6 @@
 -(void) setLogMax:(int)logmax;
 -(void) saveCategorisedProgress:(NSDictionary*)categoryValues withPass:(BOOL)pass;
 -(void)purgePreviousState;
+-(void)exitPipeline;
 
 @end

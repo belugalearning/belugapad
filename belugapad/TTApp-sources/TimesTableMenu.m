@@ -637,8 +637,8 @@ const float outerButtonPopInDelay=0.05f;
         [self setupOutsideButtons];
     }
     
-    [original setOpacity:0];
-    [originalLabel setOpacity:0];
+    [original setOpacity:50];
+    [originalLabel setOpacity:50];
     
     currentSelection=s;
     currentSelectionIndex=thisNumber;

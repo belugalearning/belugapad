@@ -34,6 +34,6 @@
 
 -(int)countOfChallengingQuestions;
 -(int)prevCountOfChallengingQuestions;
--(void) fireMedalAchivements;
+//-(void) fireMedalAchivements;
 
 @end

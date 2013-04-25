@@ -213,6 +213,9 @@ const float outerButtonPopInDelay=0.05f;
         else if(roundPerc==100)
             percBadge=@"gold";
         
+        if(percBadge)
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, percBadge]];
+        
         CCLabelTTF *l=[CCLabelTTF labelWithString:stringPerc fontName:CHANGO fontSize:17.0f];
         [l setPosition:ccp(s.contentSize.width/2,23)];
         [s addChild:l];
@@ -292,7 +295,7 @@ const float outerButtonPopInDelay=0.05f;
     if(tot>=66.0f) [ac reportAchievement:@"totalscore66"];
     if(tot>=100.0f) [ac reportAchievement:@"totalscore100"];
     
-    [ttappu fireMedalAchivements];
+//    [ttappu fireMedalAchivements];
     
     if(ac.NumberShowing){
         

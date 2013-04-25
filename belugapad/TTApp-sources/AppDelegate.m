@@ -311,12 +311,12 @@ void uncaughtExceptionHandler(NSException *exception) {
             // Perform additional tasks for the authenticated player.
 
             //PURGE ACHIEVEMENTS FOR LOCAL PLAYER WITH THIS
-            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
-            {
-             if (error != nil)
-             {}
-                 // handle the error.
-            }];
+//            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
+//            {
+//             if (error != nil)
+//             {}
+//                 // handle the error.
+//            }];
             //END PURGE BIT
             
             [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error)
@@ -340,18 +340,18 @@ void uncaughtExceptionHandler(NSException *exception) {
 - (void) reportAchievementIdentifier: (NSString*) identifier percentComplete: (float) percent
 {
     GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
-    if (achievement)
-    {
-        achievement.percentComplete = percent;
-        [achievement reportAchievementWithCompletionHandler:^(NSError *error)
-         {
-             if (error != nil)
-             {
-                 // Log the error.
-                 NSLog(@"error reporting achievement");
-             }
-         }];
-    }
+//    if (achievement)
+//    {
+//        achievement.percentComplete = percent;
+//        [achievement reportAchievementWithCompletionHandler:^(NSError *error)
+//         {
+//             if (error != nil)
+//             {
+//                 // Log the error.
+//                 NSLog(@"error reporting achievement");
+//             }
+//         }];
+//    }
 }
 
 - (GKAchievement*) getAchievementForIdentifier: (NSString*) identifier
@@ -361,6 +361,17 @@ void uncaughtExceptionHandler(NSException *exception) {
     {
         achievement = [[GKAchievement alloc] initWithIdentifier:identifier];
         achievement.showsCompletionBanner=YES;
+        achievement.percentComplete=100.0f;
+        
+        [achievement reportAchievementWithCompletionHandler:^(NSError *error)
+         {
+             if (error != nil)
+             {
+                 // Log the error.
+                 NSLog(@"error reporting achievement");
+             }
+         }];
+        
         [achievementsDictionary setObject:achievement forKey:achievement.identifier];
     }
     return achievement;

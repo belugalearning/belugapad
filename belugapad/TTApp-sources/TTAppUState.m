@@ -11,7 +11,7 @@
 #import "AppDelegate.h"
 #import "ContentService.h"
 
-#define TTAPP_Q_COUNT 3
+#define TTAPP_Q_COUNT 15
 
 @implementation TTAppUState
 
@@ -164,11 +164,30 @@
             
             //gold -- 5/5
             if(totalCorrect>=5)
+            {
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxsilver", x]];
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxgold", x]];
+                
+                if(x==7 && y==8)
+                {
+                    [ac reportAchievement:@"7x8"];
+                }
+                
                 return @"gold";
+            }
             else if(totalCorrect>=3)
+            {
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxsilver", x]];
                 return @"silver";
+                
+            }
             else if(totalCorrect>=1)
+            {
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
                 return @"bronze";
+            }
         }
     }
     

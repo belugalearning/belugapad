@@ -31,6 +31,8 @@
     AcapelaSetup *SetupData;
     
     NSMutableDictionary *achievementsDictionary;
+    
+    bool ignoreGC;
 }
 
 @property (nonatomic, retain) UIWindow *window;

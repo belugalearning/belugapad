@@ -88,9 +88,12 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     
-    [self writeLogMemoryUsage];
+    ignoreGC=YES;
     
-    achievementsDictionary = [[NSMutableDictionary alloc] init];
+    //gc
+    [self authenticateLocalPlayer];
+    
+    [self writeLogMemoryUsage];
     
     launchOptionsCache=launchOptions;
     speechReplacement=[[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-replace.plist")]retain];
@@ -295,8 +298,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     [director_ pushScene:currentScene];
     
-    //gc
-    [self authenticateLocalPlayer];
+    ignoreGC=NO;
     
     return YES;
 }
@@ -319,6 +321,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 //            }];
             //END PURGE BIT
             
+            achievementsDictionary = [[NSMutableDictionary alloc] init];
+            
             [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error)
              {
                  if (error == nil)
@@ -333,6 +337,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 - (void) reportAchievement:(NSString*)identifier
 {
+    if(ignoreGC)return;
+    
     NSString *fi=[NSString stringWithFormat:@"com.belugalearning.practicetimestables.%@", identifier];
     [self reportAchievementIdentifier:fi percentComplete:100.0f];
 }

@@ -165,9 +165,6 @@
             //gold -- 5/5
             if(totalCorrect>=5)
             {
-                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
-                [ac reportAchievement:[NSString stringWithFormat:@"%dxsilver", x]];
-                [ac reportAchievement:[NSString stringWithFormat:@"%dxgold", x]];
                 
                 if(x==7 && y==8)
                 {
@@ -178,14 +175,11 @@
             }
             else if(totalCorrect>=3)
             {
-                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
-                [ac reportAchievement:[NSString stringWithFormat:@"%dxsilver", x]];
                 return @"silver";
                 
             }
             else if(totalCorrect>=1)
             {
-                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
                 return @"bronze";
             }
         }
@@ -211,6 +205,34 @@
     else if([medal isEqualToString:@"silver"]) return 50.0f;
     else if([medal isEqualToString:@"bronze"]) return 25.0f;
     else return 0;
+}
+
+-(void) fireMedalAchivements
+{
+    for(int x=1; x<13; x++)
+    {
+        NSString *highmedal=@"gold";
+        for(int y=1; y<13; y++)
+        {
+            NSString *medal=[self getMedalForX:x andY:y];
+            if([medal isEqualToString:@"empty"])
+            {
+                highmedal=@"empty";
+                break;
+            }
+            else if([medal isEqualToString:@"silver"] && ([highmedal isEqualToString:@"gold"] || [highmedal isEqualToString:@"silver"]))
+            {
+                highmedal=@"silver";
+            }
+            else if([medal isEqualToString:@"bronze"])
+            {
+                highmedal=@"bronze";
+            }
+        }
+        
+        if(![highmedal isEqualToString:@"empty"])
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", x, highmedal]];
+    }
 }
 
 -(int)countOfChallengingQuestions

@@ -275,6 +275,14 @@ const float outerButtonPopInDelay=0.05f;
     [totalPercentage setPosition:totalTab.position];
     [renderLayer addChild:totalPercentage];
     
+    //achievements for total score
+    float tot=totalPerc/12.0f;
+    if(tot>=33.0f) [ac reportAchievement:@"totalscore33"];
+    if(tot>=66.0f) [ac reportAchievement:@"totalscore66"];
+    if(tot>=100.0f) [ac reportAchievement:@"totalscore100"];
+    
+    [ttappu fireMedalAchivements];
+    
     if(ac.NumberShowing){
         
         ReturnChallengeRandomCountdown=1.0f;

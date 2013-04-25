@@ -30,6 +30,11 @@
     CCSprite *totalTab;
     CCSprite *infoBtn;
     CCSprite *infoPnl;
+    CCSprite *backBtn;
+    CCSprite *playAgainBtn;
+    
+    BOOL animatePlayAgain;
+    BOOL lastAnimatedPlayAgain;
     int currentSelectionIndex;
     
     NSMutableArray *currentSelectionButtons;

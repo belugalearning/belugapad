@@ -134,6 +134,7 @@ const float outerButtonPopInDelay=0.05f;
         ReturnChallengeRandomCountdown-=delta;
         if(ReturnChallengeRandomCountdown<0)
         {
+            lastAnimatedPlayAgain=YES;
             [self returnCurrentBigNumber];
             ReturnChallengeOrRandom=NO;
         }
@@ -397,6 +398,8 @@ const float outerButtonPopInDelay=0.05f;
         if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
     
+    if(infoBtn)[infoBtn runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+    
     currentSelection=s;
     currentSelectionIndex=thisNumber;
     ac.NumberShowing=YES;
@@ -448,6 +451,8 @@ const float outerButtonPopInDelay=0.05f;
         if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
         if(![sM isKindOfClass:[NSNull class]])[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
+    
+    if(infoBtn)[infoBtn runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
@@ -524,6 +529,8 @@ const float outerButtonPopInDelay=0.05f;
         if(![sM isKindOfClass:[NSNull class]])[sM runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
     }
     
+    if(infoBtn)[infoBtn runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:50]];
+    
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
 }
@@ -560,6 +567,8 @@ const float outerButtonPopInDelay=0.05f;
         if(sL)[sL setOpacity:50];
         if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
+    
+    if(infoBtn)[infoBtn setOpacity:50];
     
     ac.NumberShowing=YES;
     ac.PreviousNumber=thisNumber;
@@ -618,6 +627,8 @@ const float outerButtonPopInDelay=0.05f;
         if(sL)[sL setOpacity:50];
         if(![sM isKindOfClass:[NSNull class]])[sM setOpacity:50];
     }
+    
+    if(infoBtn)[infoBtn setOpacity:50];
 
     ChallengeReturnFromPipeline=YES;
     challengeDecrementer=-0.7;
@@ -685,6 +696,8 @@ const float outerButtonPopInDelay=0.05f;
         if(s)[s setOpacity:50];
         if(sL)[sL setOpacity:50];
     }
+    
+    if(infoBtn)[infoBtn setOpacity:50];
 }
 
 -(void)returnCurrentBigNumber{
@@ -880,6 +893,8 @@ const float outerButtonPopInDelay=0.05f;
         if(s)[s runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
         if(sL)[sL runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
     }
+    
+    if(infoBtn)[infoBtn runAction:[CCFadeTo actionWithDuration:backgroundFadeInTime opacity:255]];
     
     NSLog(@"returned big number - current selection index %d", currentSelectionIndex);
     

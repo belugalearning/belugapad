@@ -21,7 +21,8 @@
     NSDictionary *prevUdata;
     
     AppController *ac;
-    
+
+    int incorrectBeforePipelinePurge;
 }
 
 -(NSString*) getMedalForX:(int)x andY:(int)y;

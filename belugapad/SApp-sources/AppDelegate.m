@@ -267,6 +267,12 @@ void uncaughtExceptionHandler(NSException *exception) {
     return YES;
 }
 
+
+- (void) reportAchievement:(NSString*)identifier
+{
+    
+}
+
 - (NSString *) platform{
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);

@@ -45,6 +45,8 @@
         
         //retain current udata as previous udata until told to purge
         prevUdata=[[NSDictionary dictionaryWithDictionary:udata] retain];
+        
+        incorrectBeforePipelinePurge=0;
     }
     
     return self;
@@ -101,8 +103,23 @@
     
     [self progressUpdated];
     
+    //increment incorrect count for perfect pipeline
+    if(!pass)incorrectBeforePipelinePurge++;
+    
 }
 
+-(void)exitPipeline
+{
+    if(incorrectBeforePipelinePurge==0)
+    {
+        //fire perfect pipeline achievement
+        [ac reportAchievement:@"perfectpipeline"];
+        
+        NSLog(@"writing achivement for perfectpipeline");
+    }
+    
+    incorrectBeforePipelinePurge=0;
+}
 
 
 -(void)purgePreviousState
@@ -147,11 +164,30 @@
             
             //gold -- 5/5
             if(totalCorrect>=5)
+            {
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxsilver", x]];
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxgold", x]];
+                
+                if(x==7 && y==8)
+                {
+                    [ac reportAchievement:@"7x8"];
+                }
+                
                 return @"gold";
+            }
             else if(totalCorrect>=3)
+            {
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxsilver", x]];
                 return @"silver";
+                
+            }
             else if(totalCorrect>=1)
+            {
+                [ac reportAchievement:[NSString stringWithFormat:@"%dxbronze", x]];
                 return @"bronze";
+            }
         }
     }
     

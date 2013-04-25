@@ -198,7 +198,7 @@ static float kTimeToHintToolTray=0.0f;
             progressLabelL=[CCLabelTTF labelWithString:l fontName:CHANGO fontSize:22.0f];
             [progressLabelL setAnchorPoint:ccp(1,0.5)];
             [progressLabelR setAnchorPoint:ccp(0,0.5)];
-            [progressLabelL setPosition:ccp(190,ly-25)];
+            [progressLabelL setPosition:ccp(190,ly-28)];
             [progressLabelR setPosition:ccp(progressLabelL.position.x+2,progressLabelL.position.y)];
             [progressLabelL setColor:ccWHITE];
             [progressLabelR setColor:ccGRAY];
@@ -211,7 +211,7 @@ static float kTimeToHintToolTray=0.0f;
             [perstLayer addChild:progressLabelR z:5];
             
             challengeNotification=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/challenging_header.png")];
-            [challengeNotification setPosition:ccp(320,ly-25)];
+            [challengeNotification setPosition:ccp(320,ly-28)];
             [perstLayer addChild:challengeNotification z:5];
             
             CCLabelTTF *lblCCount=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [ac getToolhostNotifierCount]] fontName:CHANGO fontSize:20.0f];
@@ -361,6 +361,12 @@ static float kTimeToHintToolTray=0.0f;
     {
         NSLog(@"WARNING: not writing appustate progress due to insufficient data");
     }
+}
+
+-(void)exitSappProgressWithFullPipeline
+{
+    NSLog(@"exiting sapp progress state");
+    [ac.appustateService exitPipeline];
 }
 
 
@@ -835,6 +841,9 @@ static float kTimeToHintToolTray=0.0f;
                 countUpToJmap=YES;
             }
             else if(appType==1){
+                    //mark progress
+                    [self exitSappProgressWithFullPipeline];
+                
                     if(ac.IsIpad1)
                     {
                         [[CCDirector sharedDirector] replaceScene:[TimesTableMenu scene]];
@@ -1438,14 +1447,14 @@ static float kTimeToHintToolTray=0.0f;
         [adBanner setPosition:ccp(cx, 0)];
         [pauseLayer addChild:adBanner z:10];
         
-        if(contentService.pathToTestDef)
-        {
-            
-            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
-            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
-            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
-            [pauseLayer addChild:pauseTestPathLabel z:11];
-        }
+//        if(contentService.pathToTestDef)
+//        {
+//            
+//            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
+//            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
+//            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
+//            [pauseLayer addChild:pauseTestPathLabel z:11];
+//        }
     }
     else {
         [pauseLayer setVisible:YES];

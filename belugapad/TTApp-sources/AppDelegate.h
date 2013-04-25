@@ -29,6 +29,8 @@
     //    AcapelaSpeech *MyAcaTTS;
     AcapelaLicense *MyAcaLicense;
     AcapelaSetup *SetupData;
+    
+    NSMutableDictionary *achievementsDictionary;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -70,5 +72,6 @@
 -(void)stopAllSpeaking;
 -(int)getToolhostNotifierCount;
 -(int)returnAppType;
+- (void) reportAchievement:(NSString*)identifier;
 
 @end

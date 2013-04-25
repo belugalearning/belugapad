@@ -280,8 +280,6 @@ const float outerButtonPopInDelay=0.05f;
         }
     }
     
-    totalPerc=1200;
-    
     totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:42.0f];
 //    [totalPercentage setAnchorPoint:ccp(0,0.5)];
     [totalPercentage setPosition:ccp(totalTab.position.x-85,totalTab.position.y)];
@@ -307,28 +305,37 @@ const float outerButtonPopInDelay=0.05f;
     if(direction==1){
         [totalTab runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x+totalTab.contentSize.width,totalTab.position.y)]]];
         [totalPercentage runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x+totalTab.contentSize.width,totalPercentage.position.y)]]];
-        [backBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(backBtn.position.x+backBtn.contentSize.width,backBtn.position.y)]]];
-        [playAgainBtn runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(playAgainBtn.position.x-playAgainBtn.contentSize.width,playAgainBtn.position.y)]]]];
+        [backBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(backBtn.position.x+(backBtn.contentSize.width+20),backBtn.position.y)]]];
+
+        if(animatePlayAgain){
+            [playAgainBtn setPosition:ccp(lx,ly-50)];
+            [playAgainBtn runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(playAgainBtn.position.x-playAgainBtn.contentSize.width,playAgainBtn.position.y)]]]];
+            lastAnimatedPlayAgain=YES;
+        }
 
     }
     else if(direction==-1){
         [totalTab runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x-totalTab.contentSize.width,totalTab.position.y)]]]];
         [totalPercentage runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x-totalTab.contentSize.width,totalPercentage.position.y)]]]];
-        [backBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(backBtn.position.x-backBtn.contentSize.width,backBtn.position.y)]]];
-        [playAgainBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(playAgainBtn.position.x+playAgainBtn.contentSize.width,playAgainBtn.position.y)]]];
+        [backBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(backBtn.position.x-(backBtn.contentSize.width+20),backBtn.position.y)]]];
+        if(lastAnimatedPlayAgain){
+            [playAgainBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(playAgainBtn.position.x+playAgainBtn.contentSize.width,playAgainBtn.position.y)]]];
+            lastAnimatedPlayAgain=NO;
+        }
     }
     else if(direction==2){
         [totalTab setPosition:ccp(totalTab.position.x+totalTab.contentSize.width,totalTab.position.y)];
         [totalPercentage setPosition:ccp(totalPercentage.position.x+totalTab.contentSize.width,totalPercentage.position.y)];
-        [backBtn setPosition:ccp(backBtn.position.x+backBtn.contentSize.width,backBtn.position.y)];
+        [backBtn setPosition:ccp(backBtn.position.x+(backBtn.contentSize.width+20),backBtn.position.y)];
         [playAgainBtn setPosition:ccp(playAgainBtn.position.x-playAgainBtn.contentSize.width,playAgainBtn.position.y)];
     }
+    
+    animatePlayAgain=NO;
 }
 
 -(void)createBigNumberOf:(int)thisNumber
 {
     if(ReturningBigNumber)return;
-    [self slideScoreTab:1];
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/ttapp/sfx_mult_menu_expand.wav")];
     gameState=@"SHOW_TABLES";
     
@@ -339,7 +346,7 @@ const float outerButtonPopInDelay=0.05f;
     CCScaleTo *st=[CCScaleTo actionWithDuration:moveToCentreTime scale:1.0f];
     
     CCEaseInOut *ea=[CCEaseInOut actionWithAction:mtc rate:2.0f];
-    CCCallBlock *numbers=[CCCallBlock actionWithBlock:^{[self setupOutsideButtons];}];
+    CCCallBlock *numbers=[CCCallBlock actionWithBlock:^{[self setupOutsideButtons];[self slideScoreTab:1];}];
     CCCallBlock *playbtn=[CCCallBlock actionWithBlock:^{[self setupPlayButton];}];
     CCSequence *sq=[CCSequence actions:ea, playbtn, numbers, nil];
     
@@ -623,7 +630,6 @@ const float outerButtonPopInDelay=0.05f;
 
 -(void)createBigNumberWithoutAnimationOf:(int)thisNumber
 {
-    [self slideScoreTab:2];
     gameState=@"SHOW_TABLES";
     
     CCSprite *original=[sceneButtons objectAtIndex:thisNumber];
@@ -663,6 +669,8 @@ const float outerButtonPopInDelay=0.05f;
     currentSelectionIndex=thisNumber;
     
     [self setupPlayButtonWithAnimation:NO];
+    
+    [self slideScoreTab:2];
     
     for(int i=0;i<[sceneButtons count];i++)
     {
@@ -1023,6 +1031,7 @@ const float outerButtonPopInDelay=0.05f;
 -(void)setupOutsideButtons
 {
     BOOL exitedPipeline=ac.NumberShowing;
+    lastAnimatedPlayAgain=exitedPipeline;
     NSArray *myPoints=[self positionsInCircleWith:12 and:250 and:ccp(cx,cy)];
     int currentPoint=2;
     float time=outerButtonPopOutTime;
@@ -1050,6 +1059,9 @@ const float outerButtonPopInDelay=0.05f;
         
         NSString *prevtype=[ttappu getPreviousMedalForX:currentXNumber andY:i+1];
         
+        if(![type isEqualToString:@"empty"] && !animatePlayAgain)
+            animatePlayAgain=YES;
+        
         NSString *f=nil;
         
         if(exitedPipeline)
@@ -1072,7 +1084,6 @@ const float outerButtonPopInDelay=0.05f;
         
         if(exitedPipeline && ![type isEqualToString:prevtype])
         {
-            // TODO: set up a new button here to bounce in
             NSLog(@"number %d / previous medal: %@, new medal %@", currentXNumber, prevtype, type);
             NSString *nf=[NSString stringWithFormat:@"/images/timestables/menu/coin_%@_%d.png", type, i+1];
             CCSprite *ns=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(nf)];

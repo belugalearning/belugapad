@@ -156,9 +156,19 @@ const float outerButtonPopInDelay=0.05f;
     [renderLayer addChild:background];
     
     totalTab=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/total_score_tab.png")];
-//    [totalTab setAnchorPoint:ccp(1,0.5)];
-    [totalTab setPosition:ccp(lx-(totalTab.contentSize.width/2),ly-50)];
+    [totalTab setAnchorPoint:ccp(1,0.5)];
+    [totalTab setPosition:ccp(lx,ly-50)];
     [renderLayer addChild:totalTab];
+
+    backBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/back_button.png")];
+    [backBtn setAnchorPoint:ccp(0,0.5)];
+    [backBtn setPosition:ccp(0-backBtn.contentSize.width,ly-50)];
+    [renderLayer addChild:backBtn];
+    
+    playAgainBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/play_again_note.png")];
+    [playAgainBtn setAnchorPoint:ccp(0,0.5)];
+    [playAgainBtn setPosition:ccp(lx,ly-50)];
+    [renderLayer addChild:playAgainBtn];
     
     infoBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/menu/info_button.png")];
     [infoBtn setPosition:ccp(30,30)];
@@ -270,9 +280,11 @@ const float outerButtonPopInDelay=0.05f;
         }
     }
     
-    totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:56.0f];
-
-    [totalPercentage setPosition:totalTab.position];
+    totalPerc=1200;
+    
+    totalPercentage=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d%%",totalPerc/12] fontName:CHANGO fontSize:42.0f];
+//    [totalPercentage setAnchorPoint:ccp(0,0.5)];
+    [totalPercentage setPosition:ccp(totalTab.position.x-85,totalTab.position.y)];
     [renderLayer addChild:totalPercentage];
     
     if(ac.NumberShowing){
@@ -293,16 +305,23 @@ const float outerButtonPopInDelay=0.05f;
 -(void)slideScoreTab:(int)direction
 {
     if(direction==1){
-        [totalTab runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x+250,totalTab.position.y)]]];
-        [totalPercentage runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x+250,totalPercentage.position.y)]]];
+        [totalTab runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x+totalTab.contentSize.width,totalTab.position.y)]]];
+        [totalPercentage runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x+totalTab.contentSize.width,totalPercentage.position.y)]]];
+        [backBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(backBtn.position.x+backBtn.contentSize.width,backBtn.position.y)]]];
+        [playAgainBtn runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(playAgainBtn.position.x-playAgainBtn.contentSize.width,playAgainBtn.position.y)]]]];
+
     }
     else if(direction==-1){
-        [totalTab runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x-250,totalTab.position.y)]]];
-        [totalPercentage runAction:[CCEaseBounceIn actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x-250,totalPercentage.position.y)]]];
+        [totalTab runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalTab.position.x-totalTab.contentSize.width,totalTab.position.y)]]]];
+        [totalPercentage runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:0.3f] two:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(totalPercentage.position.x-totalTab.contentSize.width,totalPercentage.position.y)]]]];
+        [backBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(backBtn.position.x-backBtn.contentSize.width,backBtn.position.y)]]];
+        [playAgainBtn runAction:[CCEaseBounceOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:ccp(playAgainBtn.position.x+playAgainBtn.contentSize.width,playAgainBtn.position.y)]]];
     }
     else if(direction==2){
-        [totalTab setPosition:ccp(totalTab.position.x+250,totalTab.position.y)];
-        [totalPercentage setPosition:ccp(totalPercentage.position.x+250,totalPercentage.position.y)];
+        [totalTab setPosition:ccp(totalTab.position.x+totalTab.contentSize.width,totalTab.position.y)];
+        [totalPercentage setPosition:ccp(totalPercentage.position.x+totalTab.contentSize.width,totalPercentage.position.y)];
+        [backBtn setPosition:ccp(backBtn.position.x+backBtn.contentSize.width,backBtn.position.y)];
+        [playAgainBtn setPosition:ccp(playAgainBtn.position.x-playAgainBtn.contentSize.width,playAgainBtn.position.y)];
     }
 }
 

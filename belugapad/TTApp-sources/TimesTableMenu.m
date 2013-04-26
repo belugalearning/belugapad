@@ -207,14 +207,25 @@ const float outerButtonPopInDelay=0.05f;
         NSString *percBadge=nil;
         
         if(roundPerc>=25 && roundPerc<=66)
+        {
             percBadge=@"bronze";
-        else if(roundPerc>=67 && roundPerc<=99)
-            percBadge=@"silver";
-        else if(roundPerc==100)
-            percBadge=@"gold";
-        
-        if(percBadge)
             [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, percBadge]];
+        }
+        else if(roundPerc>=67 && roundPerc<=99)
+        {
+            percBadge=@"silver";
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, percBadge]];
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, @"silver"]];
+        }
+        else if(roundPerc==100)
+        {
+            percBadge=@"gold";
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, percBadge]];
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, @"silver"]];
+            [ac reportAchievement:[NSString stringWithFormat:@"%dx%@", i+1, @"bronze"]];
+        }
+
+
         
         CCLabelTTF *l=[CCLabelTTF labelWithString:stringPerc fontName:CHANGO fontSize:17.0f];
         [l setPosition:ccp(s.contentSize.width/2,23)];

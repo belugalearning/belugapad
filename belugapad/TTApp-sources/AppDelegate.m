@@ -312,14 +312,15 @@ void uncaughtExceptionHandler(NSException *exception) {
             // Player was successfully authenticated.
             // Perform additional tasks for the authenticated player.
 
-            //PURGE ACHIEVEMENTS FOR LOCAL PLAYER WITH THIS
-            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
-            {
-             if (error != nil)
-             {}
-                 // handle the error.
-            }];
-            //END PURGE BIT
+            //DON'T RUN THIS DAMN CODE
+//            //PURGE ACHIEVEMENTS FOR LOCAL PLAYER WITH THIS
+////            [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
+////            {
+////             if (error != nil)
+////             {}
+////                 // handle the error.
+////            }];
+//            //END PURGE BIT
             
             achievementsDictionary = [[NSMutableDictionary alloc] init];
             

@@ -242,6 +242,15 @@
 		7F588F5916027B280015F504 /* SGJmapCloudSeeker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5816027B280015F504 /* SGJmapCloudSeeker.m */; };
 		7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */; };
 		7F5BD842154AB6A70092740B /* JMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JMap.m */; };
+		7F5CF123172A6FD4001BBF0A /* tt_icon_72.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF11A172A6FD4001BBF0A /* tt_icon_72.jpg */; };
+		7F5CF124172A6FD4001BBF0A /* tt_icon_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF11B172A6FD4001BBF0A /* tt_icon_72.png */; };
+		7F5CF125172A6FD4001BBF0A /* tt_icon_114.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF11C172A6FD4001BBF0A /* tt_icon_114.jpg */; };
+		7F5CF126172A6FD4001BBF0A /* tt_icon_114.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF11D172A6FD4001BBF0A /* tt_icon_114.png */; };
+		7F5CF127172A6FD4001BBF0A /* tt_icon_1024.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF11E172A6FD4001BBF0A /* tt_icon_1024.jpg */; };
+		7F5CF128172A6FD4001BBF0A /* tt_icon_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF11F172A6FD4001BBF0A /* tt_icon_1024.png */; };
+		7F5CF129172A6FD4001BBF0A /* tt_icon_small_50.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF120172A6FD4001BBF0A /* tt_icon_small_50.png */; };
+		7F5CF12A172A6FD4001BBF0A /* tt_icon_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF121172A6FD4001BBF0A /* tt_icon_small.png */; };
+		7F5CF12B172A6FD4001BBF0A /* tt_icon_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5CF122172A6FD4001BBF0A /* tt_icon_small@2x.png */; };
 		7F5F4D61161906EB005F6311 /* CCPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D5E161906EB005F6311 /* CCPickerView.m */; };
 		7F5F4D62161906EB005F6311 /* ScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D60161906EB005F6311 /* ScrollLayer.m */; };
 		7F5F4D6E1619E6B9005F6311 /* SGBtxeObjectIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */; };
@@ -2134,6 +2143,15 @@
 		7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapCloudMotion.m; sourceTree = "<group>"; };
 		7F5BD840154AB6A70092740B /* JMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMap.h; sourceTree = "<group>"; };
 		7F5BD841154AB6A70092740B /* JMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMap.m; sourceTree = "<group>"; };
+		7F5CF11A172A6FD4001BBF0A /* tt_icon_72.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tt_icon_72.jpg; sourceTree = "<group>"; };
+		7F5CF11B172A6FD4001BBF0A /* tt_icon_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tt_icon_72.png; sourceTree = "<group>"; };
+		7F5CF11C172A6FD4001BBF0A /* tt_icon_114.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tt_icon_114.jpg; sourceTree = "<group>"; };
+		7F5CF11D172A6FD4001BBF0A /* tt_icon_114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tt_icon_114.png; sourceTree = "<group>"; };
+		7F5CF11E172A6FD4001BBF0A /* tt_icon_1024.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tt_icon_1024.jpg; sourceTree = "<group>"; };
+		7F5CF11F172A6FD4001BBF0A /* tt_icon_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tt_icon_1024.png; sourceTree = "<group>"; };
+		7F5CF120172A6FD4001BBF0A /* tt_icon_small_50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tt_icon_small_50.png; sourceTree = "<group>"; };
+		7F5CF121172A6FD4001BBF0A /* tt_icon_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tt_icon_small.png; sourceTree = "<group>"; };
+		7F5CF122172A6FD4001BBF0A /* tt_icon_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tt_icon_small@2x.png"; sourceTree = "<group>"; };
 		7F5F4D5D161906EB005F6311 /* CCPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPickerView.h; sourceTree = "<group>"; };
 		7F5F4D5E161906EB005F6311 /* CCPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPickerView.m; sourceTree = "<group>"; };
 		7F5F4D5F161906EB005F6311 /* ScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLayer.h; sourceTree = "<group>"; };
@@ -2492,7 +2510,7 @@
 		7FB11DC21595277200095669 /* DWPlaceValueNetGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueNetGameObject.m; sourceTree = "<group>"; };
 		7FB5259516CD054100A1B79A /* Beluga Dev copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beluga Dev copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB5259716CD054200A1B79A /* Beluga Dev copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Beluga Dev copy-Info.plist"; path = "/Users/gareth/gcgh/beluga/belugapad/Beluga Dev copy-Info.plist"; sourceTree = "<absolute>"; };
-		7FB5273B16CD054E00A1B79A /* ttapp test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ttapp test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FB5273B16CD054E00A1B79A /* Times Tables.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Times Tables.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB5273D16CD054E00A1B79A /* Beluga Dev copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Beluga Dev copy2-Info.plist"; path = "/Users/gareth/gcgh/beluga/belugapad/Beluga Dev copy2-Info.plist"; sourceTree = "<absolute>"; };
 		7FB528F216CD072300A1B79A /* ttapp Dev copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ttapp Dev copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FB528F416CD072400A1B79A /* ttapp Dev copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ttapp Dev copy-Info.plist"; path = "/Users/gareth/gcgh/beluga/belugapad/ttapp Dev copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -3341,6 +3359,7 @@
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
+				7F5CF119172A6FBF001BBF0A /* ttapp-assets */,
 				7FA2A4E316A81B4500B50D07 /* Icon-Small.png */,
 				7FA2A4E416A81B4500B50D07 /* Icon-Small-50.png */,
 				7FA2A4E516A81B4500B50D07 /* Icon-Small@2x.png */,
@@ -3370,7 +3389,7 @@
 				7F5113BE14A9EE62001AF372 /* Beluga Maths.app */,
 				7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */,
 				7FB5259516CD054100A1B79A /* Beluga Dev copy.app */,
-				7FB5273B16CD054E00A1B79A /* ttapp test.app */,
+				7FB5273B16CD054E00A1B79A /* Times Tables.app */,
 				7FB528F216CD072300A1B79A /* ttapp Dev copy.app */,
 			);
 			name = Products;
@@ -3596,6 +3615,22 @@
 				550708791517625300111BBB /* ColumnAdditionConsts.m */,
 			);
 			name = App;
+			sourceTree = "<group>";
+		};
+		7F5CF119172A6FBF001BBF0A /* ttapp-assets */ = {
+			isa = PBXGroup;
+			children = (
+				7F5CF11A172A6FD4001BBF0A /* tt_icon_72.jpg */,
+				7F5CF11B172A6FD4001BBF0A /* tt_icon_72.png */,
+				7F5CF11C172A6FD4001BBF0A /* tt_icon_114.jpg */,
+				7F5CF11D172A6FD4001BBF0A /* tt_icon_114.png */,
+				7F5CF11E172A6FD4001BBF0A /* tt_icon_1024.jpg */,
+				7F5CF11F172A6FD4001BBF0A /* tt_icon_1024.png */,
+				7F5CF120172A6FD4001BBF0A /* tt_icon_small_50.png */,
+				7F5CF121172A6FD4001BBF0A /* tt_icon_small.png */,
+				7F5CF122172A6FD4001BBF0A /* tt_icon_small@2x.png */,
+			);
+			name = "ttapp-assets";
 			sourceTree = "<group>";
 		};
 		7F5F4D5B161906CE005F6311 /* CCPickerView */ = {
@@ -4482,9 +4517,9 @@
 			productReference = 7FB5259516CD054100A1B79A /* Beluga Dev copy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		7FB5259916CD054E00A1B79A /* ttapp Dev */ = {
+		7FB5259916CD054E00A1B79A /* Times Tables */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7FB5273816CD054E00A1B79A /* Build configuration list for PBXNativeTarget "ttapp Dev" */;
+			buildConfigurationList = 7FB5273816CD054E00A1B79A /* Build configuration list for PBXNativeTarget "Times Tables" */;
 			buildPhases = (
 				7FB5259A16CD054E00A1B79A /* Sources */,
 				7FB526FC16CD054E00A1B79A /* Frameworks */,
@@ -4495,9 +4530,9 @@
 			);
 			dependencies = (
 			);
-			name = "ttapp Dev";
+			name = "Times Tables";
 			productName = belugapad;
-			productReference = 7FB5273B16CD054E00A1B79A /* ttapp test.app */;
+			productReference = 7FB5273B16CD054E00A1B79A /* Times Tables.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7FB5274E16CD072300A1B79A /* __app Dev */ = {
@@ -4541,7 +4576,7 @@
 				7F5113BD14A9EE62001AF372 /* Beluga Maths */,
 				7F40D89614FFD8BE006A3A55 /* GeneralTests */,
 				7FB523F316CD054100A1B79A /* Beluga Dev */,
-				7FB5259916CD054E00A1B79A /* ttapp Dev */,
+				7FB5259916CD054E00A1B79A /* Times Tables */,
 				7FB5274E16CD072300A1B79A /* __app Dev */,
 			);
 		};
@@ -4710,6 +4745,15 @@
 				55AF47B91703710B00E39ACD /* Multiplication_Icon_1024.png in Resources */,
 				55AF47BA1703710B00E39ACD /* Multiplication_Icon.png in Resources */,
 				55AF47BB1703710B00E39ACD /* Multiplication_Icon@2x.png in Resources */,
+				7F5CF123172A6FD4001BBF0A /* tt_icon_72.jpg in Resources */,
+				7F5CF124172A6FD4001BBF0A /* tt_icon_72.png in Resources */,
+				7F5CF125172A6FD4001BBF0A /* tt_icon_114.jpg in Resources */,
+				7F5CF126172A6FD4001BBF0A /* tt_icon_114.png in Resources */,
+				7F5CF127172A6FD4001BBF0A /* tt_icon_1024.jpg in Resources */,
+				7F5CF128172A6FD4001BBF0A /* tt_icon_1024.png in Resources */,
+				7F5CF129172A6FD4001BBF0A /* tt_icon_small_50.png in Resources */,
+				7F5CF12A172A6FD4001BBF0A /* tt_icon_small.png in Resources */,
+				7F5CF12B172A6FD4001BBF0A /* tt_icon_small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6712,7 +6756,7 @@
 					"\"$(SRCROOT)/libBabTTS.a\"",
 					"\"$(SRCROOT)/libMobilityStatic.a\"",
 				);
-				PRODUCT_NAME = "ttapp test";
+				PRODUCT_NAME = "Times Tables";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";
@@ -6769,7 +6813,7 @@
 					"\"$(SRCROOT)/libMobilityStatic.a\"",
 					"\"$(SRCROOT)/libBabTTS.a\"",
 				);
-				PRODUCT_NAME = "ttapp test";
+				PRODUCT_NAME = "Times Tables";
 				PROVISIONING_PROFILE = "AE765118-FA97-485D-A1E1-22A33D8AAEC9";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -6933,7 +6977,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7FB5273816CD054E00A1B79A /* Build configuration list for PBXNativeTarget "ttapp Dev" */ = {
+		7FB5273816CD054E00A1B79A /* Build configuration list for PBXNativeTarget "Times Tables" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7FB5273916CD054E00A1B79A /* Debug */,

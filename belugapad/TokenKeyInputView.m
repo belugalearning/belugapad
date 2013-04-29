@@ -23,9 +23,9 @@
 
 static const uint numLabels = 10;
 static const uint groupends[] = { 2, 6 };
-static const uint labelWidth = 36;
-static const uint labelSpacing = 4;
-static const uint groupSpacing = 34;
+static const uint labelWidth = 48;
+static const uint labelSpacing = 12;
+static const uint groupSpacing = 22;
 static const uint fontSize = 24;
 static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transforms text to uppercase
 
@@ -36,7 +36,7 @@ static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transfo
     self = [super initWithFrame:frame];
     if (self)
     {
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor clearColor];
         
         labels = [NSMutableArray array];
         
@@ -170,10 +170,24 @@ static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transfo
 
 -(void)deleteBackward
 {
+    BOOL validBeforeDel = self.isValid;
     [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:@" "];
+    BOOL validAfterDel = self.isValid;
+    
     currentIndex && --currentIndex;
+    
     [self positionCursor];
     [self setNeedsDisplay];
+    
+    // call delegate methods
+    if (self.delegate)
+    {
+        [self.delegate tokenWasEdited:self];
+        if (validAfterDel != validBeforeDel)
+        {
+            validAfterDel ? [self.delegate tokenBecameValid:self] : [self.delegate tokenBecameInvalid:self];
+        }
+    }
 }
 
 # pragma mark -
@@ -243,7 +257,7 @@ static NSString *const kValidCharGroup = @"[A-Z0-9]"; // N.B. insertText transfo
 {
     [cursor setAlpha:0]; // start with cursor off. N.B. also ensures that after char entered for last space, there isn't a momentary flash of the cursor back in the first space.
     UILabel *currIndexLabel = labels[currentIndex];
-    [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x, fontSize + 2, labelWidth, 3)];
+    [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x + 5, fontSize + 4, labelWidth - 10, 3)];
 }
 
 @end

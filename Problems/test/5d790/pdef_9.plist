@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>3x2=6</string>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>EVAL_TYPE</key>
+    <string>EXPRESSION_EQUALITIES</string>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt;come in packs of &lt;/b:t&gt;
+                &lt;b:ot tag=&quot;b&quot;&gt;{$b}&lt;/b:ot&gt;
+                &lt;b:t&gt;.&lt;/b:t&gt;
+                &lt;b:oi tag=&quot;thing_4&quot;/&gt;&lt;b:t&gt;buys&lt;/b:t&gt;
+                &lt;b:ot tag=&quot;c&quot;&gt;{$a}&lt;/b:ot&gt;
+                &lt;b:t&gt;packs. How many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt;does&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_4&quot;/&gt;&lt;b:t&gt;have in total?&lt;/b:t&gt;</string>
+      <string>&lt;b:on number=&quot;{$a}&quot; enabled=&quot;yes&quot;/&gt;
+                &lt;b:oo value=&quot;x&quot;/&gt;
+                &lt;b:on number=&quot;{$b}&quot; enabled=&quot;yes&quot;/&gt;
+                &lt;b:oo value=&quot;=&quot;/&gt;
+                &lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
+    </array>
+    <key>DSTRINGS</key>
+    <dict>
+      <key>@object</key>
+      <dict>
+        <key>MODE</key>
+        <string>RANDOM</string>
+        <key>DATA</key>
+        <array>
+          <string>apples</string>
+          <string>sweets</string>
+          <string>pens</string>
+        </array>
+      </dict>
+    </dict>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$a</string>
+        <key>MIN</key>
+        <string>3</string>
+        <key>MAX</key>
+        <string>9</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$b</string>
+        <key>MIN</key>
+        <string>5</string>
+        <key>MAX</key>
+        <string>8</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$ab</string>
+        <key>VALUE</key>
+        <string>{$a*$b}</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

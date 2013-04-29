@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>A blue goo is -30m from the surface. How far underground is the blue goo?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>A blue goo is -30m from the surface. How far underground is the blue goo?</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>-30</string>
+	<key>MIN_VALUE</key>
+	<string>-100</string>
+	<key>MAX_VALUE</key>
+	<string>100</string>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>10</string>
+	</array>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<array/>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array/>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>&lt;b:oi tag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; is -30m from the surface. How far underground is the&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_2&quot;/&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>30</string>
+	</dict>
+</dict>
+</plist>

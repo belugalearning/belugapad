@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>0 _ _ = -4. What is the missing operator and number?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>0 _ _ = -4. What is the missing operator and number?</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>0</string>
+	<key>MIN_VALUE</key>
+	<string>-5</string>
+	<key>MAX_VALUE</key>
+	<string>5</string>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>1</string>
+	</array>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<array/>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array>
+		<string>10</string>
+	</array>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>+4</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>+3</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>-3</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>-4</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>&lt;b:t&gt;0 &lt;/b:t&gt;&lt;b:oi tag=&quot;30_QM&quot;/&gt;&lt;b:oi tag=&quot;30_QM&quot;/&gt;&lt;b:t&gt; = -4. What are the missing operator and number?&lt;/b:t&gt;</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+</dict>
+</plist>

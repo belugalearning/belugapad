@@ -375,6 +375,10 @@ typedef enum  {
     else
         [flagct setPosition:ccp(filterButtonSprite.contentSize.width-23, filterButtonSprite.contentSize.height-11)];
     [filterButtonSprite addChild:flagct];
+    
+    CCSprite *lineBreak=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/flag_line.png")];
+    [lineBreak setPosition:ccp(cx+150, 2*cy-(58.0f/2))];
+    [foreLayer addChild:lineBreak];
 }
 
 - (void)createAllBackgroundTileSprites

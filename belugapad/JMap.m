@@ -285,7 +285,11 @@ typedef enum {
         [mapLayer setPosition:ccp(512-np.x, 384-np.y)];
     }
     
+    //build search index
     [self buildSearchIndex];
+    
+    //show filter button
+    filterButtonSprite.visible=(filterTotalFlagCount>0);
     
     //any final node-based visual setup
     [gw handleMessage:kSGsetVisualStateAfterBuildUp];
@@ -345,6 +349,11 @@ typedef enum {
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
+    
+    //filter button
+    filterButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/flag_button_orange.png")];
+    [filterButtonSprite setPosition:ccp(cx+200, 2*cy-(65.0f/2))];
+    [foreLayer addChild:filterButtonSprite];
 }
 
 - (void)createAllBackgroundTileSprites
@@ -747,6 +756,7 @@ typedef enum {
 {
     if(searchNodes)[searchNodes release];
     searchNodes=[[NSMutableArray alloc] init];
+    filterTotalFlagCount=0;
     
     for(id go in [gw AllGameObjects])
     {
@@ -756,13 +766,18 @@ typedef enum {
     
             //build search test
             NSString *searchBuild=mgo.UserVisibleString;
+            int flagCount=0;
             
             for(SGJmapNode *node in mgo.ChildNodes)
             {
                 searchBuild=[NSString stringWithFormat:@"%@ %@", searchBuild, node.UserVisibleString];
+                flagCount+=[node.ustate.assignmentFlags count];
+                filterTotalFlagCount+=flagCount;
             }
             
             mgo.searchMatchString=searchBuild;
+            mgo.searchFlagCount=flagCount;
+            
             
             //add to source for list
             [searchNodes addObject:mgo];
@@ -1112,6 +1127,12 @@ typedef enum {
         
         return;
     }
+    
+    if(CGRectContainsPoint(filterButtonSprite.boundingBox, l))
+    {
+        if(filterTotalFlagCount>0)
+            [self pressedFilterButton];
+    }
 
     else {
 
@@ -1442,38 +1463,72 @@ typedef enum {
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    [self updateSearchFilteredNodes:@""];
+    [ac.searchList reloadData];
+    
     [[CCDirector sharedDirector].view addSubview:ac.searchList];
 }
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
+    filteredToAssignedNodes=NO;
+    showingFilter=NO;
     [ac.searchList removeFromSuperview];
 }
 
 -(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
 {
-    if(text.length == 0)
+    isFiltered=YES;
+    [self updateSearchFilteredNodes:text];
+    [ac.searchList reloadData];
+    
+//    if(text.length == 0)
+//    {
+//        isFiltered = NO;
+//    }
+//    else
+//    {
+//        isFiltered = YES;
+//    }
+//    
+//    [ac.searchList reloadData];
+}
+
+-(void)updateSearchFilteredNodes:(NSString*)text
+{
+    if(filteredNodes) [filteredNodes release];
+    filteredNodes = [[NSMutableArray alloc] init];
+    isFiltered=YES;
+    
+    for (id<CouchDerived, Searchable, NSObject> node in searchNodes)
     {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        if(filteredNodes) [filteredNodes release];
-        filteredNodes = [[NSMutableArray alloc] init];
+        NSRange searchRange = [node.searchMatchString rangeOfString:text options:NSCaseInsensitiveSearch];
+        NSRange idRange = [node._id rangeOfString:text options:NSCaseInsensitiveSearch];
         
-        for (id<CouchDerived, Searchable> node in searchNodes)
+        //search mastery and regular nodes
+        if((searchRange.location != NSNotFound || idRange.location != NSNotFound || [text isEqualToString:@""]) &&
+           (!filteredToAssignedNodes || node.searchFlagCount>0))
+            
         {
-            NSRange searchRange = [node.searchMatchString rangeOfString:text options:NSCaseInsensitiveSearch];
-            NSRange idRange = [node._id rangeOfString:text options:NSCaseInsensitiveSearch];
-            if(searchRange.location != NSNotFound || idRange.location != NSNotFound)
-            {
-                [filteredNodes addObject:node];
-            }
+            [filteredNodes addObject:node];
         }
     }
     
-    [ac.searchList reloadData];
+}
+
+-(void)pressedFilterButton
+{
+    if(showingFilter)
+    {
+        [ac.searchBar resignFirstResponder];
+    }
+    else
+    {
+        filteredToAssignedNodes=YES;
+        [ac.searchBar becomeFirstResponder];
+    }
+    
+    showingFilter=!showingFilter;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

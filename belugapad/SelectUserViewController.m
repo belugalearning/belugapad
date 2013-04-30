@@ -41,6 +41,7 @@
     
     UIView *tokenModalContainer;
     TokenKeyInputView *tokenModalView;
+    UIButton *joinButton;
     BOOL joiningClass;
     
     NSMutableArray *deviceUsers;
@@ -626,46 +627,34 @@
 
 -(void)showJoinClassTokenModal
 {
-    tokenModalContainer = [[[UIView alloc] initWithFrame:CGRectMake(260, -283, 504, 266)] autorelease];
-    tokenModalContainer.backgroundColor = [UIColor grayColor];
+    tokenModalContainer = [[[UIView alloc] initWithFrame:CGRectMake(175, -458, 675, 458)] autorelease];
     [self.view addSubview:tokenModalContainer];
     
-    tokenModalView = [[[TokenKeyInputView alloc] initWithFrame:CGRectMake(20, 40, 464, 30)] autorelease];
+    UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/Join_Class_BG.png"]] autorelease];
+    [bg setCenter:CGPointMake(675/2, 458/2)];
+    [tokenModalContainer addSubview:bg];
+    
+    tokenModalView = [[[TokenKeyInputView alloc] initWithFrame:CGRectMake(24, 201, 632, 30)] autorelease];
     [tokenModalContainer addSubview:tokenModalView];
+    tokenModalView.delegate = self;
     
-    UILabel *l = [[[UILabel alloc] initWithFrame:CGRectMake(136, 40, 38, 24)] autorelease];
-    [l setFont:[UIFont fontWithName:@"Chango" size:24]];
-    l.text = @"-";
-    l.textColor = [UIColor whiteColor];
-    l.backgroundColor = [UIColor clearColor];
-    l.textAlignment = NSTextAlignmentCenter;
-    [tokenModalContainer addSubview:l];
-    
-    l = [[[UILabel alloc] initWithFrame:CGRectMake(330, 40, 38, 24)] autorelease];
-    [l setFont:[UIFont fontWithName:@"Chango" size:24]];
-    l.text = @"-";
-    l.textColor = [UIColor whiteColor];
-    l.backgroundColor = [UIColor clearColor];
-    l.textAlignment = NSTextAlignmentCenter;
-    [tokenModalContainer addSubview:l];
-    
-    UIButton *cancel = [[[UIButton alloc] initWithFrame:CGRectMake(20, 120, 90, 30)] autorelease];
-    [cancel setTitle:@"CANCEL" forState:UIControlStateNormal];
-    cancel.enabled = YES;
+    UIButton *cancel = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancel.frame = CGRectMake(219, 304, 103.0f, 49.0f);
+    [cancel setImage:[UIImage imageNamed:@"/login-images/cancel_button.png"] forState:UIControlStateNormal];
     [cancel addTarget:self action:@selector(cancelJoinClass:) forControlEvents:UIControlEventTouchUpInside];
     [tokenModalContainer addSubview:cancel];
     
-    UIButton *send = [[[UIButton alloc] initWithFrame:CGRectMake(110, 120, 200, 30)] autorelease];
-    [send setTitle:@"SEND TOKEN" forState:UIControlStateNormal];
-    send.enabled = YES;
-    [send addTarget:self action:@selector(sendJoinClassToken:) forControlEvents:UIControlEventTouchUpInside];
-    [tokenModalContainer addSubview:send];
+    joinButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    joinButton.frame = CGRectMake(354, 303, 103.0f, 49.0f);
+    [joinButton setImage:[UIImage imageNamed:@"/login-images/join_button_grey.png"] forState:UIControlStateNormal];
+    [joinButton addTarget:self action:@selector(sendJoinClassToken:) forControlEvents:UIControlEventTouchUpInside];
+    [tokenModalContainer addSubview:joinButton];
     
     [UIView animateWithDuration:0.6
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         tokenModalContainer.center = CGPointMake(512.0f, 354.0f);
+                         tokenModalContainer.center = CGPointMake(512.0f, 364.0f);
                      }
                      completion:^(BOOL finished){
                          freezeUI = NO;
@@ -1039,6 +1028,23 @@
 {
     if (passCodeView == selectUserPassCodeModalView)
         [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_orange.png"] forState:UIControlStateNormal];
+}
+
+#pragma mark -
+#pragma mark TokenCodeViewDelegate
+-(void)tokenWasEdited:(TokenKeyInputView*)view
+{
+    
+}
+
+-(void)tokenBecameValid:(TokenKeyInputView*)view
+{
+    [joinButton setImage:[UIImage imageNamed:@"/login-images/join_button_orange.png"] forState:UIControlStateNormal];
+}
+
+-(void)tokenBecameInvalid:(TokenKeyInputView*)view
+{
+    [joinButton setImage:[UIImage imageNamed:@"/login-images/join_button_grey.png"] forState:UIControlStateNormal];
 }
 
 #pragma mark -

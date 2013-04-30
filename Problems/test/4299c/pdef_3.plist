@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Complete the equations.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;78&quot;/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:on number=&quot;34&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;112&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;7.8&quot;/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:on number=&quot;3.4&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;0.78&quot;/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:on number=&quot;0.34&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot;/&gt;</string>
+	</array>
+</dict>
+</plist>

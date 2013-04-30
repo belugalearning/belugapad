@@ -2,14 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/test/83368/pdef_0.plist</string>
-	<string>/Problems/test/83368/pdef_1.plist</string>
-	<string>/Problems/test/83368/pdef_2.plist</string>
-	<string>/Problems/test/83368/pdef_3.plist</string>
-	<string>/Problems/test/83368/pdef_4.plist</string>
-	<string>/Problems/test/83368/pdef_5.plist</string>
-	<string>/Problems/test/83368/pdef_6.plist</string>
-	<string>/Problems/test/83368/pdef_7.plist</string>
-	<string>/Problems/test/83368/pdef_8.plist</string>
+	<string>/Problems/test/26d0e/pdef_0.plist</string>
+	<string>/Problems/test/26d0e/pdef_1.plist</string>
+	<string>/Problems/test/26d0e/pdef_2.plist</string>
+	<string>/Problems/test/26d0e/pdef_3.plist</string>
 </array>
 </plist>

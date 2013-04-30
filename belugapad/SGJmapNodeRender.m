@@ -111,11 +111,11 @@
     
     if(isHomework || isDoNow)
     {
-        //homework takes priority
-        if(isHomework)
-            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"homework_flag_right.png"];
-        else
+        //isdonow takes priority
+        if(isDoNow)
             nodeSprite=[CCSprite spriteWithSpriteFrameName:@"checkerd_flag_right.png"];
+        else
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"homework_flag_right.png"];
     }
     
     else

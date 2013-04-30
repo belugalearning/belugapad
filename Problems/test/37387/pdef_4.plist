@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>NUMBER_PICKER</key>
+    <dict>
+      <key>NUMBER_PICKER_DESCRIPTION</key>
+      <string>A man walks 4 miles in 1 hour. How many minutes does it take him to walk 3 miles?</string>
+      <key>PICKER_LAYOUT</key>
+      <integer>0</integer>
+      <key>PICKER_ORIGIN_X</key>
+      <integer>0</integer>
+      <key>PICKER_ORIGIN_Y</key>
+      <integer>0</integer>
+      <key>SHOW_DROPBOX</key>
+      <true/>
+      <key>PICKER_EVAL_MODE</key>
+      <integer>1</integer>
+      <key>EVAL_VALUE</key>
+      <integer>45</integer>
+    </dict>
+  </dict>
+</plist>

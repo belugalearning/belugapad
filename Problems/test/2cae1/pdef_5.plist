@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Which number needs to change to make the top row proportional to the bottom?&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;{$x}x table&lt;/b:t&gt;&lt;b:on number=&quot;{$x}&quot;/&gt;&lt;b:on number=&quot;{2*$x}&quot;/&gt;&lt;b:on number=&quot;{3*$x}&quot;/&gt; &lt;b:on number=&quot;{5*$x}&quot;/&gt;</string>
+		<string>&lt;b:t&gt;{$y}x table&lt;/b:t&gt;&lt;b:on number=&quot;{$y}&quot;/&gt;&lt;b:on number=&quot;{2*$y}&quot;/&gt;&lt;b:on number=&quot;{3*$y}&quot;/&gt;&lt;b:on number=&quot;{4*$y}&quot;/&gt;</string>
+	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>Which number needs to change to make the top row proportional to the bottom?</string>
+		<key>EVAL_VALUE</key>
+		<string>{5*$x}</string>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>5</string>
+				<string>6</string>
+				<string>7</string>
+			</array>
+		</dict>
+	</array>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+</dict>
+</plist>

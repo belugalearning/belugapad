@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>5 x 2</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;There are&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;2 groups&lt;/b:ot&gt;
+&lt;b:t&gt;of&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;2 goo&lt;/b:ot&gt;
+&lt;b:t&gt;Express the total number of goo in an expression.&lt;/b:t&gt;</string>
+		<string>&lt;b:commlkp lkpid=&quot;cl1&quot;&gt;
+ &lt;b:lkpitem tag=&quot;a&quot;&gt;2&lt;/b:lkpitem&gt;
+ &lt;b:lkpitem tag=&quot;b&quot;&gt;2&lt;/b:lkpitem&gt;
+&lt;/b:commlkp&gt;
+&lt;b:commot lkpid=&quot;cl1&quot; sample=&quot;2&quot; preftag=&quot;a&quot; /&gt;
+&lt;b:oo value=&quot;x&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:commot lkpid=&quot;cl1&quot; sample=&quot;2&quot; preftag=&quot;b&quot; /&gt;</string>
+	</array>
+</dict>
+</plist>

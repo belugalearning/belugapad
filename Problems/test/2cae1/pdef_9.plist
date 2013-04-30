@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Make the bottom row proportional to the top row.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;3x table&lt;/b:t&gt;&lt;b:on number=&quot;12&quot;/&gt;&lt;b:on number=&quot;6&quot;/&gt;&lt;b:on number=&quot;9&quot;/&gt;</string>
+		<string>&lt;b:t&gt;10x table&lt;/b:t&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;40&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;20&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;30&quot;/&gt;</string>
+	</array>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+</dict>
+</plist>

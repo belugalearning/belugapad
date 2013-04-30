@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>Which of these is equal to {$z*$total} ?</string>
+    <key>META_QUESTION</key>
+    <dict>
+      <key>META_QUESTION_ANSWERS</key>
+      <array>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>{$z} x ( {$x} + {$y} )</string>
+          <key>META_ANSWER_VALUE</key>
+          <true/>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>{$z+1} x ( {$x} + {$y} )</string>
+          <key>META_ANSWER_VALUE</key>
+          <false/>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>{$z} x ( {$x+1} + {$y} )</string>
+          <key>META_ANSWER_VALUE</key>
+          <false/>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>{$z} x ( {$x} + {$y+1} )</string>
+          <key>META_ANSWER_VALUE</key>
+          <false/>
+        </dict>
+      </array>
+      <key>META_QUESTION_ANSWER_MODE</key>
+      <integer>1</integer>
+      <key>META_QUESTION_COMPLETE_TEXT</key>
+      <string>well done!!</string>
+      <key>META_QUESTION_EVAL_MODE</key>
+      <integer>0</integer>
+      <key>META_QUESTION_INCOMPLETE_TEXT</key>
+      <string>Try again</string>
+      <key>META_QUESTION_TITLE</key>
+      <string>Which of these is equal to {$z*$total} ?</string>
+    </dict>
+    <key>ENABLE_CALCULATOR</key>
+    <true/>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>RECALL</key>
+        <string>$z</string>
+        <key>VAR_NAME</key>
+        <string>$z</string>
+        <key>MIN</key>
+        <string>2</string>
+        <key>MAX</key>
+        <string>3</string>
+      </dict>
+      <dict>
+        <key>RECALL</key>
+        <string>$x</string>
+        <key>VAR_NAME</key>
+        <string>$x</string>
+        <key>MIN</key>
+        <string>1</string>
+        <key>MAX</key>
+        <string>3</string>
+      </dict>
+      <dict>
+        <key>RECALL</key>
+        <string>$y</string>
+        <key>VAR_NAME</key>
+        <string>$y</string>
+        <key>MIN</key>
+        <string>1</string>
+        <key>MAX</key>
+        <string>3</string>
+      </dict>
+      <dict>
+        <key>RECALL</key>
+        <string>$total</string>
+        <key>VAR_NAME</key>
+        <string>$total</string>
+        <key>VALUE</key>
+        <string>{$x+$y}</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>EVAL_TYPE</key>
+    <string>ALL_PICKERS_CORRECT</string>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>EVAL_EXCLUDE_ROWS</key>
+    <array>
+      <string>2</string>
+    </array>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$a</string>
+        <key>MIN</key>
+        <string>4</string>
+        <key>MAX</key>
+        <string>9</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$b</string>
+        <key>MIN</key>
+        <string>2</string>
+        <key>MAX</key>
+        <string>4</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$c</string>
+        <key>MIN</key>
+        <string>1</string>
+        <key>MAX</key>
+        <string>3</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$product</string>
+        <key>VALUE</key>
+        <string>{$b*$c}</string>
+      </dict>
+    </array>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:t&gt;Write the following sentence as an equation in 2 different ways.&lt;/b:t&gt;</string>
+      <string>&lt;b:t&gt;Add&lt;/b:t&gt;&lt;b:on number=&quot;8&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:on number=&quot;7&quot;/&gt;&lt;b:t&gt;, then multiply by&lt;/b:t&gt;&lt;b:on number=&quot;2&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+      <string>&lt;b:t&gt;(&lt;/b:t&gt;&lt;b:on number=&quot;8&quot;/&gt;&lt;b:oo value=&quot;+&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;7&quot;/&gt;&lt;b:t&gt;)&lt;/b:t&gt;&lt;b:oo value=&quot;x&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;2&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;30&quot; enabled=&quot;yes&quot;/&gt;</string>
+    </array>
+  </dict>
+</plist>

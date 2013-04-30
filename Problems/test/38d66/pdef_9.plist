@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>TOOL_KEY</key>
+    <string>DistributionTool</string>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>&lt;b:t&gt;Which ratios are the same as&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot; /&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+    <key>META_QUESTION</key>
+    <dict>
+      <key>META_QUESTION_ANSWERS</key>
+      <array>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>2/6</string>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>4/12</string>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>2/4</string>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>2/9</string>
+        </dict>
+      </array>
+      <key>META_QUESTION_TITLE</key>
+      <string>&lt;b:t&gt;Which ratios are the same as&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;3&quot; /&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+    </dict>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$circle</string>
+        <key>MIN</key>
+        <string>1</string>
+        <key>MAX</key>
+        <string>4</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$square</string>
+        <key>MIN</key>
+        <string>5</string>
+        <key>MAX</key>
+        <string>7</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>EVAL_TYPE</key>
+    <string>EXPRESSION_EQUALITIES</string>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:t&gt;Fill in the gaps.&lt;/b:t&gt;</string>
+      <string>&lt;b:on number=&quot;-{3*$x}&quot; /&gt;
+&lt;b:oo value=&quot;/&quot;/&gt;
+&lt;b:on number=&quot;-{$x}&quot; /&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on number=&quot;{3}&quot; /&gt;</string>
+      <string>&lt;b:on number=&quot;-{3*$x}&quot; /&gt;
+&lt;b:oo value=&quot;/&quot;/&gt;
+&lt;b:on number=&quot;{3}&quot; /&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
+    </array>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>3x2=6</string>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>RECALL</key>
+        <string>$x</string>
+        <key>VAR_NAME</key>
+        <string>$x</string>
+        <key>MIN</key>
+        <string>4</string>
+        <key>MAX</key>
+        <string>6</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

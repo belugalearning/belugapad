@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>EVAL_TYPE</key>
+    <string>EXPRESSION_EQUALITIES</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>a x ?=c</string>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:t&gt;How many&lt;/b:t&gt;
+                &lt;b:on number=&quot;{$a}&quot; enabled=&quot;yes&quot;/&gt;
+                &lt;b:t&gt;s are there in&lt;/b:t&gt;
+                &lt;b:on number=&quot;{$ab}&quot; enabled=&quot;yes&quot;/&gt;
+                &lt;b:t&gt;?&lt;/b:t&gt;</string>
+      <string>&lt;b:on number=&quot;{$a}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;x&quot;/&gt;
+&lt;b:on usePicker=&quot;yes&quot; /&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on number=&quot;{$ab}&quot; enabled=&quot;yes&quot;/&gt;</string>
+    </array>
+    <key>DSTRINGS</key>
+    <dict>
+      <key>@object</key>
+      <dict>
+        <key>MODE</key>
+        <string>RANDOM</string>
+        <key>DATA</key>
+        <array>
+          <string>apples</string>
+          <string>sweets</string>
+          <string>pens</string>
+        </array>
+      </dict>
+    </dict>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>MIN</key>
+        <string>3</string>
+        <key>MAX</key>
+        <string>9</string>
+        <key>VAR_NAME</key>
+        <string>$a</string>
+      </dict>
+      <dict>
+        <key>MIN</key>
+        <string>5</string>
+        <key>MAX</key>
+        <string>8</string>
+        <key>VAR_NAME</key>
+        <string>$b</string>
+      </dict>
+      <dict>
+        <key>VALUE</key>
+        <string>{$a*$b}</string>
+        <key>VAR_NAME</key>
+        <string>$ab</string>
+      </dict>
+    </array>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+  </dict>
+</plist>

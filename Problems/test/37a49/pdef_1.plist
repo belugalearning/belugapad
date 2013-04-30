@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;There are 100cm in 1 metre. Fill in the gaps.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;100&quot; suffix=&quot; centimetres&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;1&quot; suffix=&quot; metre&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;700&quot; suffix=&quot; cm&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;7&quot; suffix=&quot; metres&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;400&quot; suffix=&quot; cm&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on number=&quot;4&quot; suffix=&quot; metres&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;300&quot; suffix=&quot; cm&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;3&quot; suffix=&quot; metres&quot;/&gt;</string>
+	</array>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+</dict>
+</plist>

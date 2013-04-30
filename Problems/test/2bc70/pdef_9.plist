@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>INTRO</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Show that (20 ÷ 10) x 10 = 20.</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION</key>
+	<integer>20</integer>
+	<key>INIT_BUBBLES</key>
+	<integer>2</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>20</integer>
+		</dict>
+	</array>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+		<string>-</string>
+		<string>x</string>
+		<string>/</string>
+	</array>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<false/>
+	<key>SHOW_SOLUTION_ON_PIPE</key>
+	<true/>
+	<key>SHOW_INPUT_PIPE</key>
+	<false/>
+</dict>
+</plist>

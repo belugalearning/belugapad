@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>NUMBER_PICKER</key>
+    <dict>
+      <key>NUMBER_PICKER_DESCRIPTION</key>
+      <string>10 buns cost 50 goobles. How many goobles does one bun cost?</string>
+      <key>PICKER_LAYOUT</key>
+      <integer>0</integer>
+      <key>PICKER_ORIGIN_X</key>
+      <integer>0</integer>
+      <key>PICKER_ORIGIN_Y</key>
+      <integer>0</integer>
+      <key>SHOW_DROPBOX</key>
+      <true/>
+      <key>PICKER_EVAL_MODE</key>
+      <integer>1</integer>
+      <key>EVAL_VALUE</key>
+      <integer>5</integer>
+    </dict>
+  </dict>
+</plist>

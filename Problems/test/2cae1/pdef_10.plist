@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Make the bottom row proportional to the top row.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;{$x}x table&lt;/b:t&gt;&lt;b:on number=&quot;{$x*5}&quot;/&gt;&lt;b:on number=&quot;{$x*3}&quot;/&gt;&lt;b:on number=&quot;{$x*2}&quot;/&gt;&lt;b:on number=&quot;{$x*4}&quot;/&gt;</string>
+		<string>&lt;b:t&gt;{$y}x table&lt;/b:t&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$y*5}&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$y*3}&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$y*2}&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{$y*4}&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+				<string>8</string>
+				<string>10</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>5</string>
+				<string>6</string>
+				<string>7</string>
+				<string>9</string>
+			</array>
+		</dict>
+	</array>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+</dict>
+</plist>

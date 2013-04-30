@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Fill in the gaps&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;A recipe for&lt;/b:t&gt;&lt;b:on number=&quot;12&quot;/&gt;&lt;b:t&gt;muffins uses&lt;/b:t&gt;&lt;b:on number=&quot;120&quot; suffix=&quot;g&quot;/&gt;&lt;b:t&gt;of butter. &lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;This means that&lt;/b:t&gt;&lt;b:on number=&quot;{12*$x}&quot;/&gt;&lt;b:t&gt;muffins will need&lt;/b:t&gt;&lt;b:on usePicker=&quot;yes&quot; suffix=&quot;g&quot; pickerTarget=&quot;{120*$x}&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+	</array>
+</dict>
+</plist>

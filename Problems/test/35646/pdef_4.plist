@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>EVAL_TYPE</key>
+    <string>ALL_ENABLED</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>1 to 10</string>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:t&gt;5miles is about 8km. Arrange these distances from shortest to longest. &lt;/b:t&gt;</string>
+      <string>&lt;b:ot tag=&quot;e&quot;&gt;10 miles&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;5 km&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;9 km&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;5 miles&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;7 km&lt;/b:ot&gt;</string>
+      <string>&lt;b:ph targetTag=&quot;a&quot;/&gt;&lt;b:ph targetTag=&quot;b&quot;/&gt;&lt;b:ph targetTag=&quot;c&quot;/&gt;&lt;b:ph targetTag=&quot;d&quot;/&gt;&lt;b:ph targetTag=&quot;e&quot;/&gt;</string>
+    </array>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+  </dict>
+</plist>

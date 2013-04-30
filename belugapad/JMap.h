@@ -41,6 +41,10 @@
     NSMutableArray *searchNodes;
     NSMutableArray *filteredNodes;
     BOOL isFiltered;
+    BOOL filteredToAssignedNodes;
+    BOOL showingFilter;
+    CCSprite *filterButtonSprite;
+    int filterTotalFlagCount;
     
     AppController *ac;
     

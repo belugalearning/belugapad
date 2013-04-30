@@ -10,6 +10,7 @@
 
 @class SGJmapProximityEval;
 @class SGJmapNodeSelect;
+@class UserNodeState;
 
 
 @protocol Transform
@@ -66,6 +67,7 @@
 
 @protocol Searchable
     @property (retain) NSString *searchMatchString;
+    @property int searchFlagCount;
 @end
 
 @protocol Completable

@@ -774,16 +774,23 @@ typedef enum  {
             //build search test
             NSString *searchBuild=mgo.UserVisibleString;
             int flagCount=0;
+            int flaggedNodesCount=0;
             
             for(SGJmapNode *node in mgo.ChildNodes)
             {
                 searchBuild=[NSString stringWithFormat:@"%@ %@", searchBuild, node.UserVisibleString];
                 flagCount+=[node.ustate.assignmentFlags count];
                 filterTotalFlagCount+=flagCount;
+                
+                if([node.ustate.assignmentFlags count]>0)
+                    flaggedNodesCount++;
             }
             
             mgo.searchMatchString=searchBuild;
             mgo.searchFlagCount=flagCount;
+            
+            if(flaggedNodesCount>0)
+                mgo.UserVisibleString=[NSString stringWithFormat:@"%@ (%d)", mgo.UserVisibleString, flaggedNodesCount];
             
             
             //add to source for list
@@ -1470,7 +1477,7 @@ typedef enum  {
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [self updateSearchFilteredNodes:@""];
+    [self updateSearchFilteredNodes:searchBar.text];
     [ac.searchList reloadData];
     
     [[CCDirector sharedDirector].view addSubview:ac.searchList];

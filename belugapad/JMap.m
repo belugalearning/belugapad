@@ -773,17 +773,22 @@ typedef enum {
             {
                 searchBuild=[NSString stringWithFormat:@"%@ %@", searchBuild, node.UserVisibleString];
                 flagCount+=[node.ustate.assignmentFlags count];
-                filterTotalFlagCount+=flagCount;
+//                filterTotalFlagCount+=flagCount;
                 
                 if([node.ustate.assignmentFlags count]>0)
+                {
                     flaggedNodesCount++;
+                    filterTotalFlagCount++;
+                }
             }
             
             mgo.searchMatchString=searchBuild;
             mgo.searchFlagCount=flagCount;
             
             if(flaggedNodesCount>0)
+            {
                 mgo.UserVisibleString=[NSString stringWithFormat:@"%@ (%d)", mgo.UserVisibleString, flaggedNodesCount];
+            }
             
             
             //add to source for list

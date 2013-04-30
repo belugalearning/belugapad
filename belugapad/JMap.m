@@ -362,10 +362,19 @@ typedef enum  {
     
     NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_orange%@.png", filterButtonType];
     
+    NSString *flagCount=[NSString stringWithFormat:@"%d",filterTotalFlagCount];
+    
     filterButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filterButtonFileName)];
     
     [filterButtonSprite setPosition:ccp(cx+200, 2*cy-(65.0f/2))];
     [foreLayer addChild:filterButtonSprite];
+    
+    CCLabelTTF *flagct=[CCLabelTTF labelWithString:flagCount fontName:CHANGO fontSize:13.0f];
+    if([filterButtonType isEqualToString:@""])
+        [flagct setPosition:ccp(filterButtonSprite.contentSize.width-13, filterButtonSprite.contentSize.height-11)];
+    else
+        [flagct setPosition:ccp(filterButtonSprite.contentSize.width-23, filterButtonSprite.contentSize.height-11)];
+    [filterButtonSprite addChild:flagct];
 }
 
 - (void)createAllBackgroundTileSprites
@@ -1497,6 +1506,11 @@ typedef enum  {
 {
     filteredToAssignedNodes=NO;
     showingFilter=NO;
+    
+    NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_orange%@.png", filterButtonType];
+    
+    [filterButtonSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(filterButtonFileName)]];
+    
     [ac.searchList removeFromSuperview];
 }
 
@@ -1549,10 +1563,6 @@ typedef enum  {
     else
     {
         filteredToAssignedNodes=YES;
-        
-        filterButtonType=@"";
-        if(filterTotalFlagCount>9)
-            filterButtonType=@"2";
         
         NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_in%@.png", filterButtonType];
         

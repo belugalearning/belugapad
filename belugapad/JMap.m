@@ -1470,7 +1470,7 @@ typedef enum {
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [self updateSearchFilteredNodes:@""];
+    [self updateSearchFilteredNodes:searchBar.text];
     [ac.searchList reloadData];
     
     [[CCDirector sharedDirector].view addSubview:ac.searchList];

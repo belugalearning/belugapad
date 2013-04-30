@@ -100,25 +100,46 @@
 {
     SGJmapNode *pn=(SGJmapNode*)ParentGO;
     
-    if(pn.EnabledAndComplete)
+    bool isHomework=NO;
+    bool isDoNow=NO;
+    
+    if([pn.ustate.assignmentFlags containsObject:@"homework"])
+        isHomework=YES;
+    
+    if([pn.ustate.assignmentFlags containsObject:@"doNow"])
+        isDoNow=YES;
+    
+    if(isHomework || isDoNow)
     {
-        //should be blue
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Complete_Right.png"];
+        //homework takes priority
+        if(isHomework)
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"homework_flag_right.png"];
+        else
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"checkerd_flag_right.png"];
     }
-    else if (pn.Attempted)
-    {
-        //should be yellow
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Attempted_Right.png"];
-    }
-    else if(pn.MasteryNode.PrereqPercentage>0)
-    {
-        //should be red
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
-    }
+    
     else
     {
-        //should be a stalk / stump
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
+        if(pn.EnabledAndComplete)
+        {
+            //should be blue
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Complete_Right.png"];
+        }
+        else if (pn.Attempted)
+        {
+            //should be yellow
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Attempted_Right.png"];
+        }
+        else if(pn.MasteryNode.PrereqPercentage>0)
+        {
+            //should be red
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
+        }
+        else
+        {
+            //should be a stalk / stump
+            nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Incomplete_Right.png"];
+        }
     }
     
     CGPoint offset=ccp(nodeSprite.contentSize.width / 2.0f, -nodeSprite.contentSize.height / 2.0f);

@@ -45,6 +45,7 @@
     BOOL showingFilter;
     CCSprite *filterButtonSprite;
     int filterTotalFlagCount;
+    NSString *filterButtonType;
     
     AppController *ac;
     

@@ -53,7 +53,7 @@ static CGPoint kStartMapPos={-611, 3713};
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
 
-typedef enum {
+typedef enum  {
     kJuiStateNodeMap,
     kJuiStateNodeSliceTransition,
     kJuiStateNodeSlice
@@ -351,7 +351,14 @@ typedef enum {
     [foreLayer addChild:topsprite];
     
     //filter button
-    filterButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/flag_button_orange.png")];
+    filterButtonType=@"";
+    if(filterTotalFlagCount>9)
+        filterButtonType=@"2";
+    
+    NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_orange%@.png", filterButtonType];
+    
+    filterButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filterButtonFileName)];
+    
     [filterButtonSprite setPosition:ccp(cx+200, 2*cy-(65.0f/2))];
     [foreLayer addChild:filterButtonSprite];
 }
@@ -1525,6 +1532,14 @@ typedef enum {
     else
     {
         filteredToAssignedNodes=YES;
+        
+        filterButtonType=@"";
+        if(filterTotalFlagCount>9)
+            filterButtonType=@"2";
+        
+        NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_in%@.png", filterButtonType];
+        
+        [filterButtonSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(filterButtonFileName)]];
         [ac.searchBar becomeFirstResponder];
     }
     

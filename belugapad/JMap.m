@@ -243,7 +243,7 @@ typedef enum  {
 -(void) setupMap
 {
     [self populateImageCache];
- 
+    
     [self createLayers];
  
     [self getUserData];
@@ -287,6 +287,8 @@ typedef enum  {
     
     //build search index
     [self buildSearchIndex];
+    
+    [self addFilterButton];
     
     //show filter button
     filterButtonSprite.visible=(filterTotalFlagCount>0);
@@ -349,7 +351,10 @@ typedef enum  {
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
-    
+}
+
+-(void)addFilterButton
+{
     //filter button
     filterButtonType=@"";
     if(filterTotalFlagCount>9)

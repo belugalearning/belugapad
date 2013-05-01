@@ -1484,7 +1484,7 @@ typedef enum  {
     [[CCDirector sharedDirector].view addSubview:ac.searchBar];
     
     
-    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 56, 341, 360)] autorelease];
+    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(662, 56, 362, 360)] autorelease];
     ac.searchList.delegate=self;
     ac.searchList.dataSource=self;
     

@@ -2911,30 +2911,17 @@ static float kTimeToHintToolTray=0.0f;
     
     NSInteger numRows = 0;
     
-    switch (component) {
-        case 0:
+    
+    if(component==0)
+    {
+        if([self numberOfComponentsInPickerView:pickerView]>1)
             numRows = 12;
-            break;
-        case 1:
-            numRows = 11;
-            break;
-        case 2:
-            numRows = 11;
-            break;
-        case 3:
-            numRows = 11;
-            break;
-        case 4:
-            numRows = 11;
-            break;
-        case 5:
-            numRows = 11;
-            break;
-        case 6:
-            numRows = 11;
-            break;
-        default:
-            break;
+        else
+            numRows= 10;
+    }
+    else
+    {
+        numRows = 11;
     }
     
     return numRows;

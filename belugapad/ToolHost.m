@@ -2536,14 +2536,15 @@ static float kTimeToHintToolTray=0.0f;
         if(trayPadShowing)
         {
             [self hidePad];
+            [self hideCornerTrayAndForce:YES];
         }
         else
         {
             [self hideMq];
             [self hideCalc];
             [self hideWheel];
-            
             [self showPad];
+            [self hideCornerTrayAndForce:YES];
             
             //[self showCornerTray];
         }
@@ -2613,7 +2614,7 @@ static float kTimeToHintToolTray=0.0f;
     [self hideWheel];
     [self hideMq];
     [self hidePad];
-    [self hideCornerTray];
+    [self hideCornerTrayAndForce:YES];
 }
 
 -(void)sizeAndResetQuestionDescripion
@@ -2652,7 +2653,12 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)hideCornerTray
 {
-    if(trayCornerShowing)
+    [self hideCornerTrayAndForce:NO];
+}
+
+-(void)hideCornerTrayAndForce:(BOOL)force
+{
+    if(trayCornerShowing||force)
     {
         qTrayTop.scaleX=1.0f;
         qTrayMid.scaleX=1.0f;

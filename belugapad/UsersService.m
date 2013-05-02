@@ -736,6 +736,32 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     }
 }
 
+-(void)notifyCurrentUserCompletedFlaggedNode:(NSString*)nodeId
+                                 completedAt:(double)msEpochTime
+{
+    if (!currentUser) return; // shouldn't ever happen
+    
+    BOOL updates = NO;
+    
+    NSMutableDictionary *flags = currentUser[@"assignmentFlags"];
+    for (NSString *pupilId in flags)
+    {
+        NSMutableDictionary *pinFlags = flags[pupilId][nodeId];
+        if (pinFlags && (!pinFlags[@"LAST_COMPLETED"] || [pinFlags[@"LAST_COMPLETED"] doubleValue] < msEpochTime))
+        {
+            pinFlags[@"LAST_COMPLETED"] = @(msEpochTime);
+            updates = YES;
+        }
+    }
+    
+    if (updates)
+    {
+        [allUsersDatabase open];
+        [allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags = ? WHERE id = ?", [flags JSONString], self.currentUserId];
+        [allUsersDatabase close];
+    }
+}
+
 -(void)syncDeviceUsers
 {
     // (1) at the mo this method serves purpose of pushing users to server when they were created on offline device.
@@ -769,17 +795,24 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
     {
+        bself->isSyncing = NO;
+        
         BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
         
         if (reqSuccess)
         {
-            NSArray *serverUsers = [(NSData*)res objectFromJSONData];
+            NSMutableArray *serverUsers = [(NSData*)res mutableObjectFromJSONData];
             
             [bself->allUsersDatabase open];
             for (NSDictionary *serverUr in serverUsers)
             {
-                NSDictionary *assignmentFlags = serverUr[@"assignmentFlags"];
+                NSMutableDictionary *assignmentFlags = serverUr[@"assignmentFlags"];
                 [bself->allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags = ?, nick_clash = ? WHERE id = ?", [assignmentFlags JSONString], serverUr[@"nickClash"], serverUr[@"id"]];
+                
+                if ([self.currentUserId isEqualToString:serverUr[@"id"]])
+                {
+                    currentUser[@"assignmentFlags"] = assignmentFlags;
+                }
             }
             
             // remove users flagged for removal (getting list of these users so that we can log them)
@@ -803,7 +836,6 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
                 // TODO: delete from tables other than users - NodePlays, ActivityFeed, FeatureKeys
             }
             [bself->allUsersDatabase close];
-            bself->isSyncing = NO;
         }
     };
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
@@ -814,13 +846,13 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
 {
-    NSMutableDictionary *user = [NSMutableDictionary dictionary];
-    [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
-    [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
-    [user setValue:[rs stringForColumn:@"password"] forKey:@"password"];
-    [user setValue:[[rs stringForColumn:@"assignment_flags"] objectFromJSONString] forKey:@"assignmentFlags"];
-    [user setValue:@([rs intForColumn:@"nick_clash"]) forKey:@"nickClash"];
-    return user;
+    return [[@{
+        @"id":              [rs stringForColumn:@"id"],
+        @"nickName":        [rs stringForColumn:@"nick"],
+        @"password":        [rs stringForColumn:@"password"],
+        @"assignmentFlags": [[rs stringForColumn:@"assignment_flags"] mutableObjectFromJSONString],
+        @"nickClash":       @([rs intForColumn:@"nick_clash"])
+    } mutableCopy] autorelease];
 }
 
 -(BOOL)hasEncounteredFeatureKey:(NSString*)key

@@ -6,6 +6,10 @@
 //
 //
 
+// ************************************************************************************************************************************************************************************
+// N.B. assumes user is currentUser!  ------  needs adapting if to work with users other than currentUser - assignmentFlags definitely, perhaps elsewhere too ------
+// ************************************************************************************************************************************************************************************
+
 #import <Foundation/Foundation.h>
 @class FMDatabase, FMResultSet, NodePlay;
 
@@ -25,7 +29,7 @@
 @property (nonatomic, readonly, retain) NSDate *artifact3LastAchieved;
 @property (nonatomic, readonly, retain) NSDate *artifact4LastAchieved;
 @property (nonatomic, readonly, retain) NSDate *artifact5LastAchieved;
-@property (nonatomic, readonly, retain) NSArray *assignmentFlags;
+@property (nonatomic, readonly) NSArray *assignmentFlags;
 
 -(id)initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
 -(id)initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;

@@ -60,6 +60,9 @@ typedef enum {
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
 -(NSDictionary*)currentUserAllNodesState;
 
+-(void)notifyCurrentUserCompletedFlaggedNode:(NSString*)nodeId
+                                 completedAt:(double)msEpochTime;
+
 -(BOOL)hasEncounteredFeatureKey:(NSString*)key;
 -(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date;
 -(void)notifyStartingFeatureKey:(NSString*)featureKey;

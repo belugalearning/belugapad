@@ -86,6 +86,26 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         }
         allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
         
+        [allUsersDatabase open];
+        
+        BOOL assignmentFlagsColExists = NO;
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"PRAGMA table_info(users)"];
+        while ([rs next])
+        {
+            if ([[rs stringForColumn:@"name"] isEqualToString:@"assignment_flags"])
+            {
+                assignmentFlagsColExists = YES;
+                break;
+            }
+        }
+        if (!assignmentFlagsColExists)
+        {
+            [allUsersDatabase executeUpdate:@"ALTER TABLE users ADD COLUMN assignment_flags TEXT"];
+            [allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags='{}'"];
+        }
+        
+        [allUsersDatabase close];
+        
         NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
         if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
         {

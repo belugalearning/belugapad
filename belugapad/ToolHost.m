@@ -1562,6 +1562,10 @@ static float kTimeToHintToolTray=0.0f;
             {
                 //doesn't need wrapping
             }
+            else if([[raw substringToIndex:4] isEqualToString:@" <b:"])
+            {
+                raw=[NSString stringWithFormat:@"<b:t></b:t>%@", raw];
+            }
             else
             {
                 //assume the string needs wrapping in b:t
@@ -1638,7 +1642,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
-            [row rowVisible:NO];
+//            [row rowVisible:NO];
         }
     
         if(row)[row release];

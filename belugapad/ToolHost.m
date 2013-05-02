@@ -2368,44 +2368,44 @@ static float kTimeToHintToolTray=0.0f;
 //    if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
     //pinch handling
-    if([touches count]>1)
-    {
-        UITouch *t1=[[touches allObjects] objectAtIndex:0];
-        UITouch *t2=[[touches allObjects] objectAtIndex:1];
-        
-        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
-        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
-        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
-        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
-        
-        float da=[BLMath DistanceBetween:t1a and:t2a];
-        float db=[BLMath DistanceBetween:t1b and:t2b];
-        
-        float scaleChange=db-da;
-        
-        
-        scale+=(scaleChange / cx);
-        
-        [loggingService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
-        
-        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
-        else {
-            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
-            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
-            
-            [toolBackLayer setScale:scale];
-            [toolForeLayer setScale:scale];
-        }
-        
-        //NSLog(@"scale: %f", scale);
+//    if([touches count]>1)
+//    {
+//        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+//        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+//        
+//        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+//        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+//        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+//        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+//        
+//        float da=[BLMath DistanceBetween:t1a and:t2a];
+//        float db=[BLMath DistanceBetween:t1b and:t2b];
+//        
+//        float scaleChange=db-da;
+//        
+//        
+//        scale+=(scaleChange / cx);
+//        
+//        [loggingService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
+//        
+//        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
+//        else {
+//            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
+//            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
+//            
+//            [toolBackLayer setScale:scale];
+//            [toolForeLayer setScale:scale];
+//        }
+//        
+//        //NSLog(@"scale: %f", scale);
+//    }
+
+    if(isTouching){
+        [followParticle setPosition:location];
+        [explodeParticle setPosition:location];
     }
-    else {
-        if(isTouching){
-            [followParticle setPosition:location];
-            [explodeParticle setPosition:location];
-        }
-        [currentTool ccTouchesMoved:touches withEvent:event];
-    }
+    [currentTool ccTouchesMoved:touches withEvent:event];
+
     
 
 }

@@ -22,7 +22,7 @@
 #import "NSData+GzipExtension.h"
 #import "Flurry.h"
 
-NSString * const kUsersWSBaseURL = @"http://app.zubi.me:3000";
+NSString * const kUsersWSBaseURL = @"http://127.0.0.1:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
@@ -86,6 +86,26 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         }
         allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
         
+        [allUsersDatabase open];
+        
+        BOOL assignmentFlagsColExists = NO;
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"PRAGMA table_info(users)"];
+        while ([rs next])
+        {
+            if ([[rs stringForColumn:@"name"] isEqualToString:@"assignment_flags"])
+            {
+                assignmentFlagsColExists = YES;
+                break;
+            }
+        }
+        if (!assignmentFlagsColExists)
+        {
+            [allUsersDatabase executeUpdate:@"ALTER TABLE users ADD COLUMN assignment_flags TEXT"];
+            [allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags='{}'"];
+        }
+        
+        [allUsersDatabase close];
+        
         NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
         if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
         {
@@ -140,7 +160,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         TFLog(@"logged in with beluga user id: %@", urId);
         
         [allUsersDatabase open];
-        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users WHERE id = ?", urId];
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT * FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [allUsersDatabase close];
         
@@ -211,7 +231,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     NSMutableArray *users = [NSMutableArray array];
     
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT * FROM users"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
@@ -716,11 +736,38 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     }
 }
 
+-(void)notifyCurrentUserCompletedFlaggedNode:(NSString*)nodeId
+                                 completedAt:(double)msEpochTime
+{
+    if (!currentUser) return; // shouldn't ever happen
+    
+    BOOL updates = NO;
+    
+    NSMutableDictionary *flags = currentUser[@"assignmentFlags"];
+    for (NSString *pupilId in flags)
+    {
+        NSMutableDictionary *pinFlags = flags[pupilId][nodeId];
+        if (pinFlags && (!pinFlags[@"LAST_COMPLETED"] || [pinFlags[@"LAST_COMPLETED"] doubleValue] < msEpochTime))
+        {
+            pinFlags[@"LAST_COMPLETED"] = @(msEpochTime);
+            updates = YES;
+        }
+    }
+    
+    if (updates)
+    {
+        [allUsersDatabase open];
+        [allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags = ? WHERE id = ?", [flags JSONString], self.currentUserId];
+        [allUsersDatabase close];
+    }
+}
+
 -(void)syncDeviceUsers
 {
-    // at the mo this method serves purpose of pushing users to server when they were created on offline device.
-    // It also tells server which users have been flagged for removal from device. The users are then actually removed when response is received
+    // (1) at the mo this method serves purpose of pushing users to server when they were created on offline device.
+    // (2) Disabled Feature: It also tells server which users have been flagged for removal from device. The users are then actually removed when response is received
     // (Users that are flagged for removal are not inclded on login users list)
+    // (3) updates assignment flags
     
     if (isSyncing) return;
     
@@ -728,13 +775,14 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     // get users date from on-device db
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove, nick_clash FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove, assignment_flags, nick_clash FROM users"];
     while([rs next]) [users addObject:@{
                           @"id":[rs stringForColumnIndex:0],
                           @"nick":[rs stringForColumnIndex:1],
                           @"password":[rs stringForColumnIndex:2],
                           @"flagRemove":@([rs intForColumnIndex:3]),
-                          @"nickClash":@([rs intForColumnIndex:4]) }];
+                          @"assignmentFlags":[[rs stringForColumnIndex:4] objectFromJSONString],
+                          @"nickClash":@([rs intForColumnIndex:5]) }];
     [allUsersDatabase close];
     
     if (![users count]) return;
@@ -747,23 +795,23 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
     {
+        bself->isSyncing = NO;
+        
         BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
         
         if (reqSuccess)
         {
-            NSArray *serverUsers = [(NSData*)res objectFromJSONData];
+            NSMutableArray *serverUsers = [(NSData*)res mutableObjectFromJSONData];
             
             [bself->allUsersDatabase open];
             for (NSDictionary *serverUr in serverUsers)
             {
-                NSArray *clientUrArr = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"id == %@", serverUr[@"id"]]]];
-                if ([clientUrArr count]) /*there should be exactly 1!*/
+                NSMutableDictionary *assignmentFlags = serverUr[@"assignmentFlags"];
+                [bself->allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags = ?, nick_clash = ? WHERE id = ?", [assignmentFlags JSONString], serverUr[@"nickClash"], serverUr[@"id"]];
+                
+                if ([self.currentUserId isEqualToString:serverUr[@"id"]])
                 {
-                    NSDictionary *clientUr = clientUrArr[0];
-                    if ([serverUr[@"nickClash"] intValue] != [clientUr[@"nickClash"] intValue])
-                    {
-                        [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nickClash = ? WHERE id = ?", serverUr[@"nickClash"], serverUr[@"id"]];
-                    }
+                    currentUser[@"assignmentFlags"] = assignmentFlags;
                 }
             }
             
@@ -788,7 +836,6 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
                 // TODO: delete from tables other than users - NodePlays, ActivityFeed, FeatureKeys
             }
             [bself->allUsersDatabase close];
-            bself->isSyncing = NO;
         }
     };
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
@@ -799,12 +846,13 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
 {
-    NSMutableDictionary *user = [NSMutableDictionary dictionary];
-    [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
-    [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
-    [user setValue:[rs stringForColumn:@"password"] forKey:@"password"];
-    [user setValue:@([rs intForColumn:@"nick_clash"]) forKey:@"nickClash"];
-    return user;
+    return [[@{
+        @"id":              [rs stringForColumn:@"id"],
+        @"nickName":        [rs stringForColumn:@"nick"],
+        @"password":        [rs stringForColumn:@"password"],
+        @"assignmentFlags": [[rs stringForColumn:@"assignment_flags"] mutableObjectFromJSONString],
+        @"nickClash":       @([rs intForColumn:@"nick_clash"])
+    } mutableCopy] autorelease];
 }
 
 -(BOOL)hasEncounteredFeatureKey:(NSString*)key

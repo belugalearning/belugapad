@@ -145,8 +145,16 @@ static float kTimeToHeaderBounce=7.0f;
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
 
     spaceBetweenAnchors=46;
-    startX=[[pdef objectForKey:START_X] intValue];
-    startY=[[pdef objectForKey:START_Y] intValue];
+    if([pdef objectForKey:START_X])
+        startX=[[pdef objectForKey:START_X] intValue];
+    else
+        startX=1;
+    
+    if([pdef objectForKey:START_Y])
+        startY=[[pdef objectForKey:START_Y] intValue];
+    else
+        startY=1;
+    
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
     operatorMode=2;
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];

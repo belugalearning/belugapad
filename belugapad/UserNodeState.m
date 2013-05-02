@@ -91,12 +91,24 @@
         if (artifact4Date > 0) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact4Date];
         if (artifact5Date > 0) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact5Date];
         
-        // TEMP!
-        self.assignmentFlags = @{
-                                 @"5608a59d6797796ce9e11484fd11e438": @[ @"homework" ],
-                                 @"5608a59d6797796ce9e11484fd180214": @[ @"doNow" ],
-                                 @"5608a59d6797796ce9e11484fd180be3": @[ @"homework", @"doNow" ]  }[self.nodeId];
-        if (!self.assignmentFlags) self.assignmentFlags = @[];
+        UsersService *us=((AppController*)[UIApplication sharedApplication].delegate).usersService;
+        NSDictionary *user = us.currentUserClone;
+        
+        NSMutableArray *a = [NSMutableArray array];
+        for (NSString *pupilId in user[@"assignmentFlags"])
+        {
+            NSDictionary *pupilFlags = user[@"assignmentFlags"][pupilId];
+            NSDictionary *pupilNodeFlags = pupilFlags[self.nodeId];
+            if (pupilNodeFlags[@"homework"] && [pupilNodeFlags[@"homework"] doubleValue] > 1000 * [self.lastCompleted timeIntervalSince1970])
+            {
+                [a addObject:@"homework"];
+            }
+            if (pupilNodeFlags[@"doNow"] && [pupilNodeFlags[@"doNow"] doubleValue] > 1000 * [self.lastCompleted timeIntervalSince1970])
+            {
+                [a addObject:@"doNow"];
+            }
+        }
+        self.assignmentFlags = a;
     }
     return self;
 }

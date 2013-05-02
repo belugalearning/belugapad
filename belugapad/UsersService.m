@@ -22,7 +22,7 @@
 #import "NSData+GzipExtension.h"
 #import "Flurry.h"
 
-NSString * const kUsersWSBaseURL = @"http://app.zubi.me:3000";
+NSString * const kUsersWSBaseURL = @"http://127.0.0.1:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
@@ -160,7 +160,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         TFLog(@"logged in with beluga user id: %@", urId);
         
         [allUsersDatabase open];
-        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users WHERE id = ?", urId];
+        FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT * FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [allUsersDatabase close];
         
@@ -231,7 +231,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     NSMutableArray *users = [NSMutableArray array];
     
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, nick_clash FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT * FROM users"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
@@ -738,9 +738,10 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
 
 -(void)syncDeviceUsers
 {
-    // at the mo this method serves purpose of pushing users to server when they were created on offline device.
-    // It also tells server which users have been flagged for removal from device. The users are then actually removed when response is received
+    // (1) at the mo this method serves purpose of pushing users to server when they were created on offline device.
+    // (2) Disabled Feature: It also tells server which users have been flagged for removal from device. The users are then actually removed when response is received
     // (Users that are flagged for removal are not inclded on login users list)
+    // (3) updates assignment flags
     
     if (isSyncing) return;
     
@@ -748,13 +749,14 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     // get users date from on-device db
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove, nick_clash FROM users"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove, assignment_flags, nick_clash FROM users"];
     while([rs next]) [users addObject:@{
                           @"id":[rs stringForColumnIndex:0],
                           @"nick":[rs stringForColumnIndex:1],
                           @"password":[rs stringForColumnIndex:2],
                           @"flagRemove":@([rs intForColumnIndex:3]),
-                          @"nickClash":@([rs intForColumnIndex:4]) }];
+                          @"assignmentFlags":[[rs stringForColumnIndex:4] objectFromJSONString],
+                          @"nickClash":@([rs intForColumnIndex:5]) }];
     [allUsersDatabase close];
     
     if (![users count]) return;
@@ -776,15 +778,8 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
             [bself->allUsersDatabase open];
             for (NSDictionary *serverUr in serverUsers)
             {
-                NSArray *clientUrArr = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"id == %@", serverUr[@"id"]]]];
-                if ([clientUrArr count]) /*there should be exactly 1!*/
-                {
-                    NSDictionary *clientUr = clientUrArr[0];
-                    if ([serverUr[@"nickClash"] intValue] != [clientUr[@"nickClash"] intValue])
-                    {
-                        [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nickClash = ? WHERE id = ?", serverUr[@"nickClash"], serverUr[@"id"]];
-                    }
-                }
+                NSDictionary *assignmentFlags = serverUr[@"assignmentFlags"];
+                [bself->allUsersDatabase executeUpdate:@"UPDATE users SET assignment_flags = ?, nick_clash = ? WHERE id = ?", [assignmentFlags JSONString], serverUr[@"nickClash"], serverUr[@"id"]];
             }
             
             // remove users flagged for removal (getting list of these users so that we can log them)
@@ -823,6 +818,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
     [user setValue:[rs stringForColumn:@"password"] forKey:@"password"];
+    [user setValue:[[rs stringForColumn:@"assignment_flags"] objectFromJSONString] forKey:@"assignmentFlags"];
     [user setValue:@([rs intForColumn:@"nick_clash"]) forKey:@"nickClash"];
     return user;
 }

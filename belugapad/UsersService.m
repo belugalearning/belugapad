@@ -386,7 +386,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         }
         
         [bself->allUsersDatabase open];
-        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash) values(?,?,?,1)", urId, nickName, password];
+        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash,assignment_flags) values(?,?,?,1,?)", urId, nickName, password, user[@"assignmentFlags"]];
         [bself->allUsersDatabase close];
         
         if (!successInsert)

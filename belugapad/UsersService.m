@@ -284,7 +284,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
             CFRelease(UUIDSRef);
             
             FMDatabase *db = bself->allUsersDatabase;
-            [db executeUpdate:@"INSERT INTO users(id,nick,password) values(?,?,?)", urId, nick, password];
+            [db executeUpdate:@"INSERT INTO users(id, nick, password, assignment_flags) values(?, ?, ?, '{}')", urId, nick, password];
         }
         callback(status);
     };
@@ -776,13 +776,17 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     // get users date from on-device db
     [allUsersDatabase open];
     FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove, assignment_flags, nick_clash FROM users"];
-    while([rs next]) [users addObject:@{
-                          @"id":[rs stringForColumnIndex:0],
-                          @"nick":[rs stringForColumnIndex:1],
-                          @"password":[rs stringForColumnIndex:2],
-                          @"flagRemove":@([rs intForColumnIndex:3]),
-                          @"assignmentFlags":[[rs stringForColumnIndex:4] objectFromJSONString],
-                          @"nickClash":@([rs intForColumnIndex:5]) }];
+    while([rs next])
+    {
+        [users addObject:@{
+             @"id":                 [rs stringForColumnIndex:0],
+             @"nick":               [rs stringForColumnIndex:1],
+             @"password":           [rs stringForColumnIndex:2],
+             @"flagRemove":         @([rs intForColumnIndex:3]),
+             @"assignmentFlags":    [rs stringForColumnIndex:4] ? [[rs stringForColumnIndex:4] objectFromJSONString] : [NSDictionary dictionary],
+             @"nickClash":          @([rs intForColumnIndex:5])
+         }];
+    }
     [allUsersDatabase close];
     
     if (![users count]) return;
@@ -850,7 +854,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         @"id":              [rs stringForColumn:@"id"],
         @"nickName":        [rs stringForColumn:@"nick"],
         @"password":        [rs stringForColumn:@"password"],
-        @"assignmentFlags": [[rs stringForColumn:@"assignment_flags"] mutableObjectFromJSONString],
+        @"assignmentFlags": [rs stringForColumn:@"assignment_flags"] ? [[rs stringForColumn:@"assignment_flags"] mutableObjectFromJSONString] : [NSMutableDictionary dictionary],
         @"nickClash":       @([rs intForColumn:@"nick_clash"])
     } mutableCopy] autorelease];
 }

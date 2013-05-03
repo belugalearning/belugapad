@@ -285,6 +285,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
             
             FMDatabase *db = bself->allUsersDatabase;
             [db executeUpdate:@"INSERT INTO users(id, nick, password, assignment_flags) values(?, ?, ?, '{}')", urId, nick, password];
+            [self syncDeviceUsers];
         }
         callback(status);
     };

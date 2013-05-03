@@ -355,7 +355,7 @@ typedef enum  {
 
 -(void)addFilterButton
 {
-    filterTotalFlagCount=0;
+    filterTotalFlagCount=5;
     
     //filter button
     filterButtonType=@"";
@@ -364,6 +364,10 @@ typedef enum  {
     
     CCLabelTTF *flagct=nil;
     NSString *filterButtonFileName=@"/images/jmap/flag_button_faded.png";
+    CCSprite *fadedButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filterButtonFileName)];
+    [fadedButtonSprite setPosition:ccp(cx+200, 2*cy-(58.0f/2))];
+    [foreLayer addChild:fadedButtonSprite];
+    
     
     if(filterTotalFlagCount>0){
         filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_grey%@.png", filterButtonType];
@@ -373,7 +377,7 @@ typedef enum  {
     }
 
     filterButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filterButtonFileName)];
-    [filterButtonSprite setPosition:ccp(cx+200, 2*cy-(65.0f/2))];
+    [filterButtonSprite setPosition:ccp(cx+200, 2*cy-(58.0f/2))];
     [foreLayer addChild:filterButtonSprite];
 
     

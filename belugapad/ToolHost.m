@@ -1562,6 +1562,10 @@ static float kTimeToHintToolTray=0.0f;
             {
                 //doesn't need wrapping
             }
+            else if([[raw substringToIndex:4] isEqualToString:@" <b:"])
+            {
+                raw=[NSString stringWithFormat:@"<b:t></b:t>%@", raw];
+            }
             else
             {
                 //assume the string needs wrapping in b:t
@@ -1638,7 +1642,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
-            [row rowVisible:NO];
+//            [row rowVisible:NO];
         }
     
         if(row)[row release];
@@ -2364,44 +2368,44 @@ static float kTimeToHintToolTray=0.0f;
 //    if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
     //pinch handling
-    if([touches count]>1)
-    {
-        UITouch *t1=[[touches allObjects] objectAtIndex:0];
-        UITouch *t2=[[touches allObjects] objectAtIndex:1];
-        
-        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
-        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
-        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
-        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
-        
-        float da=[BLMath DistanceBetween:t1a and:t2a];
-        float db=[BLMath DistanceBetween:t1b and:t2b];
-        
-        float scaleChange=db-da;
-        
-        
-        scale+=(scaleChange / cx);
-        
-        [loggingService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
-        
-        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
-        else {
-            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
-            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
-            
-            [toolBackLayer setScale:scale];
-            [toolForeLayer setScale:scale];
-        }
-        
-        //NSLog(@"scale: %f", scale);
+//    if([touches count]>1)
+//    {
+//        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+//        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+//        
+//        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+//        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+//        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+//        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+//        
+//        float da=[BLMath DistanceBetween:t1a and:t2a];
+//        float db=[BLMath DistanceBetween:t1b and:t2b];
+//        
+//        float scaleChange=db-da;
+//        
+//        
+//        scale+=(scaleChange / cx);
+//        
+//        [loggingService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
+//        
+//        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
+//        else {
+//            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
+//            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
+//            
+//            [toolBackLayer setScale:scale];
+//            [toolForeLayer setScale:scale];
+//        }
+//        
+//        //NSLog(@"scale: %f", scale);
+//    }
+
+    if(isTouching){
+        [followParticle setPosition:location];
+        [explodeParticle setPosition:location];
     }
-    else {
-        if(isTouching){
-            [followParticle setPosition:location];
-            [explodeParticle setPosition:location];
-        }
-        [currentTool ccTouchesMoved:touches withEvent:event];
-    }
+    [currentTool ccTouchesMoved:touches withEvent:event];
+
     
 
 }
@@ -2532,14 +2536,15 @@ static float kTimeToHintToolTray=0.0f;
         if(trayPadShowing)
         {
             [self hidePad];
+            [self hideCornerTrayAndForce:YES];
         }
         else
         {
             [self hideMq];
             [self hideCalc];
             [self hideWheel];
-            
             [self showPad];
+            [self hideCornerTrayAndForce:YES];
             
             //[self showCornerTray];
         }
@@ -2609,7 +2614,7 @@ static float kTimeToHintToolTray=0.0f;
     [self hideWheel];
     [self hideMq];
     [self hidePad];
-    [self hideCornerTray];
+    [self hideCornerTrayAndForce:YES];
 }
 
 -(void)sizeAndResetQuestionDescripion
@@ -2648,7 +2653,12 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)hideCornerTray
 {
-    if(trayCornerShowing)
+    [self hideCornerTrayAndForce:NO];
+}
+
+-(void)hideCornerTrayAndForce:(BOOL)force
+{
+    if(trayCornerShowing||force)
     {
         qTrayTop.scaleX=1.0f;
         qTrayMid.scaleX=1.0f;
@@ -2907,30 +2917,17 @@ static float kTimeToHintToolTray=0.0f;
     
     NSInteger numRows = 0;
     
-    switch (component) {
-        case 0:
+    
+    if(component==0)
+    {
+        if([self numberOfComponentsInPickerView:pickerView]>1)
             numRows = 12;
-            break;
-        case 1:
-            numRows = 11;
-            break;
-        case 2:
-            numRows = 11;
-            break;
-        case 3:
-            numRows = 11;
-            break;
-        case 4:
-            numRows = 11;
-            break;
-        case 5:
-            numRows = 11;
-            break;
-        case 6:
-            numRows = 11;
-            break;
-        default:
-            break;
+        else
+            numRows= 10;
+    }
+    else
+    {
+        numRows = 11;
     }
     
     return numRows;

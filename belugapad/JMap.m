@@ -354,9 +354,7 @@ typedef enum  {
 }
 
 -(void)addFilterButton
-{
-    filterTotalFlagCount=5;
-    
+{ 
     //filter button
     filterButtonType=@"";
     if(filterTotalFlagCount>9)

@@ -49,7 +49,7 @@ typedef enum {
 
 -(void)downloadUserMatchingNickName:(NSString*)nickName
                         andPassword:(NSString*)password
-                           callback:(void (^)(NSDictionary*))callback;
+                           callback:(void (^)(NSDictionary*, NSString*))callback;
 
 -(void)joinClassWithToken:(NSString*)token
                  callback:(void(^)(uint, NSString*))callback;

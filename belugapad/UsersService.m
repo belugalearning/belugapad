@@ -435,7 +435,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         
         uint statusCode = res ? [res statusCode] : 0;
         NSString *message = res ? [res allHeaderFields][@"X-Response-Text"] : nil;
-        if (!message) message = @"An error was encountered";
+        if (!message) message = @"Please ensure that you are connected to the internet and try again.";
         
         callback(statusCode, message);
     };

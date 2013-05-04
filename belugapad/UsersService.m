@@ -405,7 +405,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         NSDictionary *user = [resultString objectFromJSONString];
         
         [bself->allUsersDatabase open];
-        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash,assignment_flags) values(?,?,?,1,?)", user[@"id"], nickName, password, user[@"assignmentFlags"]];
+        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash,assignment_flags) values(?,?,?,1,?)", user[@"id"], nickName, password, [user[@"assignmentFlags"] JSONString]];
         [bself->allUsersDatabase close];
         
         if (!successInsert)

@@ -1268,6 +1268,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void) showPauseMenu
 {
+    [usersService syncDeviceUsers];
+    
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];

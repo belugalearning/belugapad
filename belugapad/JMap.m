@@ -140,15 +140,15 @@ typedef enum  {
         usersService = ac.usersService;
         contentService = ac.contentService;
         
-        [usersService syncDeviceUsers];
-        
         [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
-        [loggingService sendData];
         
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
         
         [self setupMap];
+        
+        [usersService syncDeviceUsers];
+        [loggingService sendData];
         
         [self setupContentRegions];
         

@@ -175,12 +175,12 @@ typedef enum  {
         utdHeaderLabel=[CCLabelTTF labelWithString:@""
                                           fontName:CHANGO
                                           fontSize:14.0f
-                                        dimensions:CGSizeMake(575, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
-        [utdHeaderLabel setPosition:ccp(442,742)];
+                                        dimensions:CGSizeMake(500, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
+        [utdHeaderLabel setPosition:ccp(390,742)];
         [foreLayer addChild:utdHeaderLabel z:10];
     }
     
-    int maxStringSize=100;
+    int maxStringSize=90;
     
     if([toThisString length]>maxStringSize)
     {

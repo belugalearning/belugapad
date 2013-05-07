@@ -1558,7 +1558,7 @@ static float kTimeToHintToolTray=0.0f;
             // then the answer label
             raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
             
-            if(raw.length<3)
+            if(raw.length<4)
             {
                 //this can't have a <b:t> at the begining
                 

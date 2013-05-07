@@ -147,8 +147,10 @@
 {
     if(!pie.ScaledUp)
     {
-        [pie.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
-        pie.ScaledUp=YES;
+        CCScaleTo *st=[CCScaleTo actionWithDuration:0.2f scale:1.0f];
+        CCCallBlock *cb=[CCCallBlock actionWithBlock:^{pie.ScaledUp=YES;}];
+        CCSequence *sq=[CCSequence actionOne:st two:cb];
+        [pie.mySprite runAction:sq];
     }
     [pie.mySprite setPosition:pie.Position];
 }

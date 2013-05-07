@@ -432,7 +432,6 @@ static float kTimeToPieShake=7.0f;
 
 -(void)reorderActiveContainers
 {
-    NSLog(@"current activeCon count %d", [activeCon count]);
     int currentIndex=0;
     int currentYPos=0;
     int maxPerRow=5;
@@ -786,13 +785,11 @@ static float kTimeToPieShake=7.0f;
         {
             [self createContainerAtMount];
             createdNewCon=YES;
-            NSLog(@"create new container at mount");
         }
         if(hasMovedPie && !createdNewPie && createdPies <= numberOfCagedPies && needPieAtMount)
         {
             [self createPieAtMount];
             createdNewPie=YES;
-            NSLog(@"create new pie at mount");
         }
         
         if(createdNewCon||createdNewPie)[gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
@@ -808,8 +805,6 @@ static float kTimeToPieShake=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
-    
-    NSLog(@"touch location %@", NSStringFromCGPoint(location));
     
     if(gw.Blackboard.PickupObject)
     {
@@ -871,6 +866,8 @@ static float kTimeToPieShake=7.0f;
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_PIE withAdditionalData:nil];
                 // if this object isn't in the array, add it
+                [pie.mySprite setScale:1.0f];
+                
                 if(![activePie containsObject:pie])
                     [activePie addObject:pie];
             }

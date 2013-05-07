@@ -965,7 +965,7 @@
     __block typeof(self) bself = self;
     __block SEL bOnDownloadUserStateComplete = @selector(onDownloadUserStateComplete:);
     
-    void (^callback)() = ^(NSDictionary *ur) {
+    void (^callback)() = ^(NSDictionary *ur, NSString *message) {
         if (!ur)
         {
             self.dialog=[CODialog dialogWithWindow:self.view.window];
@@ -973,7 +973,7 @@
             
             self.dialog.dialogStyle=CODialogStyleDefault;
             self.dialog.title=@"Sorry";
-            self.dialog.subtitle=@"We could not find a match for those login details. Please double-check and try again.";
+            self.dialog.subtitle=message;
             [self.dialog addButtonWithTitle:@"OK" target:self selector:@selector(hideDialog:)];
             
             [self.dialog sizeToFit];

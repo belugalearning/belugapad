@@ -350,11 +350,22 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
 
 -(void)downloadUserMatchingNickName:(NSString*)nickName
                         andPassword:(NSString*)password
-                           callback:(void (^)(NSDictionary*))callback
+                           callback:(void (^)(NSDictionary*, NSString*))callback
 {
+    [allUsersDatabase open];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick = ?", nickName];
+    BOOL alreadyExists = [rs next];
+    [allUsersDatabase close];
+    if (alreadyExists)
+    {
+        callback(nil, @"There is already a user with that username on this device!");
+        return;
+    }
+    
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSGetUserPath
                                                   parameters:@{ @"nick":nickName, @"password":password }];
+    req.timeoutInterval = 7;
     
     __block typeof(self) bself = self;
     
@@ -364,38 +375,46 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         
         if (!reqSuccess)
         {
-            callback(nil);
+            NSInteger sc = 0;
+            if ([op response] != nil)
+            {
+                sc = [[op response] statusCode];
+            }
+            
+            switch (sc) {
+                case 0:
+                    callback(nil, @"Please ensure that you are connected to the internet and try again.");
+                    break;
+                case 404:
+                    callback(nil, @"We could not find a match for the supplied username and passcode. Please double-check and try again.");
+                    break;
+                case 409:
+                    callback(nil, @"The username and password matches more than one user. You must first change your username on the device on which you created your account.");
+                    break;
+                case 500:
+                    callback(nil, @"We may have a temporary problem at our end. Please try again.");
+                    break;
+                default:
+                    callback(nil, @"We encountered a problem.");
+            }
+            
             return;
         }
         
         NSString *resultString = [[[NSString alloc] initWithBytes:[res bytes] length:[res length] encoding:NSUTF8StringEncoding] autorelease];
         NSDictionary *user = [resultString objectFromJSONString];
         
-        if (!user)
-        {
-            callback(nil);
-            return;
-        }
-        
-        NSString *urId = [user objectForKey:@"id"];
-        
-        if (!urId)
-        {
-            callback(nil);
-            return;
-        }
-        
         [bself->allUsersDatabase open];
-        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash,assignment_flags) values(?,?,?,1,?)", urId, nickName, password, user[@"assignmentFlags"]];
+        BOOL successInsert = [bself->allUsersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nick_clash,assignment_flags) values(?,?,?,1,?)", user[@"id"], nickName, password, [user[@"assignmentFlags"] JSONString]];
         [bself->allUsersDatabase close];
         
         if (!successInsert)
         {
-            callback(nil);
+            callback(nil, @"There was a problem adding the user to the device after download.");
             return;
         }
         
-        callback(user);
+        callback(user, nil);
     }; 
     
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
@@ -416,7 +435,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         
         uint statusCode = res ? [res statusCode] : 0;
         NSString *message = res ? [res allHeaderFields][@"X-Response-Text"] : nil;
-        if (!message) message = @"An error was encountered";
+        if (!message) message = @"Please ensure that you are connected to the internet and try again.";
         
         callback(statusCode, message);
     };

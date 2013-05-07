@@ -32,6 +32,8 @@
 
 -(id)initWithDatabase:(FMDatabase*)db andProblemId:(NSString*)pId
 {
+    BOOL decodePDef = NO;
+    
     database = [db retain];
     [db open];
     FMResultSet *rs = [database executeQuery:@"select * from Problems where id=?", pId];
@@ -41,7 +43,14 @@
         self = [super initWithFMResultSetRow:rs];
         if (self)
         {
-            self.pdef = [[rs stringForColumn:@"pdef"] objectFromJSONString];
+            NSString *decodedPDefString = [[[[[[rs stringForColumn:@"pdef"]
+                            stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"]
+                            stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"]
+                            stringByReplacingOccurrencesOfString:@"&amp;" withString:@"?"]
+                            stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\\\""]
+                            stringByReplacingOccurrencesOfString:@"&apos;" withString:@"'"];
+            
+            self.pdef = [(decodePDef ? decodedPDefString : [rs stringForColumn:@"pdef"]) objectFromJSONString];
             self.lastSavedPDef = [rs stringForColumn:@"pdef"];
             self.changeStack = [rs stringForColumn:@"change_stack"];
             self.stackCurrentIndex = [rs intForColumn:@"stack_current_index"];

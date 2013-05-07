@@ -1,0 +1,804 @@
+================================================
+Export Settings Couch Document:
+{
+    "exportAllNodes": false,
+    "nodeInclusionTags": [],
+    "nodeTagsToBitCols": [
+        "mastery"
+    ],
+    "nodeTagPrefixesToTextCols": [
+        "jtd",
+        "demogl",
+        "region",
+        "utd",
+        "renderlayout",
+        "renderbase"
+    ],
+    "pipelineNames": [
+        "content_2.00"
+    ],
+    "pipelineWorkflowStatusOperator": ">=",
+    "pipelineWorkflowStatusLevel": 0,
+    "type": "ExportSettings",
+    "nodeExclusionTags": [],
+    "conceptNodeRequiredTags": [
+        "encoded-btxe-test"
+    ]
+}
+================================================
+
+================================================
+KCM Content shaped for use as source of SQLite database:
+{
+    "conceptNodes": [
+        {
+            "id": "ef94b4e71565a902bbbba81afa07c7f2",
+            "rev": "17-8b7c31272d2d14c6f467bfcf21af5ca4",
+            "pipelines": [],
+            "x": 8306,
+            "y": 3025,
+            "workflowStatus": 0,
+            "mastery": 1,
+            "jtd": "[\" understanding ratio\"]",
+            "demogl": "[]",
+            "region": "[\"fractions, decimals, percentages, ratio & proportion\"]",
+            "utd": "[]",
+            "renderlayout": "[\"1\"]",
+            "renderbase": "[\"9\"]"
+        },
+        {
+            "id": "5608a59d6797796ce9e11484fd1397f8",
+            "rev": "21-c322545a82729eb49d1fd4d2bba500dc",
+            "pipelines": [
+                "9MX9F9MY-8GJB-CUFV-W8FI-HDOTMC37XGVX"
+            ],
+            "x": 8872,
+            "y": 3193,
+            "workflowStatus": 0,
+            "mastery": 0,
+            "jtd": "[]",
+            "demogl": "[]",
+            "region": "[]",
+            "utd": "[\"understand and use ratio notation\"]",
+            "renderlayout": "[]",
+            "renderbase": "[]"
+        }
+    ],
+    "pipelines": [
+        {
+            "id": "9MX9F9MY-8GJB-CUFV-W8FI-HDOTMC37XGVX",
+            "rev": "19-6ef2cb49dfae50c86d40b5481242ff09",
+            "name": "content_2.00",
+            "workflowStatus": 0,
+            "problems": [
+                "XR53UN5F-MZT0-ABNV-EV51-2SYYUX4Z69XJ",
+                "RU0Q6X1O-7MF5-QUU3-R3ZY-08W93VV8F5M8",
+                "9S9UDIO1-15OQ-GTSI-MCVL-CI2VTS4D81GI",
+                "EXHT0JFS-W66J-9WLO-BEEY-9S9668QP9CHM",
+                "WVA8BT3H-VRUG-6995-8EPG-6RSRH8718NRB",
+                "78OEEBU8-XBQJ-32VK-979D-GYNT8JKVQET1",
+                "P3EZWU13-GNU9-S2KZ-KDAC-DLO6ZNV3RXPG",
+                "8X81VVIY-LZVA-G35T-DHVO-YZJURWCGAT1E",
+                "P9LSN47E-E0KF-PJTZ-ACVH-OY22JA13AJOT",
+                "6943WND0-HJS3-A322-B4DU-WL6L95ZTX2FM",
+                "7CSGJXD1-XM9W-SGNO-YO7B-892MIMDPVM2D",
+                "JURGL0SG-PFPN-Y3TN-X2SG-3EU91EXH2LJ2"
+            ]
+        }
+    ],
+    "binaryRelations": [
+        {
+            "id": "0485fa0a1e770273e776d08c5800282c",
+            "rev": "304-5039d544eb64e696bdaf9d70524ef601",
+            "name": "Mastery",
+            "members": [
+                [
+                    "5608a59d6797796ce9e11484fd1397f8",
+                    "ef94b4e71565a902bbbba81afa07c7f2"
+                ]
+            ]
+        },
+        {
+            "id": "0485fa0a1e770273e776d08c5801a673",
+            "rev": "3-8df4bffb8d1607b0e14371cf21cd6a29",
+            "name": "InterMastery",
+            "members": []
+        },
+        {
+            "id": "5608a59d6797796ce9e11484fd11da86",
+            "rev": "350-2847472c5387f8763a308d6e1adce474",
+            "name": "Prerequisite",
+            "members": []
+        }
+    ],
+    "problems": [
+        {
+            "id": "XR53UN5F-MZT0-ABNV-EV51-2SYYUX4Z69XJ",
+            "rev": "5-d3651283a98cd37f5bdaf42b3f4dde5a",
+            "pdef": {
+                "FOUNDATION": true,
+                "META_QUESTION": {
+                    "META_QUESTION_COMPLETE_TEXT": "well done!!",
+                    "META_QUESTION_EVAL_MODE": 0,
+                    "META_QUESTION_ANSWER_MODE": 0,
+                    "META_QUESTION_ANSWERS": [
+                        {
+                            "META_ANSWER_TEXT": " {@bname} :  {@gname} {@gname}",
+                            "META_ANSWER_VALUE": false
+                        },
+                        {
+                            "META_ANSWER_TEXT": " {@bname}  {@bname} :  {@gname}",
+                            "META_ANSWER_VALUE": true
+                        },
+                        {
+                            "META_ANSWER_TEXT": " {@bname} : {@gname}",
+                            "META_ANSWER_VALUE": false
+                        }
+                    ],
+                    "META_QUESTION_TITLE": "&lt;b:t&gt;There are 2&lt;/b:t&gt; {@bname}&lt;b:t&gt;, and 1 &lt;/b:t&gt;{@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;",
+                    "META_QUESTION_INCOMPLETE_TEXT": "Try again"
+                },
+                "EVAL_MODE": 1,
+                "DSTRINGS": {
+                    "@bname": {
+                        "MODE": "RANDOM",
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_4&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_5&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_3&quot;/&gt; "
+                        ]
+                    },
+                    "@gname": {
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_1&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_2&quot;/&gt; "
+                        ],
+                        "MODE": "RANDOM"
+                    }
+                },
+                "INTERNAL_DESCRIPTION": "simple ratio numbers to pictures"
+            }
+        },
+        {
+            "id": "RU0Q6X1O-7MF5-QUU3-R3ZY-08W93VV8F5M8",
+            "rev": "5-636d3e2993576d26809daa72b3a7b979",
+            "pdef": {
+                "FOUNDATION": true,
+                "META_QUESTION": {
+                    "META_QUESTION_COMPLETE_TEXT": "well done!!",
+                    "META_QUESTION_EVAL_MODE": 0,
+                    "META_QUESTION_ANSWER_MODE": 0,
+                    "META_QUESTION_ANSWERS": [
+                        {
+                            "META_ANSWER_TEXT": "1 : 2",
+                            "META_ANSWER_VALUE": false
+                        },
+                        {
+                            "META_ANSWER_TEXT": "2 : 1",
+                            "META_ANSWER_VALUE": true
+                        },
+                        {
+                            "META_ANSWER_TEXT": "2 : 3",
+                            "META_ANSWER_VALUE": false
+                        }
+                    ],
+                    "META_QUESTION_TITLE": "{@bname} {@gname} {@bname}&lt;b:t&gt;What is the ratio of&lt;/b:t&gt; {@bname} &lt;b:t&gt;to&lt;/b:t&gt; {@gname} &lt;b:t&gt;?&lt;/b:t&gt;",
+                    "META_QUESTION_INCOMPLETE_TEXT": "Try again"
+                },
+                "EVAL_MODE": 1,
+                "DSTRINGS": {
+                    "@bname": {
+                        "MODE": "RANDOM",
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_4&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_5&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_3&quot;/&gt; "
+                        ]
+                    },
+                    "@gname": {
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_1&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_2&quot;/&gt; "
+                        ],
+                        "MODE": "RANDOM"
+                    }
+                },
+                "INTERNAL_DESCRIPTION": "simple ratio pictures to numbers"
+            }
+        },
+        {
+            "id": "9S9UDIO1-15OQ-GTSI-MCVL-CI2VTS4D81GI",
+            "rev": "5-bda1f3bcce7bde855f14de8344812922",
+            "pdef": {
+                "FOUNDATION": true,
+                "META_QUESTION": {
+                    "META_QUESTION_COMPLETE_TEXT": "well done!!",
+                    "META_QUESTION_EVAL_MODE": 0,
+                    "META_QUESTION_ANSWER_MODE": 0,
+                    "META_QUESTION_ANSWERS": [
+                        {
+                            "META_ANSWER_TEXT": "1 : 2",
+                            "META_ANSWER_VALUE": true
+                        },
+                        {
+                            "META_ANSWER_TEXT": "2 : 1",
+                            "META_ANSWER_VALUE": false
+                        },
+                        {
+                            "META_ANSWER_TEXT": "1 : 3",
+                            "META_ANSWER_VALUE": false
+                        }
+                    ],
+                    "META_QUESTION_TITLE": "{@bname} {@gname} {@bname}&lt;b:t&gt;What is the ratio of&lt;/b:t&gt; {@gname} &lt;b:t&gt;to&lt;/b:t&gt; {@bname} &lt;b:t&gt;?&lt;/b:t&gt;",
+                    "META_QUESTION_INCOMPLETE_TEXT": "Try again"
+                },
+                "EVAL_MODE": 1,
+                "DSTRINGS": {
+                    "@bname": {
+                        "MODE": "RANDOM",
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_4&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_5&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_3&quot;/&gt; "
+                        ]
+                    },
+                    "@gname": {
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_1&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_2&quot;/&gt; "
+                        ],
+                        "MODE": "RANDOM"
+                    }
+                },
+                "INTERNAL_DESCRIPTION": "simple ratio pictures to numbers"
+            }
+        },
+        {
+            "id": "EXHT0JFS-W66J-9WLO-BEEY-9S9668QP9CHM",
+            "rev": "5-103c04e059b455569607e0aa1d87e0c3",
+            "pdef": {
+                "FOUNDATION": true,
+                "META_QUESTION": {
+                    "META_QUESTION_COMPLETE_TEXT": "well done!!",
+                    "META_QUESTION_EVAL_MODE": 0,
+                    "META_QUESTION_ANSWER_MODE": 0,
+                    "META_QUESTION_ANSWERS": [
+                        {
+                            "META_ANSWER_TEXT": " {@bname}  {@bname}  {@bname} :  {@gname} {@gname}",
+                            "META_ANSWER_VALUE": false
+                        },
+                        {
+                            "META_ANSWER_TEXT": " {@bname}  {@bname} :  {@gname} {@gname} {@gname}",
+                            "META_ANSWER_VALUE": true
+                        },
+                        {
+                            "META_ANSWER_TEXT": " {@bname} {@gname} : {@gname} {@gname}",
+                            "META_ANSWER_VALUE": false
+                        }
+                    ],
+                    "META_QUESTION_TITLE": "&lt;b:t&gt;There are 2&lt;/b:t&gt; {@bname}&lt;b:t&gt;, and 3 &lt;/b:t&gt;{@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;",
+                    "META_QUESTION_INCOMPLETE_TEXT": "Try again"
+                },
+                "EVAL_MODE": 1,
+                "DSTRINGS": {
+                    "@bname": {
+                        "MODE": "RANDOM",
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_4&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_5&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_3&quot;/&gt; "
+                        ]
+                    },
+                    "@gname": {
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_1&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_2&quot;/&gt; "
+                        ],
+                        "MODE": "RANDOM"
+                    }
+                },
+                "INTERNAL_DESCRIPTION": "compound ratio numbers to pictures"
+            }
+        },
+        {
+            "id": "WVA8BT3H-VRUG-6995-8EPG-6RSRH8718NRB",
+            "rev": "5-d0021689c5d624bff14306ec787f2dea",
+            "pdef": {
+                "FOUNDATION": true,
+                "META_QUESTION": {
+                    "META_QUESTION_COMPLETE_TEXT": "well done!!",
+                    "META_QUESTION_EVAL_MODE": 0,
+                    "META_QUESTION_ANSWER_MODE": 0,
+                    "META_QUESTION_ANSWERS": [
+                        {
+                            "META_ANSWER_TEXT": "3 :  2",
+                            "META_ANSWER_VALUE": false
+                        },
+                        {
+                            "META_ANSWER_TEXT": "2 : 3",
+                            "META_ANSWER_VALUE": true
+                        },
+                        {
+                            "META_ANSWER_TEXT": "2 : 5",
+                            "META_ANSWER_VALUE": false
+                        }
+                    ],
+                    "META_QUESTION_TITLE": "&lt;b:t&gt;There are&lt;/b:t&gt;  {@bname}  {@bname} :  {@gname} {@gname} {@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;",
+                    "META_QUESTION_INCOMPLETE_TEXT": "Try again"
+                },
+                "EVAL_MODE": 1,
+                "DSTRINGS": {
+                    "@bname": {
+                        "MODE": "RANDOM",
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_4&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_5&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_3&quot;/&gt; "
+                        ]
+                    },
+                    "@gname": {
+                        "DATA": [
+                            "&lt;b:oi tag=&quot;thing_1&quot;/&gt; ",
+                            "&lt;b:oi tag=&quot;thing_2&quot;/&gt; "
+                        ],
+                        "MODE": "RANDOM"
+                    }
+                },
+                "INTERNAL_DESCRIPTION": "compound ratio numbers to pictures"
+            }
+        },
+        {
+            "id": "78OEEBU8-XBQJ-32VK-979D-GYNT8JKVQET1",
+            "rev": "4-016fc89c54c8d7364dde7e82f595a7d0",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "INTERNAL_DESCRIPTION": "simplify down to 1:x",
+                "FOUNDATION": true,
+                "PROBLEM_DESCRIPTION": "Mix green and blue in the ratio 200 : 150",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": 0,
+                "RECIPE_GREEN": 200,
+                "RECIPE_BLUE": 150,
+                "EVAL_VALUE_RED": 0,
+                "EVAL_VALUE_GREEN": 200,
+                "WHEEL_MAX": 250,
+                "INIT_VALUE_BLUE": 150
+            }
+        },
+        {
+            "id": "P3EZWU13-GNU9-S2KZ-KDAC-DLO6ZNV3RXPG",
+            "rev": "4-10255480937563d352f31a24328b3cd9",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "PROBLEM_DESCRIPTION": "Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {100*$b} blue goo are used. Complete the mix.",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": "{$r}",
+                "RECIPE_GREEN": "{$g}",
+                "RECIPE_BLUE": "{$b}",
+                "EVAL_VALUE_RED": "{100*$r}",
+                "EVAL_VALUE_GREEN": "{100*$g}",
+                "WHEEL_MAX": "500",
+                "INIT_VALUE_BLUE": "{100*$b}",
+                "DVARS": [
+                    {
+                        "VAR_NAME": "$r",
+                        "RETAIN": true,
+                        "MIN": "1",
+                        "MAX": "4"
+                    },
+                    {
+                        "VAR_NAME": "$g",
+                        "RETAIN": true,
+                        "MIN": "2",
+                        "MAX": "4"
+                    },
+                    {
+                        "VAR_NAME": "$b",
+                        "RETAIN": true,
+                        "MIN": "1",
+                        "MAX": "3"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "8X81VVIY-LZVA-G35T-DHVO-YZJURWCGAT1E",
+            "rev": "4-db72816d5e908fb842787613f2dcaa01",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "PROBLEM_DESCRIPTION": "Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {60*$b} blue goo are used. Complete the mix.",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": "{$r}",
+                "RECIPE_GREEN": "{$g}",
+                "RECIPE_BLUE": "{$b}",
+                "EVAL_VALUE_RED": "{60*$r}",
+                "EVAL_VALUE_GREEN": "{60*$g}",
+                "WHEEL_MAX": "250",
+                "INIT_VALUE_BLUE": "{60*$b}",
+                "DVARS": [
+                    {
+                        "VAR_NAME": "$r",
+                        "RECALL": "{$r}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$g",
+                        "RECALL": "{$g}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$b",
+                        "RECALL": "{$b}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "P9LSN47E-E0KF-PJTZ-ACVH-OY22JA13AJOT",
+            "rev": "4-db1df457f1a9d09c732b1f1d1c296785",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "PROBLEM_DESCRIPTION": "Red, green and blue goo is mixed in the ratio {100*$r} : {100*$g} : {100*$b}. {40*$b} blue goo are used. Complete the mix.",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": "{100*$r}",
+                "RECIPE_GREEN": "{100*$g}",
+                "RECIPE_BLUE": "{100*$b}",
+                "EVAL_VALUE_RED": "{40*$r}",
+                "EVAL_VALUE_GREEN": "{40*$g}",
+                "WHEEL_MAX": "250",
+                "INIT_VALUE_BLUE": "{40*$b}",
+                "DVARS": [
+                    {
+                        "VAR_NAME": "$r",
+                        "RECALL": "{$r}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$g",
+                        "RECALL": "{$g}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$b",
+                        "RECALL": "{$b}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "6943WND0-HJS3-A322-B4DU-WL6L95ZTX2FM",
+            "rev": "4-aadd68e72c85e92f566c84994d87f473",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "PROBLEM_DESCRIPTION": "Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {100*$b} blue goo are used. Complete the mix.",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": "{$r}",
+                "RECIPE_GREEN": "{$g}",
+                "RECIPE_BLUE": "{$b}",
+                "EVAL_VALUE_RED": "{100*$r}",
+                "EVAL_VALUE_GREEN": "{100*$g}",
+                "WHEEL_MAX": "999",
+                "INIT_VALUE_BLUE": "{100*$b}",
+                "DVARS": [
+                    {
+                        "VAR_NAME": "$r",
+                        "RETAIN": true,
+                        "MIN": "4",
+                        "MAX": "7"
+                    },
+                    {
+                        "VAR_NAME": "$g",
+                        "RETAIN": true,
+                        "MIN": "2",
+                        "MAX": "4"
+                    },
+                    {
+                        "VAR_NAME": "$b",
+                        "RETAIN": true,
+                        "MIN": "1",
+                        "MAX": "3"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "7CSGJXD1-XM9W-SGNO-YO7B-892MIMDPVM2D",
+            "rev": "4-c1b42878759b712a967ae444ba7ed47a",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "PROBLEM_DESCRIPTION": "Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {60*$b} blue goo are used. Complete the mix.",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": "{$r}",
+                "RECIPE_GREEN": "{$g}",
+                "RECIPE_BLUE": "{$b}",
+                "EVAL_VALUE_RED": "{60*$r}",
+                "EVAL_VALUE_GREEN": "{60*$g}",
+                "WHEEL_MAX": "250",
+                "INIT_VALUE_BLUE": "{60*$b}",
+                "DVARS": [
+                    {
+                        "VAR_NAME": "$r",
+                        "RECALL": "{$r}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$g",
+                        "RECALL": "{$g}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$b",
+                        "RECALL": "{$b}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "JURGL0SG-PFPN-Y3TN-X2SG-3EU91EXH2LJ2",
+            "rev": "4-cde16aae5d80ef0c3f2f0c39a536f9f3",
+            "pdef": {
+                "TOOL_KEY": "RatioTool",
+                "PROBLEM_DESCRIPTION": "Red, green and blue goo is mixed in the ratio {100*$r} : {100*$g} : {100*$b}. {$40*$b} blue goo are used. Complete the mix.",
+                "EVAL_MODE": "1",
+                "REJECT_MODE": "0",
+                "RECIPE_RED": "{10*$r}",
+                "RECIPE_GREEN": "{10*$g}",
+                "RECIPE_BLUE": "{10*$b}",
+                "EVAL_VALUE_RED": "{2.5*$r}",
+                "EVAL_VALUE_GREEN": "{2.5*$g}",
+                "WHEEL_MAX": "250",
+                "INIT_VALUE_BLUE": "{2.5*$b}",
+                "DVARS": [
+                    {
+                        "VAR_NAME": "$r",
+                        "RECALL": "{$r}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$g",
+                        "RECALL": "{$g}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    },
+                    {
+                        "VAR_NAME": "$b",
+                        "RECALL": "{$b}",
+                        "MIN": "1",
+                        "MAX": "5"
+                    }
+                ]
+            }
+        }
+    ]
+}
+================================================
+
+================================================
+CREATE TABLE ConceptNodes
+
+================================================
+INSERT INTO ConceptNodes
+[ef94b4e71565a902bbbba81afa07c7f2][5608a59d6797796ce9e11484fd1397f8]
+================================================
+CREATE TABLE Pipelines
+
+================================================
+INSERT INTO Pipelines
+[9MX9F9MY-8GJB-CUFV-W8FI-HDOTMC37XGVX]
+================================================
+CREATE TABLE Problems
+
+================================================
+INSERT INTO Problems
+[XR53UN5F-MZT0-ABNV-EV51-2SYYUX4Z69XJ][RU0Q6X1O-7MF5-QUU3-R3ZY-08W93VV8F5M8][9S9UDIO1-15OQ-GTSI-MCVL-CI2VTS4D81GI][EXHT0JFS-W66J-9WLO-BEEY-9S9668QP9CHM][WVA8BT3H-VRUG-6995-8EPG-6RSRH8718NRB][78OEEBU8-XBQJ-32VK-979D-GYNT8JKVQET1][P3EZWU13-GNU9-S2KZ-KDAC-DLO6ZNV3RXPG][8X81VVIY-LZVA-G35T-DHVO-YZJURWCGAT1E][P9LSN47E-E0KF-PJTZ-ACVH-OY22JA13AJOT][6943WND0-HJS3-A322-B4DU-WL6L95ZTX2FM][7CSGJXD1-XM9W-SGNO-YO7B-892MIMDPVM2D][JURGL0SG-PFPN-Y3TN-X2SG-3EU91EXH2LJ2]
+================================================
+CREATE TABLE BinaryRelations
+
+================================================
+INSERT INTO BinaryRelations
+[0485fa0a1e770273e776d08c5800282c][0485fa0a1e770273e776d08c5801a673][5608a59d6797796ce9e11484fd11da86]
+================================================
+SELECT * FROM ConceptNodes:
+[
+    {
+        "id": "ef94b4e71565a902bbbba81afa07c7f2",
+        "rev": "17-8b7c31272d2d14c6f467bfcf21af5ca4",
+        "pipelines": "[]",
+        "workflowStatus": 0,
+        "x": 8306,
+        "y": 3025,
+        "mastery": 1,
+        "jtd": "[\" understanding ratio\"]",
+        "demogl": "[]",
+        "region": "[\"fractions, decimals, percentages, ratio & proportion\"]",
+        "utd": "[]",
+        "renderlayout": "[\"1\"]",
+        "renderbase": "[\"9\"]"
+    },
+    {
+        "id": "5608a59d6797796ce9e11484fd1397f8",
+        "rev": "21-c322545a82729eb49d1fd4d2bba500dc",
+        "pipelines": "[\"9MX9F9MY-8GJB-CUFV-W8FI-HDOTMC37XGVX\"]",
+        "workflowStatus": 0,
+        "x": 8872,
+        "y": 3193,
+        "mastery": 0,
+        "jtd": "[]",
+        "demogl": "[]",
+        "region": "[]",
+        "utd": "[\"understand and use ratio notation\"]",
+        "renderlayout": "[]",
+        "renderbase": "[]"
+    }
+]
+================================================
+
+================================================
+SELECT * FROM Pipelines:
+[
+    {
+        "id": "9MX9F9MY-8GJB-CUFV-W8FI-HDOTMC37XGVX",
+        "rev": "19-6ef2cb49dfae50c86d40b5481242ff09",
+        "name": "content_2.00",
+        "workflowStatus": 0,
+        "problems": "[\"XR53UN5F-MZT0-ABNV-EV51-2SYYUX4Z69XJ\",\"RU0Q6X1O-7MF5-QUU3-R3ZY-08W93VV8F5M8\",\"9S9UDIO1-15OQ-GTSI-MCVL-CI2VTS4D81GI\",\"EXHT0JFS-W66J-9WLO-BEEY-9S9668QP9CHM\",\"WVA8BT3H-VRUG-6995-8EPG-6RSRH8718NRB\",\"78OEEBU8-XBQJ-32VK-979D-GYNT8JKVQET1\",\"P3EZWU13-GNU9-S2KZ-KDAC-DLO6ZNV3RXPG\",\"8X81VVIY-LZVA-G35T-DHVO-YZJURWCGAT1E\",\"P9LSN47E-E0KF-PJTZ-ACVH-OY22JA13AJOT\",\"6943WND0-HJS3-A322-B4DU-WL6L95ZTX2FM\",\"7CSGJXD1-XM9W-SGNO-YO7B-892MIMDPVM2D\",\"JURGL0SG-PFPN-Y3TN-X2SG-3EU91EXH2LJ2\"]"
+    }
+]
+================================================
+
+================================================
+SELECT * FROM Problems:
+[
+    {
+        "id": "XR53UN5F-MZT0-ABNV-EV51-2SYYUX4Z69XJ",
+        "rev": "5-d3651283a98cd37f5bdaf42b3f4dde5a",
+        "pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\" {@bname} :  {@gname} {@gname}\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\" {@bname}  {@bname} :  {@gname}\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\" {@bname} : {@gname}\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"&lt;b:t&gt;There are 2&lt;/b:t&gt; {@bname}&lt;b:t&gt;, and 1 &lt;/b:t&gt;{@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"simple ratio numbers to pictures\"}",
+        "last_saved_pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\" {@bname} :  {@gname} {@gname}\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\" {@bname}  {@bname} :  {@gname}\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\" {@bname} : {@gname}\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"&lt;b:t&gt;There are 2&lt;/b:t&gt; {@bname}&lt;b:t&gt;, and 1 &lt;/b:t&gt;{@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"simple ratio numbers to pictures\"}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "RU0Q6X1O-7MF5-QUU3-R3ZY-08W93VV8F5M8",
+        "rev": "5-636d3e2993576d26809daa72b3a7b979",
+        "pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\"1 : 2\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\"2 : 1\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\"2 : 3\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"{@bname} {@gname} {@bname}&lt;b:t&gt;What is the ratio of&lt;/b:t&gt; {@bname} &lt;b:t&gt;to&lt;/b:t&gt; {@gname} &lt;b:t&gt;?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"simple ratio pictures to numbers\"}",
+        "last_saved_pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\"1 : 2\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\"2 : 1\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\"2 : 3\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"{@bname} {@gname} {@bname}&lt;b:t&gt;What is the ratio of&lt;/b:t&gt; {@bname} &lt;b:t&gt;to&lt;/b:t&gt; {@gname} &lt;b:t&gt;?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"simple ratio pictures to numbers\"}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "9S9UDIO1-15OQ-GTSI-MCVL-CI2VTS4D81GI",
+        "rev": "5-bda1f3bcce7bde855f14de8344812922",
+        "pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\"1 : 2\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\"2 : 1\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\"1 : 3\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"{@bname} {@gname} {@bname}&lt;b:t&gt;What is the ratio of&lt;/b:t&gt; {@gname} &lt;b:t&gt;to&lt;/b:t&gt; {@bname} &lt;b:t&gt;?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"simple ratio pictures to numbers\"}",
+        "last_saved_pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\"1 : 2\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\"2 : 1\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\"1 : 3\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"{@bname} {@gname} {@bname}&lt;b:t&gt;What is the ratio of&lt;/b:t&gt; {@gname} &lt;b:t&gt;to&lt;/b:t&gt; {@bname} &lt;b:t&gt;?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"simple ratio pictures to numbers\"}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "EXHT0JFS-W66J-9WLO-BEEY-9S9668QP9CHM",
+        "rev": "5-103c04e059b455569607e0aa1d87e0c3",
+        "pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\" {@bname}  {@bname}  {@bname} :  {@gname} {@gname}\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\" {@bname}  {@bname} :  {@gname} {@gname} {@gname}\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\" {@bname} {@gname} : {@gname} {@gname}\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"&lt;b:t&gt;There are 2&lt;/b:t&gt; {@bname}&lt;b:t&gt;, and 3 &lt;/b:t&gt;{@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"compound ratio numbers to pictures\"}",
+        "last_saved_pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\" {@bname}  {@bname}  {@bname} :  {@gname} {@gname}\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\" {@bname}  {@bname} :  {@gname} {@gname} {@gname}\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\" {@bname} {@gname} : {@gname} {@gname}\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"&lt;b:t&gt;There are 2&lt;/b:t&gt; {@bname}&lt;b:t&gt;, and 3 &lt;/b:t&gt;{@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"compound ratio numbers to pictures\"}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "WVA8BT3H-VRUG-6995-8EPG-6RSRH8718NRB",
+        "rev": "5-d0021689c5d624bff14306ec787f2dea",
+        "pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\"3 :  2\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\"2 : 3\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\"2 : 5\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"&lt;b:t&gt;There are&lt;/b:t&gt;  {@bname}  {@bname} :  {@gname} {@gname} {@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"compound ratio numbers to pictures\"}",
+        "last_saved_pdef": "{\"FOUNDATION\":true,\"META_QUESTION\":{\"META_QUESTION_COMPLETE_TEXT\":\"well done!!\",\"META_QUESTION_EVAL_MODE\":0,\"META_QUESTION_ANSWER_MODE\":0,\"META_QUESTION_ANSWERS\":[{\"META_ANSWER_TEXT\":\"3 :  2\",\"META_ANSWER_VALUE\":false},{\"META_ANSWER_TEXT\":\"2 : 3\",\"META_ANSWER_VALUE\":true},{\"META_ANSWER_TEXT\":\"2 : 5\",\"META_ANSWER_VALUE\":false}],\"META_QUESTION_TITLE\":\"&lt;b:t&gt;There are&lt;/b:t&gt;  {@bname}  {@bname} :  {@gname} {@gname} {@gname}&lt;b:t&gt;. Which answer shows this?&lt;/b:t&gt;\",\"META_QUESTION_INCOMPLETE_TEXT\":\"Try again\"},\"EVAL_MODE\":1,\"DSTRINGS\":{\"@bname\":{\"MODE\":\"RANDOM\",\"DATA\":[\"&lt;b:oi tag=&quot;thing_4&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_5&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_3&quot;/&gt; \"]},\"@gname\":{\"DATA\":[\"&lt;b:oi tag=&quot;thing_1&quot;/&gt; \",\"&lt;b:oi tag=&quot;thing_2&quot;/&gt; \"],\"MODE\":\"RANDOM\"}},\"INTERNAL_DESCRIPTION\":\"compound ratio numbers to pictures\"}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "78OEEBU8-XBQJ-32VK-979D-GYNT8JKVQET1",
+        "rev": "4-016fc89c54c8d7364dde7e82f595a7d0",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"INTERNAL_DESCRIPTION\":\"simplify down to 1:x\",\"FOUNDATION\":true,\"PROBLEM_DESCRIPTION\":\"Mix green and blue in the ratio 200 : 150\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":0,\"RECIPE_GREEN\":200,\"RECIPE_BLUE\":150,\"EVAL_VALUE_RED\":0,\"EVAL_VALUE_GREEN\":200,\"WHEEL_MAX\":250,\"INIT_VALUE_BLUE\":150}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"INTERNAL_DESCRIPTION\":\"simplify down to 1:x\",\"FOUNDATION\":true,\"PROBLEM_DESCRIPTION\":\"Mix green and blue in the ratio 200 : 150\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":0,\"RECIPE_GREEN\":200,\"RECIPE_BLUE\":150,\"EVAL_VALUE_RED\":0,\"EVAL_VALUE_GREEN\":200,\"WHEEL_MAX\":250,\"INIT_VALUE_BLUE\":150}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "P3EZWU13-GNU9-S2KZ-KDAC-DLO6ZNV3RXPG",
+        "rev": "4-10255480937563d352f31a24328b3cd9",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {100*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{100*$r}\",\"EVAL_VALUE_GREEN\":\"{100*$g}\",\"WHEEL_MAX\":\"500\",\"INIT_VALUE_BLUE\":\"{100*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RETAIN\":true,\"MIN\":\"1\",\"MAX\":\"4\"},{\"VAR_NAME\":\"$g\",\"RETAIN\":true,\"MIN\":\"2\",\"MAX\":\"4\"},{\"VAR_NAME\":\"$b\",\"RETAIN\":true,\"MIN\":\"1\",\"MAX\":\"3\"}]}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {100*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{100*$r}\",\"EVAL_VALUE_GREEN\":\"{100*$g}\",\"WHEEL_MAX\":\"500\",\"INIT_VALUE_BLUE\":\"{100*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RETAIN\":true,\"MIN\":\"1\",\"MAX\":\"4\"},{\"VAR_NAME\":\"$g\",\"RETAIN\":true,\"MIN\":\"2\",\"MAX\":\"4\"},{\"VAR_NAME\":\"$b\",\"RETAIN\":true,\"MIN\":\"1\",\"MAX\":\"3\"}]}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "8X81VVIY-LZVA-G35T-DHVO-YZJURWCGAT1E",
+        "rev": "4-db72816d5e908fb842787613f2dcaa01",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {60*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{60*$r}\",\"EVAL_VALUE_GREEN\":\"{60*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{60*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {60*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{60*$r}\",\"EVAL_VALUE_GREEN\":\"{60*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{60*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "P9LSN47E-E0KF-PJTZ-ACVH-OY22JA13AJOT",
+        "rev": "4-db1df457f1a9d09c732b1f1d1c296785",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {100*$r} : {100*$g} : {100*$b}. {40*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{100*$r}\",\"RECIPE_GREEN\":\"{100*$g}\",\"RECIPE_BLUE\":\"{100*$b}\",\"EVAL_VALUE_RED\":\"{40*$r}\",\"EVAL_VALUE_GREEN\":\"{40*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{40*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {100*$r} : {100*$g} : {100*$b}. {40*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{100*$r}\",\"RECIPE_GREEN\":\"{100*$g}\",\"RECIPE_BLUE\":\"{100*$b}\",\"EVAL_VALUE_RED\":\"{40*$r}\",\"EVAL_VALUE_GREEN\":\"{40*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{40*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "6943WND0-HJS3-A322-B4DU-WL6L95ZTX2FM",
+        "rev": "4-aadd68e72c85e92f566c84994d87f473",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {100*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{100*$r}\",\"EVAL_VALUE_GREEN\":\"{100*$g}\",\"WHEEL_MAX\":\"999\",\"INIT_VALUE_BLUE\":\"{100*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RETAIN\":true,\"MIN\":\"4\",\"MAX\":\"7\"},{\"VAR_NAME\":\"$g\",\"RETAIN\":true,\"MIN\":\"2\",\"MAX\":\"4\"},{\"VAR_NAME\":\"$b\",\"RETAIN\":true,\"MIN\":\"1\",\"MAX\":\"3\"}]}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {100*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{100*$r}\",\"EVAL_VALUE_GREEN\":\"{100*$g}\",\"WHEEL_MAX\":\"999\",\"INIT_VALUE_BLUE\":\"{100*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RETAIN\":true,\"MIN\":\"4\",\"MAX\":\"7\"},{\"VAR_NAME\":\"$g\",\"RETAIN\":true,\"MIN\":\"2\",\"MAX\":\"4\"},{\"VAR_NAME\":\"$b\",\"RETAIN\":true,\"MIN\":\"1\",\"MAX\":\"3\"}]}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "7CSGJXD1-XM9W-SGNO-YO7B-892MIMDPVM2D",
+        "rev": "4-c1b42878759b712a967ae444ba7ed47a",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {60*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{60*$r}\",\"EVAL_VALUE_GREEN\":\"{60*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{60*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {$r} : {$g} : {$b}. {60*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{$r}\",\"RECIPE_GREEN\":\"{$g}\",\"RECIPE_BLUE\":\"{$b}\",\"EVAL_VALUE_RED\":\"{60*$r}\",\"EVAL_VALUE_GREEN\":\"{60*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{60*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    },
+    {
+        "id": "JURGL0SG-PFPN-Y3TN-X2SG-3EU91EXH2LJ2",
+        "rev": "4-cde16aae5d80ef0c3f2f0c39a536f9f3",
+        "pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {100*$r} : {100*$g} : {100*$b}. {$40*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{10*$r}\",\"RECIPE_GREEN\":\"{10*$g}\",\"RECIPE_BLUE\":\"{10*$b}\",\"EVAL_VALUE_RED\":\"{2.5*$r}\",\"EVAL_VALUE_GREEN\":\"{2.5*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{2.5*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "last_saved_pdef": "{\"TOOL_KEY\":\"RatioTool\",\"PROBLEM_DESCRIPTION\":\"Red, green and blue goo is mixed in the ratio {100*$r} : {100*$g} : {100*$b}. {$40*$b} blue goo are used. Complete the mix.\",\"EVAL_MODE\":\"1\",\"REJECT_MODE\":\"0\",\"RECIPE_RED\":\"{10*$r}\",\"RECIPE_GREEN\":\"{10*$g}\",\"RECIPE_BLUE\":\"{10*$b}\",\"EVAL_VALUE_RED\":\"{2.5*$r}\",\"EVAL_VALUE_GREEN\":\"{2.5*$g}\",\"WHEEL_MAX\":\"250\",\"INIT_VALUE_BLUE\":\"{2.5*$b}\",\"DVARS\":[{\"VAR_NAME\":\"$r\",\"RECALL\":\"{$r}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$g\",\"RECALL\":\"{$g}\",\"MIN\":\"1\",\"MAX\":\"5\"},{\"VAR_NAME\":\"$b\",\"RECALL\":\"{$b}\",\"MIN\":\"1\",\"MAX\":\"5\"}]}",
+        "change_stack": "[]",
+        "stack_current_index": 0,
+        "stack_last_save_index": 0
+    }
+]
+================================================
+
+================================================
+SELECT * FROM BinaryRelations:
+[
+    {
+        "id": "0485fa0a1e770273e776d08c5800282c",
+        "rev": "304-5039d544eb64e696bdaf9d70524ef601",
+        "name": "Mastery",
+        "members": "[[\"5608a59d6797796ce9e11484fd1397f8\",\"ef94b4e71565a902bbbba81afa07c7f2\"]]"
+    },
+    {
+        "id": "0485fa0a1e770273e776d08c5801a673",
+        "rev": "3-8df4bffb8d1607b0e14371cf21cd6a29",
+        "name": "InterMastery",
+        "members": "[]"
+    },
+    {
+        "id": "5608a59d6797796ce9e11484fd11da86",
+        "rev": "350-2847472c5387f8763a308d6e1adce474",
+        "name": "Prerequisite",
+        "members": "[]"
+    }
+]
+================================================

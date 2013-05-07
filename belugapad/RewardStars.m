@@ -52,6 +52,8 @@
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         usersService = ac.usersService;
         
+        [usersService syncDeviceUsers];
+        
         [self setupStars];
     }
     

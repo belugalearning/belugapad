@@ -791,6 +791,12 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     if (isSyncing) return;
     
+    // generating node state causes on-device database updates to assignment_flags if user has completed a node since flag was assigned. (See currentUserCompletedFlaggedNode:completedAt)
+    if (currentUser)
+    {
+        [self currentUserAllNodesState];
+    }
+    
     NSMutableArray *users = [NSMutableArray array];
     
     // get users date from on-device db

@@ -1582,7 +1582,7 @@ static float kTimeToHintToolTray=0.0f;
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
             answerLabelString=[NSString stringWithFormat:@"%@", raw];
             
-            if(answerLabelString.length<3)
+            if(answerLabelString.length<4)
             {
                 //this can't have a <b:t> at the begining
                 
@@ -2182,7 +2182,7 @@ static float kTimeToHintToolTray=0.0f;
     //top down valign
     row.forceVAlignTop=YES;
     
-    if(descString.length<3)
+    if(descString.length<4)
     {
         //this can't have a <b:t> at the begining
         

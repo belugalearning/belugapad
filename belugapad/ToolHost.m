@@ -1261,6 +1261,7 @@ static float kTimeToHintToolTray=0.0f;
     //nil pointers to things on there
     problemDescLabel=nil;
     
+    delayShowWheel = NO;    
 }
 
 #pragma mark - pause show and touch handling

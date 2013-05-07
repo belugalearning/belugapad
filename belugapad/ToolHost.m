@@ -370,6 +370,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(delayShowWheel&&timeToWheelStart>2.0f){
         [self showWheel];
+        [self showCornerTray];
         timeToWheelStart=0.0f;
         delayShowWheel=NO;
     }

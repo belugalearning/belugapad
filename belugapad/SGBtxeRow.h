@@ -26,6 +26,7 @@
 -(BOOL)containsObject:(id)o;
 -(void)inflateZindex;
 -(void)deflateZindex;
+-(void)rowVisible:(BOOL)visibility;
 -(void)relayoutChildrenToWidth:(float)width;
 -(void)animateAndMoveToPosition:(CGPoint)thePosition;
 -(NSString*)returnRowStringForSpeech;

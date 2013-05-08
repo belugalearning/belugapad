@@ -87,6 +87,11 @@
     self.label.zOrder=0;
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [self.label setVisible:visibility];
+}
+
 -(void)dealloc
 {
     self.label=nil;

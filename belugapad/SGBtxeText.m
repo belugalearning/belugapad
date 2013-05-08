@@ -47,6 +47,11 @@
     text=[theText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [textRenderComponent changeVisibility:visibility];
+}
+
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];

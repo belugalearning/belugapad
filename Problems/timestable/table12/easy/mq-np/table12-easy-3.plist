@@ -27,6 +27,16 @@
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>5</string>
+				<string>10</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
 			<string>$err1</string>
 			<key>SELECT_FROM</key>
 			<array>
@@ -43,16 +53,6 @@
 				<string>{$x-1}</string>
 				<string>{$x+1}</string>
 				<string>{$x+2}</string>
-			</array>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$y</string>
-			<key>SELECT_FROM</key>
-			<array>
-				<string>2</string>
-				<string>5</string>
-				<string>10</string>
 			</array>
 		</dict>
 	</array>

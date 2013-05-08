@@ -163,6 +163,17 @@
     }
 }
 
+-(void)rowVisible:(BOOL)visibility
+{
+    for(id c in children)
+    {
+//        if([c conformsToProtocol:@protocol(FadeIn)])
+//        {
+            [c changeVisibility:visibility];
+//        }
+    }
+}
+
 -(NSString*)returnRowStringForSpeech
 {
     NSString *rowString=@"";

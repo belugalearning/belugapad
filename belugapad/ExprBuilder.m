@@ -686,6 +686,31 @@
         return YES;
     }
     
+    if([evalType isEqualToString:@"ALL_PICKERS_CORRECT"])
+    {
+        //check for interactive components that are disabled -- if in that mode
+        for(SGGameObject *o in gw.AllGameObjects)
+        {
+            if([o conformsToProtocol:@protocol(NumberPicker)])
+            {
+                id<NumberPicker, Value> io=(id<NumberPicker, Value>)o;
+                if(io.usePicker)
+                {
+                    if((int)io.targetNumber != [io.value intValue])
+                    {
+                        //first disbled element fails the evaluation
+                        return NO;
+                    }
+                }
+            }
+        }
+        
+        //none found, assume yes
+        return YES;
+    }
+    
+    
+    
     if([evalType isEqualToString:@"SEQUENCE_ASC"])
     {
         NSArray *vals=[self numbersFromRow:1];

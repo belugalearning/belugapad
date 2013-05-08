@@ -12,7 +12,7 @@
 @implementation SGJmapComingSoonNode
 
 @synthesize Position, RenderBatch, RenderLayer;
-@synthesize _id, UserVisibleString;
+@synthesize _id, UserVisibleString, spriteSuffix;
 
 -(SGJmapComingSoonNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {
@@ -45,9 +45,9 @@
 
 -(void)setup
 {
-    int islandNo=arc4random()%3+1;
+//    int islandNo=arc4random()%3+1;
     
-    NSString *spriteFileName=[NSString stringWithFormat:@"/images/jmap/ComingSoon_Island_%d.png", islandNo];
+    NSString *spriteFileName=[NSString stringWithFormat:@"/images/jmap/ComingSoon_Island_%@.png", spriteSuffix];
     
     CCSprite *nodeSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFileName)];
     [nodeSprite setPosition:self.Position];

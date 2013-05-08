@@ -79,8 +79,9 @@
         {
             DWPieSplitterSliceGameObject *s=[pie.slicesInMe objectAtIndex:i];
             s.Rotation=360/pie.numberOfSlices*i;
-            NSLog(@"thisSprite rotation %f", s.Rotation);
-            [s.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:s.Rotation]];
+            
+//            NSLog(@"thisSprite rotation %f", s.Rotation);
+            [s.mySprite runAction:[CCRotateTo actionWithDuration:0.2f angle:s.Rotation]];
         }
     }
     if(messageType==kDWsplitActivePies)
@@ -89,6 +90,17 @@
         //[lbl setPosition:ccp(50,50)];
         //[pie.mySprite addChild:lbl];
         [pie.mySprite removeChild:pie.touchOverlay cleanup:YES];
+        
+        if(pie.HasSplit)
+        {
+            for(DWPieSplitterSliceGameObject *s in pie.slicesInMe)
+            {
+                [s handleMessage:kDWdismantle];
+            }
+            
+            [pie.slicesInMe removeAllObjects];
+        }
+        
     }
     
     
@@ -100,7 +112,7 @@
 {    
     
     NSString *spriteFileName=@"";
-    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/pie.png"];
+    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/pie_cover.png"];
     
     pie.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [pie.mySprite setPosition:pie.Position];
@@ -115,9 +127,9 @@
     
     if(!pie.HasSplit) {
         NSString *overlayFileName=@"";
-        overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/pie-split-overlay.png"];
+        overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/slice1.png"];
         pie.touchOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(overlayFileName)];
-        [pie.touchOverlay setPosition:ccp(50,50)];
+        [pie.touchOverlay setPosition:ccp(pie.mySprite.contentSize.width/2, (pie.mySprite.contentSize.height/2)+2)];
         [pie.mySprite addChild:pie.touchOverlay];
         if(gameWorld.Blackboard.inProblemSetup)
         {
@@ -135,8 +147,10 @@
 {
     if(!pie.ScaledUp)
     {
-        [pie.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
-        pie.ScaledUp=YES;
+        CCScaleTo *st=[CCScaleTo actionWithDuration:0.2f scale:1.0f];
+        CCCallBlock *cb=[CCCallBlock actionWithBlock:^{pie.ScaledUp=YES;}];
+        CCSequence *sq=[CCSequence actionOne:st two:cb];
+        [pie.mySprite runAction:sq];
     }
     [pie.mySprite setPosition:pie.Position];
 }

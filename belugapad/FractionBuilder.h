@@ -27,6 +27,11 @@ typedef enum {
     ProbjemRejectType rejectType;
     SolutionType solutionType;
     
+    // custom problem definition stuff
+    NSDictionary *solutionsDef;
+    NSMutableArray *initFractions;
+    int dividend;
+    int divisor;
     int solutionDividend;
     int solutionDivisor;
     int solutionTag;
@@ -44,38 +49,26 @@ typedef enum {
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
-    BOOL hasMovedChunk;
-    BOOL hasMovedMarker;
-    
     // and a default layer
     CCLayer *renderLayer;
     
-    int startMarkerPos;
-    
-    NSArray *initFractions;
-    NSArray *solutionsDef;
-    NSMutableArray *selectedChunks;
-    int dividend;
-    int divisor;
-    int lastMarkerPosition;
-    
-    
+    float expSolution;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
--(void)populateGW;
--(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
--(void)draw;
+-(void)readPlist:(NSDictionary*)pdef;
+-(void)populateGW;
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 -(BOOL)evalExpression;
 -(void)evalProblem;
 -(void)resetProblem;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
--(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+
 -(void)dealloc;
 
 @end

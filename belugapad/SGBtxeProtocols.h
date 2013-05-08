@@ -178,6 +178,7 @@
 @protocol FadeIn
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
+-(void)changeVisibility:(BOOL)visibility;
 
 @end
 

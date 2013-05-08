@@ -53,7 +53,7 @@ static CGPoint kStartMapPos={-611, 3713};
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
 
-typedef enum {
+typedef enum  {
     kJuiStateNodeMap,
     kJuiStateNodeSliceTransition,
     kJuiStateNodeSlice
@@ -140,15 +140,15 @@ typedef enum {
         usersService = ac.usersService;
         contentService = ac.contentService;
         
-        [usersService syncDeviceUsers];
-        
         [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
-        [loggingService sendData];
         
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
         
         [self setupMap];
+        
+        [usersService syncDeviceUsers];
+        [loggingService sendData];
         
         [self setupContentRegions];
         
@@ -175,12 +175,12 @@ typedef enum {
         utdHeaderLabel=[CCLabelTTF labelWithString:@""
                                           fontName:CHANGO
                                           fontSize:14.0f
-                                        dimensions:CGSizeMake(575, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
-        [utdHeaderLabel setPosition:ccp(442,742)];
+                                        dimensions:CGSizeMake(500, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
+        [utdHeaderLabel setPosition:ccp(390,742)];
         [foreLayer addChild:utdHeaderLabel z:10];
     }
     
-    int maxStringSize=100;
+    int maxStringSize=90;
     
     if([toThisString length]>maxStringSize)
     {
@@ -243,7 +243,7 @@ typedef enum {
 -(void) setupMap
 {
     [self populateImageCache];
- 
+    
     [self createLayers];
  
     [self getUserData];
@@ -285,7 +285,13 @@ typedef enum {
         [mapLayer setPosition:ccp(512-np.x, 384-np.y)];
     }
     
+    //build search index
     [self buildSearchIndex];
+    
+    [self addFilterButton];
+    
+    //show filter button
+    filterButtonSprite.visible=(filterTotalFlagCount>0);
     
     //any final node-based visual setup
     [gw handleMessage:kSGsetVisualStateAfterBuildUp];
@@ -345,6 +351,46 @@ typedef enum {
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
+}
+
+-(void)addFilterButton
+{ 
+    //filter button
+    filterButtonType=@"";
+    if(filterTotalFlagCount>9)
+        filterButtonType=@"2";
+    
+    CCLabelTTF *flagct=nil;
+    NSString *filterButtonFileName=@"/images/jmap/flag_button_faded.png";
+    CCSprite *fadedButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filterButtonFileName)];
+    [fadedButtonSprite setPosition:ccp(cx+200, 2*cy-(58.0f/2))];
+    [foreLayer addChild:fadedButtonSprite];
+    
+    
+    if(filterTotalFlagCount>0){
+        filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_grey%@.png", filterButtonType];
+        
+        NSString *flagCount=[NSString stringWithFormat:@"%d",filterTotalFlagCount];
+        flagct=[CCLabelTTF labelWithString:flagCount fontName:CHANGO fontSize:13.0f];
+    }
+
+    filterButtonSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filterButtonFileName)];
+    [filterButtonSprite setPosition:ccp(cx+200, 2*cy-(58.0f/2))];
+    [foreLayer addChild:filterButtonSprite];
+
+    
+    
+    if(flagct){
+        if([filterButtonType isEqualToString:@""])
+            [flagct setPosition:ccp(filterButtonSprite.contentSize.width-13, filterButtonSprite.contentSize.height-11)];
+        else
+            [flagct setPosition:ccp(filterButtonSprite.contentSize.width-23, filterButtonSprite.contentSize.height-11)];
+
+        [filterButtonSprite addChild:flagct];
+    }
+    CCSprite *lineBreak=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/flag_line.png")];
+    [lineBreak setPosition:ccp(cx+150, 2*cy-(58.0f/2))];
+    [foreLayer addChild:lineBreak];
 }
 
 - (void)createAllBackgroundTileSprites
@@ -408,11 +454,14 @@ typedef enum {
         
         //create a node go
         
-        if(n.comingSoon)
+        if(n.comingSoon || n.comingSoon2)
         {
             SGJmapComingSoonNode *comingSoonNode=[[[SGJmapComingSoonNode alloc] initWithGameWorld:gw andRenderLayer:mapLayer andPosition:nodepos]autorelease];
             
             comingSoonNode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            if(n.comingSoon) comingSoonNode.spriteSuffix=@"1";
+            if(n.comingSoon2) comingSoonNode.spriteSuffix=@"cs2";
             
             newnode=(id<Transform,CouchDerived,Configurable,Selectable>)comingSoonNode;
             
@@ -744,6 +793,7 @@ typedef enum {
 {
     if(searchNodes)[searchNodes release];
     searchNodes=[[NSMutableArray alloc] init];
+    filterTotalFlagCount=0;
     
     for(id go in [gw AllGameObjects])
     {
@@ -753,13 +803,30 @@ typedef enum {
     
             //build search test
             NSString *searchBuild=mgo.UserVisibleString;
+            int flagCount=0;
+            int flaggedNodesCount=0;
             
             for(SGJmapNode *node in mgo.ChildNodes)
             {
                 searchBuild=[NSString stringWithFormat:@"%@ %@", searchBuild, node.UserVisibleString];
+                flagCount+=[node.ustate.assignmentFlags count];
+//                filterTotalFlagCount+=flagCount;
+                
+                if([node.ustate.assignmentFlags count]>0)
+                {
+                    flaggedNodesCount++;
+                    filterTotalFlagCount++;
+                }
             }
             
             mgo.searchMatchString=searchBuild;
+            mgo.searchFlagCount=flagCount;
+            
+            if(flaggedNodesCount>0)
+            {
+                mgo.UserVisibleString=[NSString stringWithFormat:@"%@ (%d)", mgo.UserVisibleString, flaggedNodesCount];
+            }
+            
             
             //add to source for list
             [searchNodes addObject:mgo];
@@ -1109,6 +1176,12 @@ typedef enum {
         
         return;
     }
+    
+    if(CGRectContainsPoint(filterButtonSprite.boundingBox, l))
+    {
+        if(filterTotalFlagCount>0)
+            [self pressedFilterButton];
+    }
 
     else {
 
@@ -1423,7 +1496,7 @@ typedef enum {
     [[CCDirector sharedDirector].view addSubview:ac.searchBar];
     
     
-    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(683, 56, 341, 360)] autorelease];
+    ac.searchList=[[[UITableView alloc] initWithFrame:CGRectMake(662, 56, 362, 360)] autorelease];
     ac.searchList.delegate=self;
     ac.searchList.dataSource=self;
     
@@ -1439,38 +1512,81 @@ typedef enum {
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    [self updateSearchFilteredNodes:searchBar.text];
+    [ac.searchList reloadData];
+    
     [[CCDirector sharedDirector].view addSubview:ac.searchList];
 }
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
+    filteredToAssignedNodes=NO;
+    showingFilter=NO;
+    
+    NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_grey%@.png", filterButtonType];
+    
+    [filterButtonSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(filterButtonFileName)]];
+    
     [ac.searchList removeFromSuperview];
 }
 
 -(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
 {
-    if(text.length == 0)
+    isFiltered=YES;
+    [self updateSearchFilteredNodes:text];
+    [ac.searchList reloadData];
+    
+//    if(text.length == 0)
+//    {
+//        isFiltered = NO;
+//    }
+//    else
+//    {
+//        isFiltered = YES;
+//    }
+//    
+//    [ac.searchList reloadData];
+}
+
+-(void)updateSearchFilteredNodes:(NSString*)text
+{
+    if(filteredNodes) [filteredNodes release];
+    filteredNodes = [[NSMutableArray alloc] init];
+    isFiltered=YES;
+    
+    for (id<CouchDerived, Searchable, NSObject> node in searchNodes)
     {
-        isFiltered = NO;
-    }
-    else
-    {
-        isFiltered = YES;
-        if(filteredNodes) [filteredNodes release];
-        filteredNodes = [[NSMutableArray alloc] init];
+        NSRange searchRange = [node.searchMatchString rangeOfString:text options:NSCaseInsensitiveSearch];
+        NSRange idRange = [node._id rangeOfString:text options:NSCaseInsensitiveSearch];
         
-        for (id<CouchDerived, Searchable> node in searchNodes)
+        //search mastery and regular nodes
+        if((searchRange.location != NSNotFound || idRange.location != NSNotFound || [text isEqualToString:@""]) &&
+           (!filteredToAssignedNodes || node.searchFlagCount>0))
+            
         {
-            NSRange searchRange = [node.searchMatchString rangeOfString:text options:NSCaseInsensitiveSearch];
-            NSRange idRange = [node._id rangeOfString:text options:NSCaseInsensitiveSearch];
-            if(searchRange.location != NSNotFound || idRange.location != NSNotFound)
-            {
-                [filteredNodes addObject:node];
-            }
+            [filteredNodes addObject:node];
         }
     }
     
-    [ac.searchList reloadData];
+}
+
+-(void)pressedFilterButton
+{
+    if(showingFilter)
+    {
+        [ac.searchBar resignFirstResponder];
+    }
+    else
+    {
+        filteredToAssignedNodes=YES;
+        
+        NSString *filterButtonFileName=[NSString stringWithFormat:@"/images/jmap/flag_button_orange%@.png", filterButtonType];
+        
+        [filterButtonSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(filterButtonFileName)]];
+        [ac.searchBar becomeFirstResponder];
+    }
+    
+    showingFilter=!showingFilter;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

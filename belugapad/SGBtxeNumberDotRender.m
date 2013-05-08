@@ -83,6 +83,10 @@
 //    return CGSizeMake(fabsf(s.x), fabsf(s.y));
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [self.baseNode setVisible:visibility];
+}
 
 -(void)inflateZindex
 {

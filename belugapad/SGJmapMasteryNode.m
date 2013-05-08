@@ -30,7 +30,7 @@
 @synthesize Selected, NodeSelectComponent, HitProximity, HitProximitySign;
 
 //searchable
-@synthesize searchMatchString;
+@synthesize searchMatchString, searchFlagCount;
 
 @synthesize MasteryPinPosition;
 

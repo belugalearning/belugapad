@@ -10,7 +10,7 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;When you see a&lt;/b:t&gt;&lt;b:oi tag=&quot;30_QM&quot;/&gt;&lt;b:t&gt;, tap to input your answer. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;When you see a&lt;/b:t&gt;&lt;b:oi tag=&quot;30_QM&quot;/&gt;&lt;b:t&gt;, tap to input your answer. Once you have entered an answer then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 		<string>&lt;b:on number=&quot;1&quot; enabled=&quot;yes&quot;/&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:on number=&quot;1&quot; enabled=&quot;yes&quot;/&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
 	</array>
 </dict>

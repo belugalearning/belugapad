@@ -46,6 +46,14 @@
     }
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    for(CCSprite *s in backgroundNode.children)
+    {
+        [s setVisible:visibility];
+    }
+}
+
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     for(CCSprite *s in backgroundNode.children)

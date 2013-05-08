@@ -118,6 +118,11 @@
     [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [iconRenderComponent changeVisibility:visibility];
+}
+
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
     if(self.hidden)return;

@@ -74,10 +74,12 @@ typedef enum {
     // then our specifics
     DWPieSplitterContainerGameObject *newCon;
     DWPieSplitterPieGameObject *newPie;
+    
     BOOL createdNewCon;
     BOOL createdNewPie;
     BOOL hasSplit;
     BOOL showResetSlicesToPies;
+    BOOL hasASliceInCont;
     
     CCSprite *pieBox;
     CCSprite *conBox;

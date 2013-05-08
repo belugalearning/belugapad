@@ -370,6 +370,10 @@ static float kTimeToHintToolTray=0.0f;
     
     if(delayShowWheel&&timeToWheelStart>2.0f){
         [self showWheel];
+        
+        if(currentTool)
+            [self showCornerTray];
+        
         timeToWheelStart=0.0f;
         delayShowWheel=NO;
     }
@@ -637,7 +641,13 @@ static float kTimeToHintToolTray=0.0f;
 
 
 #pragma mark - tool and problem load
-
+-(BOOL)showingMetaQuestion
+{
+    if(metaQuestionForThisProblem||numberPickerForThisProblem)
+        return YES;
+    else
+        return NO;
+}
 -(void) loadTool
 {
     //reset multitouch
@@ -892,13 +902,6 @@ static float kTimeToHintToolTray=0.0f;
     //purge potential feature key cache
     [usersService purgePotentialFeatureKeys];
     
-    if(toolKey)
-    {
-        //initialize tool scene
-        currentTool=[NSClassFromString(toolKey) alloc];
-        [currentTool initWithToolHost:self andProblemDef:pdef];
-    }
-    
     //read our tool specific options
     [self readToolOptions:toolKey];
 
@@ -938,6 +941,13 @@ static float kTimeToHintToolTray=0.0f;
     }
     else {
         [self setupProblemOnToolHost:pdef];
+    }
+    
+    if(toolKey)
+    {
+        //initialize tool scene
+        currentTool=[NSClassFromString(toolKey) alloc];
+        [currentTool initWithToolHost:self andProblemDef:pdef];
     }
     
     NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
@@ -1255,12 +1265,15 @@ static float kTimeToHintToolTray=0.0f;
     //nil pointers to things on there
     problemDescLabel=nil;
     
+    delayShowWheel = NO;    
 }
 
 #pragma mark - pause show and touch handling
 
 -(void) showPauseMenu
 {
+    [usersService syncDeviceUsers];
+    
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
@@ -1545,7 +1558,7 @@ static float kTimeToHintToolTray=0.0f;
             // then the answer label
             raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
             
-            if(raw.length<3)
+            if(raw.length<4)
             {
                 //this can't have a <b:t> at the begining
                 
@@ -1556,6 +1569,10 @@ static float kTimeToHintToolTray=0.0f;
             {
                 //doesn't need wrapping
             }
+            else if([[raw substringToIndex:4] isEqualToString:@" <b:"])
+            {
+                raw=[NSString stringWithFormat:@"<b:t></b:t>%@", raw];
+            }
             else
             {
                 //assume the string needs wrapping in b:t
@@ -1565,7 +1582,7 @@ static float kTimeToHintToolTray=0.0f;
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
             answerLabelString=[NSString stringWithFormat:@"%@", raw];
             
-            if(answerLabelString.length<3)
+            if(answerLabelString.length<4)
             {
                 //this can't have a <b:t> at the begining
                 
@@ -1632,6 +1649,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
+//            [row rowVisible:NO];
         }
     
         if(row)[row release];
@@ -1888,18 +1906,6 @@ static float kTimeToHintToolTray=0.0f;
         [self removeMetaQuestionButtons];
         [metaQuestionBanner removeFromParentAndCleanup:YES];
         
-        for(SGBtxeRow *r in metaQuestionAnswerLabels)
-        {
-            for(int i=0;i<r.children.count;i++)
-            {
-                if([[r.children objectAtIndex:i] conformsToProtocol:@protocol(MovingInteractive)])
-                {
-                    id<MovingInteractive> go=[r.children objectAtIndex:i];
-                    [go destroy];
-                }
-            }
-        }
-        
         metaQuestionForceComplete=YES;
     }
     if(numberPickerForThisProblem)
@@ -1923,11 +1929,14 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)removeMetaQuestionButtons
 {
+    for(SGBtxeRow *r in metaQuestionAnswerLabels)
+    {
+        [r rowVisible:NO];
+    }
     for(int i=0;i<metaQuestionAnswerButtons.count;i++)
     {
         [trayLayerMq removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
-    } 
-    
+    }
 }
 
 #pragma mark - number picker
@@ -2173,7 +2182,7 @@ static float kTimeToHintToolTray=0.0f;
     //top down valign
     row.forceVAlignTop=YES;
     
-    if(descString.length<3)
+    if(descString.length<4)
     {
         //this can't have a <b:t> at the begining
         
@@ -2366,44 +2375,44 @@ static float kTimeToHintToolTray=0.0f;
 //    if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
     //pinch handling
-    if([touches count]>1)
-    {
-        UITouch *t1=[[touches allObjects] objectAtIndex:0];
-        UITouch *t2=[[touches allObjects] objectAtIndex:1];
-        
-        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
-        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
-        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
-        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
-        
-        float da=[BLMath DistanceBetween:t1a and:t2a];
-        float db=[BLMath DistanceBetween:t1b and:t2b];
-        
-        float scaleChange=db-da;
-        
-        
-        scale+=(scaleChange / cx);
-        
-        [loggingService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
-        
-        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
-        else {
-            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
-            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
-            
-            [toolBackLayer setScale:scale];
-            [toolForeLayer setScale:scale];
-        }
-        
-        //NSLog(@"scale: %f", scale);
+//    if([touches count]>1)
+//    {
+//        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+//        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+//        
+//        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+//        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+//        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+//        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+//        
+//        float da=[BLMath DistanceBetween:t1a and:t2a];
+//        float db=[BLMath DistanceBetween:t1b and:t2b];
+//        
+//        float scaleChange=db-da;
+//        
+//        
+//        scale+=(scaleChange / cx);
+//        
+//        [loggingService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
+//        
+//        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
+//        else {
+//            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
+//            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
+//            
+//            [toolBackLayer setScale:scale];
+//            [toolForeLayer setScale:scale];
+//        }
+//        
+//        //NSLog(@"scale: %f", scale);
+//    }
+
+    if(isTouching){
+        [followParticle setPosition:location];
+        [explodeParticle setPosition:location];
     }
-    else {
-        if(isTouching){
-            [followParticle setPosition:location];
-            [explodeParticle setPosition:location];
-        }
-        [currentTool ccTouchesMoved:touches withEvent:event];
-    }
+    [currentTool ccTouchesMoved:touches withEvent:event];
+
     
 
 }
@@ -2534,14 +2543,15 @@ static float kTimeToHintToolTray=0.0f;
         if(trayPadShowing)
         {
             [self hidePad];
+            [self hideCornerTrayAndForce:YES];
         }
         else
         {
             [self hideMq];
             [self hideCalc];
             [self hideWheel];
-            
             [self showPad];
+            [self hideCornerTrayAndForce:YES];
             
             //[self showCornerTray];
         }
@@ -2611,7 +2621,7 @@ static float kTimeToHintToolTray=0.0f;
     [self hideWheel];
     [self hideMq];
     [self hidePad];
-    [self hideCornerTray];
+    [self hideCornerTrayAndForce:YES];
 }
 
 -(void)sizeAndResetQuestionDescripion
@@ -2650,7 +2660,12 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)hideCornerTray
 {
-    if(trayCornerShowing)
+    [self hideCornerTrayAndForce:NO];
+}
+
+-(void)hideCornerTrayAndForce:(BOOL)force
+{
+    if(trayCornerShowing||force)
     {
         qTrayTop.scaleX=1.0f;
         qTrayMid.scaleX=1.0f;
@@ -2718,6 +2733,10 @@ static float kTimeToHintToolTray=0.0f;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_appears.wav")];
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
+    for(SGBtxeRow *r in metaQuestionAnswerLabels)
+    {
+        [r rowVisible:YES];
+    }
 //    [traybtnMq setColor:ccc3(247,143,6)];
     [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Selected.png")]];
 
@@ -2730,6 +2749,12 @@ static float kTimeToHintToolTray=0.0f;
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
     [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
+    
+    for(SGBtxeRow *r in metaQuestionAnswerLabels)
+    {
+        [r rowVisible:NO];
+    }
+
     trayMqShowing=NO;
     
     if(hasTrayMq)
@@ -2899,30 +2924,17 @@ static float kTimeToHintToolTray=0.0f;
     
     NSInteger numRows = 0;
     
-    switch (component) {
-        case 0:
+    
+    if(component==0)
+    {
+        if([self numberOfComponentsInPickerView:pickerView]>1)
             numRows = 12;
-            break;
-        case 1:
-            numRows = 11;
-            break;
-        case 2:
-            numRows = 11;
-            break;
-        case 3:
-            numRows = 11;
-            break;
-        case 4:
-            numRows = 11;
-            break;
-        case 5:
-            numRows = 11;
-            break;
-        case 6:
-            numRows = 11;
-            break;
-        default:
-            break;
+        else
+            numRows= 10;
+    }
+    else
+    {
+        numRows = 11;
     }
     
     return numRows;

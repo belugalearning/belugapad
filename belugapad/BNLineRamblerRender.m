@@ -353,7 +353,7 @@ static float kLabelOffset=0.0f;
                     
                     int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    NSString *writeText=[[NSString alloc] initWithFormat:@"%d", displayNum];
+                    NSString *writeText=[[[NSString alloc] initWithFormat:@"%d", displayNum] autorelease];
                     
                     if(ramblerGameObject.DisplayNumberDP>0 && ramblerGameObject.DisplayNumberMultiplier!=1)
                     {
@@ -362,6 +362,7 @@ static float kLabelOffset=0.0f;
                         NSString *fmt=[[NSString alloc] initWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
                         writeText=[NSString stringWithFormat:fmt, multDisplayNum];
                         [fmt release];
+
                     }
                     
                     CCLabelBMFont *lex=nil;
@@ -386,9 +387,7 @@ static float kLabelOffset=0.0f;
                     lex.string=writeText;
                     lex.visible=YES;
             
-                    [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                    
-                    [writeText release];
+                    [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];                    
                 }
                 
                 //tidy up number rendering

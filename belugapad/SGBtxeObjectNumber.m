@@ -128,6 +128,11 @@
     return numberMode;
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [numberDotRenderComponent changeVisibility:visibility];
+}
+
 -(void)handleMessage:(SGMessageType)messageType
 {
     

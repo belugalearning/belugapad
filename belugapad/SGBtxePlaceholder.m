@@ -154,6 +154,11 @@
     [textBackgroundComponent setContainerVisible:visible];
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    [self setContainerVisible:visibility];
+}
+
 -(void)attachToRenderBase:(CCNode *)theRenderBase
 {
     renderBase=theRenderBase;

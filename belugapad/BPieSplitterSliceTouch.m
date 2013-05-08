@@ -67,8 +67,11 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
+    if(slice.mySprite.parent.scale<1)return;
+    
+
     // if the slice doesn't have a container it can respond to this message
-    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]) && !slice.myCont)
+    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]))
     {
         gameWorld.Blackboard.PickupObject=slice;
     

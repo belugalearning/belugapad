@@ -208,6 +208,12 @@ const NSString *matchNumbers=@"0123456789";
         if(usepicker)
         {
             on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
+            
+            NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
+            NSString *at=[[element attributeForName:@"pickerTarget"] stringValue];
+            NSNumber *n=[nf numberFromString:at];
+            on.targetNumber=[n floatValue];
+            [nf release];
         }
         
         if([element attributeForName:@"numbermode"])

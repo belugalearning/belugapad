@@ -20,6 +20,7 @@
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
 		0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4CD67A15E3A5430037BBD0 /* LogPoller.m */; };
 		0C51649715D9068F008E7C72 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 0C51649615D9068D008E7C72 /* settings */; };
+		0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C52CDFE17243FF500B9D9B5 /* TokenKeyInputView.m */; };
 		0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */; };
 		0C58DE9A1631774700DD9A01 /* edit-pdef-client-files in Resources */ = {isa = PBXBuildFile; fileRef = 0C58DE991631774700DD9A01 /* edit-pdef-client-files */; };
 		0C692E4A157F973D009307DB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C692E49157F973D009307DB /* libsqlite3.dylib */; };
@@ -58,15 +59,20 @@
 		339804871661157A00589106 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 339804861661157A00589106 /* Icon@2x.png */; };
 		33E7CC4D16A788D90024CFFE /* glitter_explosion2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */; };
 		33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33FF5F14166133860077EEA3 /* tts-replace.plist */; };
-		5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFbuilderChunk.m */; };
 		5501FC4C15D929EC007E124A /* SGDtoolCage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501FC4B15D929EC007E124A /* SGDtoolCage.m */; };
-		5502A72115BEC576002CE180 /* SGFractionBuilderChunkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
 		5508FEB415A2FE8E003720AF /* DistributionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB315A2FE8E003720AF /* DistributionTool.m */; };
 		5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB815A3068D003720AF /* SGDtoolBlock.m */; };
 		5508FEBD15A309DE003720AF /* SGDtoolBlockRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */; };
 		5509D85516A08A5F0076A29F /* RewardStars.m in Sources */ = {isa = PBXBuildFile; fileRef = 5509D85416A08A5F0076A29F /* RewardStars.m */; };
+		551430AF1712D72800A66657 /* FractionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430AE1712D72700A66657 /* FractionBuilder.m */; };
+		551430B51712E15D00A66657 /* SGFBuilderBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430B41712E15D00A66657 /* SGFBuilderBlock.m */; };
+		551430B81712E17200A66657 /* SGFBuilderRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430B71712E17200A66657 /* SGFBuilderRow.m */; };
+		551430BB1712E44100A66657 /* SGFBuilderBlockRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430BA1712E44100A66657 /* SGFBuilderBlockRender.m */; };
+		551430BE1712E45300A66657 /* SGFBuilderRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430BD1712E45300A66657 /* SGFBuilderRowRender.m */; };
+		551430C117133ADB00A66657 /* SGFBuilderRowTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430C017133ADB00A66657 /* SGFBuilderRowTouch.m */; };
+		551430C41713631300A66657 /* SGFBuilderBlockTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 551430C31713631100A66657 /* SGFBuilderBlockTouch.m */; };
 		551815631525EA920097E259 /* NumberBonds.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815621525EA920097E259 /* NumberBonds.m */; };
 		5518156C1525F7500097E259 /* BNBondRowDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815671525F7500097E259 /* BNBondRowDropTarget.m */; };
 		5518156D1525F7500097E259 /* BNBondObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815691525F7500097E259 /* BNBondObjectRender.m */; };
@@ -151,16 +157,11 @@
 		55F05631159A0E0400ACA07C /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */; };
 		55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */; };
 		55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */; };
-		55F5B96A15C17D0400FD6C5D /* SGFractionBuilderChunkRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F5B96915C17D0400FD6C5D /* SGFractionBuilderChunkRender.m */; };
-		55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */; };
-		55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */; };
-		55FBB30115BD78EF0034B081 /* SGFbuilderFraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB30015BD78EF0034B081 /* SGFbuilderFraction.m */; };
 		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
 		7F0E32B9158E9D7800E42C7B /* SGJmapProximityEval.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */; };
 		7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */; };
-		7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
@@ -486,6 +487,8 @@
 		0C4CD67915E3A5430037BBD0 /* LogPoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogPoller.h; sourceTree = "<group>"; };
 		0C4CD67A15E3A5430037BBD0 /* LogPoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogPoller.m; sourceTree = "<group>"; };
 		0C51649615D9068D008E7C72 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
+		0C52CDFD17243FF500B9D9B5 /* TokenKeyInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenKeyInputView.h; sourceTree = "<group>"; };
+		0C52CDFE17243FF500B9D9B5 /* TokenKeyInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokenKeyInputView.m; sourceTree = "<group>"; };
 		0C58DE8516308B6F00DD9A01 /* EditPDefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPDefViewController.h; sourceTree = "<group>"; };
 		0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPDefViewController.m; sourceTree = "<group>"; };
 		0C58DE991631774700DD9A01 /* edit-pdef-client-files */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "edit-pdef-client-files"; path = "edit-pdef/edit-pdef-client-files"; sourceTree = SOURCE_ROOT; };
@@ -549,12 +552,8 @@
 		339804861661157A00589106 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		33E7CC4C16A788D90024CFFE /* glitter_explosion2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glitter_explosion2.plist; sourceTree = "<group>"; };
 		33FF5F14166133860077EEA3 /* tts-replace.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-replace.plist"; sourceTree = "<group>"; };
-		5501947015C038300067E22C /* SGFbuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderChunk.h; sourceTree = "<group>"; };
-		5501947115C038300067E22C /* SGFbuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderChunk.m; sourceTree = "<group>"; };
 		5501FC4A15D929EC007E124A /* SGDtoolCage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolCage.h; sourceTree = "<group>"; };
 		5501FC4B15D929EC007E124A /* SGDtoolCage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolCage.m; sourceTree = "<group>"; };
-		5502A71F15BEC575002CE180 /* SGFractionBuilderChunkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunkManager.h; sourceTree = "<group>"; };
-		5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderChunkManager.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
 		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplateSG.h; sourceTree = "<group>"; };
@@ -568,6 +567,21 @@
 		5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockRender.m; sourceTree = "<group>"; };
 		5509D85316A08A5F0076A29F /* RewardStars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardStars.h; sourceTree = "<group>"; };
 		5509D85416A08A5F0076A29F /* RewardStars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardStars.m; sourceTree = "<group>"; };
+		551430AD1712D72700A66657 /* FractionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FractionBuilder.h; sourceTree = "<group>"; };
+		551430AE1712D72700A66657 /* FractionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FractionBuilder.m; sourceTree = "<group>"; };
+		551430B01712DB0100A66657 /* SGFBuilderObjectProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderObjectProtocols.h; sourceTree = "<group>"; };
+		551430B31712E15D00A66657 /* SGFBuilderBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderBlock.h; sourceTree = "<group>"; };
+		551430B41712E15D00A66657 /* SGFBuilderBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderBlock.m; sourceTree = "<group>"; };
+		551430B61712E17200A66657 /* SGFBuilderRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderRow.h; sourceTree = "<group>"; };
+		551430B71712E17200A66657 /* SGFBuilderRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderRow.m; sourceTree = "<group>"; };
+		551430B91712E44100A66657 /* SGFBuilderBlockRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderBlockRender.h; sourceTree = "<group>"; };
+		551430BA1712E44100A66657 /* SGFBuilderBlockRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderBlockRender.m; sourceTree = "<group>"; };
+		551430BC1712E45300A66657 /* SGFBuilderRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderRowRender.h; sourceTree = "<group>"; };
+		551430BD1712E45300A66657 /* SGFBuilderRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderRowRender.m; sourceTree = "<group>"; };
+		551430BF17133ADA00A66657 /* SGFBuilderRowTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderRowTouch.h; sourceTree = "<group>"; };
+		551430C017133ADB00A66657 /* SGFBuilderRowTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderRowTouch.m; sourceTree = "<group>"; };
+		551430C21713631000A66657 /* SGFBuilderBlockTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBuilderBlockTouch.h; sourceTree = "<group>"; };
+		551430C31713631100A66657 /* SGFBuilderBlockTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBuilderBlockTouch.m; sourceTree = "<group>"; };
 		551815611525EA920097E259 /* NumberBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBonds.h; sourceTree = "<group>"; };
 		551815621525EA920097E259 /* NumberBonds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBonds.m; sourceTree = "<group>"; };
 		551815661525F7500097E259 /* BNBondRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondRowDropTarget.h; sourceTree = "<group>"; };
@@ -729,15 +743,6 @@
 		55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTarget.m; sourceTree = "<group>"; };
 		55F05626159A0E0400ACA07C /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
 		55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
-		55F5B96815C17D0400FD6C5D /* SGFractionBuilderChunkRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunkRender.h; sourceTree = "<group>"; };
-		55F5B96915C17D0400FD6C5D /* SGFractionBuilderChunkRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderChunkRender.m; sourceTree = "<group>"; };
-		55FBB2F615BD6E4A0034B081 /* FractionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FractionBuilder.h; sourceTree = "<group>"; };
-		55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FractionBuilder.m; sourceTree = "<group>"; };
-		55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGFractionObjectProtocols.h; sourceTree = "<group>"; };
-		55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderRender.h; sourceTree = "<group>"; };
-		55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderRender.m; sourceTree = "<group>"; };
-		55FBB2FF15BD78EF0034B081 /* SGFbuilderFraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderFraction.h; sourceTree = "<group>"; };
-		55FBB30015BD78EF0034B081 /* SGFbuilderFraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderFraction.m; sourceTree = "<group>"; };
 		55FDAEDD157F7CBB00943176 /* ToolTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplate.h; sourceTree = "<group>"; };
 		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
 		55FDAEE1157F802900943176 /* PieSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSplitter.h; sourceTree = "<group>"; };
@@ -748,8 +753,6 @@
 		7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapProximityEval.m; sourceTree = "<group>"; };
 		7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxePlaceholder.h; sourceTree = "<group>"; };
 		7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxePlaceholder.m; sourceTree = "<group>"; };
-		7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderMarker.h; sourceTree = "<group>"; };
-		7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderMarker.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
 		7F2317C4156FA13400E2C941 /* NordicAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NordicAnimator.m; sourceTree = "<group>"; };
 		7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprSimplifyTests.m; sourceTree = "<group>"; };
@@ -1757,14 +1760,14 @@
 		55FBB2F915BD6FAA0034B081 /* Fractions */ = {
 			isa = PBXGroup;
 			children = (
-				7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */,
-				7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */,
-				55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */,
-				55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */,
-				5502A71F15BEC575002CE180 /* SGFractionBuilderChunkManager.h */,
-				5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */,
-				55F5B96815C17D0400FD6C5D /* SGFractionBuilderChunkRender.h */,
-				55F5B96915C17D0400FD6C5D /* SGFractionBuilderChunkRender.m */,
+				551430C21713631000A66657 /* SGFBuilderBlockTouch.h */,
+				551430C31713631100A66657 /* SGFBuilderBlockTouch.m */,
+				551430B91712E44100A66657 /* SGFBuilderBlockRender.h */,
+				551430BA1712E44100A66657 /* SGFBuilderBlockRender.m */,
+				551430BC1712E45300A66657 /* SGFBuilderRowRender.h */,
+				551430BD1712E45300A66657 /* SGFBuilderRowRender.m */,
+				551430BF17133ADA00A66657 /* SGFBuilderRowTouch.h */,
+				551430C017133ADB00A66657 /* SGFBuilderRowTouch.m */,
 			);
 			name = Fractions;
 			sourceTree = "<group>";
@@ -1772,10 +1775,10 @@
 		55FBB2FA15BD700B0034B081 /* Fraction */ = {
 			isa = PBXGroup;
 			children = (
-				55FBB2FF15BD78EF0034B081 /* SGFbuilderFraction.h */,
-				55FBB30015BD78EF0034B081 /* SGFbuilderFraction.m */,
-				5501947015C038300067E22C /* SGFbuilderChunk.h */,
-				5501947115C038300067E22C /* SGFbuilderChunk.m */,
+				551430B31712E15D00A66657 /* SGFBuilderBlock.h */,
+				551430B41712E15D00A66657 /* SGFBuilderBlock.m */,
+				551430B61712E17200A66657 /* SGFBuilderRow.h */,
+				551430B71712E17200A66657 /* SGFBuilderRow.m */,
 			);
 			name = Fraction;
 			sourceTree = "<group>";
@@ -1827,8 +1830,6 @@
 				55FDAEE2157F802900943176 /* PieSplitter.m */,
 				5508FEB215A2FE8E003720AF /* DistributionTool.h */,
 				5508FEB315A2FE8E003720AF /* DistributionTool.m */,
-				55FBB2F615BD6E4A0034B081 /* FractionBuilder.h */,
-				55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */,
 				559A33D515DA382C00CA97E2 /* CountingTimer.h */,
 				559A33D615DA382C00CA97E2 /* CountingTimer.m */,
 				7F50C4AB15DBCD44009345B5 /* ExprBuilder.h */,
@@ -1841,6 +1842,8 @@
 				55984669162732CA00554E8A /* RatioTool.m */,
 				5526EEDE167A1314001A683D /* ClippingTest.h */,
 				5526EEDF167A1314001A683D /* ClippingTest.m */,
+				551430AD1712D72700A66657 /* FractionBuilder.h */,
+				551430AE1712D72700A66657 /* FractionBuilder.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2330,9 +2333,9 @@
 			children = (
 				7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */,
 				5508FEB515A30623003720AF /* SGDtoolObjectProtocols.h */,
-				55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */,
 				7FCA645B15D6940700C5C020 /* SGBtxeProtocols.h */,
 				554FB02115F4ADC5006F6D3A /* SGFBlockObjectProtocols.h */,
+				551430B01712DB0100A66657 /* SGFBuilderObjectProtocols.h */,
 			);
 			name = SGProtocols;
 			sourceTree = "<group>";
@@ -2797,6 +2800,8 @@
 				0CA32F0D166506DD00FC5423 /* NumpadInputController.h */,
 				0CA32F0E166506DD00FC5423 /* NumpadInputController.m */,
 				0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */,
+				0C52CDFD17243FF500B9D9B5 /* TokenKeyInputView.h */,
+				0C52CDFE17243FF500B9D9B5 /* TokenKeyInputView.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -3096,7 +3101,7 @@
 		7F5113B514A9EE62001AF372 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 7F5113B814A9EE62001AF372 /* Build configuration list for PBXProject "belugapad" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3429,13 +3434,6 @@
 				5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */,
 				5508FEBD15A309DE003720AF /* SGDtoolBlockRender.m in Sources */,
 				556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */,
-				55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */,
-				55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */,
-				55FBB30115BD78EF0034B081 /* SGFbuilderFraction.m in Sources */,
-				7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */,
-				5502A72115BEC576002CE180 /* SGFractionBuilderChunkManager.m in Sources */,
-				5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */,
-				55F5B96A15C17D0400FD6C5D /* SGFractionBuilderChunkRender.m in Sources */,
 				0C33EEBC15D4EE5900EA6A11 /* ioapi.c in Sources */,
 				0C33EEBD15D4EE5900EA6A11 /* mztools.c in Sources */,
 				0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */,
@@ -3597,6 +3595,14 @@
 				558D79EE1688950300048B01 /* CCNode+SFGestureRecognizers.m in Sources */,
 				5509D85516A08A5F0076A29F /* RewardStars.m in Sources */,
 				7FBA3A8016A7002700E4908F /* CODialog.m in Sources */,
+				551430AF1712D72800A66657 /* FractionBuilder.m in Sources */,
+				551430B51712E15D00A66657 /* SGFBuilderBlock.m in Sources */,
+				551430B81712E17200A66657 /* SGFBuilderRow.m in Sources */,
+				551430BB1712E44100A66657 /* SGFBuilderBlockRender.m in Sources */,
+				551430BE1712E45300A66657 /* SGFBuilderRowRender.m in Sources */,
+				551430C117133ADB00A66657 /* SGFBuilderRowTouch.m in Sources */,
+				551430C41713631300A66657 /* SGFBuilderBlockTouch.m in Sources */,
+				0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3676,6 +3682,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gareth Jenkins (MMPCPS6T22)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3686,6 +3696,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"\"belugapad/kazmath/include\"/**",
@@ -3701,11 +3712,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"\"belugapad/kazmath/include\"/**",
@@ -3721,6 +3737,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -3766,6 +3783,7 @@
 					"\"$(SRCROOT)/libMobilityStatic.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";

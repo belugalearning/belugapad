@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Complete the equation.&lt;/b:t&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot;/&gt;&lt;b:oo value=&quot;x&quot;/&gt;&lt;b:on number=&quot;{$y}&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;{$y*$x}&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>VALUE</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>5</string>
+				<string>10</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

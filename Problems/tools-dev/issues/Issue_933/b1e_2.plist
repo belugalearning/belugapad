@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>MASTERY</key>
+    <true/>
+    <key>EVAL_TYPE</key>
+    <string>EXPRESSION_EQUALITIES</string>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>EVAL_EXCLUDE_ROWS</key>
+    <array>
+      <string>2</string>
+    </array>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$a</string>
+        <key>MIN</key>
+        <string>4</string>
+        <key>MAX</key>
+        <string>9</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$b</string>
+        <key>MIN</key>
+        <string>2</string>
+        <key>MAX</key>
+        <string>4</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$c</string>
+        <key>MIN</key>
+        <string>1</string>
+        <key>MAX</key>
+        <string>3</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$product</string>
+        <key>VALUE</key>
+        <string>{$b*$c}</string>
+      </dict>
+    </array>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string><b:t>Make {$a+$product} using the following numbers.</b:t></string>
+      <string><b:on number="{$c}" enabled="yes"/><b:on number="{$b}" enabled="yes"/><b:on number="{$a}" enabled="yes"/></string>
+      <string><b:t>(</b:t><b:ph/><b:oo value="x"/><b:ph/><b:t>)</b:t><b:oo value="+"/><b:ph/><b:oo value="="/><b:on number="{$a+$product}" enabled="yes"/></string>
+    </array>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>3x2=6</string>
+  </dict>
+</plist>

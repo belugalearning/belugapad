@@ -33,7 +33,7 @@
             <key>Crystal_3.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{155,3427},{109,110}}</string>
+                <string>{{246,3973},{109,110}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -72,7 +72,7 @@
             <key>Feature_Stage1_Size1_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,3890},{165,108}}</string>
+                <string>{{357,3903},{165,108}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -124,11 +124,11 @@
             <key>Feature_Stage1_Size3_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{112,3890},{131,118}}</string>
+                <string>{{113,3973},{131,118}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{131,118}}</string>
                 <key>sourceSize</key>
@@ -202,7 +202,7 @@
             <key>Feature_Stage2_Size1_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{418,3171},{128,79}}</string>
+                <string>{{301,3317},{128,79}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -332,7 +332,7 @@
             <key>Feature_Stage3_Size3_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{155,3304},{121,109}}</string>
+                <string>{{2,3973},{121,109}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -358,7 +358,7 @@
             <key>Feature_Stage3_Size4_1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,3696},{192,171}}</string>
+                <string>{{268,3709},{192,171}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -423,11 +423,11 @@
             <key>Feature_Stage4_Size2_2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{112,4023},{73,61}}</string>
+                <string>{{450,3171},{73,61}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{73,61}}</string>
                 <key>sourceSize</key>
@@ -592,7 +592,7 @@
             <key>Mastery_Complete_Left.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,3500},{194,151}}</string>
+                <string>{{148,3513},{194,151}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -605,7 +605,7 @@
             <key>Mastery_Complete_Right.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,3304},{194,151}}</string>
+                <string>{{148,3317},{194,151}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -644,11 +644,11 @@
             <key>Node_Attempted_Left.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{210,3171},{206,131}}</string>
+                <string>{{135,3765},{206,131}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{206,131}}</string>
                 <key>sourceSize</key>
@@ -657,11 +657,11 @@
             <key>Node_Attempted_Right.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,3171},{206,131}}</string>
+                <string>{{2,3765},{206,131}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{206,131}}</string>
                 <key>sourceSize</key>
@@ -979,6 +979,58 @@
                 <key>sourceSize</key>
                 <string>{1034,482}</string>
             </dict>
+            <key>checkerd_flag_left.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,3541},{222,144}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{222,144}}</string>
+                <key>sourceSize</key>
+                <string>{222,144}</string>
+            </dict>
+            <key>checkerd_flag_right.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,3317},{222,144}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{222,144}}</string>
+                <key>sourceSize</key>
+                <string>{222,144}</string>
+            </dict>
+            <key>homework_flag_left.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{226,3171},{222,144}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{222,144}}</string>
+                <key>sourceSize</key>
+                <string>{222,144}</string>
+            </dict>
+            <key>homework_flag_right.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,3171},{222,144}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{222,144}}</string>
+                <key>sourceSize</key>
+                <string>{222,144}</string>
+            </dict>
             <key>spacer.png</key>
             <dict>
                 <key>frame</key>
@@ -1054,7 +1106,7 @@
             <key>size</key>
             <string>{4096,4096}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:500355c00c011e2c3228ba8b3ff2af8d$</string>
+            <string>$TexturePacker:SmartUpdate:d3a6d611fabfac167698f9c59977871c$</string>
             <key>textureFileName</key>
             <string>jmapsm-ipadhd.png</string>
         </dict>

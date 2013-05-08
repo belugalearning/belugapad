@@ -6,6 +6,10 @@
 //
 //
 
+// ************************************************************************************************************************************************************************************
+// N.B. assumes user is currentUser!  ------  needs adapting if to work with users other than currentUser - assignmentFlags definitely, perhaps elsewhere too ------
+// ************************************************************************************************************************************************************************************
+
 #import "UserNodeState.h"
 #import "NodePlay.h"
 #import "FMDatabase.h"
@@ -17,6 +21,7 @@
 {
     @private
     FMDatabase *db;
+    bool flaggedHomework, flaggedDoNow;
 }
 @property (nonatomic, readwrite, retain) NSString *userId;
 @property (nonatomic, readwrite, retain) NSString *nodeId;
@@ -36,6 +41,14 @@
 
 
 @implementation UserNodeState
+
+-(NSArray*)assignmentFlags
+{
+    NSMutableArray *af = [NSMutableArray array];
+    if (flaggedHomework) [af addObject:@"homework"];
+    if (flaggedDoNow) [af addObject:@"doNow"];
+    return [[af copy] autorelease];
+}
 
 -(id) initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database
 {
@@ -90,8 +103,45 @@
         if (artifact4Date > 0) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact4Date];
         if (artifact5Date > 0) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact5Date];
         
+        [self updateAssignmentFlags];
     }
     return self;
+}
+
+-(void)updateAssignmentFlags
+{
+    BOOL notifyAssignmentCompleted = NO;
+    double msEpochTimeLastCompleted = self.lastCompleted ? 1000 * [self.lastCompleted timeIntervalSince1970] : 0;
+    
+    UsersService *us=((AppController*)[UIApplication sharedApplication].delegate).usersService;
+    NSDictionary *flags = us.currentUserClone[@"assignmentFlags"];
+    
+    for (NSString *pupilId in flags)
+    {
+        NSDictionary *pupilNodeFlags = flags[pupilId][self.nodeId];
+        
+        if (pupilNodeFlags)
+        {
+            NSNumber *homeworkTimeSet = pupilNodeFlags[@"homework"];
+            NSNumber *doNowTimeSet = pupilNodeFlags[@"doNow"];
+            
+            if (homeworkTimeSet)
+            {
+                if ([homeworkTimeSet doubleValue] > msEpochTimeLastCompleted) flaggedHomework = YES;
+                else notifyAssignmentCompleted = YES;
+            }
+            if (doNowTimeSet)
+            {
+                if ([doNowTimeSet doubleValue] > msEpochTimeLastCompleted) flaggedDoNow = YES;
+                else notifyAssignmentCompleted = YES;
+            }
+        }
+    }
+    
+    if (notifyAssignmentCompleted)
+    {
+        [us notifyCurrentUserCompletedFlaggedNode:self.nodeId completedAt:msEpochTimeLastCompleted];
+    }
 }
 
 -(void)updateStateFromNodePlay:(NodePlay*)nodePlay
@@ -131,19 +181,12 @@
                 {
                     self.artifact3LastAchieved = self.lastPlayed;
                     us.lastStarAchieved=3;
-                    
-//                    if (self.lastScore > SCORE_ARTIFACT_4)
-//                    {
-//                        self.artifact4LastAchieved = self.lastPlayed;
-//                        if (self.lastScore > SCORE_ARTIFACT_5)
-//                        {
-//                            self.artifact5LastAchieved = self.lastPlayed;
-//                        }
-//                    }
                 }
             }
         }
     }
+    
+    [self updateAssignmentFlags];
 }
 
 -(BOOL)saveState

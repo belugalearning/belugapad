@@ -10,7 +10,7 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Place&lt;/b:t&gt;&lt;b:ot tag=&quot;a&quot;&gt;3&lt;/b:ot&gt;&lt;b:t&gt;into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot;/&gt;&lt;b:t&gt;below. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;Place&lt;/b:t&gt;&lt;b:ot tag=&quot;a&quot;&gt;3&lt;/b:ot&gt;&lt;b:t&gt;into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot;/&gt;&lt;b:t&gt;below. Then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 		<string>&lt;b:ph targetTag=&quot;a&quot;/&gt;</string>
 	</array>
 </dict>

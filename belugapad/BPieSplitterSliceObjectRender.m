@@ -89,7 +89,9 @@
     else
         spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
     
+    
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+
     [slice.mySprite setRotation:slice.Rotation];
     [slice.mySprite setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
     
@@ -102,7 +104,7 @@
     
     
     
-    [p.mySprite addChild:slice.mySprite];
+    [p.mySprite addChild:slice.mySprite z:-1];
     [p.slicesInMe addObject:slice];
     
     
@@ -123,7 +125,10 @@
     DWPieSplitterPieGameObject *myPie=(DWPieSplitterPieGameObject*)slice.myPie;
     if(slice.myPie) {
             //[slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/myPie.numberOfSlices)*[myPie.mySprite.children count]]];
-        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[slice.mySprite.parent convertToNodeSpace:myPie.Position]]];
+//        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[slice.mySprite convertToNodeSpace:ccp(myPie.Position.x,myPie.Position.y+2)]]];
+        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(myPie.mySprite.contentSize.width/2,2+(myPie.mySprite.contentSize.height/2))]];
+//[slice.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(0,0)]];
+        
     }
 }
 -(void)handleTap

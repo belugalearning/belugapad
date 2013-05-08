@@ -49,13 +49,19 @@ typedef enum {
 
 -(void)downloadUserMatchingNickName:(NSString*)nickName
                         andPassword:(NSString*)password
-                           callback:(void (^)(NSDictionary*))callback;
+                           callback:(void (^)(NSDictionary*, NSString*))callback;
+
+-(void)joinClassWithToken:(NSString*)token
+                 callback:(void(^)(uint, NSString*))callback;
 
 -(void)applyDownloadedStateUpdatesForCurrentUser;
 
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
 -(NSDictionary*)currentUserAllNodesState;
+
+-(void)notifyCurrentUserCompletedFlaggedNode:(NSString*)nodeId
+                                 completedAt:(double)msEpochTime;
 
 -(BOOL)hasEncounteredFeatureKey:(NSString*)key;
 -(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date;

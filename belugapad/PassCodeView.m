@@ -26,10 +26,10 @@
 
 @implementation PassCodeView
 
-const uint numLabels = 4;
-const NSString *placeholderText = @"CODE";
-const uint firstLabelX = 12;
-const uint labelSpacing = 67;
+static const uint numLabels = 4;
+static const NSString *placeholderText = @"CODE";
+static const uint firstLabelX = 12;
+static const uint labelSpacing = 67;
 
 - (id)initWithFrame:(CGRect)frame
 {

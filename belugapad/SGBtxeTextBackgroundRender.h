@@ -24,5 +24,6 @@
 -(void)updatePosition:(CGPoint)position;
 -(void)tagMyChildrenForIntro;
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
+-(void)changeVisibility:(BOOL)visibility;
 
 @end

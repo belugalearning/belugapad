@@ -489,6 +489,10 @@ float timerIgnoreFrog;
     if(ddp)rambler.DisplayNumberDP=[ddp integerValue];
     else rambler.DisplayNumberDP=1;
     
+    NSNumber *ddenom=[problemDef objectForKey:@"DISPLAY_DENOMINATOR"];
+    if(ddenom) rambler.DisplayDenominator=[ddenom integerValue];
+    else rambler.DisplayDenominator=0;
+    
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
     

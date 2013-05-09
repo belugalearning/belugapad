@@ -52,5 +52,6 @@
 @property int DisplayNumberOffset;
 @property float DisplayNumberMultiplier;
 @property int DisplayNumberDP;
+@property int DisplayDenominator;
 
 @end

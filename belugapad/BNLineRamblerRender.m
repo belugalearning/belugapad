@@ -384,6 +384,13 @@ static float kLabelOffset=0.0f;
                         bmlabelindex24++;
                     }
 
+                    //append a display denominator (later a fraction) if there is one and this isn't zero
+                    if(displayNum>0 && ramblerGameObject.DisplayDenominator!=0)
+                    {
+                        if(displayNum==ramblerGameObject.DisplayDenominator) writeText=@"1";
+                        else writeText=[writeText stringByAppendingFormat:@"/%d", ramblerGameObject.DisplayDenominator];
+                    }
+                    
                     lex.string=writeText;
                     lex.visible=YES;
             

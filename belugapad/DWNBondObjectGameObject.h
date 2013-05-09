@@ -10,6 +10,7 @@
 #import "LogPollingProtocols.h"
 
 @class DWNBondRowGameObject;
+@class SGBtxeRow;
 
 @interface DWNBondObjectGameObject : DWGameObject <LogPolling,LogPollPositioning>
 
@@ -20,7 +21,9 @@
 @property (retain) DWNBondRowGameObject *Mount;
 @property (retain) CCNode *BaseNode;
 @property int Length;
+@property (retain) NSString *labelString;
 @property (retain) CCLabelTTF *Label;
+@property (retain) SGBtxeRow *BTXELabel;
 @property BOOL InitedObject;
 @property BOOL IsScaled;
 @property BOOL NoScaleBlock;

@@ -538,7 +538,7 @@ static float kTimeToCageShake=7.0f;
             
             NSString *spriteFilename=@"/images/placevalue/total_count_bg.png";
             
-            if([columnCountTotalType isEqualToString:FRACTION])spriteFilename=@"/images/placevalue/total_count_bg.png";
+            if([columnCountTotalType isEqualToString:FRACTION])spriteFilename=@"/images/placevalue/pv_counter_total_fractions.png";
             
             CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFilename)];
             [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 5+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
@@ -550,6 +550,8 @@ static float kTimeToCageShake=7.0f;
             if(showColumnTotalCount)
             {
                 CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:25.0f];
+                if([columnCountTotalType isEqualToString:FRACTION])
+                    [totalCountLabel setAnchorPoint:ccp(0.5,0)];
                 [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
                 [totalCountLabel setOpacity:0];
                 [totalCountLabel setTag:2];
@@ -558,7 +560,7 @@ static float kTimeToCageShake=7.0f;
                 if([columnCountTotalType isEqualToString:FRACTION])
                 {
                     CCLabelTTF *totalCountLabelDenom=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:25.0f];
-                    [totalCountLabelDenom setPosition:ccp(totalCountLabel.position.x,totalCountLabel.position.y-30)];
+                    [totalCountLabelDenom setPosition:ccp(totalCountLabel.position.x,totalCountLabel.position.y-15)];
                     [totalCountLabelDenom setOpacity:0];
                     [totalCountLabelDenom setTag:2];
                     [totalCountSprite addChild:totalCountLabelDenom];

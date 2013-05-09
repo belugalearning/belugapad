@@ -173,6 +173,12 @@
         [pogo.BaseNode setScale:0.5f];
     }
     
+    if(pogo.BTXELabel)
+    {
+//        [pogo.BTXELabel setPosition:ccp(512,384)];
+//        [pogo.BTXELabel setPosition:ccp((pogo.Length * 50) * 0.5f, 0)];
+    }
+    
     if(pogo.Label) { 
         [pogo.Label setColor:ccc3(0,0,0)];
         

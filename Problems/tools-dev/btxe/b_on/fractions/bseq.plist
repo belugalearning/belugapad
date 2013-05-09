@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
+	<key>EVAL_TYPE</key>
+	<string>SEQUENCE_ASC</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Place in order&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;4&quot; /&gt;&lt;b:on numerator=&quot;6&quot; denominator=&quot;4&quot; showAsMixedFraction=&quot;yes&quot; /&gt;&lt;b:on number=&quot;1&quot; /&gt;&lt;b:on number=&quot;1.75&quot;/&gt;&lt;b:on number=&quot;25&quot; suffix=&quot;%&quot; value=&quot;0.25&quot;/&gt;</string>
+		<string>&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;</string>
+	</array>
+</dict>
+</plist>

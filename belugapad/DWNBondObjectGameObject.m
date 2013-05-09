@@ -19,6 +19,8 @@
 @synthesize BaseNode;
 @synthesize Length;
 @synthesize Label;
+@synthesize labelString;
+@synthesize BTXELabel;
 @synthesize InitedObject;
 @synthesize IsScaled;
 @synthesize IndexPos;

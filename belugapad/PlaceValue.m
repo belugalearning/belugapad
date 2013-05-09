@@ -316,7 +316,15 @@ static float kTimeToCageShake=7.0f;
             CCSprite *s=[totalCountSprites objectAtIndex:i];
             CCLabelTTF *l=[s.children objectAtIndex:0];
             
-            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+            if([columnCountTotalType isEqualToString:VALUE]){
+                [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];}
+            else if([columnCountTotalType isEqualToString:PERCENT]){
+                [l setString:[NSString stringWithFormat:@"%d%%", (int)(((float)[self usedSpacesOnGrid:i]/([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i]))*100)]];}
+            else if([columnCountTotalType isEqualToString:FRACTION]){
+                CCLabelTTF *lD=[s.children objectAtIndex:1];
+                [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+                [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
+            }
         }
         
     }
@@ -528,7 +536,11 @@ static float kTimeToCageShake=7.0f;
             if(!totalCountSprites)
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
             
-            CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
+            NSString *spriteFilename=@"/images/placevalue/total_count_bg.png";
+            
+            if([columnCountTotalType isEqualToString:FRACTION])spriteFilename=@"/images/placevalue/total_count_bg.png";
+            
+            CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFilename)];
             [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 5+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
             [totalCountSprite setOpacity:0];
             [totalCountSprite setTag:2];
@@ -542,6 +554,15 @@ static float kTimeToCageShake=7.0f;
                 [totalCountLabel setOpacity:0];
                 [totalCountLabel setTag:2];
                 [totalCountSprite addChild:totalCountLabel];
+                
+                if([columnCountTotalType isEqualToString:FRACTION])
+                {
+                    CCLabelTTF *totalCountLabelDenom=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:25.0f];
+                    [totalCountLabelDenom setPosition:ccp(totalCountLabel.position.x,totalCountLabel.position.y-30)];
+                    [totalCountLabelDenom setOpacity:0];
+                    [totalCountLabelDenom setTag:2];
+                    [totalCountSprite addChild:totalCountLabelDenom];
+                }
             }
             
             if(showCount)
@@ -872,11 +893,19 @@ static float kTimeToCageShake=7.0f;
         
         if(showColumnTotalCount)
         {
-            float v=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
-            CCSprite *s=[totalCountSprites objectAtIndex:insCol];
+            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:i];
             CCLabelTTF *l=[s.children objectAtIndex:0];
             
-            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:insCol]*v]];
+            if([columnCountTotalType isEqualToString:VALUE]){
+                [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];}
+            else if([columnCountTotalType isEqualToString:PERCENT]){
+                [l setString:[NSString stringWithFormat:@"%d%%", (int)(((float)[self usedSpacesOnGrid:i]/([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i]))*100)]];}
+            else if([columnCountTotalType isEqualToString:FRACTION]){
+                CCLabelTTF *lD=[s.children objectAtIndex:1];
+                [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+                [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
+            }
         }
 
     }
@@ -979,6 +1008,11 @@ static float kTimeToCageShake=7.0f;
         showColumnUserCount = [[pdef objectForKey:SHOW_COLUMN_USER_COUNT]boolValue];
     else
         showColumnUserCount = YES;
+    
+    if([pdef objectForKey:COLUMN_TOTAL_COUNT_TYPE])
+        columnCountTotalType=[pdef objectForKey:COLUMN_TOTAL_COUNT_TYPE];
+    else
+        columnCountTotalType=VALUE;
     
     if(showColumnUserCount)
         userAddedBlocks=[[[NSMutableArray alloc]init]retain];

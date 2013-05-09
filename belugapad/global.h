@@ -119,6 +119,8 @@
 
 // PlaceValue specifics
 
+#define PERCENT @"PERCENT"
+#define FRACTION @"FRACTION"
 #define SOLUTION @"SOLUTION"
 #define COL_BASE_VALUE @"COL_BASE_VALUE"
 #define FIRST_COL_VALUE @"FIRST_COL_VALUE"
@@ -186,6 +188,7 @@
 #define SHOW_COLUMN_USER_COUNT @"SHOW_COLUMN_USER_COUNT"
 #define SHOW_MORE_LESS_ARROWS @"SHOW_MORE_LESS_ARROWS"
 #define COUNT_USER_BLOCKS @"COUNT_USER_BLOCKS"
+#define COLUMN_TOTAL_COUNT_TYPE @"COLUMN_TOTAL_COUNT_TYPE"
 
 
 // generic tools keys -- formerly from BlockFloating

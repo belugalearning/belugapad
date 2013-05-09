@@ -41,6 +41,8 @@
 @synthesize rowWidth;
 @synthesize disableTrailingPadding;
 
+@synthesize numerator, denominator, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction;
+
 // LogPolling properties
 @synthesize logPollId, logPollType;
 -(NSString*)logPollType { return @"SGBtxeObjectNumber"; }
@@ -99,6 +101,13 @@
     dupe.assetType=self.assetType;
     dupe.renderAsDots=self.renderAsDots;
     dupe.backgroundType=self.backgroundType;
+    dupe.numberValue=self.numberValue;
+    
+    if(self.numerator) dupe.numerator=[[self.numerator copy] autorelease];
+    if(self.denominator) dupe.denominator=[[self.denominator copy] autorelease];
+    if(self.pickerTargetNumerator) dupe.pickerTargetNumerator=[[self.pickerTargetNumerator copy] autorelease];
+    if(self.pickerTargetDenominator) dupe.pickerTargetDenominator=[[self.pickerTargetDenominator copy] autorelease];
+    dupe.showAsMixedFraction=self.showAsMixedFraction;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -152,7 +161,7 @@
 
 -(NSString*)numberText
 {
-    return self.text;
+    return numberText;
 }
 
 -(void)setNumberText:(NSString *)theNumberText
@@ -270,16 +279,28 @@
 {
     if(usePicker && !numberValue)
     {
-        return @"?";
+        if(self.pickerTargetNumerator) return @"?/?";
+        else return @"?";
     }
     
-    NSString *ps=prefixText;
-    if(!ps)ps=@"";
-    NSString *ss=suffixText;
-    if(!ss)ss=@"";
+    if(self.numerator && self.showAsMixedFraction==NO) return [NSString stringWithFormat:@"%d/%d", [self.numerator integerValue], [self.denominator integerValue]];
     
-    return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
-    //return numberText;
+    else if(self.numerator && self.showAsMixedFraction==YES)
+    {
+        int whole=(int)([self.numerator integerValue] / [self.denominator integerValue]);
+        int modtop=[self.numerator integerValue] - (whole * [self.denominator integerValue]);
+        return [NSString stringWithFormat:@"%d %d/%d", whole, modtop, [self.denominator integerValue]];
+    }
+
+    else
+    {
+        NSString *ps=prefixText;
+        if(!ps)ps=@"";
+        NSString *ss=suffixText;
+        if(!ss)ss=@"";
+        
+        return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
+    }
 }
 
 -(BOOL)enabled

@@ -160,6 +160,11 @@
     
     excludedEvalRows=[pdef objectForKey:@"EVAL_EXCLUDE_ROWS"];
     
+    if([pdef objectForKey:@"NUMBER_PICKER_COLUMNS"])
+        [toolHost setPickerColumnCount:[[pdef objectForKey:@"NUMBER_PICKER_COLUMNS"]intValue]];
+    else
+        [toolHost setPickerColumnCount:3];
+    
     if(ncardmax && ncardmin && ncardint)
     {
         presentNumberCardRow=YES;

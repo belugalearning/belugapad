@@ -102,6 +102,7 @@ typedef enum {
     BOOL hasMovedNumber;
     BOOL hasUsedNumber;
     BOOL canMoveNumber;
+    int exprBuilderPickerColumns;
     
     float timeSinceInteractionOrShake;
     float timeBeforeUserInteraction;
@@ -303,7 +304,7 @@ typedef enum {
 -(void)incrementDisplayScore: (id)sender;
 -(NSString*)returnPickerNumber;
 -(void)updatePickerNumber:(NSString*)thisNumber;
-
+-(void)setPickerColumnCount:(int)count;
 
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;

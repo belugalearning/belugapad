@@ -2895,12 +2895,17 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark CCPickerView delegate methods
 
+-(void)setPickerColumnCount:(int)count
+{
+    exprBuilderPickerColumns=count;
+}
+
 - (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
     int length=0;
     
     if(CurrentBTXE)
     {
-        length=3;
+        length=exprBuilderPickerColumns;
     }
     
     if(numberPickerForThisProblem) {

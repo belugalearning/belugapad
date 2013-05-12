@@ -773,9 +773,18 @@
                 id<NumberPicker, Value> io=(id<NumberPicker, Value>)o;
                 if(io.usePicker)
                 {
-                    if((int)io.targetNumber != [io.value intValue])
+                    if(io.pickerTargetNumerator)
                     {
-                        //first disbled element fails the evaluation
+                        if([io.pickerTargetNumerator intValue] != [io.numerator intValue] ||
+                           [io.pickerTargetDenominator intValue] != [io.pickerTargetDenominator intValue])
+                        {
+                            //as per int comparison, first non-matchin element fails evaluation
+                            return NO;
+                        }
+                    }
+                    else if((int)io.targetNumber != [io.value intValue])
+                    {
+                        //first non matching target element fails the evaluation
                         return NO;
                     }
                 }

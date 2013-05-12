@@ -27,8 +27,7 @@
 @property (retain) NSString *suffixText;
 @property (retain) NSNumber *numberValue;
 
-@property (retain) NSNumber *numerator;
-@property (retain) NSNumber *denominator;
+
 @property BOOL showAsMixedFraction;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;

@@ -525,7 +525,7 @@
                                     pNumerator.Components=numberPickerColumns;
                                     pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
                                     pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
-                                    pNumerator.Position=ccp(870,450);
+                                    pNumerator.Position=ccp(870,660);
                                     pNumerator.fractionPart=@"n";
                                     pNumerator.AssociatedObject=opicker;
                                     [pNumerator setupNumberWheel];
@@ -541,7 +541,7 @@
                                     pDenominator.Components=numberPickerColumns;
                                     pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
                                     pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
-                                    pDenominator.Position=ccp(870,280);
+                                    pDenominator.Position=ccp(870,pNumerator.Position.y-170);
                                     pDenominator.fractionPart=@"d";
                                     pDenominator.AssociatedObject=opicker;
                                     pNumerator.fractionWheel=pDenominator;
@@ -621,20 +621,21 @@
         }
     }
     
-    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
+    if(!showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
-        if(showingFractionPickers)
-        {
-            [pNumerator hideNumberWheel];
-            [pDenominator hideNumberWheel];
-            showingFractionPickers=NO;
-        }
+
         if(toolHost.pickerView){
             [self expandDescAndCardRows];
             [toolHost disableWheel];
             [toolHost hideCornerTray];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
+    }
+    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,380,374,388), location)){
+
+            [pNumerator hideNumberWheel];
+            [pDenominator hideNumberWheel];
+            showingFractionPickers=NO;
     }
 }
 

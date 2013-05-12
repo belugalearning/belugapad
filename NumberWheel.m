@@ -9,6 +9,7 @@
 #import "NumberWheel.h"
 #import "global.h"
 #import "SGBtxeProtocols.h"
+#import "SGBtxeObjectNumber.h"
 
 @implementation NumberWheel
 
@@ -184,13 +185,13 @@
     if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"n"]){
         
         
-        NSString *otherWheel=@"";
-        
-        
-        if(!fractionWheel.StrOutputValue)
-            otherWheel=@"?";
-        else
-            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
+//        NSString *otherWheel=@"";
+//        
+//        
+//        if(!fractionWheel.StrOutputValue)
+//            otherWheel=@"?";
+//        else
+//            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
         
         float value=0;
         
@@ -199,19 +200,20 @@
         
         ((id<Value>)AssociatedObject).numerator=[NSNumber numberWithInteger:row];
         ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
+        [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
         
-        NSLog(@"%d/%@ /// %@", [self returnPickerNumber], otherWheel, ((id<Text>)AssociatedObject).text);
+//        NSLog(@"%d/%@ /// %@", [self returnPickerNumber], otherWheel, ((id<Text>)AssociatedObject).text);
         
     }
     else if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"d"])
     {
         NSString *otherWheel=@"";
         
-        if(!fractionWheel.StrOutputValue)
-            otherWheel=@"?";
-        else
-            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
-        
+//        if(!fractionWheel.StrOutputValue)
+//            otherWheel=@"?";
+//        else
+//            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
+//        
         float value=0;
         
         if(fractionWheel.StrOutputValue)
@@ -219,8 +221,8 @@
         
         ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithInteger:row];
         ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
-
-        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);
+        [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
+//        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);
     }
     
     self.OutputValue=[self returnPickerNumber];

@@ -37,5 +37,6 @@
 @property (retain) NSString *numberMode;
 
 -(void)tagMyChildrenForIntro;
+-(void)updateDraw;
 
 @end

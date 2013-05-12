@@ -29,8 +29,6 @@
 
 @property (retain) NSNumber *numerator;
 @property (retain) NSNumber *denominator;
-@property (retain) NSNumber *pickerTargetNumerator;
-@property (retain) NSNumber *pickerTargetDenominator;
 @property BOOL showAsMixedFraction;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;

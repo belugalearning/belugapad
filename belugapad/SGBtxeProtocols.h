@@ -162,7 +162,8 @@
 
 @property float targetNumber;
 @property BOOL usePicker;
-
+@property (retain) NSNumber *pickerTargetNumerator;
+@property (retain) NSNumber *pickerTargetDenominator;
 
 @end
 

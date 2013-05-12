@@ -8,6 +8,7 @@
 
 #import "NumberWheel.h"
 #import "global.h"
+#import "SGBtxeProtocols.h"
 
 @implementation NumberWheel
 
@@ -29,6 +30,9 @@
 @synthesize ComponentWidth;
 @synthesize ComponentSpacing;
 @synthesize UnderlaySpriteFileName;
+@synthesize AssociatedObject;
+@synthesize fractionPart;
+@synthesize fractionWheel;
 
 -(NumberWheel *)init //WithRenderlayer:(CCLayer*)renderLayer
 {
@@ -38,48 +42,20 @@
     self.ComponentHeight=62;
     self.ComponentWidth=71;
     self.ComponentSpacing=6;
+    self.StrOutputValue=nil;
     
     return self;
 }
 
--(void)updateObjectData
+
+-(void)showNumberWheel
 {
-    if(self.InputValue==[self returnPickerNumber])return;
-    
-    NSString *strInput=[NSString stringWithFormat:@"%d", self.InputValue];
-    
-    //        [w.pickerViewSelection removeAllObjects];
-    
-    int thisComponent=self.Components-1;
-    
-    for(int i=[strInput length]-1;i>=0;i--)
-    {
-        NSString *thisStr=[NSString stringWithFormat:@"%c",[strInput characterAtIndex:i]];
-        int thisInt=[thisStr intValue];
-        
-        [self.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
-        
-        //            [w.pickerViewSelection addObject:[NSNumber numberWithInt:thisInt]];
-        [self.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
-        thisComponent--;
-    }
-    
-    if([strInput length]<self.Components)
-    {
-        int untouchedComponents=0;
-        untouchedComponents=(self.Components)-[strInput length];
-        
-        
-        for(int i=untouchedComponents;i>0;i--)
-        {
-            [self.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:0]];
-            [self.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:0];
-            thisComponent--;
-        }
-    }
-    
-    self.OutputValue=self.InputValue;
-    self.StrOutputValue=[NSString stringWithFormat:@"%d",self.InputValue];
+    pickerView.visible=true;
+}
+
+-(void)hideNumberWheel
+{
+    pickerView.visible=false;
 }
 
 -(void)setupNumberWheel
@@ -89,7 +65,7 @@
     if(pickerView) return;
     
     pickerView = [CCPickerView node];
-    pickerView.anchorPoint=ccp(0.5f,1.0f);
+    pickerView.anchorPoint=ccp(1.0f,0.5f);
     pickerView.position = self.Position;
     pickerView.dataSource = self;
     pickerView.delegate = self;
@@ -205,6 +181,35 @@
     
     [self.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
     
+    if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"n"]){
+        
+        
+        NSString *otherWheel=@"";
+        
+        if(!fractionWheel.StrOutputValue)
+            otherWheel=@"?";
+        else
+            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
+        
+        ((id<NumberPicker>)AssociatedObject).pickerTargetNumerator=[NSNumber numberWithInteger:row];
+
+        
+        NSLog(@"%d/%@", [self returnPickerNumber], otherWheel);
+        
+    }
+    else if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"d"])
+    {
+        NSString *otherWheel=@"";
+        
+        if(!fractionWheel.StrOutputValue)
+            otherWheel=@"?";
+        else
+            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
+        
+        ((id<NumberPicker>)AssociatedObject).denominator=[NSNumber numberWithInteger:row];
+
+        NSLog(@"%@/%d", otherWheel, [self returnPickerNumber]);
+    }
     
     self.OutputValue=[self returnPickerNumber];
     self.StrOutputValue=[self returnPickerNumberString];

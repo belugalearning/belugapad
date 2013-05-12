@@ -32,6 +32,7 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "SimpleAudioEngine.h"
+#import "NumberWheel.h"
 
 #define AUTO_LARGE_ROW_X_MAX 5
 #define AUTO_LARGE_ROW_Y_MAX 3
@@ -161,9 +162,11 @@
     excludedEvalRows=[pdef objectForKey:@"EVAL_EXCLUDE_ROWS"];
     
     if([pdef objectForKey:@"NUMBER_PICKER_COLUMNS"])
-        [toolHost setPickerColumnCount:[[pdef objectForKey:@"NUMBER_PICKER_COLUMNS"]intValue]];
+        numberPickerColumns=[[pdef objectForKey:@"NUMBER_PICKER_COLUMNS"]intValue];
     else
-        [toolHost setPickerColumnCount:3];
+        numberPickerColumns=3;
+    
+    [toolHost setPickerColumnCount:numberPickerColumns];
     
     if(ncardmax && ncardmin && ncardint)
     {
@@ -507,7 +510,68 @@
                                 [toolHost updatePickerNumber:opicker.text];
  
                         }
-                        toolHost.CurrentBTXE=o;
+                        
+                        if(!opicker.pickerTargetNumerator)
+                            toolHost.CurrentBTXE=o;
+                        
+                        if(opicker.pickerTargetNumerator)
+                        {
+                            if(!showingFractionPickers)
+                            {
+                                numberPickerColumns=3;
+                                if(!pNumerator){
+                                    pNumerator=[[NumberWheel alloc]init];
+                                    pNumerator.RenderLayer=renderLayer;
+                                    pNumerator.Components=numberPickerColumns;
+                                    pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
+                                    pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
+                                    pNumerator.Position=ccp(870,450);
+                                    pNumerator.fractionPart=@"n";
+                                    pNumerator.AssociatedObject=opicker;
+                                    [pNumerator setupNumberWheel];
+                                }
+                                else
+                                {
+                                    pNumerator.AssociatedObject=opicker;
+                                    [pNumerator showNumberWheel];
+                                }
+                                if(!pDenominator){
+                                    pDenominator=[[NumberWheel alloc]init];
+                                    pDenominator.RenderLayer=renderLayer;
+                                    pDenominator.Components=numberPickerColumns;
+                                    pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
+                                    pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
+                                    pDenominator.Position=ccp(870,280);
+                                    pDenominator.fractionPart=@"d";
+                                    pDenominator.AssociatedObject=opicker;
+                                    pNumerator.fractionWheel=pDenominator;
+                                    pDenominator.fractionWheel=pNumerator;
+                                    [pDenominator setupNumberWheel];
+                                }
+                                else
+                                {
+                                    pDenominator.AssociatedObject=opicker;
+                                    [pDenominator showNumberWheel];
+                                }
+                                
+                                //do what parser does
+                                //set numerator/denominator to numbers
+                                // set value
+                                // do math for value
+                                // comparison
+                                // text to return ?
+                                
+                                NSLog(@"show fraction picker");
+                            }
+                            else
+                            {
+                                [pNumerator hideNumberWheel];
+                                [pDenominator hideNumberWheel];
+                                NSLog(@"hide fraction picker");                               
+                            }
+                            showingFractionPickers=!showingFractionPickers;
+                        }
+                        
                         if(!toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [self contractDescAndCardRows];
@@ -516,8 +580,16 @@
                         
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
-                            [toolHost showWheel];
-                            [toolHost showCornerTray];
+                            
+//                            if(!opicker.pickerTargetNumerator)
+//                            {
+                                [toolHost showWheel];
+                                [toolHost showCornerTray];
+//                            }
+//                            else
+//                            {
+//                                NSLog(@"we dun has 2 wheels hawh");
+//                            }
                             
                             [self contractDescAndCardRows];
                         }

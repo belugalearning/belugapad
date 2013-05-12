@@ -12,6 +12,7 @@
 #import "SGBtxeProtocols.h"
 
 @class SGBtxeRow;
+@class NumberWheel;
 
 @interface ExprBuilder : ToolScene
 {
@@ -59,15 +60,20 @@
     int numberCardRowMin;
     int numberCardRowMax;
     int numberCardRowInterval;
+    int numberPickerColumns;
     BOOL numberCardRandomOrder;
     int numberCardRandomSelectionOf;
     BOOL hasMovedObject;
     BOOL isSequencing;
+    BOOL showingFractionPickers;
 
     NSString *numberMode;
     
     SGBtxeRow *ncardRow;
     SGBtxeRow *descRow;
+    
+    NumberWheel *pNumerator;
+    NumberWheel *pDenominator;
     
     
     //excluded row evaluations

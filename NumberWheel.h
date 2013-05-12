@@ -12,6 +12,7 @@
 {
     CCNode *w;
 }
+
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) CCSprite  *mySprite;
 @property (retain) NSString *SpriteFileName;
@@ -30,9 +31,13 @@
 @property int ComponentWidth;
 @property int ComponentHeight;
 @property int ComponentSpacing;
+@property (retain) id AssociatedObject;
+@property (retain) NSString *fractionPart;
+@property (retain) NumberWheel *fractionWheel;
 
 
 -(NumberWheel *)init; //WithRenderLayer:(CCLayer*)renderLayer;
 -(void)setupNumberWheel;
-
+-(void)showNumberWheel;
+-(void)hideNumberWheel;
 @end

@@ -85,6 +85,8 @@
 @protocol Value <NSObject>
 
 @property (readonly) NSNumber *value;
+@property (retain) NSNumber *numerator;
+@property (retain) NSNumber *denominator;
 
 @end
 

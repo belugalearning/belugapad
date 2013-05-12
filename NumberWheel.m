@@ -186,15 +186,21 @@
         
         NSString *otherWheel=@"";
         
+        
         if(!fractionWheel.StrOutputValue)
             otherWheel=@"?";
         else
             otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
         
-        ((id<NumberPicker>)AssociatedObject).pickerTargetNumerator=[NSNumber numberWithInteger:row];
-
+        float value=0;
         
-        NSLog(@"%d/%@", [self returnPickerNumber], otherWheel);
+        if(fractionWheel.StrOutputValue)
+            value=(float)[self returnPickerNumber]/[fractionWheel returnPickerNumber];
+        
+        ((id<Value>)AssociatedObject).numerator=[NSNumber numberWithInteger:row];
+        ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
+        
+        NSLog(@"%d/%@ /// %@", [self returnPickerNumber], otherWheel, ((id<Text>)AssociatedObject).text);
         
     }
     else if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"d"])
@@ -206,9 +212,15 @@
         else
             otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
         
-        ((id<NumberPicker>)AssociatedObject).denominator=[NSNumber numberWithInteger:row];
+        float value=0;
+        
+        if(fractionWheel.StrOutputValue)
+            value=(float)[otherWheel floatValue]/[self returnPickerNumber];
+        
+        ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithInteger:row];
+        ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
 
-        NSLog(@"%@/%d", otherWheel, [self returnPickerNumber]);
+        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);
     }
     
     self.OutputValue=[self returnPickerNumber];

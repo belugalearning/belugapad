@@ -603,6 +603,12 @@
                             [toolHost hideCornerTray];
                             toolHost.CurrentBTXE=nil;
                         }
+                        if(showingFractionPickers)
+                        {
+                            [pNumerator hideNumberWheel];
+                            [pDenominator hideNumberWheel];
+                            showingFractionPickers=NO;
+                        }
                     }
                 }
                 [(id<MovingInteractive>)o inflateZIndex];
@@ -617,6 +623,12 @@
     
     if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
         toolHost.CurrentBTXE=nil;
+        if(showingFractionPickers)
+        {
+            [pNumerator hideNumberWheel];
+            [pDenominator hideNumberWheel];
+            showingFractionPickers=NO;
+        }
         if(toolHost.pickerView){
             [self expandDescAndCardRows];
             [toolHost disableWheel];

@@ -87,6 +87,7 @@
 @property (readonly) NSNumber *value;
 @property (retain) NSNumber *numerator;
 @property (retain) NSNumber *denominator;
+@property (retain) NSNumber *numberValue;
 
 @end
 

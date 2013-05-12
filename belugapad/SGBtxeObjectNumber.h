@@ -25,7 +25,6 @@
 @property (retain) NSString *prefixText;
 @property (retain) NSString *numberText;
 @property (retain) NSString *suffixText;
-@property (retain) NSNumber *numberValue;
 
 
 @property BOOL showAsMixedFraction;

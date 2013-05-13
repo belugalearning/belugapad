@@ -188,6 +188,11 @@ static float kTimeToHeaderBounce=7.0f;
         
     }
     
+    if([pdef objectForKey:SHOW_12_GRID])
+        is12x12=[[pdef objectForKey:SHOW_12_GRID]boolValue];
+    else
+        is12x12=NO;
+    
     
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
     
@@ -216,7 +221,6 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)populateGW
 {
-    is12x12=YES;
     
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Operator.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];

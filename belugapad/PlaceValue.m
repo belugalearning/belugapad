@@ -323,7 +323,13 @@ static float kTimeToCageShake=7.0f;
             else if([columnCountTotalType isEqualToString:FRACTION]){
                 CCLabelTTF *lD=[s.children objectAtIndex:1];
                 [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
-                [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
+
+                if(v<0)
+                    [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])/v]];
+                else
+                    [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
+                
+                NSLog(@"used spaces on grid %d, free spaces on grid %d, value %g", [self usedSpacesOnGrid:i], [self freeSpacesOnGrid:i], v);
             }
         }
         
@@ -906,7 +912,11 @@ static float kTimeToCageShake=7.0f;
             else if([columnCountTotalType isEqualToString:FRACTION]){
                 CCLabelTTF *lD=[s.children objectAtIndex:1];
                 [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
-                [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
+                
+                if(v<0)
+                    [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])/v]];
+                else
+                    [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
             }
         }
 

@@ -222,6 +222,7 @@
     nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
     nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
     solutionsDef=[pdef objectForKey:SOLUTIONS];
+    traceOriginalShapes=[[pdef objectForKey:TRACE_ORIGINAL_SHAPES]boolValue];
     
     numberWheelComponents=[[NSString stringWithFormat:@"%d", solutionNumber] length];
     
@@ -1178,7 +1179,14 @@
                 [mvhandle release];
 
             }
-            
+
+            if(traceOriginalShapes && gw.Blackboard.inProblemSetup)
+            {
+                CCSprite *traceShape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Trace_Sq80.png")];
+                traceShape.position=tile.Position;
+                traceShape.opacity=120;
+                [renderLayer addChild:traceShape z:1000];
+            }
 
             [tile release];
         }

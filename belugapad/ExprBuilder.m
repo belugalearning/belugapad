@@ -788,6 +788,8 @@
                 {
                     if(io.pickerTargetNumerator)
                     {
+                        if(!io.numberator || !io.denominator) return NO;
+                        
                         if([io.pickerTargetNumerator intValue] != [io.numerator intValue] ||
                            [io.pickerTargetDenominator intValue] != [io.pickerTargetDenominator intValue])
                         {

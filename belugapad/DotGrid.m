@@ -1430,7 +1430,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
     
-    if(!CGRectContainsPoint(CGRectMake(700,460,324,308), location) && toolHost.pickerView)
+    if(!CGRectContainsPoint(CGRectMake(700,460,324,308), location) && [toolHost isShowingPickerLayer])
         return;
     
     if([gw.Blackboard.SelectedObjects count]>0)

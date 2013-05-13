@@ -322,13 +322,14 @@ static float kTimeToCageShake=7.0f;
                 [l setString:[NSString stringWithFormat:@"%d%%", (int)(((float)[self usedSpacesOnGrid:i]/([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i]))*100)]];}
             else if([columnCountTotalType isEqualToString:FRACTION]){
                 CCLabelTTF *lD=[s.children objectAtIndex:1];
-                [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
 
-                if(v<0)
+                if(v<1){
                     [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])/v]];
-                else
+                    [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]/v]];
+                }else{
                     [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
-                
+                    [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+                }
                 NSLog(@"used spaces on grid %d, free spaces on grid %d, value %g", [self usedSpacesOnGrid:i], [self freeSpacesOnGrid:i], v);
             }
         }
@@ -911,12 +912,14 @@ static float kTimeToCageShake=7.0f;
                 [l setString:[NSString stringWithFormat:@"%d%%", (int)(((float)[self usedSpacesOnGrid:i]/([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i]))*100)]];}
             else if([columnCountTotalType isEqualToString:FRACTION]){
                 CCLabelTTF *lD=[s.children objectAtIndex:1];
-                [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
                 
-                if(v<0)
+                if(v<1){
                     [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])/v]];
-                else
+                    [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]/v]];
+                }else{
                     [lD setString:[NSString stringWithFormat:@"%g", ([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i])*v]];
+                    [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+                }
             }
         }
 

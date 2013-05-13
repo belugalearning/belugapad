@@ -273,6 +273,8 @@
     
     if(self.renderAsDots)
         [self.numberDotRenderComponent updateDraw];
+    
+    [self redrawBkg];
 }
 
 -(NSString*)text

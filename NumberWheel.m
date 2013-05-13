@@ -199,7 +199,7 @@
             value=(float)[self returnPickerNumber]/[fractionWheel returnPickerNumber];
             ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
-        ((id<Value>)AssociatedObject).numerator=[NSNumber numberWithInteger:row];
+        ((id<Value>)AssociatedObject).numerator=[NSNumber numberWithInteger:[self returnPickerNumber]];
 
         [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
         
@@ -222,7 +222,7 @@
             ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
         
-        ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithInteger:row];
+        ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithFloat:[self returnPickerNumber]];
         [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
 //        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);
     }

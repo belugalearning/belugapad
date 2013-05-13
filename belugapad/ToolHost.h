@@ -305,7 +305,7 @@ typedef enum {
 -(NSString*)returnPickerNumber;
 -(void)updatePickerNumber:(NSString*)thisNumber;
 -(void)setPickerColumnCount:(int)count;
-
+-(BOOL)isShowingPickerLayer;
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;
 

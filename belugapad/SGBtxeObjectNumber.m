@@ -281,7 +281,7 @@
     {
         if(self.pickerTargetNumerator)
         {
-            if(self.numerator && self.denominator) return @"?/?";
+            if(!self.numerator && !self.denominator) return @"?/?";
             else if(self.numerator) return [NSString stringWithFormat:@"%d/?", [self.numerator integerValue]];
             else if(self.denominator) return [NSString stringWithFormat:@"?/%d", [self.denominator integerValue]];
         }

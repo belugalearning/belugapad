@@ -1058,6 +1058,11 @@ static float kTimeToHintToolTray=0.0f;
     [self addCommitButton];
 }
 
+-(BOOL)isShowingPickerLayer
+{
+    return trayLayerWheel.visible;
+}
+
 -(void)readOutProblemDescriptionAndForce:(BOOL)forceRead
 {
     if(ac.IsMuted && !forceRead)return;

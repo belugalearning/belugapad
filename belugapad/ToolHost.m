@@ -418,7 +418,7 @@ static float kTimeToHintToolTray=0.0f;
         {
             [(id<Text>)CurrentBTXE setText:[self returnPickerNumber]];
         }
-        
+
     }
     
     if(countUpToJmap)

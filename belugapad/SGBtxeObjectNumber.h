@@ -25,12 +25,8 @@
 @property (retain) NSString *prefixText;
 @property (retain) NSString *numberText;
 @property (retain) NSString *suffixText;
-@property (retain) NSNumber *numberValue;
 
-@property (retain) NSNumber *numerator;
-@property (retain) NSNumber *denominator;
-@property (retain) NSNumber *pickerTargetNumerator;
-@property (retain) NSNumber *pickerTargetDenominator;
+
 @property BOOL showAsMixedFraction;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
@@ -41,5 +37,6 @@
 @property (retain) NSString *numberMode;
 
 -(void)tagMyChildrenForIntro;
+-(void)updateDraw;
 
 @end

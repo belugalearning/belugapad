@@ -85,6 +85,9 @@
 @protocol Value <NSObject>
 
 @property (readonly) NSNumber *value;
+@property (retain) NSNumber *numerator;
+@property (retain) NSNumber *denominator;
+@property (retain) NSNumber *numberValue;
 
 @end
 
@@ -162,7 +165,8 @@
 
 @property float targetNumber;
 @property BOOL usePicker;
-
+@property (retain) NSNumber *pickerTargetNumerator;
+@property (retain) NSNumber *pickerTargetDenominator;
 
 @end
 

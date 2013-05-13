@@ -84,6 +84,7 @@
 		551815821526210D0097E259 /* BNBondStoreRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815801526210C0097E259 /* BNBondStoreRender.m */; };
 		552478661536BF5C00BA5C4E /* tooldef.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552478651536BF5C00BA5C4E /* tooldef.plist */; };
 		5526EEE0167A1314001A683D /* ClippingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5526EEDF167A1314001A683D /* ClippingTest.m */; };
+		55276A9F1740105700164B41 /* NumberWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 55276A9E1740105700164B41 /* NumberWheel.m */; };
 		5529F4D11529EA940085492E /* BNBondStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BNBondMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BNBondMount.m */; };
 		5529F4D7152A05EB0085492E /* BNBondMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BNBondMountable.m */; };
@@ -522,9 +523,9 @@
 		0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GzipExtension.m"; sourceTree = "<group>"; };
 		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
 		0CD565911647F23E00D9EA30 /* UserNodeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNodeState.m; sourceTree = "<group>"; };
-		0CDECB4915920C27004DE20D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
-		0CDECB4A15920C27004DE20D /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
-		0CDECB4B15920C27004DE20D /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		0CDECB4915920C27004DE20D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AFHTTPClient.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		0CDECB4A15920C27004DE20D /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AFHTTPClient.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		0CDECB4B15920C27004DE20D /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0CDECB4C15920C27004DE20D /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		0CDECB4D15920C27004DE20D /* AFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageRequestOperation.h; sourceTree = "<group>"; };
 		0CDECB4E15920C27004DE20D /* AFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageRequestOperation.m; sourceTree = "<group>"; };
@@ -603,6 +604,8 @@
 		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
 		5526EEDE167A1314001A683D /* ClippingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClippingTest.h; sourceTree = "<group>"; };
 		5526EEDF167A1314001A683D /* ClippingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClippingTest.m; sourceTree = "<group>"; };
+		55276A9D1740105700164B41 /* NumberWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberWheel.h; sourceTree = "<group>"; };
+		55276A9E1740105700164B41 /* NumberWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberWheel.m; sourceTree = "<group>"; };
 		5529F4CF1529EA940085492E /* BNBondStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreDropTarget.m; sourceTree = "<group>"; };
 		5529F4D2152A04310085492E /* BNBondMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMount.h; sourceTree = "<group>"; };
@@ -871,7 +874,7 @@
 		7F51157D14A9EE67001AF372 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		7F51157E14A9EE67001AF372 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7F51158014A9EE67001AF372 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		7F51158114A9EE67001AF372 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7F51158114A9EE67001AF372 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F51158914A9EE67001AF372 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		7F51159B14A9EF67001AF372 /* DWBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBehaviour.h; sourceTree = "<group>"; };
 		7F51159C14A9EF67001AF372 /* DWBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWBehaviour.m; sourceTree = "<group>"; };
@@ -1108,7 +1111,7 @@
 		7F817BC8165A750E00B291DA /* CCGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCGLView.m; sourceTree = "<group>"; };
 		7F817BC9165A750E00B291DA /* CCWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCWindow.h; sourceTree = "<group>"; };
 		7F817BCA165A750E00B291DA /* CCWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCWindow.m; sourceTree = "<group>"; };
-		7F817BCC165A750E00B291DA /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
+		7F817BCC165A750E00B291DA /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = base64.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		7F817BCD165A750E00B291DA /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		7F817BCE165A750E00B291DA /* CCArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCArray.h; sourceTree = "<group>"; };
 		7F817BCF165A750E00B291DA /* CCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCArray.m; sourceTree = "<group>"; };
@@ -1256,7 +1259,7 @@
 		7FB9829A15116633006D31AE /* BAExpressionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAExpressionBuilder.m; sourceTree = "<group>"; };
 		7FB9829B15116633006D31AE /* BAExpressionHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionHeaders.h; sourceTree = "<group>"; };
 		7FB9829C15116633006D31AE /* BAExpressionTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionTree.h; sourceTree = "<group>"; };
-		7FB9829D15116633006D31AE /* BAExpressionTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAExpressionTree.m; sourceTree = "<group>"; };
+		7FB9829D15116633006D31AE /* BAExpressionTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BAExpressionTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7FB9829E15116633006D31AE /* BAExpressionTreeElementProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionTreeElementProtocol.h; sourceTree = "<group>"; };
 		7FB9829F15116633006D31AE /* BAInteger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAInteger.h; sourceTree = "<group>"; };
 		7FB982A015116633006D31AE /* BAInteger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAInteger.m; sourceTree = "<group>"; };
@@ -2020,6 +2023,8 @@
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
+				55276A9D1740105700164B41 /* NumberWheel.h */,
+				55276A9E1740105700164B41 /* NumberWheel.m */,
 				7FA2A4E316A81B4500B50D07 /* Icon-Small.png */,
 				7FA2A4E416A81B4500B50D07 /* Icon-Small-50.png */,
 				7FA2A4E516A81B4500B50D07 /* Icon-Small@2x.png */,
@@ -3603,6 +3608,7 @@
 				551430C117133ADB00A66657 /* SGFBuilderRowTouch.m in Sources */,
 				551430C41713631300A66657 /* SGFBuilderBlockTouch.m in Sources */,
 				0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */,
+				55276A9F1740105700164B41 /* NumberWheel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

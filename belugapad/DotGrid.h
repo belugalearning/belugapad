@@ -99,6 +99,7 @@ typedef struct {
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
     BOOL debugLogging;
+    BOOL traceOriginalShapes;
     
     NSString *showCount;
     

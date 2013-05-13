@@ -61,10 +61,10 @@ static float kNBFontSizeLarge=35.0f;
         cy=ly / 2.0f;
         
         gw = [[DWGameWorld alloc] initWithGameScene:self];
+        sgw=[[SGGameWorld alloc]initWithGameScene:renderLayer];
+        
         gw.Blackboard.inProblemSetup = YES;
         sgw.Blackboard.inProblemSetup = YES;
-        
-        sgw=[[SGGameWorld alloc]initWithGameScene:renderLayer];
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
@@ -435,6 +435,7 @@ static float kNBFontSizeLarge=35.0f;
         pogo.labelString=labelString;
         [row parseXML:labelString];
         [row setupDraw];
+        [row inflateZindex];
         
         row.baseNode.zOrder+=10;
         
@@ -509,9 +510,9 @@ static float kNBFontSizeLarge=35.0f;
         NSString *raw=nil;
         NSString *labelString=nil;
         
-        if([[initObjects objectAtIndex:i]objectForKey:@"BTXELABEL"]){
+        if([[initObjects objectAtIndex:i]objectForKey:LABEL]){
             
-            raw=[[initObjects objectAtIndex:i] objectForKey:@"BTXELABEL"];
+            raw=[[initObjects objectAtIndex:i] objectForKey:LABEL];
             
             if(raw.length<3)
             {
@@ -589,7 +590,7 @@ static float kNBFontSizeLarge=35.0f;
         pogo.labelString=labelString;
         [row parseXML:labelString];
         [row setupDraw];
-        
+        [row inflateZindex];
         row.baseNode.zOrder+=10;
         
         [row tagMyChildrenForIntro];
@@ -1015,6 +1016,7 @@ static float kNBFontSizeLarge=35.0f;
             row.position=ccp((pogo.Length * 50) * 0.5f, 0);
             [row parseXML:pogo.labelString];
             [row setupDraw];
+            [row inflateZindex];
             
             row.baseNode.zOrder+=10;
             

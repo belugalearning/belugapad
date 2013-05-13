@@ -2097,7 +2097,6 @@ static float kTimeToHintToolTray=0.0f;
     if([currentTool isKindOfClass:[ExprBuilder class]])
     {
 //        ExprBuilder *eb=(ExprBuilder*)currentTool;
-        
         rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] +15;
         qTrayMid.position=ccp(row.position.x, row.position.y);
     }

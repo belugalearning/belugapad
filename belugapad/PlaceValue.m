@@ -326,8 +326,6 @@ static float kTimeToCageShake=7.0f;
 
                 [lD setString:[NSString stringWithFormat:@"%g", 1/v]];
                 [l setString:[NSString stringWithFormat:@"%d", [self usedSpacesOnGrid:i]]];
-                
-                NSLog(@"used spaces on grid %d, free spaces on grid %d, value %g", [self usedSpacesOnGrid:i], [self freeSpacesOnGrid:i], v);
             }
         }
         

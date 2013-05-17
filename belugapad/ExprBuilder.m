@@ -477,7 +477,7 @@
         {
             if(!o.interactive)continue;
             id<Bounding> obounding=(id<Bounding>)o;
-            id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
+            id<NumberPicker,Text,Value> opicker=(id<NumberPicker,Text,Value>)o;
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
@@ -507,7 +507,8 @@
                             if(opicker.text&&[opicker.text isEqualToString:@"?"])
                                 opicker.text=@"0";
                             
-                                [toolHost updatePickerNumber:opicker.text];
+                            NSString *value=[NSString stringWithFormat:@"%g", [opicker.numberValue floatValue]];
+                                [toolHost updatePickerNumber:value];
  
                         }
                         

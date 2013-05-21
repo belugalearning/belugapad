@@ -21,7 +21,7 @@
 	<key>30_commit</key>
 	<string>OK button</string>
 	<key>30_mq_true</key>
-	<string>button or buttons that display a correct answer</string>
+	<string>button or buttons that display true</string>
 	<key>30_Q</key>
 	<string>what?</string>
 	<key>30_QM</key>

@@ -21,7 +21,7 @@
 	<key>30_commit</key>
 	<string>OK button</string>
 	<key>30_mq_true</key>
-	<string>button or buttons that display a correct answer</string>
+	<string>button or buttons that display true</string>
 	<key>30_Q</key>
 	<string>what?</string>
 	<key>30_QM</key>
@@ -83,7 +83,7 @@
 	<key>30_DT_Shape_House</key>
 	<string>houses</string>
 	<key>30_DT_Shape_Diamond</key>
-	<string>octagon</string>
+	<string>octagons</string>
 	<key>30_DT_Shape_Value_10</key>
 	<string>ten circle</string>
 	<key>30_DT_2Circles</key>
@@ -112,6 +112,8 @@
 	<string>plus button</string>
 	<key>30_FB_Bubble_Plus</key>
 	<string>plus button</string>
+	<key>30_FB_Bubble_Mult</key>
+	<string>multiplication button</string>
 	<key>30_NB_grid</key>
 	<string>container</string>
 	<key>30_NB_Grid_1</key>

@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Drag the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DG_sq&quot;/&gt;&lt;b:t&gt;to the dot grid and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Drag the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DG_sq&quot;/&gt;&lt;b:t&gt;to a dot grid and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Drag the block to the grid. Press the green button. </string>
 	<key>TOOL_KEY</key>

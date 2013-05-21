@@ -7,7 +7,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;You have one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle_s&quot;/&gt;&lt;b:t&gt;. Drag a&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle_s&quot;/&gt;&lt;b:t&gt;from the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Dock&quot;/&gt;&lt;b:t&gt;to make&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_2Circles&quot;/&gt;&lt;b:t&gt;, and then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;You have one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle&quot;/&gt;&lt;b:t&gt;. Drag a&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle&quot;/&gt;&lt;b:t&gt;from the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Dock&quot;/&gt;&lt;b:t&gt;to make&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_2Circles&quot;/&gt;&lt;b:t&gt;, and then press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>HAS_CAGE</key>

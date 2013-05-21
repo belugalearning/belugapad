@@ -34,6 +34,8 @@
 	<string>thousands</string>
 	<key>goobles</key>
 	<string>guubles</string>
+	<key>gooble</key>
+	<string>guuble</string>
 	<key>?</key>
 	<string>.</string>
 </dict>

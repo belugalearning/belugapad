@@ -553,18 +553,49 @@ static float kTimeSinceAction=7.0f;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
-    
         
         if(!bondAllObjects)
         {
             for(id go in gw.AllGameObjects)
             {
+                int count=0;
+                
                     while([self isPointInActiveRects:ccp(startPosX,startPosY) andThisManyOthers:numBlocks])
                     {
+                        NSLog(@"look for point, %d", count);
                         startPosX = farLeft + arc4random() % (farRight - farLeft);
                         startPosY = botMost + arc4random() % (topMost - botMost);
+                        count++;
+                        
+                        if(count>199)break;
 
                     }
+                if(count==199)
+                {
+                    initObjects=nil;
+                    solutionsDef=nil;
+                    existingGroups=nil;
+                    destroyedLabelledGroups=nil;
+                    activeRects=nil;
+                    initAreas=nil;
+                    usedShapeTypes=nil;
+                    addedCages=nil;
+                    evalAreas=nil;
+                    inactiveArea=nil;
+                    activeRects=nil;
+                    
+                    
+                    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+                    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+                    
+                    [gw release];
+                    
+                    gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+                    gw.Blackboard.inProblemSetup = YES;
+                    
+                    [self populateGW];
+
+                }
             }
         }
     }

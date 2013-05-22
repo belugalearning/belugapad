@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;To share 1 between 2, drag out 1&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_pie&quot;/&gt;&lt;b:t&gt;and 2&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_bubble&quot;/&gt;&lt;b:t&gt;, and place one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_slice&quot;/&gt;&lt;b:t&gt;in each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_bubble_s&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>1</integer>
+	<key>DIVISOR</key>
+	<integer>2</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>0</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<true/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>2</integer>
+</dict>
+</plist>

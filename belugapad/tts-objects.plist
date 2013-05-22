@@ -123,6 +123,8 @@
 	<key>30_NB_grid_p</key>
 	<string>containers</string>
 	<key>30_PS_bubble</key>
+	<string>denominator bubbles</string>
+	<key>30_PS_bubble_s</key>
 	<string>denominator bubble</string>
 	<key>30_PS_pie</key>
 	<string>numerator pie</string>

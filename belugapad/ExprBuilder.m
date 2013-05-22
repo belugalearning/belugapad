@@ -798,7 +798,7 @@
                             return NO;
                         }
                     }
-                    else if((int)io.targetNumber != [io.value intValue])
+                    else if(io.targetNumber != [io.value floatValue])
                     {
                         //first non matching target element fails the evaluation
                         return NO;

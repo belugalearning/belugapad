@@ -580,7 +580,6 @@
 
 -(void)multiplyGroupsInBubbles
 {
-    // TODO: is now not running the fade ani -- sort! probably due to updated returnCurrentValidGroups
     NSMutableArray *groups=[self returnCurrentValidGroups];
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Group> operatedGroup=[groups objectAtIndex:1];
@@ -591,6 +590,28 @@
     
     NSLog(@"multiply result %d, existing %d, needed %d", result, existing, needed);
 
+    if(needed<0)
+    {
+        if([targetGroup.MyBlocks count]==1){
+        
+            for(SGFBlockBlock *b in targetGroup.MyBlocks)
+            {
+                [b fadeAndDestroy];
+            }
+            
+            [targetGroup destroy];
+        }
+        
+        else if([operatedGroup.MyBlocks count]==1){
+            for(SGFBlockBlock *b in operatedGroup.MyBlocks)
+            {
+                [b fadeAndDestroy];
+            }
+            
+            [operatedGroup destroy];
+        }
+    }
+    
     [self mergeGroupsFromBubbles];
     
 
@@ -970,7 +991,6 @@
                 
                 [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
                 [self evalProblem];
-                [self setTouchVarsToOff];
                 return;
             }
             [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_releasing_blocks.wav")];

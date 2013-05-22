@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle&quot;/&gt;&lt;b:t&gt;into each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle_s&quot;/&gt;&lt;b:t&gt;into each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 	<key>DISTRIBUTION_EVAL_TYPE</key>
 	<integer>5</integer>
 	<key>EVAL_MODE</key>

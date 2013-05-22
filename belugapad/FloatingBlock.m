@@ -991,7 +991,6 @@
                 
                 [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
                 [self evalProblem];
-                [self setTouchVarsToOff];
                 return;
             }
             [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_releasing_blocks.wav")];

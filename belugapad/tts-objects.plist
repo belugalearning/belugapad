@@ -71,9 +71,9 @@
 	<key>30_pause</key>
 	<string>pause button</string>
 	<key>30_DT_Shape_Circle</key>
-	<string>circle</string>
-	<key>30_DT_Shape_Circle_s</key>
 	<string>circles</string>
+	<key>30_DT_Shape_Circle_s</key>
+	<string>circle</string>
 	<key>30_DT_Shape_Ellipse</key>
 	<string>ellipses</string>
 	<key>30_DT_Shape_Square</key>

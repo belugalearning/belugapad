@@ -14,15 +14,15 @@
 	<array>
 		<dict>
 			<key>AREA_SIZE</key>
-			<string>1</string>
+			<string>3</string>
 			<key>AREA_WIDTH</key>
-			<string>1</string>
+			<string>3</string>
 		</dict>
 		<dict>
 			<key>AREA_SIZE</key>
-			<string>1</string>
+			<string>3</string>
 			<key>AREA_WIDTH</key>
-			<string>1</string>
+			<string>3</string>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>

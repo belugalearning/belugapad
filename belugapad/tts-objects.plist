@@ -71,11 +71,11 @@
 	<key>30_pause</key>
 	<string>pause button</string>
 	<key>30_DT_Shape_Circle</key>
-	<string>circle</string>
-	<key>30_DT_Shape_Circle_s</key>
 	<string>circles</string>
+	<key>30_DT_Shape_Circle_s</key>
+	<string>circle</string>
 	<key>30_DT_Shape_Ellipse</key>
-	<string>ellipses</string>
+	<string>ovals</string>
 	<key>30_DT_Shape_Square</key>
 	<string>squares</string>
 	<key>30_DT_Shape_RoundedSquare</key>
@@ -122,6 +122,14 @@
 	<string>container</string>
 	<key>30_NB_grid_p</key>
 	<string>containers</string>
+	<key>30_PS_bubble</key>
+	<string>denominator bubbles</string>
+	<key>30_PS_bubble_s</key>
+	<string>denominator bubble</string>
+	<key>30_PS_pie</key>
+	<string>numerator pie</string>
+	<key>30_PS_slice</key>
+	<string>slice</string>
 	<key>30_TT_Tile_Black</key>
 	<string>black square</string>
 	<key>30_NB_Block</key>

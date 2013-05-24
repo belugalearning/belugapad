@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>What is 3 more positive than 6?</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>What is 3 more positive than 6?</string>
+    <key>TOOL_KEY</key>
+    <string>NLine</string>
+    <key>START_VALUE</key>
+    <string>{$a}</string>
+    <key>MIN_VALUE</key>
+    <string>-20</string>
+    <key>MAX_VALUE</key>
+    <string>20</string>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>REJECT_MODE</key>
+    <integer>0</integer>
+    <key>SHOW_NUMBERS_AT_INTERVALS</key>
+    <array>
+      <string>5</string>
+    </array>
+    <key>HIDE_ALL_NUMBERS</key>
+    <false/>
+    <key>HIDE_ALL_NOTCHES</key>
+    <false/>
+    <key>HIDE_START_NUMBER</key>
+    <false/>
+    <key>HIDE_END_NUMBER</key>
+    <false/>
+    <key>HIDE_START_NOTCH</key>
+    <false/>
+    <key>COUNT_OUT_LOUD_FROM_START_VALUE</key>
+    <true/>
+    <key>HIDE_END_NOTCH</key>
+    <false/>
+    <key>DISABLE_SNAPPING_TO_NOTCH</key>
+    <false/>
+    <key>EVAL_PLUS_MINUS_THRESHOLD</key>
+    <integer>0</integer>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$a</string>
+        <key>MIN</key>
+        <string>-10</string>
+        <key>MAX</key>
+        <string>4</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$b</string>
+        <key>MIN</key>
+        <string>-10</string>
+        <key>MAX</key>
+        <string>4</string>
+      </dict>
+    </array>
+    <key>NUMBER_PICKER</key>
+    <dict>
+      <key>NUMBER_PICKER_DESCRIPTION</key>
+      <string>What is {$a} - {$b}?</string>
+      <key>INTERNAL_DESCRIPTION</key>
+      <string>What is {$a} - {$b} ?</string>
+      <key>PICKER_LAYOUT</key>
+      <integer>1</integer>
+      <key>ANIMATE_FROM_PICKER</key>
+      <true/>
+      <key>SHOW_DROPBOX</key>
+      <true/>
+      <key>PICKER_EVAL_MODE</key>
+      <integer>1</integer>
+      <key>EVAL_VALUE</key>
+      <string>{$a-$b}</string>
+      <key>MAX_NUMBERS</key>
+      <string>2</string>
+    </dict>
+  </dict>
+</plist>

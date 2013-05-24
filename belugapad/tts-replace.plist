@@ -50,5 +50,15 @@
 	<string>lil wayne</string>
 	<key>:</key>
 	<string>to</string>
+	<key>|-5|</key>
+	<string>absolute value of negative 5</string>
+	<key>|-8|</key>
+	<string>absolute value of negative 8</string>
+	<key>|-10|</key>
+	<string>absolute value of negative 10</string>
+	<key>|-12|</key>
+	<string>absolute value of negative 12</string>
+	<key>represents</key>
+	<string>rep resents </string>
 </dict>
 </plist>

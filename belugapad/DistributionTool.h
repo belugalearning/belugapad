@@ -65,6 +65,8 @@ typedef enum
     BOOL foundFirstNearestObject;
     int cageObjectCount;
     
+    BOOL problemHasMQ;
+    
     id lastContainer;
     CGPoint lastProxPos;
     id nearestObject;

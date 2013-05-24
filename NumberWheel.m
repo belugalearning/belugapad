@@ -52,11 +52,13 @@
 -(void)showNumberWheel
 {
     pickerView.visible=true;
+    pickerView.Locked=false;
 }
 
 -(void)hideNumberWheel
 {
     pickerView.visible=false;
+    pickerView.Locked=true;
 }
 
 -(void)setupNumberWheel

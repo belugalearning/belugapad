@@ -353,6 +353,8 @@ static float kTimeSinceAction=7.0f;
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
     if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[[pdef objectForKey:SOLUTION]retain];
+    if([pdef objectForKey:META_QUESTION])problemHasMQ=YES;
+    else problemHasMQ=NO;
     
     if(evalType==kCheckGroupTypeAndNumber)
         bondDifferentTypes=NO;
@@ -548,8 +550,11 @@ static float kTimeSinceAction=7.0f;
         
         int farLeft=(numBlocks/1.5)*kDistanceBetweenBlocks+30;
         int farRight=lx-kDistanceBetweenBlocks;
-        int topMost=ly-200;
+        int topMost=ly-220;
         int botMost=180;
+        
+        if(problemHasMQ)
+            topMost-=140;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);

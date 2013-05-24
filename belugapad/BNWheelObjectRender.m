@@ -288,7 +288,7 @@
             break;
     }
     
-    if(component>0 && w.HasDecimals)
+    if(component>0 && w.HasDecimals && component<(w.Components-1))
         numRows++;
     
     

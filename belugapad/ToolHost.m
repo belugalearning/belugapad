@@ -2936,7 +2936,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(component==0)
     {
-        if([self numberOfComponentsInPickerView:pickerView]>1)
+        if([self numberOfComponentsInPickerView:self.pickerView]>1)
             numRows = 12;
         else
             numRows= 10;
@@ -2944,6 +2944,8 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
         numRows = 11;
+        if(component==[self numberOfComponentsInPickerView:self.pickerView]-1)
+            numRows = 10;
     }
     
     return numRows;

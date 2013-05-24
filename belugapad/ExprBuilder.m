@@ -526,7 +526,7 @@
                                     pNumerator.Components=numberPickerColumns;
                                     pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
                                     pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
-                                    pNumerator.Position=ccp(870,660);
+                                    pNumerator.Position=ccp(870,640);
                                     pNumerator.fractionPart=@"n";
                                     pNumerator.AssociatedObject=opicker;
                                     [pNumerator setupNumberWheel];
@@ -534,6 +534,7 @@
                                 else
                                 {
                                     pNumerator.AssociatedObject=opicker;
+//                                    [pNumerator setPosition:ccp(pNumerator.position.x-lx,pNumerator.position.y)];
                                     [pNumerator showNumberWheel];
                                 }
                                 if(!pDenominator){
@@ -552,6 +553,7 @@
                                 else
                                 {
                                     pDenominator.AssociatedObject=opicker;
+//                                    [pDenominator setPosition:ccp(pDenominator.position.x-lx,pDenominator.position.y)];
                                     [pDenominator showNumberWheel];
                                 }
                                 
@@ -566,6 +568,8 @@
                             }
                             else
                             {
+//                                [pNumerator setPosition:ccp(pNumerator.position.x+lx,pNumerator.position.y)];
+//                                [pDenominator setPosition:ccp(pDenominator.position.x+lx,pDenominator.position.y)];
                                 [pNumerator hideNumberWheel];
                                 [pDenominator hideNumberWheel];
                                 NSLog(@"hide fraction picker");                               

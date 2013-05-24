@@ -40,9 +40,9 @@
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     contentService = ac.contentService;
     usersService = ac.usersService;
-    w.ComponentHeight=32;
-    w.ComponentWidth=54;
-    w.ComponentSpacing=0;
+    w.ComponentHeight=62;
+    w.ComponentWidth=71;
+    w.ComponentSpacing=6;
     
     //init pos x & y in case they're not set elsewhere
     

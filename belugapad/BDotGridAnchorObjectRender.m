@@ -86,7 +86,7 @@
 
         
 
-        [anch.RenderLayer addChild:anch.mySprite z:2];
+        [anch.RenderLayer addChild:anch.mySprite];
         
         [spriteFileName release];
     }

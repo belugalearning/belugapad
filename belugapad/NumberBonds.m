@@ -1470,9 +1470,14 @@ static float kNBFontSizeLarge=35.0f;
         [toolHost doWinning];
     }
     else {
-        if(rejectMode==kProblemRejectOnCommit && rejectType==kProblemAutomatedTransition)[self resetProblemFromReject];
-        else if(rejectType==kProblemResetOnReject)[toolHost resetProblem];
-        else [toolHost doIncomplete];
+        if(rejectMode==kProblemRejectOnCommit && rejectType==kProblemAutomatedTransition){[self resetProblemFromReject];}
+        else if(rejectType==kProblemResetOnReject){
+            [toolHost doIncomplete];
+            [toolHost resetProblem];
+        }
+        else{
+            [toolHost doIncomplete];
+        }
     }
 }
 

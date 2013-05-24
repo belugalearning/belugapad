@@ -444,7 +444,7 @@ static float kTimeToPieShake=7.0f;
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
         if(!c.ScaledUp)continue;
 //        p.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
-        c.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (conBox.position.y+45)-(110*currentYPos));
+        c.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (conBox.position.y+45)-(140*currentYPos));
         [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
         currentIndex++;
         

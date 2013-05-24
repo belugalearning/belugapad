@@ -1182,7 +1182,8 @@
 
             if(traceOriginalShapes && gw.Blackboard.inProblemSetup)
             {
-                CCSprite *traceShape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Trace_Sq80.png")];
+                NSString *filename=[NSString stringWithFormat:@"/images/dotgrid/DG_Trace_Sq%d.png", spaceBetweenAnchors];
+                CCSprite *traceShape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filename)];
                 traceShape.position=tile.Position;
                 traceShape.opacity=120;
                 [renderLayer addChild:traceShape z:1000];

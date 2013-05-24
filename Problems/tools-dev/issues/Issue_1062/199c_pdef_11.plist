@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>EVAL_TYPE</key>
+    <string>ALL_PICKERS_CORRECT</string>
+    <key>NUMBER_PICKER_COLUMNS</key>
+    <string>5</string>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:t&gt;Complete the equations.&lt;/b:t&gt;</string>
+      <string>&lt;b:on number=&quot;{&amp;x}&quot;/&gt;&lt;b:oo value=&quot;x&quot;/&gt;&lt;b:on number=&quot;{&amp;y}&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on number=&quot;{&amp;z}&quot;/&gt;</string>
+      <string>&lt;b:on number=&quot;{&amp;x1}&quot;/&gt;&lt;b:oo value=&quot;x&quot;/&gt;&lt;b:on number=&quot;{&amp;y}&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{&amp;z*0.1}&quot;/&gt;</string>
+      <string>&lt;b:on number=&quot;{&amp;x2}&quot;/&gt;&lt;b:oo value=&quot;x&quot;/&gt;&lt;b:on number=&quot;{&amp;y}&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{&amp;z*0.01}&quot;/&gt;</string>
+      <string>&lt;b:on number=&quot;{&amp;x3}&quot;/&gt;&lt;b:oo value=&quot;x&quot;/&gt;&lt;b:on number=&quot;{&amp;y}&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;{&amp;z*0.001}&quot;/&gt;</string>
+    </array>
+    <key>REPEAT_AS_IS_MIN</key>
+    <string>2</string>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>&amp;x</string>
+        <key>MIN</key>
+        <string>100</string>
+        <key>MAX</key>
+        <string>300</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>&amp;x1</string>
+        <key>VALUE</key>
+        <string>{&amp;x*0.1}</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>&amp;x2</string>
+        <key>VALUE</key>
+        <string>{&amp;x*0.01}</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>&amp;x3</string>
+        <key>VALUE</key>
+        <string>{&amp;x*0.001}</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>&amp;y</string>
+        <key>MIN</key>
+        <string>3</string>
+        <key>MAX</key>
+        <string>9</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>&amp;z</string>
+        <key>VALUE</key>
+        <string>{&amp;x*&amp;y}</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

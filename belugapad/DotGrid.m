@@ -107,16 +107,16 @@
 //    if(disableDrawing && drawMode==kAnyStartAnchorValid)
 //    {
 //        if(isMovingDown)
-//            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y+10)];
+//            [renderLayer setPosition:ccp(renderLayer.position.x,renderLayer.position.y+10)];
 //            
 //        if(isMovingUp)
-//            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y-10)];
+//            [renderLayer setPosition:ccp(renderLayer.position.x,renderLayer.position.y-10)];
 //            
 //        if(isMovingLeft)
-//            [anchorLayer setPosition:ccp(anchorLayer.position.x+10,anchorLayer.position.y)];
+//            [renderLayer setPosition:ccp(renderLayer.position.x+10,renderLayer.position.y)];
 //        
 //        if(isMovingRight)
-//            [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
+//            [renderLayer setPosition:ccp(renderLayer.position.x-10,renderLayer.position.y)];
 //    }
     
     [self drawState];
@@ -292,9 +292,7 @@
     gameState=kNoState;
     dotMatrix=[[NSMutableArray alloc]init];
     renderLayer = [[CCLayer alloc] init];
-    anchorLayer = [[CCLayer alloc]init];
     [self.ForeLayer addChild:renderLayer];
-    [self.ForeLayer addChild:anchorLayer];
     visibleAnchors=[[NSMutableArray alloc]init];
     invisibleAnchors=[[NSMutableArray alloc]init];
     
@@ -321,7 +319,7 @@
             anch.Position=ccp(xStartPos,yStartPos);
             anch.myXpos=iRow;
             anch.myYpos=iCol;
-            anch.RenderLayer=anchorLayer;
+            anch.RenderLayer=renderLayer;
             anch.anchorSize=spaceBetweenAnchors;
             
             
@@ -463,8 +461,8 @@
 
     CGPoint lastAnchor=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
 
-    firstAnchor=[anchorLayer convertToWorldSpace:firstAnchor];
-    lastAnchor=[anchorLayer convertToWorldSpace:lastAnchor];
+    firstAnchor=[renderLayer convertToWorldSpace:firstAnchor];
+    lastAnchor=[renderLayer convertToWorldSpace:lastAnchor];
 
     CGPoint nodeLastTouch=lastTouch;
 
@@ -902,7 +900,7 @@
                     [l setPosition:ccp(a.Position.x-40,a.Position.y+40)];
                     [l setTag:2];
                     [l setOpacity:0];
-                    [anchorLayer addChild:l];
+                    [renderLayer addChild:l];
 
                 }
                 
@@ -912,7 +910,7 @@
                     [l setPosition:ccp(260+(xpos*85),505)];
                     [l setTag:2];
                     [l setOpacity:0];
-                    [anchorLayer addChild:l];
+                    [renderLayer addChild:l];
                 }
                 
                 ypos--;
@@ -1096,7 +1094,7 @@
     DWDotGridShapeGameObject *shape=[[DWDotGridShapeGameObject alloc] autorelease];
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.Disabled=Disabled;
-    shape.RenderLayer=anchorLayer;
+    shape.RenderLayer=renderLayer;
     shape.firstAnchor=orderedAnchs.firstAnchor;
     shape.lastAnchor=orderedAnchs.lastAnchor;
     shape.tiles=[[[NSMutableArray alloc]init] autorelease];
@@ -1129,7 +1127,7 @@
             tile.myAnchor=curAnch;
             tile.tileType=kNoBorder;
             tile.tileSize=spaceBetweenAnchors;
-            tile.RenderLayer=anchorLayer;
+            tile.RenderLayer=renderLayer;
             tile.myShape=shape;
             tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
             //[tile handleMessage:kDWsetupStuff];
@@ -1157,7 +1155,7 @@
             {
                 DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
                 [gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
-                rshandle.RenderLayer=anchorLayer;
+                rshandle.RenderLayer=renderLayer;
                 rshandle.handleType=kResizeHandle;
                 rshandle.Position=ccp(curAnch.Position.x+spaceBetweenAnchors,curAnch.Position.y);
                 shape.resizeHandle=rshandle;
@@ -1376,10 +1374,18 @@
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
                 w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
                 w.HasCountBubble=showCountBubble;
-                w.CountBubbleRenderLayer=anchorLayer;
+                w.CountBubbleRenderLayer=renderLayer;
                 
                 if(s.ShapeX>0 && s.ShapeY>0){
                     w.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g x %g", s.ShapeX, s.ShapeY] fontName:SOURCE fontSize:20.0f];
+                    [w.Label setColor:ccBLACK];
+                    [w.Label setAnchorPoint:ccp(0,0.5)];
+                    
+                    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/Number_Wheel_Label.png")];
+                    [s setPosition:ccp(35,10)];
+                    [w.Label addChild:s z:-1];
+                    
+                    
                     if(gw.Blackboard.inProblemSetup){
                         [w.Label setTag:2];
                         [w.Label setOpacity:0];
@@ -1420,6 +1426,14 @@
     w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasCountBubble=NO;
     w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
+    
+    [w.Label setColor:ccBLACK];
+    [w.Label setAnchorPoint:ccp(0,0.5)];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/Number_Wheel_Label.png")];
+    [s setPosition:ccp(35,10)];
+    [w.Label addChild:s z:-1];
+    
     [w.RenderLayer addChild:w.Label];
     [w handleMessage:kDWsetupStuff];
     [w handleMessage:kDWupdateLabels];
@@ -1553,7 +1567,7 @@
 
         CGPoint searchLoc=ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y+(newBlock.contentSize.height/2));
         // set the search location to the bottom left of the square
-        NSMutableDictionary *nb=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:[anchorLayer convertToNodeSpace:searchLoc]] forKey:POS];
+        NSMutableDictionary *nb=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:[renderLayer convertToNodeSpace:searchLoc]] forKey:POS];
         [gw handleMessage:kDWareYouADropTarget andPayload:nb withLogLevel:-1];
         
         if(gw.Blackboard.FirstAnchor)
@@ -1593,7 +1607,7 @@
             audioHasPlayedResizing=YES;
         }
             
-        ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).Position=[anchorLayer convertToNodeSpace:location];
+        ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).Position=[renderLayer convertToNodeSpace:location];
 
         [gw.Blackboard.CurrentHandle handleMessage:kDWmoveSpriteToPosition];
         

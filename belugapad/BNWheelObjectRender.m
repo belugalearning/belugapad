@@ -113,7 +113,7 @@
     
     if(messageType==kDWupdateLabels)
     {
-        if(w.Label)[w.Label setPosition:ccp(w.Position.x-150,w.Position.y)];
+        if(w.Label)[w.Label setPosition:ccp(w.Position.x-205,w.Position.y)];
         if(w.CountBubble)[w.CountBubble setPosition:[self createCountBubblePos]];
     }
     

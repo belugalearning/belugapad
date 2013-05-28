@@ -930,17 +930,18 @@ float timerIgnoreFrog;
             if(countOutLoudFromInitStartVal) readNumber-=initStartVal;
             
             NSString *writeText=[NSString stringWithFormat:@"%d", readNumber];
-            
+            float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;
             if(rambler.DisplayNumberDP>0 && rambler.DisplayNumberMultiplier!=1)
             {
-                float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;
-                
                 NSString *fmt=[NSString stringWithFormat:@"%%.%df", rambler.DisplayNumberDP];
                 writeText=[NSString stringWithFormat:fmt, multDisplayNum];
             }
             
             if(readNumber>0 && countOutLoudFromInitStartVal)
                 writeText=[NSString stringWithFormat:@"plus %@", writeText];
+            
+            if(readNumber<0)
+                writeText=[NSString stringWithFormat:@"negative %g", fabsf([writeText floatValue])];
             
             
             

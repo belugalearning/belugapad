@@ -1136,16 +1136,26 @@
             // if we have pre counting tiles on
             if(preCountedTiles){
 
-                if(numberCounted<[preCountedTiles count]) 
+                for(NSDictionary *thisTile in preCountedTiles)
                 {
-                    NSDictionary *thisTile=[preCountedTiles objectAtIndex:numberCounted];              
-                
                     if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
                     {
-                        numberCounted++;
+//                        numberCounted++;
                         tile.Selected=YES;
+                        break;
                     }
                 }
+//                
+//                if(numberCounted<[preCountedTiles count]) 
+//                {
+//                    NSDictionary *thisTile=[preCountedTiles objectAtIndex:numberCounted];              
+//                
+//                    if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
+//                    {
+//                        numberCounted++;
+//                        tile.Selected=YES;
+//                    }
+//                }
 
             }
             

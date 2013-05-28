@@ -395,9 +395,12 @@ static float kTimeToHintToolTray=0.0f;
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
             hasRunInteractionFeedback=YES;
         }
-        if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0){
+        if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0 && [metaArrow numberOfRunningActions]==0){
             [traybtnMq setZOrder:10];
             [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+            [metaArrow setZOrder:1000];
+            CCSequence *sq=[CCSequence actions:[CCFadeIn actionWithDuration:0.3f],[InteractionFeedback dropAndBounceAction], [CCFadeOut actionWithDuration:0.3f], nil];
+            [metaArrow runAction:sq];
             hasRunInteractionFeedback=YES;
         }
         
@@ -931,6 +934,14 @@ static float kTimeToHintToolTray=0.0f;
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
+    
+    if(toolKey)
+    {
+        //initialize tool scene
+        currentTool=[NSClassFromString(toolKey) alloc];
+        [currentTool initWithToolHost:self andProblemDef:pdef];
+    }
+    
     if (mq)
     {
         [self setupMetaQuestion:mq];
@@ -942,13 +953,6 @@ static float kTimeToHintToolTray=0.0f;
     }
     else {
         [self setupProblemOnToolHost:pdef];
-    }
-    
-    if(toolKey)
-    {
-        //initialize tool scene
-        currentTool=[NSClassFromString(toolKey) alloc];
-        [currentTool initWithToolHost:self andProblemDef:pdef];
     }
     
     NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
@@ -1037,11 +1041,11 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)addMetaHintArrow
 {
-    metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_MQ_Tip.png")];
-    [metaArrow setPosition:ccp(lx-124,2*cy-30)];
+    metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/hand.png")];
+    [metaArrow setPosition:ccp(cx+(cx/2),ly-145)];
 //    [metaArrow setTag:3];
-//    [metaArrow setOpacity:0];
-    [metaArrow setVisible:NO];
+    [metaArrow setOpacity:0];
+//    [metaArrow setVisible:YES];
     [problemDefLayer addChild:metaArrow z:10];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
@@ -2742,6 +2746,9 @@ static float kTimeToHintToolTray=0.0f;
     {
         [r rowVisible:YES];
     }
+    
+    if(metaArrow)
+        [metaArrow setVisible:NO];
 //    [traybtnMq setColor:ccc3(247,143,6)];
     [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Selected.png")]];
 

@@ -631,7 +631,7 @@
 
         if(toolHost.pickerView){
             [self expandDescAndCardRows];
-            [toolHost disableWheel];
+//            [toolHost disableWheel];
             [toolHost hideCornerTray];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }

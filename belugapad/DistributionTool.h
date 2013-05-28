@@ -65,6 +65,8 @@ typedef enum
     BOOL foundFirstNearestObject;
     int cageObjectCount;
     
+    NSMutableArray *startShapeInEvalAreas;
+    
     BOOL problemHasMQ;
     
     id lastContainer;

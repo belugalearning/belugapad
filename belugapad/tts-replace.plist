@@ -44,10 +44,6 @@
 	<string>goo. </string>
 	<key>x 5</key>
 	<string>times 5</string>
-	<key>C</key>
-	<string>rick ross</string>
-	<key>(C)</key>
-	<string>lil wayne</string>
 	<key>:</key>
 	<string>to</string>
 	<key>|-5|</key>
@@ -60,5 +56,11 @@
 	<string>absolute value of negative 12</string>
 	<key>represents</key>
 	<string>rep resents </string>
+	<key>(</key>
+	<string>multiplied by</string>
+	<key>3</key>
+	<string>three</string>
+	<key>&amp;gt;</key>
+	<string>and</string>
 </dict>
 </plist>

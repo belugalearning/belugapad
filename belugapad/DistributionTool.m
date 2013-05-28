@@ -209,8 +209,8 @@ static float kTimeSinceAction=7.0f;
         
         if(!bondDifferentTypes && b.blockType!=c.blockType)
             return;
-        if([con isKindOfClass:[SGDtoolContainer class]])
-            NSLog(@"nearest Object container bond type: %@", con.LineType);
+//        if([con isKindOfClass:[SGDtoolContainer class]])
+//            NSLog(@"nearest Object container bond type: %@", con.LineType);
         
         if([con isKindOfClass:[SGDtoolContainer class]] && [con.LineType isEqualToString:@"Unbreakable"])
             return;
@@ -1714,7 +1714,9 @@ static float kTimeSinceAction=7.0f;
                     break;
                     
                 }
-                // if it's unbreakabe, basically relayout the blocks and do nothing more 
+                
+                
+                // if it's unbreakabe, basically relayout the blocks and do nothing more
                 if([((id<ShapeContainer>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
                     [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                     [self setTouchVarsToOff];
@@ -1724,6 +1726,20 @@ static float kTimeSinceAction=7.0f;
             }
 
         }
+        
+        if(evalAreas)
+        {
+            int thisLoc=[self checkForHitInEvalAreas:location];
+            
+            if(thisLoc>-1)
+            {
+                NSArray *thisArea=[evalAreas objectAtIndex:thisLoc];
+                CCSprite *s=[thisArea objectAtIndex:[thisArea count]-1];
+                currentPickupObject.Position=s.position;
+                NSLog(@"alter dat pos");
+            }
+        }
+        
         if(!gotTarget)
         {
             // if it doesn't have a new targetl and the blocks in it's current shape are over 1 or the container's nil (ie if it's dragged from a cage) create a new group
@@ -1844,6 +1860,75 @@ static float kTimeSinceAction=7.0f;
 
     
     return thisShapeRect;
+}
+
+-(int)checkForHitInEvalAreas:(CGPoint)location
+{
+    if(!startShapeInEvalAreas)
+    {
+        startShapeInEvalAreas=[[NSMutableArray alloc]init];
+        
+        for(int i=0;i<[evalAreas count];i++)
+        {
+            [startShapeInEvalAreas addObject:[NSNull null]];
+        }
+    }
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        BOOL gotValue=NO;
+        CGRect thisRect=CGRectNull;
+        NSArray *a=[evalAreas objectAtIndex:i];
+        
+        for(CCSprite *s in a)
+        {
+            thisRect=CGRectUnion(thisRect, s.boundingBox);
+        }
+        
+        if(currentPickupObject)
+        {
+            if(CGRectContainsPoint(thisRect, currentPickupObject.Position) && [[startShapeInEvalAreas objectAtIndex:i]isKindOfClass:[NSNull class]])
+            {
+                NSLog(@"current pickup object dropped on eval area %d",i);
+                [startShapeInEvalAreas replaceObjectAtIndex:i withObject:currentPickupObject];
+                gotValue=YES;
+            }
+            else if(CGRectContainsPoint(thisRect, currentPickupObject.Position) && [startShapeInEvalAreas objectAtIndex:i]==currentPickupObject)
+            {
+                NSLog(@"dropped same object on eval %d",i);
+                gotValue=YES;
+            }
+            
+            if(gotValue)
+            {
+                for(int it=0;it<[startShapeInEvalAreas count];it++)
+                {
+                    if(it==i)continue;
+                    
+                    if([startShapeInEvalAreas objectAtIndex:it]==currentPickupObject)
+                    {
+                        NSLog(@"this object was elsewhere! replace with a null!");
+                        [startShapeInEvalAreas replaceObjectAtIndex:it withObject:[NSNull null]];
+                    }
+                    
+                }
+                return i;
+            }
+
+        }
+        
+    }
+
+    for(int i=0;i<[startShapeInEvalAreas count];i++)
+    {
+        if([startShapeInEvalAreas objectAtIndex:i]==currentPickupObject)
+        {
+            NSLog(@"replacing object at index %d with a null", i);
+            [startShapeInEvalAreas replaceObjectAtIndex:i withObject:[NSNull null]];
+        }
+    }
+    
+    return -1;
 }
 
 -(void)checkForOverlappingContainers

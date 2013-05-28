@@ -379,7 +379,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     if(delayShowMeta&&timeToMetaStart>2.0f){
-        [self showMq];
+        if(!currentTool)
+            [self showMq];
         
         timeToMetaStart=0.0f;
         delayShowMeta=NO;
@@ -2818,6 +2819,7 @@ static float kTimeToHintToolTray=0.0f;
 
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
+    
 //    [traybtnWheel setColor:ccc3(255,255,255)];
     
     if(hasTrayWheel && traybtnWheel)
@@ -3063,6 +3065,11 @@ static float kTimeToHintToolTray=0.0f;
     {
         NSString *thisStr=[NSString stringWithFormat:@"%c",[thisNumber characterAtIndex:i]];
         int thisInt=[thisStr intValue];
+        
+        if([thisStr isEqualToString:@"."])
+            thisInt=10;
+        else if([thisStr isEqualToString:@"-"])
+            thisInt=11;
         
         [pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
         

@@ -526,8 +526,8 @@
                                     pNumerator.Components=numberPickerColumns;
                                     pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
                                     pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
-                                    pNumerator.Position=ccp(870,640);
-                                    pNumerator.fractionPart=@"n";
+//                                    pNumerator.Position=ccp(870,640);
+                                    pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),440);                                    pNumerator.fractionPart=@"n";
                                     pNumerator.AssociatedObject=opicker;
                                     [pNumerator setupNumberWheel];
                                 }
@@ -543,7 +543,7 @@
                                     pDenominator.Components=numberPickerColumns;
                                     pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
                                     pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
-                                    pDenominator.Position=ccp(870,pNumerator.Position.y-170);
+                                    pDenominator.Position=ccp(lx-((pDenominator.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-170);
                                     pDenominator.fractionPart=@"d";
                                     pDenominator.AssociatedObject=opicker;
                                     pNumerator.fractionWheel=pDenominator;
@@ -577,11 +577,11 @@
                             showingFractionPickers=!showingFractionPickers;
                         }
                         
-                        if(!toolHost.pickerView && toolHost.CurrentBTXE)
-                        {
-                            [self contractDescAndCardRows];
-                            
-                        }
+//                        if(!toolHost.pickerView && toolHost.CurrentBTXE)
+//                        {
+//                            [self contractDescAndCardRows];
+//                            
+//                        }
                         
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
@@ -589,7 +589,6 @@
 //                            if(!opicker.pickerTargetNumerator)
 //                            {
                                 [toolHost showWheel];
-                                [toolHost showCornerTray];
 //                            }
 //                            else
 //                            {
@@ -605,7 +604,6 @@
                         {
                             [toolHost tearDownNumberPicker];
                             [self expandDescAndCardRows];
-                            [toolHost hideCornerTray];
                             toolHost.CurrentBTXE=nil;
                         }
                         if(showingFractionPickers)
@@ -633,7 +631,6 @@
             [self expandDescAndCardRows];
             [toolHost tearDownNumberPicker];
 //            [toolHost hideWheel];
-            [toolHost hideCornerTray];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
     }

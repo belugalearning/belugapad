@@ -371,9 +371,6 @@ static float kTimeToHintToolTray=0.0f;
     if(delayShowWheel&&timeToWheelStart>2.0f){
         [self showWheel];
         
-        if(currentTool)
-            [self showCornerTray];
-        
         timeToWheelStart=0.0f;
         delayShowWheel=NO;
     }
@@ -416,7 +413,6 @@ static float kTimeToHintToolTray=0.0f;
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
             [self showWheel];
-            [self showCornerTray];
         }
         else
         {
@@ -2539,7 +2535,6 @@ static float kTimeToHintToolTray=0.0f;
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
-            if(currentTool)[self showCornerTray];
         }
     }
     if(trayPadShowing && location.y>cx+40.0f)
@@ -2888,10 +2883,10 @@ static float kTimeToHintToolTray=0.0f;
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
     
     self.pickerView = [CCPickerView node];
-    if(currentTool)
-        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
-    else
-        pickerView.position=ccp(cx,cy);
+//    if(currentTool)
+//        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
+//    else
+    pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
 

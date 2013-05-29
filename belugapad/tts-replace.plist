@@ -62,5 +62,9 @@
 	<string>three</string>
 	<key>&amp;gt;</key>
 	<string>and</string>
+	<key>a whole</key>
+	<string>a, whole</string>
+	<key>=</key>
+	<string>equals,</string>
 </dict>
 </plist>

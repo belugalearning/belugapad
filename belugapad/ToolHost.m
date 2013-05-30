@@ -2098,7 +2098,7 @@ static float kTimeToHintToolTray=0.0f;
     if([currentTool isKindOfClass:[ExprBuilder class]])
     {
 //        ExprBuilder *eb=(ExprBuilder*)currentTool;
-        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] +15;
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
         qTrayMid.position=ccp(row.position.x, row.position.y);
     }
     else
@@ -2112,8 +2112,8 @@ static float kTimeToHintToolTray=0.0f;
 
 
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
+//    [qTrayMid setScaleY:(rowHeight-64)/16];
     [qTrayMid setScaleY:(rowHeight-64)/16];
-
     
         NSLog(@"row height %f scaleY %f", rowHeight, qTrayMid.scaleY);
     
@@ -2309,7 +2309,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     else
     {
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
+//        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(0,cx-61,lx,122), location)){
             [self removeAllTrays];
             return;
         }

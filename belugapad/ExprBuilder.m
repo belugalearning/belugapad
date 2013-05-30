@@ -624,7 +624,23 @@
         }
     }
     
-    if(!showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
+    float numberWheelWidth=numberPickerColumns*90;
+    float wheelXStartPos=0.0f;
+    float wheelYStartPos=cy;
+    
+    if(showingFractionPickers){
+        wheelXStartPos=870-(numberWheelWidth/2);
+        wheelYStartPos=180.0f;
+    }
+    else{
+        wheelXStartPos=cx-(numberWheelWidth/2);
+        wheelYStartPos-=100;
+        numberWheelWidth=numberPickerColumns*95;
+    }
+    
+    NSLog(@"loc: %@ / x%g y%g", NSStringFromCGPoint(location), wheelXStartPos, wheelYStartPos);
+    ;
+    if(!showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,200), location)){
         toolHost.CurrentBTXE=nil;
 
         if(toolHost.pickerView){
@@ -634,7 +650,7 @@
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
     }
-    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,380,374,388), location)){
+    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,194), location)){
 
             [pNumerator hideNumberWheel];
             [pDenominator hideNumberWheel];

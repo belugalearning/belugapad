@@ -7,6 +7,7 @@
 //
 
 #import "SGBtxeObjectNumber.h"
+#import "SGBtxeFractionRender.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeNumberDotRender.h"
@@ -51,6 +52,8 @@
 @synthesize logPollPosition;
 -(CGPoint)logPollPosition { return self.position; }
 
+@synthesize fractionRenderComponent;
+
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -76,10 +79,6 @@
         loggingService = ac.loggingService;
         [loggingService.logPoller registerPollee:(id<LogPolling>)self];
         
-        textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
-        textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
-        
-        numberDotRenderComponent=[[SGBtxeNumberDotRender alloc] initWithGameObject:(SGGameObject*)self];
         
     }
     
@@ -269,7 +268,11 @@
 
 -(void)updateDraw
 {
-    [self.textRenderComponent updateLabel];
+    if(self.textRenderComponent)
+        [self.textRenderComponent updateLabel];
+    
+    if(self.fractionRenderComponent)
+        [self.fractionRenderComponent updateLabel];
     
     if(self.renderAsDots)
         [self.numberDotRenderComponent updateDraw];
@@ -342,6 +345,7 @@
     position=thePosition;
     
     [self.textRenderComponent updatePosition:position];
+    [self.fractionRenderComponent updatePosition:position];
     [self.textBackgroundRenderComponent updatePosition:position];
     
     [self.numberDotRenderComponent updatePosition:position];
@@ -350,18 +354,21 @@
 -(void)inflateZIndex
 {
     [self.textRenderComponent inflateZindex];
+    [self.fractionRenderComponent inflateZindex];
     [self.numberDotRenderComponent inflateZindex];
     
 }
 -(void)deflateZindex
 {
     [self.textRenderComponent deflateZindex];
+    [self.fractionRenderComponent deflateZindex];
     [self.numberDotRenderComponent deflateZindex];
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+    [fractionRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
     [textBackgroundRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
     
     [numberDotRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
@@ -380,20 +387,56 @@
     {
         [renderBase addChild:numberDotRenderComponent.baseNode];
     }
-    else
+    else if(self.textRenderComponent)
     {
         [renderBase addChild:textRenderComponent.label0];
         [renderBase addChild:textRenderComponent.label];
+    }
+    else if(self.fractionRenderComponent)
+    {
+        [renderBase addChild:fractionRenderComponent.label0];
+        [renderBase addChild:fractionRenderComponent.label];
     }
 }
 
 -(void)tagMyChildrenForIntro
 {
-    [textRenderComponent.label setTag:3];
-    [textRenderComponent.label0 setTag:3];
-    [textRenderComponent.label setOpacity:0];
-    [textRenderComponent.label0 setOpacity:0];
-    [textBackgroundRenderComponent tagMyChildrenForIntro];
+    if(self.textRenderComponent)
+    {
+        [textRenderComponent.label setTag:3];
+        [textRenderComponent.label0 setTag:3];
+        [textRenderComponent.label setOpacity:0];
+        [textRenderComponent.label0 setOpacity:0];
+        [textBackgroundRenderComponent tagMyChildrenForIntro];
+    }
+    else if(self.fractionRenderComponent)
+    {
+//        [fractionRenderComponent.label setTag:3];
+//        [fractionRenderComponent.label0 setTag:3];
+//        [fractionRenderComponent.label setOpacity:0];
+//        [fractionRenderComponent.label0 setOpacity:0];
+//        
+        [fractionRenderComponent.numLabel setTag:3];
+        [fractionRenderComponent.denomLabel setTag:3];
+        [fractionRenderComponent.intLabel setTag:3];
+        [fractionRenderComponent.divLine setTag:3];
+        [fractionRenderComponent.numLabel setOpacity:0];
+        [fractionRenderComponent.denomLabel setOpacity:0];
+        [fractionRenderComponent.intLabel setOpacity:0];
+        [fractionRenderComponent.divLine setOpacity:0];
+        
+        [fractionRenderComponent.numLabel0 setTag:3];
+        [fractionRenderComponent.denomLabel0 setTag:3];
+        [fractionRenderComponent.intLabel0 setTag:3];
+        [fractionRenderComponent.divLine0 setTag:3];
+        [fractionRenderComponent.numLabel setOpacity:0];
+        [fractionRenderComponent.denomLabel0 setOpacity:0];
+        [fractionRenderComponent.intLabel0 setOpacity:0];
+        [fractionRenderComponent.divLine0 setOpacity:0];
+        
+        
+        
+    }
     
     for(CCSprite *s in self.numberDotRenderComponent.baseNode.children)
     {
@@ -404,20 +447,52 @@
 
 -(void)setupDraw
 {
+    if(self.numerator)
+        fractionRenderComponent=[[SGBtxeFractionRender alloc] initWithGameObject:(SGGameObject*)self];
+//        fractionRenderComponent=nil;
+    
+    else
+        textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
+    
+    
+    textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
+    
+    //was used to get fractions to render at their own height -- don't do that
+    //if(self.numerator) textBackgroundRenderComponent.useBespokeHeight=YES;
+    
+    numberDotRenderComponent=[[SGBtxeNumberDotRender alloc] initWithGameObject:(SGGameObject*)self];
+
+    
+    
     if(self.hidden)return;
     
-    textRenderComponent.useTheseAssets=self.assetType;
+    if(self.textRenderComponent)
+        self.textRenderComponent.useTheseAssets=self.assetType;
+    
+    if(self.fractionRenderComponent)
+        self.fractionRenderComponent.useTheseAssets=self.assetType;
     
     // text mode
     self.textRenderComponent.useAlternateFont=YES;
     [self.textRenderComponent setupDraw];
     
+    self.fractionRenderComponent.useAlternateFont=YES;
+    [self.fractionRenderComponent setupDraw];
     
     //don't show the label if it's not enabled
     if(!self.enabled)
     {
-        textRenderComponent.label.visible=NO;
-        textRenderComponent.label0.visible=NO;
+        if(self.textRenderComponent)
+        {
+            self.textRenderComponent.label.visible=NO;
+            self.textRenderComponent.label0.visible=NO;
+        }
+        else
+        {
+            self.fractionRenderComponent.label.visible=NO;
+            self.fractionRenderComponent.label0.visible=NO;
+        }
+        
     }
     
     
@@ -429,20 +504,10 @@
     else
     {
         //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
-        if(self.interactive)
-            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
-        else
-//            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
-            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width, self.textRenderComponent.label.contentSize.height);
-
+//        if(self.interactive)
+            [self updateMySize];
     }
-    
-    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
-        size.width=170.0f;
-    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
-        size.width=116;
-    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Smaller"] && size.width<40)
-        size.width=40;
+
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
@@ -463,13 +528,36 @@
     return;
 }
 
+-(void)updateMySize
+{
+    if(self.textRenderComponent && self.interactive)
+    {
+        self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    }
+    else if(self.fractionRenderComponent)
+    {
+        //todo: get actual size of fraction
+        self.size=CGSizeMake(self.fractionRenderComponent.maxw*1.05f + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.fractionRenderComponent.maxh);
+    }
+    else
+    {
+        //            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
+        self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width, self.textRenderComponent.label.contentSize.height);
+    }
+    
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
+        size.width=170.0f;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Medium"] && size.width<116)
+        size.width=116;
+    else if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Smaller"] && size.width<40)
+        size.width=40;
+}
+
 -(void)redrawBkg
 {
-    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    [self updateMySize];
     
-    self.size=toThisSize;
-    
-    [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
+    [textBackgroundRenderComponent redrawBkgWithSize:self.size];
 //    id<Containable>myMount=(id<Containable>)self.mount;
     SGBtxeRow *myRow=(SGBtxeRow*)self.container;
     SGBtxeRowLayout *layoutComp=myRow.rowLayoutComponent;
@@ -488,8 +576,17 @@
 -(void)detachFromRenderBase
 {
     [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
-    [textRenderComponent.label0 removeFromParentAndCleanup:YES];
-    [textRenderComponent.label removeFromParentAndCleanup:YES];
+    
+    if(self.textRenderComponent)
+    {
+        [textRenderComponent.label0 removeFromParentAndCleanup:YES];
+        [textRenderComponent.label removeFromParentAndCleanup:YES];
+    }
+    if(self.fractionRenderComponent)
+    {
+        [fractionRenderComponent.label0 removeFromParentAndCleanup:YES];
+        [fractionRenderComponent.label removeFromParentAndCleanup:YES];
+    }
     
     [self.numberDotRenderComponent.baseNode removeFromParentAndCleanup:YES];
 }
@@ -497,8 +594,17 @@
 -(void)activate
 {
     self.enabled=YES;
-    self.textRenderComponent.label.visible=self.enabled;
-    self.textRenderComponent.label0.visible=self.enabled;
+    
+    if(self.textRenderComponent)
+    {
+        self.textRenderComponent.label.visible=self.enabled;
+        self.textRenderComponent.label0.visible=self.enabled;
+    }
+    if (self.fractionRenderComponent) {
+        self.fractionRenderComponent.label.visible=self.enabled;
+        self.fractionRenderComponent.label0.visible=self.enabled;
+    }
+    
     self.numberDotRenderComponent.baseNode.visible=self.enabled;
 }
 
@@ -511,6 +617,7 @@
 {
     self.text=nil;
     self.textRenderComponent=nil;
+    self.fractionRenderComponent=nil;
     self.numberDotRenderComponent=nil;
     
     self.prefixText=nil;

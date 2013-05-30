@@ -607,6 +607,7 @@
         [loadingImg setCenter:CGPointMake(596, 415)];
         changeNickTF.text = ur[@"nickName"];
         [selectUserView addSubview:changeNickView];
+        freezeUI = NO;
     }
     else
     {

@@ -12,7 +12,7 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Place in order&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;4&quot; /&gt;&lt;b:on numerator=&quot;6&quot; denominator=&quot;4&quot; showAsMixedFraction=&quot;yes&quot; /&gt;&lt;b:on number=&quot;1&quot; /&gt;&lt;b:on number=&quot;1.75&quot;/&gt;&lt;b:on number=&quot;25&quot; suffix=&quot;%&quot; value=&quot;0.25&quot;/&gt;</string>
+		<string>&lt;b:t&gt;Place in order&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;345&quot; /&gt;&lt;b:on numerator=&quot;6&quot; denominator=&quot;4&quot; showAsMixedFraction=&quot;yes&quot; /&gt;&lt;b:on numerator=&quot;6&quot; denominator=&quot;4&quot; showAsMixedFraction=&quot;no&quot; /&gt;&lt;b:on numerator=&quot;918&quot; denominator=&quot;7&quot; showAsMixedFraction=&quot;no&quot; /&gt;&lt;b:on numerator=&quot;48&quot; denominator=&quot;5&quot; showAsMixedFraction=&quot;yes&quot; /&gt;&lt;b:on number=&quot;1&quot; /&gt;&lt;b:on number=&quot;1.75&quot;/&gt;&lt;b:on number=&quot;25&quot; suffix=&quot;%&quot; value=&quot;0.25&quot;/&gt;</string>
 		<string>&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;</string>
 	</array>
 </dict>

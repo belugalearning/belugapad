@@ -16,6 +16,8 @@
 
 @property (retain) CCNode *backgroundNode;
 
+@property bool useBespokeHeight;
+
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
 -(ccColor3B)returnColourOfBackground;
 -(void)setContainerVisible:(BOOL)visible;

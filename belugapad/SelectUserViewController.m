@@ -468,26 +468,16 @@
     if (freezeUI) return;
     freezeUI = YES;
     
-    if (button == joinClassButton) joiningClass = YES;
-    
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
     
-    NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
-
-    if (selectUserModalContainer) return;
-    
+    if (selectUserModalContainer) return;    
     [self buttonTap];
     
-    // TEMP way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
+    if (button == joinClassButton) joiningClass = YES;
+    
+    NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
     NSDictionary *ur = deviceUsers[ip.row];
-    NSRegularExpression *m = [[[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil] autorelease];
-    if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
-    {
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:ur repeats:NO];
-        return;
-    }
-    // -----------------
     
     selectUserModalUnderlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
     selectUserModalUnderlay.userInteractionEnabled = YES; // prevents buttons behind modal view from receiving touch events

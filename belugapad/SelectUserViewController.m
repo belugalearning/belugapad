@@ -603,7 +603,7 @@
     {
         [self showJoinClassTokenModal];
     }
-    // does user need to change their nick
+    // does user need to change their nick? (because he created it without our servers being able to verify that it was unique)
     else if ([ur[@"nickClash"] integerValue] == 2)
     {
         [selectUserModalUnderlay removeFromSuperview];

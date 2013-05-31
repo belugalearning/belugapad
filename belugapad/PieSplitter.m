@@ -354,7 +354,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)addGhostPie
 {
-    [pieBox setVisible:YES];
+//    [pieBox setVisible:YES];
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     ghost=pie;
     [activePie addObject:pie];
@@ -392,7 +392,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)addGhostContainer
 {
-    [conBox setVisible:YES];
+//    [conBox setVisible:YES];
     
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     ghost=cont;
@@ -728,7 +728,7 @@ static float kTimeToPieShake=7.0f;
     if(gw.Blackboard.PickupObject)
     {
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp){
-            [self addGhostPie];
+//            [self addGhostPie];
             [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_PIE withAdditionalData:nil];
         }
         else
@@ -741,7 +741,7 @@ static float kTimeToPieShake=7.0f;
             
             if(!cont.ScaledUp && numberOfCagedSlices==0)
             {
-                [self addGhostContainer];
+//                [self addGhostContainer];
                 [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_SQUARE withAdditionalData:nil];
             }
             else if(cont.ScaledUp)
@@ -778,6 +778,35 @@ static float kTimeToPieShake=7.0f;
 
         BOOL needPieAtMount=NO;
         BOOL needContAtMount=NO;
+
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]]){
+            
+            if(!madeGhost&&CGRectContainsPoint(pieBox.boundingBox, location)){
+                [self addGhostPie];
+                madeGhost=YES;
+            }
+            else if(madeGhost&&!CGRectContainsPoint(pieBox.boundingBox, location)){
+                [self removeGhost];
+                [self reorderActivePies]; 
+                madeGhost=NO;
+                [pieBox setVisible:NO];
+            }
+        }
+
+        else if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
+        {
+                if(!madeGhost&&CGRectContainsPoint(conBox.boundingBox, location)){
+                    [self addGhostContainer];
+                    madeGhost=YES;
+                }
+                else if(madeGhost&&!CGRectContainsPoint(conBox.boundingBox, location)){
+                    [self removeGhost];
+                    [self reorderActiveContainers];
+                    [conBox setVisible:NO];
+                    madeGhost=NO;
+                }
+        }
+    
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
         {
@@ -988,6 +1017,7 @@ static float kTimeToPieShake=7.0f;
     if(hasMovedSlice)
         [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_SLICE withAdditionalData:nil];
     
+    madeGhost=NO;
     hasMovedSquare=NO;
     hasMovedPie=NO;
     hasMovedSlice=NO;

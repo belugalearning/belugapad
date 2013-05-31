@@ -76,9 +76,8 @@
 
     fontSize*=0.6f;
     
-    self.numLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", modtop] fontName:fontName fontSize:fontSize];
-    
-    self.denomLabel=[CCLabelTTF labelWithString:[ParentGO.denominator stringValue] fontName:fontName fontSize:fontSize];
+    self.numLabel=[CCLabelTTF labelWithString:[self getNumString] fontName:fontName fontSize:fontSize];
+    self.denomLabel=[CCLabelTTF labelWithString:[self getDenomString] fontName:fontName fontSize:fontSize];
     
     //shift these away from centre by 60% of their height
     float vshiftup=self.numLabel.contentSize.height * 0.55f;
@@ -166,18 +165,54 @@
     return l0;
 }
 
+-(NSString*) getNumString
+{
+    int modtop=[ParentGO.numerator intValue];
+    if(ParentGO.pickerTargetNumerator)
+    {
+        if(ParentGO.numerator) return [NSString stringWithFormat:@"%d", modtop];
+        else return @"?";
+    }
+    else return [NSString stringWithFormat:@"%d", modtop];
+}
+-(NSString*) getDenomString
+{
+    if(ParentGO.pickerTargetDenominator)
+    {
+        if(ParentGO.denominator) return [ParentGO.denominator stringValue];
+        else return @"?";
+    }
+    else return [ParentGO.denominator stringValue];
+}
+
 -(void)updateLabel
 {
-//    self.label.string=ParentGO.text;
-//    self.label0.string=ParentGO.text;
+    [self.numLabel setString:[self getNumString]];
+    [self.numLabel0 setString:[self getNumString]];
+    
+    [self.denomLabel setString:[self getDenomString]];
+    [self.denomLabel0 setString:[self getDenomString]];
 }
 
 -(void)tagMyChildrenForIntro
 {
-//    [self.label setTag:3];
-//    [self.label0 setTag:3];
-//    [self.label setOpacity:0];
-//    [self.label0 setOpacity:0];
+    [self.numLabel setTag:3];
+    [self.numLabel setOpacity:0];
+    [self.denomLabel setTag:3];
+    [self.denomLabel setOpacity:0];
+    [self.intLabel setTag:3];
+    [self.intLabel setOpacity:0];
+    [self.divLine setTag:3];
+    [self.divLine setOpacity:0];
+    
+    [self.numLabel0 setTag:3];
+    [self.numLabel0 setOpacity:0];
+    [self.denomLabel0 setTag:3];
+    [self.denomLabel0 setOpacity:0];
+    [self.intLabel0 setTag:3];
+    [self.intLabel0 setOpacity:0];
+    [self.divLine0 setTag:3];
+    [self.divLine0 setOpacity:0];
 }
 
 -(void)updatePosition:(CGPoint)position

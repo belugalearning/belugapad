@@ -595,7 +595,7 @@
 //                                NSLog(@"we dun has 2 wheels hawh");
 //                            }
                             
-                            [self contractDescAndCardRows];
+                            //[self contractDescAndCardRows];
                         }
                     }
                     else
@@ -603,7 +603,7 @@
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [toolHost tearDownNumberPicker];
-                            [self expandDescAndCardRows];
+                            //[self expandDescAndCardRows];
                             toolHost.CurrentBTXE=nil;
                         }
                         if(showingFractionPickers)
@@ -644,13 +644,13 @@
         toolHost.CurrentBTXE=nil;
 
         if(toolHost.pickerView){
-            [self expandDescAndCardRows];
+//            [self expandDescAndCardRows];
             [toolHost tearDownNumberPicker];
 //            [toolHost hideWheel];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
     }
-    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,194), location)){
+    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,360), location)){
 
             [pNumerator hideNumberWheel];
             [pDenominator hideNumberWheel];
@@ -810,7 +810,7 @@
                         if(!io.numerator || !io.denominator) return NO;
                         
                         if([io.pickerTargetNumerator intValue] != [io.numerator intValue] ||
-                           [io.pickerTargetDenominator intValue] != [io.pickerTargetDenominator intValue])
+                           [io.pickerTargetDenominator intValue] != [io.denominator intValue])
                         {
                             //as per int comparison, first non-matchin element fails evaluation
                             return NO;
@@ -1259,7 +1259,7 @@
     if(isWinning){
         [toolHost doWinning];
     }else{
-        [self expandDescAndCardRows];
+//        [self expandDescAndCardRows];
         [self resetProblem];
     }
 }

@@ -927,7 +927,8 @@ float timerIgnoreFrog;
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
-            if(countOutLoudFromInitStartVal) readNumber-=initStartVal;
+//            if(countOutLoudFromInitStartVal)
+            readNumber=lastBubbleLoc;
             
             NSString *writeText=[NSString stringWithFormat:@"%d", readNumber];
             float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;

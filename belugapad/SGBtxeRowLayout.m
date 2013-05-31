@@ -45,7 +45,7 @@
                 continue;
         
         if(c.size.height > maxH)maxH=c.size.height;
-        totalW+=c.size.width + [self shouldObjectTrailPadding:c] ? BTXE_HPAD : 0;
+        totalW+=c.size.width + ([self shouldObjectTrailPadding:c] ? BTXE_HPAD : 0);
     }
     
     //increase maxH

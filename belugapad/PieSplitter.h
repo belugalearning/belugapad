@@ -59,6 +59,7 @@ typedef enum {
     BOOL showReset;
     BOOL startProblemSplit;
     BOOL reqCorrectPieSquaresToSplit;
+    BOOL madeGhost;
     int numberOfCagedPies;
     int numberOfCagedContainers;
     int numberOfActivePies;

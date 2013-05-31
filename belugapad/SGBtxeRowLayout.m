@@ -12,6 +12,8 @@
 #import "SGBtxeRow.h"
 #import "SGBtxeObjectIcon.h"
 
+#import "SGBtxeText.h"
+
 @implementation SGBtxeRowLayout
 
 -(SGBtxeRowLayout*)initWithGameObject:(id<Bounding, Container, RenderContainer>)aGameObject
@@ -43,7 +45,7 @@
                 continue;
         
         if(c.size.height > maxH)maxH=c.size.height;
-        totalW+=c.size.width + BTXE_HPAD;
+        totalW+=c.size.width + [self shouldObjectTrailPadding:c] ? BTXE_HPAD : 0;
     }
     
     //increase maxH
@@ -101,15 +103,37 @@
         if((((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW ) ||
            (ParentGo.maxChildrenPerLine>0 && centreBuffer.count==ParentGo.maxChildrenPerLine))
         {
-            //centre objects in last line buffer
-            [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];
-            [centreBuffer removeAllObjects];
+            BOOL forceOnToLine=NO;
             
-            //flow onto next line
-            headXPos=-lineW / 2.0f;
-            headYPos-=lineH;
-            
-            actualLines++;
+            //confirm this wasn't a full stop or other small punctuation
+            if([c isKindOfClass:[SGBtxeText class]])
+            {
+                SGBtxeText *t=(SGBtxeText*)c;
+                if(t.text.length>0)
+                {
+                    if([[t.text substringToIndex:1] isEqualToString:@"."]
+                       || [[t.text substringToIndex:1] isEqualToString:@","]
+                       || [[t.text substringToIndex:1] isEqualToString:@":"]
+                       || [[t.text substringToIndex:1] isEqualToString:@";"]
+                       || [[t.text substringToIndex:1] isEqualToString:@"?"])
+                    {
+                        forceOnToLine=YES;
+                    }
+                }
+            }
+
+            if(!forceOnToLine)
+            {
+                //centre objects in last line buffer
+                [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];
+                [centreBuffer removeAllObjects];
+                
+                //flow onto next line
+                headXPos=-lineW / 2.0f;
+                headYPos-=lineH;
+                
+                actualLines++;
+            }
         }
         
         //place object here (offset for centre position)
@@ -141,10 +165,15 @@
         }
         
         BOOL doTrailingPadding=YES;
+        
+        //get default setting for trailing padding
+        doTrailingPadding=[self shouldObjectTrailPadding:c];
+        
+        //override this to NO trailing, only if disableTrailingPadding is explicitly set
         if([c conformsToProtocol:@protocol(Text)])
         {
             id<Text>ctext=(id<Text>)c;
-            doTrailingPadding=!ctext.disableTrailingPadding;
+            if(ctext.disableTrailingPadding) doTrailingPadding=NO;
         }
         
         //  increment cum width (w/ width + spacer)
@@ -175,6 +204,46 @@
                 c.position=m.position;
             }
     }
+}
+
+-(BOOL)shouldObjectTrailPadding:(id<Bounding, NSObject>)obj
+{
+    id<Bounding, NSObject> nextObj=nil;
+    
+    //find the object, then the next object
+    for(int i=0; i<ParentGo.children.count; i++)
+    {
+        id<Bounding, NSObject> thisObj=[ParentGo.children objectAtIndex:i];
+        if(thisObj==obj && i<ParentGo.children.count-1)
+        {
+            nextObj=[ParentGo.children objectAtIndex:i+1];
+            break;
+        }
+    }
+    
+    //last object needs no padding
+    if(!nextObj) return YES;
+    else
+    {
+        if([nextObj isKindOfClass:[SGBtxeText class]])
+        {
+            SGBtxeText *t=(SGBtxeText*)nextObj;
+            if(t.text.length>0)
+            {
+                if([[t.text substringToIndex:1] isEqualToString:@"."]
+                   || [[t.text substringToIndex:1] isEqualToString:@","]
+                   || [[t.text substringToIndex:1] isEqualToString:@":"]
+                   || [[t.text substringToIndex:1] isEqualToString:@";"]
+                   || [[t.text substringToIndex:1] isEqualToString:@"?"])
+                {
+                    return NO;
+                }
+            }
+        }
+    }
+    
+    //we get here if it's text and doesnt qualify otherwise
+    return YES;
 }
 
 -(void)centreObjectsIn:(NSMutableArray*)buffer withHeadXPos:(float)usedWidth inWidth:(float)width

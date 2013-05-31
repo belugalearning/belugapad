@@ -650,7 +650,7 @@
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
     }
-    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,194), location)){
+    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,360), location)){
 
             [pNumerator hideNumberWheel];
             [pDenominator hideNumberWheel];

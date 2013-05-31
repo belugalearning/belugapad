@@ -810,7 +810,7 @@
                         if(!io.numerator || !io.denominator) return NO;
                         
                         if([io.pickerTargetNumerator intValue] != [io.numerator intValue] ||
-                           [io.pickerTargetDenominator intValue] != [io.pickerTargetDenominator intValue])
+                           [io.pickerTargetDenominator intValue] != [io.denominator intValue])
                         {
                             //as per int comparison, first non-matchin element fails evaluation
                             return NO;

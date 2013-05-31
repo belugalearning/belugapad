@@ -1115,8 +1115,6 @@
         [shape.RenderLayer addChild:shape.hintArrowX];
         [shape.RenderLayer addChild:shape.hintArrowY];
     }
-    
-    int numberCounted=0;
 
 
         for(int i=0;i<[anchors count];i++)

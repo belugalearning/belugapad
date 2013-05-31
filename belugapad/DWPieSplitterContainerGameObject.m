@@ -21,6 +21,7 @@
 @synthesize BaseNode;
 @synthesize Nodes;
 @synthesize mySprite;
+@synthesize Touchable;
 
 
 -(void)dealloc

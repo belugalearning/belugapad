@@ -336,18 +336,19 @@
     joinClassButton.enabled = NO;
     
     changeNickView = [[UIView alloc]  initWithFrame:CGRectMake(0, 0, 699, 459)];
-    [changeNickView setCenter:CGPointMake(511.0f, 377.0f)];
+    [changeNickView setCenter:CGPointMake(512.0f, 364.0f)];
     UIImageView *changeNickBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/change_username_bg.png"]] autorelease];
     [changeNickView addSubview:changeNickBG];
     
-    nickTakenLabel = [[[UILabel alloc] initWithFrame:CGRectMake(56, 113, 360.0f, 42.0f)] autorelease];
+    nickTakenLabel = [[[UILabel alloc] initWithFrame:CGRectMake(250, 330, 360.0f, 42.0f)] autorelease];
     nickTakenLabel.font = [UIFont fontWithName:@"Chango" size:24];
     nickTakenLabel.text = @"Name Taken!";
+    nickTakenLabel.alpha = 0;
     [nickTakenLabel setTextColor:[UIColor whiteColor]];
     [nickTakenLabel setBackgroundColor:[UIColor clearColor]];
     [changeNickView addSubview:nickTakenLabel];
     
-    changeNickTF = [[[UITextField alloc] initWithFrame:CGRectMake(56, 163, 360.0f, 42.0f)] autorelease];
+    changeNickTF = [[[UITextField alloc] initWithFrame:CGRectMake(169, 175, 360.0f, 42.0f)] autorelease];
     changeNickTF.delegate = self;
     changeNickTF.font = [UIFont fontWithName:@"Chango" size:24];
     changeNickTF.clearButtonMode = UITextFieldViewModeNever;
@@ -356,18 +357,19 @@
     changeNickTF.keyboardType = UIKeyboardTypeNamePhonePad;
     changeNickTF.returnKeyType = UIReturnKeyDone;
     [changeNickTF setTextColor:[UIColor whiteColor]];
-    [changeNickTF setBorderStyle:UITextBorderStyleLine];
+    [changeNickTF setBorderStyle:UITextBorderStyleNone];
     [changeNickView addSubview:changeNickTF];
+    [changeNickTF addTarget:self action:@selector(handleChangeNickTFChange:) forControlEvents:UIControlEventEditingChanged];
     
     cancelChangeNickButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelChangeNickButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
-    cancelChangeNickButton.frame = CGRectMake(57, 246, 131, 51);
+    cancelChangeNickButton.frame = CGRectMake(161, 242, 131, 51);
     [cancelChangeNickButton addTarget:self action:@selector(handleCancelChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [changeNickView addSubview:cancelChangeNickButton];
     
     saveChangeNickButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveChangeNickButton setImage:[UIImage imageNamed:@"/login-images/change_button.png"] forState:UIControlStateNormal];
-    saveChangeNickButton.frame = CGRectMake(289, 246, 131, 51);
+    saveChangeNickButton.frame = CGRectMake(405, 242, 131, 51);
     [saveChangeNickButton addTarget:self action:@selector(handleSaveChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [changeNickView addSubview:saveChangeNickButton];
     
@@ -602,7 +604,7 @@
         [selectUserModalContainer removeFromSuperview];
         [playButton removeFromSuperview];
         tickCrossImg.alpha = 0;
-        [tickCrossImg setCenter:CGPointMake(595, 331)];
+        [tickCrossImg setCenter:CGPointMake(308, 335)];
         
         [loadingImg setCenter:CGPointMake(596, 415)];
         changeNickTF.text = ur[@"nickName"];
@@ -691,6 +693,12 @@
                             callback:callback];
 }
 
+-(void)handleChangeNickTFChange:(id)textField
+{
+    tickCrossImg.alpha = 0;
+    nickTakenLabel.alpha = 0;
+}
+
 -(void)handleCancelChangeNickClicked:(id)button
 {
     if (freezeUI) return;
@@ -709,6 +717,7 @@
     loadingImg.alpha = 1;
     nickTakenLabel.alpha = 0;
     tickCrossImg.alpha = 0;
+    [changeNickTF resignFirstResponder];
     
     SEL proceed = @selector(proceedAfterPause:);
     

@@ -80,6 +80,8 @@ typedef enum {
     BOOL hasSplit;
     BOOL showResetSlicesToPies;
     BOOL hasASliceInCont;
+    BOOL showNewPieCont;
+    BOOL moveInitObjects;
     
     CCSprite *pieBox;
     CCSprite *conBox;

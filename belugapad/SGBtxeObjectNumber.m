@@ -429,7 +429,7 @@
         [fractionRenderComponent.denomLabel0 setTag:3];
         [fractionRenderComponent.intLabel0 setTag:3];
         [fractionRenderComponent.divLine0 setTag:3];
-        [fractionRenderComponent.numLabel setOpacity:0];
+        [fractionRenderComponent.numLabel0 setOpacity:0];
         [fractionRenderComponent.denomLabel0 setOpacity:0];
         [fractionRenderComponent.intLabel0 setOpacity:0];
         [fractionRenderComponent.divLine0 setOpacity:0];

@@ -196,10 +196,23 @@
 
 -(void)tagMyChildrenForIntro
 {
-//    [self.label setTag:3];
-//    [self.label0 setTag:3];
-//    [self.label setOpacity:0];
-//    [self.label0 setOpacity:0];
+    [self.numLabel setTag:3];
+    [self.numLabel setOpacity:0];
+    [self.denomLabel setTag:3];
+    [self.denomLabel setOpacity:0];
+    [self.intLabel setTag:3];
+    [self.intLabel setOpacity:0];
+    [self.divLine setTag:3];
+    [self.divLine setOpacity:0];
+    
+    [self.numLabel0 setTag:3];
+    [self.numLabel0 setOpacity:0];
+    [self.denomLabel0 setTag:3];
+    [self.denomLabel0 setOpacity:0];
+    [self.intLabel0 setTag:3];
+    [self.intLabel0 setOpacity:0];
+    [self.divLine0 setTag:3];
+    [self.divLine0 setOpacity:0];
 }
 
 -(void)updatePosition:(CGPoint)position

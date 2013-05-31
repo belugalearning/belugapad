@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;To label a group drag&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_4&quot;/&gt;&lt;b:t&gt;down to the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Circle&quot;/&gt;&lt;b:t&gt;and&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_1&quot;/&gt;&lt;b:t&gt;down to&lt;/b:t&gt;&lt;b:oi tag=&quot;30_DT_Shape_Square&quot;/&gt;&lt;b:t&gt;. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>3</integer>
+			<key>BLOCK_TYPE</key>
+			<string>Circle</string>
+			<key>UNBREAKABLE_BONDS</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>BLOCK_TYPE</key>
+			<string>Square</string>
+			<key>UNBREAKABLE_BONDS</key>
+			<true/>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<dict>
+			<key>thing_4</key>
+			<integer>3</integer>
+			<key>thing_1</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@item</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>blue goo</string>
+				<string>red goo</string>
+				<string>goos</string>
+				<string>goos</string>
+				<string>yellow goo</string>
+				<string>green goo</string>
+			</array>
+		</dict>
+	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>BOND_DIFFERENT_TYPES</key>
+	<false/>
+	<key>HAS_CAGE</key>
+	<false/>
+</dict>
+</plist>

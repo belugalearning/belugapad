@@ -290,7 +290,7 @@
     float sectWidth=lx/totalShapes;
     
     float xStartPos=sectWidth*(thisShape+0.5);
-    float yStartPos=480.0f;
+    float yStartPos=540.0f;
     
 //    int farLeft=100;
 //    int farRight=lx-60;
@@ -302,10 +302,10 @@
     
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
-    for(int i=0;i<numberInShape;i++)
+    for(int i=numberInShape-1;i>=0;i--)
     {
         CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
-        thisPos=ccp(thisPos.x+xStartPos, yStartPos-thisPos.y);
+        thisPos=ccp(thisPos.x+xStartPos, yStartPos+thisPos.y);
         
         id<Rendered,Moveable,LogPolling> newblock;
         newblock=[[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos] autorelease];

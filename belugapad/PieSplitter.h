@@ -68,6 +68,9 @@ typedef enum {
     int dividend;
     int divisor;
     
+    // this is for tinting on an equal amount in every pie
+    BOOL sparkles;
+    
     int slicesInEachPie;
     
     float lastLayerOffset;

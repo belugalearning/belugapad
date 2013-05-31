@@ -19,12 +19,14 @@
 @synthesize HasSplit;
 @synthesize numberOfSlices;
 @synthesize touchOverlay;
+@synthesize Touchable;
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {
     if( (self=[super initWithGameWorld:aGameWorld] )) 
     {
         slicesInMe=[[NSMutableArray alloc]init];
+        Touchable=YES;
     }
 	return self;
 }

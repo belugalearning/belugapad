@@ -22,5 +22,6 @@
 @property (retain) CCNode *BaseNode;
 @property (retain) NSMutableArray *Nodes;
 @property (retain) CCSprite *mySprite;
+@property BOOL Touchable;
 
 @end

@@ -155,9 +155,21 @@ static float kTimeToPieShake=7.0f;
     
     if([pdef objectForKey:SHOW_RESET_SLICES])
         showResetSlicesToPies=[[pdef objectForKey:SHOW_RESET_SLICES]boolValue];
-    else 
+    else
         showResetSlicesToPies=YES;
     
+    if([pdef objectForKey:SHOW_NEW_PIES_CONTAINERS])
+        showNewPieCont=[[pdef objectForKey:SHOW_NEW_PIES_CONTAINERS]boolValue];
+    else
+        showNewPieCont=YES;
+    
+    if([pdef objectForKey:MOVE_INIT_OBJECTS])
+        moveInitObjects=[[pdef objectForKey:MOVE_INIT_OBJECTS]boolValue];
+    else
+        moveInitObjects=YES;
+    
+//#define DO_NOT_SHOW_NEW_PIES_CONTAINERS @"DO_NOT_SHOW_NEW_PIES_CONTAINERS"
+//#define DISALLOW_MOVE_INIT_PIES @"DISALLOW_MOVE_INIT_PIES"
     
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
     numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_SQUARES]intValue];
@@ -201,11 +213,12 @@ static float kTimeToPieShake=7.0f;
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     startProblemSplit=YES;
     
-    CCSprite *tabs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/drag_tabs.png")];
-    [tabs setAnchorPoint:ccp(0,0.5)];
-    [tabs setPosition:ccp(0,500)];
-    [renderLayer addChild:tabs];
-    
+    if(showNewPieCont){
+        CCSprite *tabs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/drag_tabs.png")];
+        [tabs setAnchorPoint:ccp(0,0.5)];
+        [tabs setPosition:ccp(0,500)];
+        [renderLayer addChild:tabs];
+    }
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     
@@ -223,9 +236,11 @@ static float kTimeToPieShake=7.0f;
     [renderLayer addChild:pieBox];
     [renderLayer addChild:conBox];
     
-    [self createPieAtMount];
-    [self createContainerAtMount];
-
+    if(showNewPieCont){
+    
+        [self createPieAtMount];
+        [self createContainerAtMount];
+    }
     for (int i=0;i<numberOfActiveContainers;i++)
     {
         [self createActiveContainer];
@@ -277,6 +292,7 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
     pie.Position=ccp(52,544);
     pie.MountPosition=pie.Position;
+    pie.Touchable=YES;
     //if(hasSplit)[self splitPie:pie];
     newPie=pie; 
     
@@ -290,6 +306,7 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(62,456);
     cont.MountPosition=cont.Position;
+    cont.Touchable=YES;
     newCon=cont;
     
     [cont release];
@@ -306,6 +323,11 @@ static float kTimeToPieShake=7.0f;
     if(hasSplit)
         [self splitPie:pie];
     
+    if(gw.Blackboard.inProblemSetup)
+        pie.Touchable=moveInitObjects;
+    else
+        pie.Touchable=YES;
+    
     [activePie addObject:pie];
     
     [pie release];
@@ -319,6 +341,12 @@ static float kTimeToPieShake=7.0f;
     cont.MountPosition=ccp(62,456);
     [cont.mySprite setScale:1.0f];
     cont.ScaledUp=YES;
+    
+    if(gw.Blackboard.inProblemSetup)
+        cont.Touchable=moveInitObjects;
+    else
+        cont.Touchable=YES;
+    
     [activeCon addObject:cont];
     
     [cont release];

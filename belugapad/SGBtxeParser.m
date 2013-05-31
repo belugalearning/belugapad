@@ -86,7 +86,13 @@ const NSString *matchNumbers=@"0123456789";
                     s=[s substringToIndex:s.length-1];
                 }
 
-                on.text=s;
+                //cast the string through a float covnersion to trim zeros
+                NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
+                NSNumber *n=[nf numberFromString:s];
+                NSString *trims=[NSString stringWithFormat:@"%g", [n floatValue]];
+                [nf release];
+                
+                on.text=trims;
                 on.enabled=YES;
                 on.interactive=NO;
 
@@ -199,7 +205,11 @@ const NSString *matchNumbers=@"0123456789";
         NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
         
         SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
+        
         on.numberText=[[element attributeForName:@"number"] stringValue];
+//        NSNumber *n=(NSNumber*)[element attributeForName:@"number"];
+//        on.numberText=[NSString stringWithFormat:@"%g", [n floatValue]];
+        
         on.prefixText=[[element attributeForName:@"prefix"] stringValue];
         on.suffixText=[[element attributeForName:@"suffix"] stringValue];
         

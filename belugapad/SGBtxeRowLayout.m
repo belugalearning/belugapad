@@ -103,15 +103,37 @@
         if((((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW ) ||
            (ParentGo.maxChildrenPerLine>0 && centreBuffer.count==ParentGo.maxChildrenPerLine))
         {
-            //centre objects in last line buffer
-            [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];
-            [centreBuffer removeAllObjects];
+            BOOL forceOnToLine=NO;
             
-            //flow onto next line
-            headXPos=-lineW / 2.0f;
-            headYPos-=lineH;
-            
-            actualLines++;
+            //confirm this wasn't a full stop or other small punctuation
+            if([c isKindOfClass:[SGBtxeText class]])
+            {
+                SGBtxeText *t=(SGBtxeText*)c;
+                if(t.text.length>0)
+                {
+                    if([[t.text substringToIndex:1] isEqualToString:@"."]
+                       || [[t.text substringToIndex:1] isEqualToString:@","]
+                       || [[t.text substringToIndex:1] isEqualToString:@":"]
+                       || [[t.text substringToIndex:1] isEqualToString:@";"]
+                       || [[t.text substringToIndex:1] isEqualToString:@"?"])
+                    {
+                        forceOnToLine=YES;
+                    }
+                }
+            }
+
+            if(!forceOnToLine)
+            {
+                //centre objects in last line buffer
+                [self centreObjectsIn:centreBuffer withHeadXPos:headXPos-BTXE_HPAD inWidth:rowMaxWidth];
+                [centreBuffer removeAllObjects];
+                
+                //flow onto next line
+                headXPos=-lineW / 2.0f;
+                headYPos-=lineH;
+                
+                actualLines++;
+            }
         }
         
         //place object here (offset for centre position)
@@ -211,7 +233,8 @@
                 if([[t.text substringToIndex:1] isEqualToString:@"."]
                    || [[t.text substringToIndex:1] isEqualToString:@","]
                    || [[t.text substringToIndex:1] isEqualToString:@":"]
-                   || [[t.text substringToIndex:1] isEqualToString:@";"])
+                   || [[t.text substringToIndex:1] isEqualToString:@";"]
+                   || [[t.text substringToIndex:1] isEqualToString:@"?"])
                 {
                     return NO;
                 }

@@ -113,7 +113,7 @@ static float kTimeToPieShake=7.0f;
         [self animShake];
         timeSinceInteractionOrShake=0;
     }
-
+    
     [self updateLabels];
     
 }
@@ -285,6 +285,36 @@ static float kTimeToPieShake=7.0f;
 }
 
 #pragma mark - object interaction
+-(BOOL)allContainersEqual
+{
+    int lasNum=-1;
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        if(lasNum==-1)lasNum=[c.mySlices count];
+        
+        if(lasNum!=[c.mySlices count])return NO;
+        
+        if([c.mySlices count]==0)return NO;
+    }
+    
+    return YES;
+}
+
+-(void)tintThroughAllSlices
+{
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        for(DWPieSplitterSliceGameObject *s in c.mySlices)
+        {
+            CCTintTo *tt=[CCTintTo actionWithDuration:0.2f red:220 green:0 blue:0];
+            CCTintTo *tb=[CCTintTo actionWithDuration:0.2f red:255 green:255 blue:255];
+            CCSequence *sq=[CCSequence actions:tt, tb, nil];
+            
+            [s.mySprite runAction:sq];
+        }
+    }
+}
+
 -(void)createPieAtMount
 {
     createdPies++;
@@ -755,7 +785,7 @@ static float kTimeToPieShake=7.0f;
         }
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
         {
-
+            if(sparkles)sparkles=NO;
         }
         
     }
@@ -1007,6 +1037,12 @@ static float kTimeToPieShake=7.0f;
     
     //[self balanceLayer];
     [self balanceContainers];
+    
+    if(!sparkles&&[self allContainersEqual])
+    {
+        [self tintThroughAllSlices];
+        sparkles=YES;
+    }
     
     if(hasMovedSquare)
         [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_SQUARE withAdditionalData:nil];

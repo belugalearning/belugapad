@@ -39,6 +39,7 @@
     NSMutableArray *bmlabels15;
     NSMutableArray *bmlabels12;
     NSMutableArray *bmlabels9;
+    NSMutableArray *bmfractlabel;
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

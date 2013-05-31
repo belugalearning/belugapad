@@ -2310,7 +2310,7 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
 //        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(0,cx-61,lx,122), location)){
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
             [self removeAllTrays];
             return;
         }

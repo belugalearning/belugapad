@@ -1637,15 +1637,15 @@ static float kTimeToCageShake=7.0f;
             {
                 freeSpace++;
             }
-            else if(!co.MountedObject && !co.CancellingObject && explodeMode)
+            else if(explodeMode&&!co.MountedObject && !co.CancellingObject)
             {
                 freeSpace++;
             }
-            else if(co.MountedObject && cage.ObjectValue<0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue>0 && !co.CancellingObject && explodeMode)
+            else if(explodeMode && co.MountedObject && cage.ObjectValue<0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue>0 && !co.CancellingObject)
             {
                 freeSpace++;
             }
-            else if(co.MountedObject && cage.ObjectValue>0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue<0 && !co.CancellingObject && explodeMode)
+            else if(explodeMode&&co.MountedObject && cage.ObjectValue>0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue<0 && !co.CancellingObject)
             {
                 freeSpace++;
             }

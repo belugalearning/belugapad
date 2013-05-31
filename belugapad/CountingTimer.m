@@ -24,8 +24,8 @@
 #import "NumberLayout.h"
 
 
-#define kEarliestHit 1.2
-#define kLatestHit 1.0
+#define kEarliestHit 0.75
+#define kLatestHit 0.99
 
 @interface CountingTimer()
 {

@@ -15,6 +15,7 @@
 
 @class SGBtxeTextBackgroundRender;
 @class SGBtxeNumberDotRender;
+@class SGBtxeFractionRender;
 
 @interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive, Containable, Value, NumberPicker, LogPolling, LogPollPositioning>
 {
@@ -30,6 +31,7 @@
 @property BOOL showAsMixedFraction;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
+@property (retain) SGBtxeFractionRender *fractionRenderComponent;
 
 @property BOOL renderAsDots;
 @property (retain) SGBtxeNumberDotRender *numberDotRenderComponent;

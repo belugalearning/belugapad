@@ -171,6 +171,7 @@
 		7F2F2D7815908FE000862302 /* LRAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D7715908FE000862302 /* LRAnimator.m */; };
 		7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3367DC155FC38A00A2E656 /* DProblemParser.m */; };
 		7F35846A162588FB004067A1 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F358468162588FB004067A1 /* libTestFlight.a */; };
+		7F38CA2E175695760050922E /* SGBtxeFractionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F38CA2D175695760050922E /* SGBtxeFractionRender.m */; };
 		7F40D89A14FFD8BE006A3A55 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CC14A9EE63001AF372 /* UIKit.framework */; };
 		7F40D89B14FFD8BE006A3A55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CE14A9EE63001AF372 /* Foundation.framework */; };
 		7F40D8A114FFD8BE006A3A55 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D89F14FFD8BE006A3A55 /* InfoPlist.strings */; };
@@ -771,6 +772,8 @@
 		7F3367DC155FC38A00A2E656 /* DProblemParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DProblemParser.m; sourceTree = "<group>"; };
 		7F358468162588FB004067A1 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		7F358469162588FB004067A1 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		7F38CA2C175695760050922E /* SGBtxeFractionRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeFractionRender.h; sourceTree = "<group>"; };
+		7F38CA2D175695760050922E /* SGBtxeFractionRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeFractionRender.m; sourceTree = "<group>"; };
 		7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeneralTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F40D89E14FFD8BE006A3A55 /* GeneralTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GeneralTests-Info.plist"; sourceTree = "<group>"; };
 		7F40D8A014FFD8BE006A3A55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2992,6 +2995,8 @@
 				7F5F4D711619E714005F6311 /* SGBtxeIconRender.m */,
 				7F43B0EC165FF02000CD9B8D /* SGBtxeNumberDotRender.h */,
 				7F43B0ED165FF02000CD9B8D /* SGBtxeNumberDotRender.m */,
+				7F38CA2C175695760050922E /* SGBtxeFractionRender.h */,
+				7F38CA2D175695760050922E /* SGBtxeFractionRender.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3609,6 +3614,7 @@
 				551430C41713631300A66657 /* SGFBuilderBlockTouch.m in Sources */,
 				0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */,
 				55276A9F1740105700164B41 /* NumberWheel.m in Sources */,
+				7F38CA2E175695760050922E /* SGBtxeFractionRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

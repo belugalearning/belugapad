@@ -453,8 +453,8 @@ static float kTimeToButtonShake=7.0f;
             [loggingService logEvent:BL_PA_CT_TOUCH_START_START_TIMER withAdditionalData:nil];
         }
         else{
-            [self evalProblem];
             [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:[NSNumber numberWithInt:trackNumber]];
+            [self evalProblem];
         }
     }
     

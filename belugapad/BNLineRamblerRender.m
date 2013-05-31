@@ -154,6 +154,14 @@ static float kLabelOffset=0.0f;
         [labelLayer addChild:f z:99];
     }
     
+    bmfractlabel=[[NSMutableArray alloc]init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:@"-" fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango24.fnt")];
+        [bmfractlabel addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
     if(ramblerGameObject.MarkerValuePositions)
     {
         markerSprites=[[NSMutableArray alloc] init];
@@ -188,6 +196,7 @@ static float kLabelOffset=0.0f;
     int bmlabelindex15=0;
     int bmlabelindex12=0;
     int bmlabelindex9=0;
+    int bmfractlabeli=0;
     
     //[labelLayer removeAllChildrenWithCleanup:YES];
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
@@ -365,6 +374,21 @@ static float kLabelOffset=0.0f;
 
                     }
                     
+                    //append a display denominator (later a fraction) if there is one and this isn't zero
+                    if(displayNum>0 && ramblerGameObject.DisplayDenominator!=0)
+                    {
+                        if(displayNum==ramblerGameObject.DisplayDenominator){ writeText=@"1"; }
+                        else
+                        {
+                            CCLabelBMFont *fractLine=[bmfractlabel objectAtIndex:bmfractlabeli];
+                            writeText=[writeText stringByAppendingFormat:@"\n%d", ramblerGameObject.DisplayDenominator];
+                            bmfractlabeli++;
+                            fractLine.visible=YES;
+                            
+                            [fractLine setPosition:CGPointMake(segStartPos.x, segStartPos.y+2+kLabelOffset)];
+                        }
+                    }
+                    
                     CCLabelBMFont *lex=nil;
                     
                     if(writeText.length==3){
@@ -384,12 +408,7 @@ static float kLabelOffset=0.0f;
                         bmlabelindex24++;
                     }
 
-                    //append a display denominator (later a fraction) if there is one and this isn't zero
-                    if(displayNum>0 && ramblerGameObject.DisplayDenominator!=0)
-                    {
-                        if(displayNum==ramblerGameObject.DisplayDenominator) writeText=@"1";
-                        else writeText=[writeText stringByAppendingFormat:@"/%d", ramblerGameObject.DisplayDenominator];
-                    }
+
                     
                     lex.string=writeText;
                     lex.visible=YES;
@@ -478,6 +497,10 @@ static float kLabelOffset=0.0f;
     for(int i=bmlabelindex9; i<[bmlabels9 count]; i++)
     {
         [[bmlabels9 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=bmfractlabeli; i<[bmfractlabel count]; i++)
+    {
+        [[bmfractlabel objectAtIndex:i] setVisible:NO];
     }
     
     

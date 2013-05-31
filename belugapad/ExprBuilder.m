@@ -595,7 +595,7 @@
 //                                NSLog(@"we dun has 2 wheels hawh");
 //                            }
                             
-                            [self contractDescAndCardRows];
+                            //[self contractDescAndCardRows];
                         }
                     }
                     else
@@ -603,7 +603,7 @@
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [toolHost tearDownNumberPicker];
-                            [self expandDescAndCardRows];
+                            //[self expandDescAndCardRows];
                             toolHost.CurrentBTXE=nil;
                         }
                         if(showingFractionPickers)
@@ -644,7 +644,7 @@
         toolHost.CurrentBTXE=nil;
 
         if(toolHost.pickerView){
-            [self expandDescAndCardRows];
+//            [self expandDescAndCardRows];
             [toolHost tearDownNumberPicker];
 //            [toolHost hideWheel];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
@@ -1259,7 +1259,7 @@
     if(isWinning){
         [toolHost doWinning];
     }else{
-        [self expandDescAndCardRows];
+//        [self expandDescAndCardRows];
         [self resetProblem];
     }
 }

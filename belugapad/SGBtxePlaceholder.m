@@ -86,12 +86,12 @@
 
 -(void)redrawBkg
 {
-    if(!mountedObject)return;
+    if(!self.mountedObject)return;
     
-    if([mountedObject conformsToProtocol:@protocol(Bounding)])
+    if([self.mountedObject conformsToProtocol:@protocol(Bounding)])
     {
         
-        CGSize thisSize=CGSizeMake(mountedObject.size.width, mountedObject.size.height);
+        CGSize thisSize=CGSizeMake(self.mountedObject.size.width, self.mountedObject.size.height);
         
         [textBackgroundComponent redrawBkgWithSize:thisSize];
         
@@ -119,10 +119,14 @@
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject
 {
     //destroy any existing mounted object
-    if(mountedObject)
+    if(self.mountedObject)
     {
-        [mountedObject destroy];
+        [self.container.containerMgrComponent removeObjectFromContainer:self.mountedObject];
+        
+        id<Interactive, NSObject> oldo=self.mountedObject;
         self.mountedObject=nil;
+        
+        [oldo destroy];
     }
     
     //create a duplicate of the passed object
@@ -145,7 +149,7 @@
     [self.container.containerMgrComponent addObjectToContainer:(id<Bounding>)dupe];
     //[self setContainerVisible:NO];
     
-    mountedObject=dupe;
+    self.mountedObject=dupe;
     [self redrawBkg];
 }
 

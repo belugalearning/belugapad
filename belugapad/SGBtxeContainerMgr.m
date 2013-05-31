@@ -26,4 +26,9 @@
     object.container=ParentGO;
 }
 
+-(void)removeObjectFromContainer:(id<Bounding, NSObject>)object
+{
+    [ParentGO.children removeObject:object];
+}
+
 @end

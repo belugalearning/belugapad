@@ -447,7 +447,7 @@
 
 -(void)setupDraw
 {
-    if(self.numerator)
+    if(self.numerator || self.pickerTargetNumerator)
         fractionRenderComponent=[[SGBtxeFractionRender alloc] initWithGameObject:(SGGameObject*)self];
 //        fractionRenderComponent=nil;
     

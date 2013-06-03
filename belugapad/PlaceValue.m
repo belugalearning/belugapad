@@ -319,7 +319,7 @@ static float kTimeToCageShake=7.0f;
             if([columnCountTotalType isEqualToString:VALUE]){
                 [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];}
             else if([columnCountTotalType isEqualToString:PERCENT]){
-                [l setString:[NSString stringWithFormat:@"%g%%", [self usedSpacesOnGrid:i]*v]];}
+                [l setString:[NSString stringWithFormat:@"%g%%", ([self usedSpacesOnGrid:i]*v)*100]];}
 //                [l setString:[NSString stringWithFormat:@"%d%%", (int)(((float)[self usedSpacesOnGrid:i]/([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i]))*v)]];}
             else if([columnCountTotalType isEqualToString:FRACTION]){
                 CCLabelTTF *lD=[s.children objectAtIndex:1];
@@ -905,7 +905,7 @@ static float kTimeToCageShake=7.0f;
             if([columnCountTotalType isEqualToString:VALUE]){
                 [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];}
             else if([columnCountTotalType isEqualToString:PERCENT]){
-                [l setString:[NSString stringWithFormat:@"%g%%", [self usedSpacesOnGrid:i]*v]];}
+                [l setString:[NSString stringWithFormat:@"%g%%", ([self usedSpacesOnGrid:i]*v)*100]];}
 //                [l setString:[NSString stringWithFormat:@"%d%%", (int)(((float)[self usedSpacesOnGrid:i]/([self usedSpacesOnGrid:i]+[self freeSpacesOnGrid:i]))*100)]];}
             else if([columnCountTotalType isEqualToString:FRACTION]){
                 CCLabelTTF *lD=[s.children objectAtIndex:1];

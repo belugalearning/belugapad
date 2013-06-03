@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>FOUNDATION</key>
+    <true/>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>&lt;b:t&gt;Count to&lt;/b:t&gt;&lt;b:on number=&quot;1&quot;/&gt;&lt;b:t&gt;in jumps of&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;5&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>Count in 1/4</string>
+    <key>EVAL_TYPE</key>
+    <string>REPEATED_ADDITION</string>
+    <key>JUMP_MODE</key>
+    <true/>
+    <key>EVAL_INTERVAL</key>
+    <string>1</string>
+    <key>TOOL_KEY</key>
+    <string>NLine</string>
+    <key>START_VALUE</key>
+    <string>0</string>
+    <key>MIN_VALUE</key>
+    <string>0</string>
+    <key>MAX_VALUE</key>
+    <string>5</string>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>REJECT_MODE</key>
+    <integer>0</integer>
+    <key>EVAL_TARGET</key>
+    <string>5</string>
+    <key>HIDE_ALL_NUMBERS</key>
+    <false/>
+    <key>HIDE_ALL_NOTCHES</key>
+    <false/>
+    <key>HIDE_START_NUMBER</key>
+    <false/>
+    <key>HIDE_END_NUMBER</key>
+    <false/>
+    <key>HIDE_START_NOTCH</key>
+    <false/>
+    <key>HIDE_END_NOTCH</key>
+    <false/>
+    <key>DISABLE_SNAPPING_TO_NOTCH</key>
+    <false/>
+    <key>EVAL_PLUS_MINUS_THRESHOLD</key>
+    <integer>0</integer>
+    <key>RENDER_STITCHES_AT_INTERVAL</key>
+    <integer>0</integer>
+    <key>DISPLAY_DENOMINATOR</key>
+    <integer>5</integer>
+  </dict>
+</plist>

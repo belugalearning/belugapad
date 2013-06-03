@@ -593,7 +593,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)removeSlices
 {
-    for (DWPieSplitterContainerGameObject *p in activePie)
+    for (DWPieSplitterPieGameObject *p in activePie)
     {
 
         for (DWPieSplitterSliceGameObject *s in p.mySlices)
@@ -602,6 +602,12 @@ static float kTimeToPieShake=7.0f;
             [gw delayRemoveGameObject:s];
         }
         
+        [p.mySlices removeAllObjects];
+        
+    }
+    for (DWPieSplitterContainerGameObject *p in activeCon)
+    {
+        [p.mySlices removeAllObjects];
     }
 }
 
@@ -929,6 +935,7 @@ static float kTimeToPieShake=7.0f;
                 {
                     [self removeSlices];
                     [self splitPies];
+                    [cont.mySlices removeAllObjects];
                 }
 
                 // and if it wasn't - eject it back to it's mount

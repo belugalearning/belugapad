@@ -549,9 +549,16 @@
                 denom=[NSString stringWithFormat:@"%d teenth", [self.denominator intValue]-10];
             else if([self.denominator intValue]==20)
                 denom=@"twentieth";
-            else if([self.denominator intValue]>20)
-                denom=[NSString stringWithFormat:@"%d %dth", [self.denominator intValue]-([self.denominator intValue]%10),([self.denominator intValue]%10)];
             
+            if([self.denominator intValue]>20){
+                int baseNo=[self.denominator intValue]-([self.denominator intValue]%10);
+                int remain=([self.denominator intValue]%10);
+                
+                if(remain>0)
+                    denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
+                else
+                    denom=[NSString stringWithFormat:@"%dth", baseNo];
+            }
         }
     }
     

@@ -1042,7 +1042,7 @@ static float kTimeToHintToolTray=0.0f;
 //    [metaArrow setTag:3];
     [metaArrow setOpacity:0];
 //    [metaArrow setVisible:YES];
-    [problemDefLayer addChild:metaArrow z:10];
+    [btxeDescLayer addChild:metaArrow z:100];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {

@@ -50,6 +50,7 @@
 
 -(void)checkDropTarget:(CGPoint)hitLoc
 {
+    if(!cont.ScaledUp)return;
     CGRect baseNodeBound=CGRectNull;
     baseNodeBound=CGRectUnion(cont.mySprite.boundingBox, cont.mySprite.boundingBox);
     

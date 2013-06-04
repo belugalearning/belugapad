@@ -944,8 +944,61 @@ float timerIgnoreFrog;
             if(readNumber<0)
                 writeText=[NSString stringWithFormat:@"negative %g", fabsf([writeText floatValue])];
             
-            
-            
+            if(readNumber>0&&rambler.DisplayDenominator!=0){
+                NSLog(@"do stuff");
+                writeText=[NSString stringWithFormat:@"%d", readNumber];
+                
+                NSNumber *denominator=[NSNumber numberWithInt:rambler.DisplayDenominator];
+                NSString *denom=@"";
+                
+                if([denominator isEqualToNumber:[NSNumber numberWithInt:2]])
+                    denom=@"halve";
+                else if([denominator intValue]==3)
+                    denom=@"third";
+                else if([denominator intValue]==4)
+                    denom=@"quarter";
+                else if([denominator intValue]==5)
+                    denom=@"fifth";
+                else if([denominator intValue]==6)
+                    denom=@"sixth";
+                else if([denominator intValue]==7)
+                    denom=@"seventh";
+                else if([denominator intValue]==8)
+                    denom=@"eigth";
+                else if([denominator intValue]==9)
+                    denom=@"ninth";
+                else if([denominator intValue]==10)
+                    denom=@"tenth";
+                else if([denominator intValue]==11)
+                    denom=@"eleventh";
+                else if([denominator intValue]==12)
+                    denom=@"twelfth";
+                else if([denominator intValue]==13)
+                    denom=@"thirteenth";
+                else if([denominator intValue]>13 && [denominator intValue]<=19)
+                    denom=[NSString stringWithFormat:@"%d teenth", [denominator intValue]-10];
+                else if([denominator intValue]==20)
+                    denom=@"twentieth";
+                
+                if([denominator intValue]>20){
+                    int baseNo=[denominator intValue]-([denominator intValue]%10);
+                    int remain=([denominator intValue]%10);
+                    
+                    if(remain>0)
+                        denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
+                    else
+                        denom=[NSString stringWithFormat:@"%dth", baseNo];
+                }
+                
+                if(readNumber>1)
+                    denom=[NSString stringWithFormat:@"%@s",denom];
+                
+                if(readNumber==rambler.DisplayDenominator){ writeText=@"1"; }
+                else
+                {
+                    writeText=[writeText stringByAppendingFormat:@" %@", denom];
+                }
+            }
             AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
             [ac speakString:writeText];
         }

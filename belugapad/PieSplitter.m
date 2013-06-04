@@ -306,7 +306,7 @@ static float kTimeToPieShake=7.0f;
     {
         for(DWPieSplitterSliceGameObject *s in c.mySlices)
         {
-            CCTintTo *tt=[CCTintTo actionWithDuration:0.2f red:220 green:0 blue:0];
+            CCTintTo *tt=[CCTintTo actionWithDuration:0.2f red:0 green:220 blue:0];
             CCTintTo *tb=[CCTintTo actionWithDuration:0.2f red:255 green:255 blue:255];
             CCSequence *sq=[CCSequence actions:tt, tb, nil];
             

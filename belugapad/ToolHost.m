@@ -1042,7 +1042,7 @@ static float kTimeToHintToolTray=0.0f;
 //    [metaArrow setTag:3];
     [metaArrow setOpacity:0];
 //    [metaArrow setVisible:YES];
-    [problemDefLayer addChild:metaArrow z:10];
+    [btxeDescLayer addChild:metaArrow z:100];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {
@@ -2356,7 +2356,8 @@ static float kTimeToHintToolTray=0.0f;
     [followParticle setPosition:location];
     [followParticle setVisible:YES];
     
-    [currentTool ccTouchesBegan:touches withEvent:event];
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesBegan:touches withEvent:event];
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -2417,7 +2418,9 @@ static float kTimeToHintToolTray=0.0f;
         [followParticle setPosition:location];
         [explodeParticle setPosition:location];
     }
-    [currentTool ccTouchesMoved:touches withEvent:event];
+    
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesMoved:touches withEvent:event];
 
     
 
@@ -2603,7 +2606,9 @@ static float kTimeToHintToolTray=0.0f;
         hasMovedNumber=NO;
     }
     
-    [currentTool ccTouchesEnded:touches withEvent:event];
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesEnded:touches withEvent:event];
+    
     isTouching=NO;
 }
 

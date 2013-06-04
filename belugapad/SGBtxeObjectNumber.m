@@ -515,7 +515,82 @@
 
 -(NSString*)returnMyText
 {
-    return self.text;
+    NSString *denom=@"";
+    
+    if(self.numerator)
+    {
+        if(self.denominator)
+        {
+            if([self.denominator isEqualToNumber:[NSNumber numberWithInt:2]])
+                denom=@"halve";
+            else if([self.denominator intValue]==3)
+                denom=@"third";
+            else if([self.denominator intValue]==4)
+                denom=@"quarter";
+            else if([self.denominator intValue]==5)
+                denom=@"fifth";
+            else if([self.denominator intValue]==6)
+                denom=@"sixth";
+            else if([self.denominator intValue]==7)
+                denom=@"seventh";
+            else if([self.denominator intValue]==8)
+                denom=@"eigth";
+            else if([self.denominator intValue]==9)
+                denom=@"ninth";
+            else if([self.denominator intValue]==10)
+                denom=@"tenth";
+            else if([self.denominator intValue]==11)
+                denom=@"eleventh";
+            else if([self.denominator intValue]==12)
+                denom=@"twelfth";
+            else if([self.denominator intValue]==13)
+                denom=@"thirteenth";
+            else if([self.denominator intValue]>13 && [self.denominator intValue]<=19)
+                denom=[NSString stringWithFormat:@"%d teenth", [self.denominator intValue]-10];
+            else if([self.denominator intValue]==20)
+                denom=@"twentieth";
+            
+            if([self.denominator intValue]>20){
+                int baseNo=[self.denominator intValue]-([self.denominator intValue]%10);
+                int remain=([self.denominator intValue]%10);
+                
+                if(remain>0)
+                    denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
+                else
+                    denom=[NSString stringWithFormat:@"%dth", baseNo];
+            }
+        }
+    }
+    
+    if(usePicker && !numberValue)
+    {
+        if(self.pickerTargetNumerator)
+        {
+            if(!self.numerator && !self.denominator) return @"?/?";
+            else if(self.numerator) return [NSString stringWithFormat:@"%d over what", [self.numerator integerValue]];
+            else if(self.denominator) return [NSString stringWithFormat:@"what over %@", denom];
+        }
+        else return @"?";
+    }
+    
+    if(self.numerator && self.showAsMixedFraction==NO) return [NSString stringWithFormat:@"%d %@", [self.numerator integerValue], denom];
+    
+    else if(self.numerator && self.showAsMixedFraction==YES)
+    {
+        int whole=(int)([self.numerator integerValue] / [self.denominator integerValue]);
+        int modtop=[self.numerator integerValue] - (whole * [self.denominator integerValue]);
+        return [NSString stringWithFormat:@"%d and %d %@", whole, [self.numerator intValue], denom];
+    }
+    
+    else
+    {
+        NSString *ps=prefixText;
+        if(!ps)ps=@"";
+        NSString *ss=suffixText;
+        if(!ss)ss=@"";
+        
+        return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
+    }
 }
 
 -(CGRect)returnBoundingBox

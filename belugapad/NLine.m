@@ -930,6 +930,9 @@ float timerIgnoreFrog;
 //            if(countOutLoudFromInitStartVal)
             readNumber=lastBubbleLoc;
             
+            if(initSegmentVal!=1)
+                readNumber*=initSegmentVal;
+            
             NSString *writeText=[NSString stringWithFormat:@"%d", readNumber];
             float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;
             if(rambler.DisplayNumberDP>0 && rambler.DisplayNumberMultiplier!=1)
@@ -999,6 +1002,9 @@ float timerIgnoreFrog;
                     writeText=[writeText stringByAppendingFormat:@" %@", denom];
                 }
             }
+            
+            NSLog(@"speakstring is %@", writeText);
+            
             AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
             [ac speakString:writeText];
         }

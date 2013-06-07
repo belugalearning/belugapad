@@ -51,21 +51,21 @@
 
 -(void)showNumberWheel
 {
-    pickerView.visible=true;
-    pickerView.Locked=false;
+    self.pickerView.visible=true;
+    self.pickerView.Locked=false;
 }
 
 -(void)hideNumberWheel
 {
-    pickerView.visible=false;
-    pickerView.Locked=true;
+    self.pickerView.visible=false;
+    self.pickerView.Locked=true;
 }
 
 -(void)setupNumberWheel
 {
     if(!self.pickerViewSelection)self.pickerViewSelection=[[[NSMutableArray alloc]init] autorelease];
     
-    if(pickerView) return;
+    if(self.pickerView) return;
     
     pickerView = [CCPickerView node];
     pickerView.anchorPoint=ccp(1.0f,0.5f);
@@ -199,11 +199,11 @@
         
         if(fractionWheel.StrOutputValue){
             value=(float)[self returnPickerNumber]/[fractionWheel returnPickerNumber];
-            ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
+            ((id<Value>)self.AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
-        ((id<Value>)AssociatedObject).numerator=[NSNumber numberWithInteger:[self returnPickerNumber]];
+        ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:[self returnPickerNumber]];
 
-        [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
+        [((SGBtxeObjectNumber*)self.AssociatedObject) updateDraw];
         
 //        NSLog(@"%d/%@ /// %@", [self returnPickerNumber], otherWheel, ((id<Text>)AssociatedObject).text);
         
@@ -315,6 +315,14 @@
 
 -(void) dealloc
 {
+    [self.pickerView release];
+    [self.mySprite release];
+    [self.SpriteFileName release];
+    [self.UnderlaySpriteFileName release];
+    [self.pickerViewSelection release];
+    [self.AssociatedObject release];
+    [self.fractionPart release];
+    [self.fractionWheel release];
     [super dealloc];
 }
 

@@ -784,10 +784,10 @@ static float kTimeToPieShake=7.0f;
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_MOUNTED_SQUARE withAdditionalData:nil];
             }
-            else if(numberOfCagedSlices>0)
-            {
-                gw.Blackboard.PickupObject=nil;
-            }
+//            else if(numberOfCagedSlices>0)
+//            {
+//                gw.Blackboard.PickupObject=nil;
+//            }
         }
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
         {
@@ -923,6 +923,10 @@ static float kTimeToPieShake=7.0f;
                 {
                     [self removeSlices];
                     [self splitPies];
+                }
+                else if(hasSplit && numberOfCagedSlices>0)
+                {
+                    [self resetSlicesToPies];
                 }
                 
             }

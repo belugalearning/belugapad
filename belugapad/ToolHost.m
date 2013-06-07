@@ -1655,7 +1655,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
-//            [row rowVisible:NO];
+            [row rowVisible:NO];
         }
     
         if(row)[row release];

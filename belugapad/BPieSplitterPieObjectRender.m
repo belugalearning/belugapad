@@ -157,7 +157,7 @@
 
 -(void)moveSpriteHome
 {
-    if(pie.ScaledUp){
+    if(pie.mySprite.scale!=0.5f){
         [pie.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
         pie.ScaledUp=NO;
     }

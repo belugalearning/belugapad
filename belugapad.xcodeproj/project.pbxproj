@@ -39,6 +39,7 @@
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CA32F10166506DD00FC5423 /* NumpadInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA32F0E166506DD00FC5423 /* NumpadInputController.m */; };
 		0CA32F11166506DD00FC5423 /* NumpadInputController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */; };
+		0CB2B40017622529003D75F6 /* BelugaNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2B3FF17622529003D75F6 /* BelugaNewsViewController.m */; };
 		0CB7A51B164DFF96005FC7B1 /* NSData+GzipExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */; };
 		0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD565911647F23E00D9EA30 /* UserNodeState.m */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
@@ -520,6 +521,8 @@
 		0CA32F0D166506DD00FC5423 /* NumpadInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumpadInputController.h; sourceTree = "<group>"; };
 		0CA32F0E166506DD00FC5423 /* NumpadInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumpadInputController.m; sourceTree = "<group>"; };
 		0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumpadInputController.xib; sourceTree = "<group>"; };
+		0CB2B3FE17622529003D75F6 /* BelugaNewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BelugaNewsViewController.h; sourceTree = "<group>"; };
+		0CB2B3FF17622529003D75F6 /* BelugaNewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BelugaNewsViewController.m; sourceTree = "<group>"; };
 		0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GzipExtension.h"; sourceTree = "<group>"; };
 		0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GzipExtension.m"; sourceTree = "<group>"; };
 		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
@@ -2269,6 +2272,8 @@
 				7FCBC3E715100F3D00066426 /* MathMLConsts.m */,
 				550708781517625300111BBB /* ColumnAdditionConsts.h */,
 				550708791517625300111BBB /* ColumnAdditionConsts.m */,
+				0CB2B3FE17622529003D75F6 /* BelugaNewsViewController.h */,
+				0CB2B3FF17622529003D75F6 /* BelugaNewsViewController.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -3615,6 +3620,7 @@
 				0C52CDFF17243FF500B9D9B5 /* TokenKeyInputView.m in Sources */,
 				55276A9F1740105700164B41 /* NumberWheel.m in Sources */,
 				7F38CA2E175695760050922E /* SGBtxeFractionRender.m in Sources */,
+				0CB2B40017622529003D75F6 /* BelugaNewsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

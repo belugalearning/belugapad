@@ -18,6 +18,7 @@
 #import "mach/mach.h"
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
+#import "BelugaNewsViewController.h"
 
 #import "AcapelaSpeech.h"
 #import "AcapelaSetup.h"
@@ -36,6 +37,7 @@
 {
 @private
     SelectUserViewController *selectUserViewController;
+    BelugaNewsViewController *newsViewController;
     BOOL cocosIsInitialised;
 }
 @property (nonatomic, readwrite) LoggingService *loggingService;
@@ -151,6 +153,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     //[director_ enableRetinaDisplay:NO];
     
+    newsViewController = [[BelugaNewsViewController alloc] init];    
     selectUserViewController = [[SelectUserViewController alloc] init];
     
     //[self.window addSubview:selectUserViewController.view];
@@ -271,6 +274,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSString *platform = [NSString stringWithUTF8String:machine];
     free(machine);
     return platform;
+}
+
+-(BelugaNewsViewController*)belugaNewsViewController
+{
+    return newsViewController;
 }
 
 -(void)speakString:(NSString*)speakThis
@@ -490,6 +498,9 @@ void logMemUsage(void) {
     
 	[window_ release];
 	[navController_ release];
+    
+    if (newsViewController) [newsViewController release];
+    newsViewController = nil;
     
 	[super dealloc];
 }

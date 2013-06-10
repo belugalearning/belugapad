@@ -20,8 +20,6 @@
 {
     [super viewDidLoad];
     
-    //self.view.frame = CGRectMake(0, 0, 699, 499);
-    
     UIImageView *bg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/images/news-panel/News_panel.png"]] autorelease];
     bg.center = CGPointMake(512, 410);
     [self.view addSubview:bg];
@@ -48,10 +46,6 @@
     
     prev.enabled = NO;
     next.enabled = NO;
-    
-    [close registerForDragAndLog];
-    [prev registerForDragAndLog];
-    [next registerForDragAndLog];
 }
 
 -(void)closePanel:(id)button

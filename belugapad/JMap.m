@@ -52,6 +52,7 @@ const float kLogOutBtnPadding = 8.0f;
 static CGPoint kStartMapPos={-611, 3713};
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
+static int headerBarY = 710;
 
 typedef enum  {
     kJuiStateNodeMap,
@@ -1161,10 +1162,9 @@ typedef enum  {
     
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-    touchCount+=touches.count;
-    
-    if(ac.AuthoringMode && CGRectContainsPoint(debugButtonBounds, l))
+    if (ac.AuthoringMode && CGRectContainsPoint(debugButtonBounds, l))
     {
+        // -- toggle author rendering
         if(authorRenderEnabled)[gw handleMessage:kSGdisableAuthorRender];
         else [gw handleMessage:kSGenableAuthorRender];
         authorRenderEnabled=!authorRenderEnabled;
@@ -1174,38 +1174,40 @@ typedef enum  {
         [ac.searchList reloadData];
         [self searchBar:ac.searchBar textDidChange:ac.searchBar.text];
     }
-    
-    if(l.x<110 && l.y > (ly-55)) // log out button
+    else if (headerBarY <= l.y)
     {
-        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-        [usersService setCurrentUserToUserWithId:nil];
+        // -- touch in header bar
+        if(l.x<110 && l.y > (ly-55)) // log out button
+        {
+            [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
+            [usersService setCurrentUserToUserWithId:nil];
+            
+            ac.lastJmapViewUState=nil;
+            ac.lastViewedNodeId=nil;
+            contentService.lastMapLayerPosition=CGPointZero;
+            [ac returnToLogin];
+            
+            return;
+        }
         
-        ac.lastJmapViewUState=nil;
-        ac.lastViewedNodeId=nil;
-        contentService.lastMapLayerPosition=CGPointZero;
-        [ac returnToLogin];
+        if (CGRectContainsPoint(newsButtonSprite.boundingBox, l))
+        {
+            [self showNewsPanel];
+            return;
+        }
         
-        return;
+        if(CGRectContainsPoint(filterButtonSprite.boundingBox, l))
+        {
+            if(filterTotalFlagCount>0)
+                [self pressedFilterButton];
+        }
     }
-    
-    if (CGRectContainsPoint(newsButtonSprite.boundingBox, l))
+    else
     {
-        [self showNewsPanel];
-        return;
-    }
-    
-    if(CGRectContainsPoint(filterButtonSprite.boundingBox, l))
-    {
-        if(filterTotalFlagCount>0)
-            [self pressedFilterButton];
-    }
-
-    else {
-
+        // -- map touch
+        touchCount+=touches.count;
         lastTouch=l;
-        
-        CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
-     
+        CGPoint lOnMap=[mapLayer convertToNodeSpace:l];     
         NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
         
         if(!zoomedOut)
@@ -1222,8 +1224,7 @@ typedef enum  {
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
                 [self zoomToCityViewAtPoint:l];
                 didJustChangeZoom=YES;
-            }
-            
+            }            
             lastTap=l;
             lastTapTime=0;
         }
@@ -1231,8 +1232,8 @@ typedef enum  {
         //assume touch didn't start in the node map
         touchStartedInNodeMap=NO;
 
-        if (juiState==kJuiStateNodeMap) {
-                    
+        if (juiState==kJuiStateNodeMap)
+        {
             touchStartedInNodeMap=YES;
         }
     }
@@ -1397,7 +1398,6 @@ typedef enum  {
             didJustChangeZoom=YES;
         }
     }
-    
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -1410,7 +1410,6 @@ typedef enum  {
         didJustChangeZoom=NO;
         isDragging=NO;
     }
-    
 }
 
 #pragma mark - map views and zooming

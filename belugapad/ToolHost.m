@@ -2224,10 +2224,10 @@ static float kTimeToHintToolTray=0.0f;
     [self setReadProblemPosWithScale:1.0f];
 
     
-    [backgroundLayer addChild:readProblemDesc];
-    [backgroundLayer addChild:qTrayTop];
-    [backgroundLayer addChild:qTrayBot];
-    [backgroundLayer addChild:qTrayMid];
+    [btxeDescLayer addChild:readProblemDesc];
+    [btxeDescLayer addChild:qTrayTop];
+    [btxeDescLayer addChild:qTrayBot];
+    [btxeDescLayer addChild:qTrayMid];
     
     descGw.Blackboard.inProblemSetup=NO;
     

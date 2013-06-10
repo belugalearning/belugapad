@@ -242,8 +242,8 @@ static float kNBFontSizeLarge=35.0f;
     else
         dockMidSpacing=60.0f;
     
-    if([initCages count]>0)
-    {
+//    if([initCages count]>0)
+//    {
         NSString *middleAsset=[NSString stringWithFormat:@"/images/partition/NB_Dock_Middle%d.png",(int)dockMidSpacing];
         
         for(int i=0;i<dockSize;i++)
@@ -273,7 +273,7 @@ static float kNBFontSizeLarge=35.0f;
                 dockPieceYPos-=dockMidSpacing;
             
         }
-    }
+//    }
 
     // do stuff with our INIT_BARS (DWNBondRowGameObject)
     

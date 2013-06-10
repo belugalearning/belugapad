@@ -1655,7 +1655,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
-//            [row rowVisible:NO];
+            [row rowVisible:NO];
         }
     
         if(row)[row release];
@@ -2310,7 +2310,7 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
 //        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
             [self removeAllTrays];
             return;
         }

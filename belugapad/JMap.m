@@ -357,7 +357,7 @@ typedef enum  {
 
 -(void)addNewsButton
 {
-    CGRect newsButtonBounds={{580,714}, {70,42}};
+    CGRect newsButtonBounds={{582,715}, {70,42}};
 
     newsButtonSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/news-panel/News_button_grey.png")];
     [newsButtonSprite setPosition:ccp(newsButtonBounds.origin.x + 0.5 * newsButtonBounds.size.width,

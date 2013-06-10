@@ -1735,8 +1735,9 @@ static float kTimeSinceAction=7.0f;
             {
                 NSArray *thisArea=[evalAreas objectAtIndex:thisLoc];
                 CCSprite *s=[thisArea objectAtIndex:[thisArea count]-1];
+                NSLog(@"alter dat pos from %@ to %@", NSStringFromCGPoint(currentPickupObject.Position),NSStringFromCGPoint(s.position));
                 currentPickupObject.Position=s.position;
-                NSLog(@"alter dat pos");
+                [currentPickupObject move];
             }
         }
         

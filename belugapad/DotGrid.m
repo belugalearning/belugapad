@@ -1378,7 +1378,7 @@
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
                 w.RenderLayer=anchorLayer;
-                w.Position=ccp(lx-140,(ly-280)-185*[numberWheels count]);
+                w.Position=ccp(lx-140,(ly-300)-185*[numberWheels count]);
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];

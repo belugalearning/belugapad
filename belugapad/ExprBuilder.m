@@ -607,6 +607,7 @@
                         if(showingFractionPickers)
                         {
                             [pNumerator hideNumberWheel];
+                            [pDivLine setVisible:NO];
                             [pDenominator hideNumberWheel];
                             showingFractionPickers=NO;
                         }
@@ -650,9 +651,10 @@
     }
     else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,360), location)){
 
-            [pNumerator hideNumberWheel];
-            [pDenominator hideNumberWheel];
-            showingFractionPickers=NO;
+        [pNumerator hideNumberWheel];
+        [pDivLine setVisible:NO];
+        [pDenominator hideNumberWheel];
+        showingFractionPickers=NO;
     }
 }
 

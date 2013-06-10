@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
 
-@class RootViewController, LoggingService, ContentService, UsersService;
+@class RootViewController, LoggingService, ContentService, UsersService, BelugaNewsViewController;
 
 @class AcapelaLicense, AcapelaSpeech, AcapelaSetup;
 
@@ -56,6 +56,8 @@
 
 @property (retain) AcapelaSpeech *acaSpeech;
 @property (retain) NSString *lastViewedNodeId;
+
+@property (readonly) BelugaNewsViewController *belugaNewsViewController;
 
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;

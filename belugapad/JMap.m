@@ -92,6 +92,7 @@ typedef enum  {
     CCMenu *debugMenu;
     
     CCSprite *backarrow;
+    CCSprite *newsButtonSprite;
 }
 
 -(void)debugRelocate:(id)sender;
@@ -161,7 +162,6 @@ typedef enum  {
         [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
         
         [TestFlight passCheckpoint:@"STARTED_JMAP"];
-        
     }
     
     return self;
@@ -289,6 +289,8 @@ typedef enum  {
     [self buildSearchIndex];
     
     [self addFilterButton];
+    [self addNewsButton];
+    ac.belugaNewsViewController.delegate = self;
     
     //show filter button
     filterButtonSprite.visible=(filterTotalFlagCount>0);
@@ -302,7 +304,6 @@ typedef enum  {
     if(playTransitionAudio)
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;
-    
 }
 
 -(void)setupContentRegions
@@ -351,6 +352,16 @@ typedef enum  {
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
+}
+
+-(void)addNewsButton
+{
+    CGRect newsButtonBounds={{127,714}, {70,48}};
+
+    newsButtonSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/news-panel/News_button_grey.png")];
+    [newsButtonSprite setPosition:ccp(newsButtonBounds.origin.x + 0.5 * newsButtonBounds.size.width,
+                                      newsButtonBounds.origin.y + 0.5 * newsButtonBounds.size.height)];
+    [foreLayer addChild:newsButtonSprite];
 }
 
 -(void)addFilterButton
@@ -1177,6 +1188,12 @@ typedef enum  {
         return;
     }
     
+    if (CGRectContainsPoint(newsButtonSprite.boundingBox, l))
+    {
+        [self showNewsPanel];
+        return;
+    }
+    
     if(CGRectContainsPoint(filterButtonSprite.boundingBox, l))
     {
         if(filterTotalFlagCount>0)
@@ -1666,10 +1683,28 @@ typedef enum  {
     else return searchNodes.count;
 }
 
+#pragma mark - news panel
+
+-(void)showNewsPanel
+{
+    [newsButtonSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/news-panel/News_button_orange.png")]];
+    [[[CCDirector sharedDirector] view] addSubview:((UIViewController*)ac.belugaNewsViewController).view];
+}
+
+-(void)newPanelWasClosed
+{
+    [newsButtonSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/news-panel/News_button_grey.png")]];
+}
+
 #pragma mark - tear down
 
 -(void)dealloc
 {
+    if (ac &&
+            ac.belugaNewsViewController &&
+            ac.belugaNewsViewController.delegate == self)
+        ac.belugaNewsViewController.delegate = nil;
+    
     [mapLayer removeAllChildrenWithCleanup:YES];
     [foreLayer removeAllChildrenWithCleanup:YES];
     [underwaterLayer removeAllChildrenWithCleanup:YES];

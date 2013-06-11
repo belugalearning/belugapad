@@ -267,6 +267,10 @@ const NSString *matchNumbers=@"0123456789";
     
         on.enabled=[self enabledBoolFor:element];
         
+        //explicit interactivity disable
+        on.interactive=![self boolFor:@"notinteractive" on:element];
+        
+        
         [nf release];
         
         [ParentGO.containerMgrComponent addObjectToContainer:on];

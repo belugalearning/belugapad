@@ -493,6 +493,11 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - add layers
 
+-(CCLayer*)returnBtxeLayer
+{
+    return btxeDescLayer;
+}
+
 -(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
 {
     toolNoScaleLayer=noScaleLayer;
@@ -2224,10 +2229,10 @@ static float kTimeToHintToolTray=0.0f;
     [self setReadProblemPosWithScale:1.0f];
 
     
-    [backgroundLayer addChild:readProblemDesc];
-    [backgroundLayer addChild:qTrayTop];
-    [backgroundLayer addChild:qTrayBot];
-    [backgroundLayer addChild:qTrayMid];
+    [btxeDescLayer addChild:readProblemDesc z:-1];
+    [btxeDescLayer addChild:qTrayTop z:-1];
+    [btxeDescLayer addChild:qTrayBot z:-1];
+    [btxeDescLayer addChild:qTrayMid z:-1];
     
     descGw.Blackboard.inProblemSetup=NO;
     

@@ -308,7 +308,7 @@ typedef enum {
 -(BOOL)isShowingPickerLayer;
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;
-
+-(CCLayer*)returnBtxeLayer;
 -(void)playAudioClick;
 -(void)playAudioPress;
 

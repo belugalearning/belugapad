@@ -261,6 +261,7 @@
         if(i==0)
         {
             descRow=row;
+            row.renderLayer=[toolHost returnBtxeLayer];
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;

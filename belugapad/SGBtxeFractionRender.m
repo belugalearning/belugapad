@@ -168,6 +168,13 @@
 -(NSString*) getNumString
 {
     int modtop=[ParentGO.numerator intValue];
+    int denom=[ParentGO.denominator intValue];
+    
+    if(ParentGO.showAsMixedFraction && modtop>denom)
+    {
+        modtop=modtop%denom;
+    }
+    
     if(ParentGO.pickerTargetNumerator)
     {
         if(ParentGO.numerator) return [NSString stringWithFormat:@"%d", modtop];

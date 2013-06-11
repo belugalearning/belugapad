@@ -109,7 +109,7 @@ static float kLabelOffset=0.0f;
     }
     
     for (int i=0; i<baseSegs; i++) {
-        CCSprite *ind=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-FractShown.png")];
+        CCSprite *ind=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_fractionsLine.png")];
         [ind setVisible:NO];
         [fractLines addObject:ind];
         [gameWorld.Blackboard.ComponentRenderLayer addChild:ind z:5];

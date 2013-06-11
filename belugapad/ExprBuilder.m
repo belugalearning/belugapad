@@ -529,12 +529,12 @@
                                     pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
                                     pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
 //                                    pNumerator.Position=ccp(870,640);
-                                    pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),440);                                    pNumerator.fractionPart=@"n";
+                                    pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),430);                                    pNumerator.fractionPart=@"n";
                                     pNumerator.AssociatedObject=opicker;
                                     [pNumerator setupNumberWheel];
                                     
-                                    pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/divline.png")];
-                                    [pDivLine setPosition:ccp(pNumerator.Position.x,cy-28)];
+                                    pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/NW_fractionsLine.png")];
+                                    [pDivLine setPosition:ccp(pNumerator.Position.x,cy-58)];
                                     [renderLayer addChild:pDivLine];
                                     
                                 }
@@ -551,7 +551,7 @@
                                     pDenominator.Components=numberPickerColumns;
                                     pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
                                     pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
-                                    pDenominator.Position=ccp(lx-((pDenominator.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-170);
+                                    pDenominator.Position=ccp(lx-((pDenominator.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-210);
                                     pDenominator.fractionPart=@"d";
                                     pDenominator.AssociatedObject=opicker;
                                     pNumerator.fractionWheel=pDenominator;

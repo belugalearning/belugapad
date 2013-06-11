@@ -261,6 +261,7 @@
         if(i==0)
         {
             descRow=row;
+            row.renderLayer=[toolHost returnBtxeLayer];
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;
@@ -519,7 +520,8 @@
                         {
                             if(!showingFractionPickers)
                             {
-                                numberPickerColumns=3;
+                                [toolHost hideWheel];
+                                
                                 if(!pNumerator){
                                     pNumerator=[[NumberWheel alloc]init];
                                     pNumerator.RenderLayer=renderLayer;
@@ -530,12 +532,18 @@
                                     pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),440);                                    pNumerator.fractionPart=@"n";
                                     pNumerator.AssociatedObject=opicker;
                                     [pNumerator setupNumberWheel];
+                                    
+                                    pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/divline.png")];
+                                    [pDivLine setPosition:ccp(pNumerator.Position.x,cy-28)];
+                                    [renderLayer addChild:pDivLine];
+                                    
                                 }
                                 else
                                 {
                                     pNumerator.AssociatedObject=opicker;
 //                                    [pNumerator setPosition:ccp(pNumerator.position.x-lx,pNumerator.position.y)];
                                     [pNumerator showNumberWheel];
+                                    [pDivLine setVisible:YES];
                                 }
                                 if(!pDenominator){
                                     pDenominator=[[NumberWheel alloc]init];
@@ -557,20 +565,12 @@
                                     [pDenominator showNumberWheel];
                                 }
                                 
-                                //do what parser does
-                                //set numerator/denominator to numbers
-                                // set value
-                                // do math for value
-                                // comparison
-                                // text to return ?
-                                
-                                NSLog(@"show fraction picker");
                             }
                             else
                             {
-//                                [pNumerator setPosition:ccp(pNumerator.position.x+lx,pNumerator.position.y)];
-//                                [pDenominator setPosition:ccp(pDenominator.position.x+lx,pDenominator.position.y)];
+
                                 [pNumerator hideNumberWheel];
+                                [pDivLine setVisible:NO];
                                 [pDenominator hideNumberWheel];
                                 NSLog(@"hide fraction picker");                               
                             }
@@ -585,7 +585,6 @@
                         
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
-                            
 //                            if(!opicker.pickerTargetNumerator)
 //                            {
                                 [toolHost showWheel];
@@ -609,6 +608,7 @@
                         if(showingFractionPickers)
                         {
                             [pNumerator hideNumberWheel];
+                            [pDivLine setVisible:NO];
                             [pDenominator hideNumberWheel];
                             showingFractionPickers=NO;
                         }
@@ -652,9 +652,10 @@
     }
     else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,360), location)){
 
-            [pNumerator hideNumberWheel];
-            [pDenominator hideNumberWheel];
-            showingFractionPickers=NO;
+        [pNumerator hideNumberWheel];
+        [pDivLine setVisible:NO];
+        [pDenominator hideNumberWheel];
+        showingFractionPickers=NO;
     }
 }
 

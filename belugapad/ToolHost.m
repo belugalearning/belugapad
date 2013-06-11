@@ -493,6 +493,11 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - add layers
 
+-(CCLayer*)returnBtxeLayer
+{
+    return btxeDescLayer;
+}
+
 -(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
 {
     toolNoScaleLayer=noScaleLayer;
@@ -1042,7 +1047,7 @@ static float kTimeToHintToolTray=0.0f;
 //    [metaArrow setTag:3];
     [metaArrow setOpacity:0];
 //    [metaArrow setVisible:YES];
-    [problemDefLayer addChild:metaArrow z:10];
+    [btxeDescLayer addChild:metaArrow z:100];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {
@@ -1655,7 +1660,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
-//            [row rowVisible:NO];
+            [row rowVisible:NO];
         }
     
         if(row)[row release];
@@ -2224,10 +2229,10 @@ static float kTimeToHintToolTray=0.0f;
     [self setReadProblemPosWithScale:1.0f];
 
     
-    [backgroundLayer addChild:readProblemDesc];
-    [backgroundLayer addChild:qTrayTop];
-    [backgroundLayer addChild:qTrayBot];
-    [backgroundLayer addChild:qTrayMid];
+    [btxeDescLayer addChild:readProblemDesc z:-1];
+    [btxeDescLayer addChild:qTrayTop z:-1];
+    [btxeDescLayer addChild:qTrayBot z:-1];
+    [btxeDescLayer addChild:qTrayMid z:-1];
     
     descGw.Blackboard.inProblemSetup=NO;
     
@@ -2310,7 +2315,7 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
 //        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
             [self removeAllTrays];
             return;
         }
@@ -2356,7 +2361,8 @@ static float kTimeToHintToolTray=0.0f;
     [followParticle setPosition:location];
     [followParticle setVisible:YES];
     
-    [currentTool ccTouchesBegan:touches withEvent:event];
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesBegan:touches withEvent:event];
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -2417,7 +2423,9 @@ static float kTimeToHintToolTray=0.0f;
         [followParticle setPosition:location];
         [explodeParticle setPosition:location];
     }
-    [currentTool ccTouchesMoved:touches withEvent:event];
+    
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesMoved:touches withEvent:event];
 
     
 
@@ -2603,7 +2611,9 @@ static float kTimeToHintToolTray=0.0f;
         hasMovedNumber=NO;
     }
     
-    [currentTool ccTouchesEnded:touches withEvent:event];
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesEnded:touches withEvent:event];
+    
     isTouching=NO;
 }
 

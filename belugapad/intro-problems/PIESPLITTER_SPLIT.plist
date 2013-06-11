@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_slice&quot;/&gt;&lt;b:t&gt;into each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_bubble&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt; </string>
+	<string>&lt;b:t&gt;Drag one&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_slice&quot;/&gt;&lt;b:t&gt;into each&lt;/b:t&gt;&lt;b:oi tag=&quot;30_PS_bubble_s&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt; </string>
 	<key>TOOL_KEY</key>
 	<string>PieSplitter</string>
 	<key>EVAL_MODE</key>
@@ -22,5 +22,7 @@
 	<integer>0</integer>
 	<key>NUMBER_CAGED_SQUARES</key>
 	<integer>0</integer>
+	<key>SHOW_NEW_PIES_CONTAINERS</key>
+	<false/>
 </dict>
 </plist>

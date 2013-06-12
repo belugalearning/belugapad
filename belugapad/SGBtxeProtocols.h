@@ -170,6 +170,7 @@
 @property (retain) NSNumber *pickerTargetDenominator;
 @property (retain) NSNumber *pickerTargetFractionWhole;
 @property BOOL showPickerFractionWhole;
+@property BOOL pickerFractionWholeTwoColumns;
 @property BOOL disallowEquivFractions;
 
 @end

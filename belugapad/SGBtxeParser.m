@@ -271,7 +271,14 @@ const NSString *matchNumbers=@"0123456789";
             // entry if showAsMixedFraction && showPickerFractionWhole -- it's just rendering what the user
             // selected on the wheels
             on.showAsMixedFraction=(on.showPickerFractionWhole);
-
+            
+            on.pickerFractionWholeTwoColumns=NO;
+            if(on.showPickerFractionWhole && on.pickerTargetFractionWhole)
+                if ([on.pickerTargetFractionWhole intValue] > 9) on.pickerFractionWholeTwoColumns=YES;
+            
+            if (!on.showPickerFractionWhole && !on.disallowEquivFractions && [on.pickerTargetNumerator intValue] > [on.pickerTargetDenominator intValue])
+                if([on.pickerTargetNumerator intValue] / [on.pickerTargetDenominator intValue] > 9)
+                   on.pickerFractionWholeTwoColumns=YES;
         }
         
         CXMLNode *hidden=[element attributeForName:@"hidden"];

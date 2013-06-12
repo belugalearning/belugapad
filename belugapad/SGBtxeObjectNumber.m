@@ -45,7 +45,7 @@
 @synthesize pickerTargetFractionWhole;
 @synthesize disallowEquivFractions;
 
-@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerTargetFractionWhole, showPickerFractionWhole, pickerFractionWholeTwoColumns, disallowEquivFractions;
+@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;

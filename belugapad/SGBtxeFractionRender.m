@@ -56,7 +56,7 @@
     int modtop=[ParentGO.numerator intValue];
     int whole=0;
     
-    if(ParentGO.showAsMixedFraction)
+    if(ParentGO.showAsMixedFraction && ParentGO.numerator && ParentGO.denominator)
     {
         whole=(int)([ParentGO.numerator integerValue] / [ParentGO.denominator integerValue]);
         modtop=[ParentGO.numerator integerValue] - (whole * [ParentGO.denominator integerValue]);

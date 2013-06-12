@@ -74,6 +74,7 @@
     
     NumberWheel *pNumerator;
     NumberWheel *pDenominator;
+    NumberWheel *pWhole;
     CCSprite *pDivLine;
     
     

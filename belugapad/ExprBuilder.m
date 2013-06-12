@@ -565,6 +565,19 @@
                                     [pDenominator showNumberWheel];
                                 }
                                 
+                                if(!pWhole && opicker.showPickerFractionWhole)
+                                {
+                                    pWhole=[[NumberWheel alloc]init];
+                                    pWhole.RenderLayer=renderLayer;
+                                    pWhole.Components=1;
+                                    pWhole.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pWhole.Components];
+                                    pWhole.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pWhole.Components];
+                                    pWhole.Position=ccp(pNumerator.Position.x-(pNumerator.Components*pNumerator.ComponentWidth)-((pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-105);
+                                    pWhole.fractionPart=@"w";
+                                    pWhole.AssociatedObject=opicker;
+                                    [pWhole setupNumberWheel];
+                                }
+                                
                             }
                             else
                             {
@@ -739,7 +752,6 @@
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sentence_builder_object_fly_back.wav")];
             else
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sequencing_card_flying_back_(on_replacement).wav")];
-            
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_EMPTY_SPACE withAdditionalData:nil];
         }
         else

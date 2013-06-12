@@ -22,7 +22,7 @@
 #import "BATQuery.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
-
+#import "SimpleAudioEngine.h"
 static float kTimeToPieShake=7.0f;
 
 @interface PieSplitter()
@@ -302,6 +302,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)tintThroughAllSlices
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_equal.wav")];
     for(DWPieSplitterContainerGameObject *c in activeCon)
     {
         for(DWPieSplitterSliceGameObject *s in c.mySlices)
@@ -651,8 +652,9 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceContainers
 {
+    if([activeCon count]>5)return;
     //int maxPXtoMove=100;
-    int stepper=20;
+    int stepper=10;
     BOOL isLess=NO;
 
     
@@ -763,6 +765,8 @@ static float kTimeToPieShake=7.0f;
     
     if(gw.Blackboard.PickupObject)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_pickup.wav")];
+        
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp){
 //            [self addGhostPie];
             [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_PIE withAdditionalData:nil];
@@ -915,6 +919,7 @@ static float kTimeToPieShake=7.0f;
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_SQUARE withAdditionalData:nil];
                 [cont handleMessage:kDWswitchParentToMovementLayer];
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_adding_object.wav")];
                 // if this object isn't in the array, add it
                 if(![activeCon containsObject:cont])[activeCon addObject:cont];
                 
@@ -966,6 +971,8 @@ static float kTimeToPieShake=7.0f;
                 // if this object isn't in the array, add it
                 [pie.mySprite setScale:1.0f];
                 
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_adding_object.wav")];
+                
                 if(![activePie containsObject:pie])
                     [activePie addObject:pie];
             }
@@ -1009,6 +1016,7 @@ static float kTimeToPieShake=7.0f;
                     [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
                     [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
                     hasASliceInCont=YES;
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_dropping_slice.wav")];
                 }
                 else if(!gw.Blackboard.DropObject)
                 {
@@ -1028,7 +1036,7 @@ static float kTimeToPieShake=7.0f;
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
                 [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
                 hasASliceInCont=YES;
-                
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_dropping_slice.wav")];
             }
             else {
 

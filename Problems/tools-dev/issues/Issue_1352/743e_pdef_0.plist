@@ -7,7 +7,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>How many {$x} s make {3*$x}?</string>
+		<string>How many {$x}s make {3*$x}?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>0</integer>
 		<key>PICKER_ORIGIN_X</key>

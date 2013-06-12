@@ -169,7 +169,7 @@
 {
     if(ParentGO.pickerTargetNumerator && !ParentGO.numerator) return @"?";
     
-    else if (ParentGO.pickerTargetNumerator) ParentGO.pickedFractionWholeExplicit ? [NSString stringWithFormat:@"%d", [ParentGO.pickedFractionWholeExplicit intValue]] : @"0";
+    else if (ParentGO.pickerTargetNumerator) return ParentGO.pickedFractionWholeExplicit ? [NSString stringWithFormat:@"%d", [ParentGO.pickedFractionWholeExplicit intValue]] : @"";
     
     return [NSString stringWithFormat:@"%d", whole];
 }

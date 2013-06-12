@@ -302,6 +302,11 @@ typedef enum  {
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;
     
+    if ([usersService shouldForceDisplayNews])
+    {
+        [self showNewsPanel];
+    }
+    
     if(playTransitionAudio)
        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_map_progress_island_state_change.wav")];
     playTransitionAudio=NO;

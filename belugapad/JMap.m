@@ -290,8 +290,6 @@ typedef enum  {
     [self buildSearchIndex];
     
     [self addFilterButton];
-    [self addNewsButton];
-    ac.belugaNewsViewController.delegate = self;
     
     //show filter button
     filterButtonSprite.visible=(filterTotalFlagCount>0);
@@ -302,9 +300,15 @@ typedef enum  {
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;
     
-    if ([usersService shouldForceDisplayNews])
+    if ([[usersService currentUserDateOrderedNewsItems] count])
     {
-        [self showNewsPanel];
+        [self addNewsButton];
+        ac.belugaNewsViewController.delegate = self;
+        
+        if ([usersService shouldForceDisplayNews])
+        {
+            [self showNewsPanel];
+        }
     }
     
     if(playTransitionAudio)

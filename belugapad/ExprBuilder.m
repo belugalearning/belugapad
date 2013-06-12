@@ -810,12 +810,41 @@
                     {
                         if(!io.numerator || !io.denominator) return NO;
                         
-                        if([io.pickerTargetNumerator intValue] != [io.numerator intValue] ||
-                           [io.pickerTargetDenominator intValue] != [io.denominator intValue])
+                        int tnum=[io.pickerTargetNumerator intValue];
+                        int tdenom=[io.pickerTargetDenominator intValue];
+                        int tfwhole=io.pickerTargetFractionWhole ? [io.pickerTargetFractionWhole intValue] : 0;
+                        int pnum=[io.numerator intValue];
+                        int pdenom=[io.denominator intValue];
+                        int pfwhole=io.pickedFractionWholeExplicit ? [io.pickedFractionWholeExplicit intValue] : 0;
+                        
+                        //need to get explicit picker whole part of fraction -- i.e. what the user selected
+                        
+                        if(pnum > pdenom && pfwhole>0)
                         {
-                            //as per int comparison, first non-matchin element fails evaluation
+                            //do not allow mixed mixed fractions
                             return NO;
                         }
+                        
+                        if(io.disallowEquivFractions)
+                        {
+                            if(tnum!=pnum || tdenom != pdenom || tfwhole!=pfwhole)
+                            {
+                                //as per int comparison, first non-matching element fails evaluation
+                                return NO;
+                            }
+                        }
+                        
+                        else //eval as equivlient
+                        {
+                            int anum = pnum + pfwhole * pdenom;
+                            int cdenom=pdenom*tdenom;
+                            int cpnum=anum*tdenom;
+                            int ctnum=tnum*pdenom;
+                            
+                            //just look at (common) numberator comparison for equivilence
+                            if(cpnum!=ctnum) return NO;
+                        }
+                        
                     }
                     else if(io.targetNumber != [io.value floatValue])
                     {

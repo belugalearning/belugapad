@@ -202,10 +202,15 @@
             
             if(theirVal==0)theirVal=1;
             
-            value=(float)[self returnPickerNumber]/[fractionWheel returnPickerNumber];
+            value=(float)[self returnPickerNumber]/theirVal;
             ((id<Value>)self.AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
         ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:[self returnPickerNumber]];
+        
+        if([fractionWheel returnPickerNumber]>0)
+            ((id<Value>)self.AssociatedObject).denominator=[NSNumber numberWithInteger:[fractionWheel returnPickerNumber]];
+        else 
+            ((id<Value>)self.AssociatedObject).denominator=[NSNumber numberWithInteger:1];
 
         [((SGBtxeObjectNumber*)self.AssociatedObject) updateDraw];
  
@@ -230,6 +235,12 @@
         }
         
         ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithFloat:[self returnPickerNumber]];
+        
+        if([fractionWheel returnPickerNumber]>0)
+            ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:[fractionWheel returnPickerNumber]];
+        else
+            ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:1];
+        
         [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
 
 //        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);

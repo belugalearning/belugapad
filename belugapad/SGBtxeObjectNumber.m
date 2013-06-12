@@ -42,7 +42,7 @@
 @synthesize rowWidth;
 @synthesize disableTrailingPadding;
 
-@synthesize numerator, denominator, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction;
+@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerTargetFractionWhole, showPickerFractionWhole, pickerFractionWholeTwoColumns, disallowEquivFractions;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;

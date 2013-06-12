@@ -111,6 +111,12 @@
     if(self.pickerTargetDenominator) dupe.pickerTargetDenominator=[[self.pickerTargetDenominator copy] autorelease];
     dupe.showAsMixedFraction=self.showAsMixedFraction;
     
+    if(self.pickedFractionWholeExplicit) dupe.pickedFractionWholeExplicit=[[self.pickedFractionWholeExplicit copy] autorelease];
+    if(self.pickerTargetFractionWhole) dupe.pickerTargetFractionWhole=[[self.pickerTargetFractionWhole copy] autorelease];
+    dupe.showPickerFractionWhole=self.showPickerFractionWhole;
+    dupe.pickerFractionWholeTwoColumns=self.pickerFractionWholeTwoColumns;
+    dupe.disallowEquivFractions=self.disallowEquivFractions;
+    
     return (id<MovingInteractive>)dupe;
 }
 

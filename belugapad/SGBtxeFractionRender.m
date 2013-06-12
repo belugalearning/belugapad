@@ -54,7 +54,7 @@
 -(void)setupDraw
 {
     int modtop=[ParentGO.numerator intValue];
-    int whole=0;
+    whole=0;
     
     if(ParentGO.showAsMixedFraction && ParentGO.numerator && ParentGO.denominator)
     {
@@ -107,7 +107,7 @@
     
     if(ParentGO.showAsMixedFraction)
     {
-        self.intLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", whole] fontName:fontName fontSize:fontSize * 1.6f];
+        self.intLabel=[CCLabelTTF labelWithString:[self getWholeString] fontName:fontName fontSize:fontSize * 1.6f];
         [self.label addChild:self.intLabel];
         
         float leftw=self.intLabel.contentSize.width *1.4f;
@@ -163,6 +163,15 @@
     l0.opacity=178;
     l0.position=ccp(oflabel.position.x, oflabel.position.y-0.5f);
     return l0;
+}
+
+-(NSString*) getWholeString
+{
+    if(ParentGO.pickerTargetNumerator && !ParentGO.numerator) return @"?";
+    
+    else if (ParentGO.pickerTargetNumerator) ParentGO.pickedFractionWholeExplicit ? [NSString stringWithFormat:@"%d", [ParentGO.pickedFractionWholeExplicit intValue]] : @"0";
+    
+    return [NSString stringWithFormat:@"%d", whole];
 }
 
 -(NSString*) getNumString

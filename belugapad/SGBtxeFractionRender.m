@@ -179,7 +179,7 @@
     int modtop=[ParentGO.numerator intValue];
     int denom=[ParentGO.denominator intValue];
     
-    if(ParentGO.showAsMixedFraction && modtop>denom)
+    if(ParentGO.showAsMixedFraction && !ParentGO.pickerTargetNumerator && modtop>denom)
     {
         modtop=modtop%denom;
     }

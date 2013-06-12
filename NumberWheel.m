@@ -197,10 +197,20 @@
         float value=0;
         
         if(fractionWheel.StrOutputValue){
-            value=(float)[self returnPickerNumber]/[fractionWheel returnPickerNumber];
+            
+            int theirVal=[fractionWheel returnPickerNumber];
+            
+            if(theirVal==0)theirVal=1;
+            
+            value=(float)[self returnPickerNumber]/theirVal;
             ((id<Value>)self.AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
         ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:[self returnPickerNumber]];
+        
+        if([fractionWheel returnPickerNumber]>0)
+            ((id<Value>)self.AssociatedObject).denominator=[NSNumber numberWithInteger:[fractionWheel returnPickerNumber]];
+        else 
+            ((id<Value>)self.AssociatedObject).denominator=[NSNumber numberWithInteger:1];
 
         [((SGBtxeObjectNumber*)self.AssociatedObject) updateDraw];
  
@@ -214,14 +224,23 @@
         float value=0;
         
         if(fractionWheel.StrOutputValue){
-            value=(float)[otherWheel floatValue]/[self returnPickerNumber];
             
-            if(value==0)value=1;
+            int myVal=[self returnPickerNumber];
+            
+            if(myVal==0)myVal=1;
+            
+            value=(float)[otherWheel floatValue]/myVal;
             
             ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
         
         ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithFloat:[self returnPickerNumber]];
+        
+        if([fractionWheel returnPickerNumber]>0)
+            ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:[fractionWheel returnPickerNumber]];
+        else
+            ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:1];
+        
         [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
 
 //        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);
@@ -324,6 +343,44 @@
     }
     
     return fullNum;
+}
+
+-(void)updatePickerNumber:(NSString*)thisNumber
+{
+    int thisComponent=[self numberOfComponentsInPickerView:self.pickerView]-1;
+    int numberOfComponents=thisComponent;
+    
+    for(int i=[thisNumber length]-1;i>=0;i--)
+    {
+        NSString *thisStr=[NSString stringWithFormat:@"%c",[thisNumber characterAtIndex:i]];
+        int thisInt=[thisStr intValue];
+        
+        if([thisStr isEqualToString:@"."])
+            thisInt=10;
+        else if([thisStr isEqualToString:@"-"])
+            thisInt=11;
+        
+        [self.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
+        
+        
+        [self.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
+        thisComponent--;
+    }
+    
+    if([thisNumber length]<numberOfComponents)
+    {
+        int untouchedComponents=0;
+        untouchedComponents=numberOfComponents-[thisNumber length];
+        
+        
+        for(int i=untouchedComponents;i>=0;i--)
+        {
+            [self.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:0]];
+            [self.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:0];
+            thisComponent--;
+        }
+    }
+    
 }
 
 -(void) dealloc

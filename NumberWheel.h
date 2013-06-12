@@ -44,4 +44,5 @@
 -(void)showNumberWheel;
 -(void)hideNumberWheel;
 -(BOOL)numberWheelShowing;
+-(void)updatePickerNumber:(NSString*)thisNumber;
 @end

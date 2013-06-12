@@ -208,6 +208,9 @@
     
     [self.denomLabel setString:[self getDenomString]];
     [self.denomLabel0 setString:[self getDenomString]];
+    
+    [self.intLabel setString:[self getWholeString]];
+    [self.intLabel0 setString:[self getWholeString]];
 }
 
 -(void)tagMyChildrenForIntro

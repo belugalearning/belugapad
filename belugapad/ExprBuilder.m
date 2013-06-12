@@ -299,7 +299,7 @@
         {
             //this ivar is released in dealloc, but only if set
             //should really be property based -- this assumes this is the only place it's alloc'd
-            ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+            ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:[toolHost returnBtxeLayer]];
             ncardRow.maxChildrenPerLine=10;
             
             if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
@@ -546,6 +546,7 @@
                                     pNumerator.AssociatedObject=opicker;
 //                                    [pNumerator setPosition:ccp(pNumerator.position.x-lx,pNumerator.position.y)];
                                     [pNumerator showNumberWheel];
+                                    [pNumerator updatePickerNumber:[opicker.numerator stringValue]];
                                     [pDivLine setVisible:YES];
                                 }
                                 if(!pDenominator){
@@ -566,6 +567,7 @@
                                     pDenominator.AssociatedObject=opicker;
 //                                    [pDenominator setPosition:ccp(pDenominator.position.x-lx,pDenominator.position.y)];
                                     [pDenominator showNumberWheel];
+                                    [pDenominator updatePickerNumber:[opicker.denominator stringValue]];
                                 }
                                 
                                 if(!pWhole && opicker.showPickerFractionWhole)
@@ -590,6 +592,7 @@
                                 else if(pWhole && opicker.showPickerFractionWhole)
                                 {
                                     [pWhole showNumberWheel];
+                                    [pWhole updatePickerNumber:[opicker.pickedFractionWholeExplicit stringValue]];
                                 }
                                 
                             }

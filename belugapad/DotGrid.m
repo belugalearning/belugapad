@@ -1377,8 +1377,8 @@
                 DWNWheelGameObject *w=[[DWNWheelGameObject alloc] autorelease];
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
-                w.RenderLayer=renderLayer;
-                w.Position=ccp(lx-140,(ly-280)-185*[numberWheels count]);
+                w.RenderLayer=anchorLayer;
+                w.Position=ccp(lx-140,(ly-300)-185*[numberWheels count]);
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
@@ -1387,12 +1387,18 @@
                 w.CountBubbleRenderLayer=anchorLayer;
                 
                 if(s.ShapeX>0 && s.ShapeY>0){
-                    w.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g x %g", s.ShapeX, s.ShapeY] fontName:SOURCE fontSize:20.0f];
+                    w.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g x %g", s.ShapeX, s.ShapeY] fontName:CHANGO fontSize:20.0f];
+                    [w.Label setColor:ccBLACK];
+                    [w.Label setAnchorPoint:ccp(0,0.5)];
+                    
+                    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/Number_Wheel_Label.png")];
+                    [s setPosition:ccp(35,10)];
+                    [w.Label addChild:s z:-1];
                     if(gw.Blackboard.inProblemSetup){
                         [w.Label setTag:2];
                         [w.Label setOpacity:0];
                     }
-                    [w.RenderLayer addChild:w.Label];
+                    [w.RenderLayer addChild:w.Label z:20];
                 }
                 [w handleMessage:kDWsetupStuff];
                 [w handleMessage:kDWupdateLabels];
@@ -1421,13 +1427,19 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     
-    w.RenderLayer=renderLayer;
+    w.RenderLayer=anchorLayer;
     w.Components=numberWheelComponents;
     w.Position=ccp(lx-140,(ly-280)-200*[numberWheels count]);
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
     w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasCountBubble=NO;
-    w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
+    w.Label=[CCLabelTTF labelWithString:@"Total" fontName:CHANGO fontSize:20.0f];
+    [w.Label setColor:ccBLACK];
+    [w.Label setAnchorPoint:ccp(0,0.5)];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/Number_Wheel_Label.png")];
+    [s setPosition:ccp(35,10)];
+    [w.Label addChild:s z:-1];
     [w.RenderLayer addChild:w.Label];
     [w handleMessage:kDWsetupStuff];
     [w handleMessage:kDWupdateLabels];

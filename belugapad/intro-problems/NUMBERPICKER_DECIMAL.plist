@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>&lt;b:t&gt;Enter 1.5 by scrolling the first wheel to&lt;/b:t&gt;&lt;b:ot&gt;1&lt;/b:ot&gt;&lt;b:t&gt;, second wheel to&lt;/b:t&gt;&lt;b:ot&gt;.&lt;/b:ot&gt;&lt;b:t&gt;and third wheel to&lt;/b:t&gt;&lt;b:ot&gt;5&lt;/b:ot&gt;&lt;b:t&gt;.&lt;/b:t&gt;  </string>
+		<key>PICKER_LAYOUT</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<real>1.5</real>
+	</dict>
+</dict>
+</plist>

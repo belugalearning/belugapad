@@ -261,6 +261,7 @@
         if(i==0)
         {
             descRow=row;
+            row.renderLayer=[toolHost returnBtxeLayer];
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;
@@ -528,12 +529,12 @@
                                     pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
                                     pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
 //                                    pNumerator.Position=ccp(870,640);
-                                    pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),440);                                    pNumerator.fractionPart=@"n";
+                                    pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),430);                                    pNumerator.fractionPart=@"n";
                                     pNumerator.AssociatedObject=opicker;
                                     [pNumerator setupNumberWheel];
                                     
-                                    pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/divline.png")];
-                                    [pDivLine setPosition:ccp(pNumerator.Position.x,cy-28)];
+                                    pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/NW_fractionsLine.png")];
+                                    [pDivLine setPosition:ccp(pNumerator.Position.x,cy-58)];
                                     [renderLayer addChild:pDivLine];
                                     
                                 }
@@ -550,7 +551,7 @@
                                     pDenominator.Components=numberPickerColumns;
                                     pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
                                     pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
-                                    pDenominator.Position=ccp(lx-((pDenominator.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-170);
+                                    pDenominator.Position=ccp(lx-((pDenominator.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-210);
                                     pDenominator.fractionPart=@"d";
                                     pDenominator.AssociatedObject=opicker;
                                     pNumerator.fractionWheel=pDenominator;
@@ -738,7 +739,6 @@
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sentence_builder_object_fly_back.wav")];
             else
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sequencing_card_flying_back_(on_replacement).wav")];
-            
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_EMPTY_SPACE withAdditionalData:nil];
         }
         else

@@ -79,7 +79,7 @@
         [toolHost addToolForeLayer:self.ForeLayer];
         
         renderLayer = [[CCLayer alloc] init];
-        [self.ForeLayer addChild:renderLayer];
+        [self.ForeLayer addChild:renderLayer z:2];
 
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
         gw.Blackboard.inProblemSetup = YES;
@@ -261,7 +261,7 @@
         if(i==0)
         {
             descRow=row;
-            row.renderLayer=[toolHost returnBtxeLayer];
+            descRow.renderLayer=[toolHost returnBtxeLayer];
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;
@@ -474,6 +474,9 @@
 
     for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
     {
+
+        if(pNumerator && [pNumerator numberWheelShowing])break;
+        
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             if(!o.interactive)continue;
@@ -567,15 +570,26 @@
                                 
                                 if(!pWhole && opicker.showPickerFractionWhole)
                                 {
+                                    int columns=1;
+                                    
+                                    if(opicker.pickerFractionWholeTwoColumns)
+                                        columns=2;
+                                    
                                     pWhole=[[NumberWheel alloc]init];
                                     pWhole.RenderLayer=renderLayer;
-                                    pWhole.Components=1;
+                                    pWhole.Components=columns;
                                     pWhole.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pWhole.Components];
                                     pWhole.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pWhole.Components];
-                                    pWhole.Position=ccp(pNumerator.Position.x-(pNumerator.Components*pNumerator.ComponentWidth)-((pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-105);
+                                    pWhole.Position=ccp(pNumerator.Position.x-((pNumerator.Components*pNumerator.ComponentWidth)/2)-((pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-105);
                                     pWhole.fractionPart=@"w";
                                     pWhole.AssociatedObject=opicker;
+                                    pWhole.fractionWheelD=pDenominator;
+                                    pWhole.fractionWheelN=pNumerator;
                                     [pWhole setupNumberWheel];
+                                }
+                                else if(pWhole && opicker.showPickerFractionWhole)
+                                {
+                                    [pWhole showNumberWheel];
                                 }
                                 
                             }
@@ -585,6 +599,10 @@
                                 [pNumerator hideNumberWheel];
                                 [pDivLine setVisible:NO];
                                 [pDenominator hideNumberWheel];
+                                
+                                if(pWhole)
+                                    [pWhole hideNumberWheel];
+                                
                                 NSLog(@"hide fraction picker");                               
                             }
                             showingFractionPickers=!showingFractionPickers;
@@ -623,6 +641,8 @@
                             [pNumerator hideNumberWheel];
                             [pDivLine setVisible:NO];
                             [pDenominator hideNumberWheel];
+                            if(pWhole)
+                                [pWhole hideNumberWheel];
                             showingFractionPickers=NO;
                         }
                     }
@@ -641,9 +661,17 @@
     float wheelXStartPos=0.0f;
     float wheelYStartPos=cy;
     
-    if(showingFractionPickers){
+    if(showingFractionPickers&&!pWhole){
         wheelXStartPos=870-(numberWheelWidth/2);
         wheelYStartPos=180.0f;
+    }
+    else if(showingFractionPickers&&pWhole)
+    {
+        wheelXStartPos=870-(numberWheelWidth/2);
+        wheelXStartPos-=(pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1);
+        wheelXStartPos-=pWhole.ComponentSpacing*2;
+        wheelYStartPos=180.0f;
+        numberWheelWidth=lx-wheelXStartPos;
     }
     else{
         wheelXStartPos=cx-(numberWheelWidth/2);
@@ -668,6 +696,8 @@
         [pNumerator hideNumberWheel];
         [pDivLine setVisible:NO];
         [pDenominator hideNumberWheel];
+        if(pWhole)
+            [pWhole hideNumberWheel];
         showingFractionPickers=NO;
     }
 }

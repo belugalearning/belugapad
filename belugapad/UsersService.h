@@ -70,4 +70,8 @@ typedef enum {
 -(void)purgePotentialFeatureKeys;
 -(NSString*)shouldInsertWhatFeatureKey;
 
+-(NSArray*)currentUserDateOrderedNewsItems;
+-(void)recordNewsItemView:(NSString*)itemId;
+-(BOOL)shouldForceDisplayNews;
+
 @end

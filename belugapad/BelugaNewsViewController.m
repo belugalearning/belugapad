@@ -7,13 +7,19 @@
 //
 
 #import "BelugaNewsViewController.h"
-#import "UIView+UIView_DragLogPosition.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
 
 @interface BelugaNewsViewController()
 {
     UIWebView *webView;
     UIButton *prev;
     UIButton *next;
+    
+    NSArray *newsItems;
+    int currentItemIndex;
+    
+    UsersService *usersService;
 }
 @end
 
@@ -56,13 +62,45 @@
     webView.opaque = NO;
     [webView.scrollView setBounces:NO];
     [self.view addSubview:webView];
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    usersService = ac.usersService;
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewDidAppear:(BOOL)animated
 {
-    [webView loadHTMLString:@"<html><head><style>body { color:#FFF; }</style></head><body><h1>Header</h1><p>para</p></body></html>" baseURL:nil];
-    prev.enabled = NO;
-    next.enabled = NO;
+    if (newsItems) [newsItems release];
+    newsItems = [[usersService currentUserDateOrderedNewsItems] copy];
+    
+    currentItemIndex = [newsItems count] - 1;
+    if (currentItemIndex < 1)
+    {
+        [self closePanel:nil]; // no news items to display!
+    }
+    else
+    {
+        [self showItemAtIndex:currentItemIndex];
+    }
+}
+
+-(void)showItemAtIndex:(int)ix
+{
+    prev.enabled = ix > 0;
+    next.enabled = ix < [newsItems count] - 1;
+    
+    NSDictionary *item = [newsItems objectAtIndex:ix];
+    [webView loadHTMLString:item[@"html"] baseURL:nil];
+    [usersService recordNewsItemView:item[@"id"]];
+}
+
+-(void)prev:(id)button
+{
+    [self showItemAtIndex:--currentItemIndex];
+}
+
+-(void)next:(id)button
+{
+    [self showItemAtIndex:++currentItemIndex];
 }
 
 -(void)closePanel:(id)button
@@ -71,19 +109,14 @@
     if (self.delegate) [self.delegate newPanelWasClosed];
 }
 
--(void)prev:(id)button
-{
-    
-}
-
--(void)next:(id)button
-{
-    
-}
-
 -(void)dealloc
 {
     self.delegate = nil;
+    if (newsItems)
+    {
+        [newsItems release];
+        newsItems = nil;
+    }
     [super dealloc];
 }
 

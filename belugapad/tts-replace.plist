@@ -38,7 +38,11 @@
 	<string>guuble</string>
 	<key>?</key>
 	<string>.</string>
-	<key>20</key>
+	<key>20 </key>
+	<string>twentty</string>
+	<key>20,</key>
+	<string>twentty</string>
+	<key>20.</key>
 	<string>twentty</string>
 	<key>goo</key>
 	<string>goo. </string>

@@ -6,6 +6,7 @@
 @interface SGBtxeFractionRender : SGComponent <FadeIn>
 {
     SGBtxeObjectNumber *ParentGO;
+    int whole;
 }
 
 @property (retain) CCNode *label;

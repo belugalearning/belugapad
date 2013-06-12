@@ -34,6 +34,9 @@
 @synthesize AssociatedObject;
 @synthesize fractionPart;
 @synthesize fractionWheel;
+@synthesize fractionWheelD;
+@synthesize fractionWheelN;
+@synthesize wholeWheel;
 
 -(NumberWheel *)init //WithRenderlayer:(CCLayer*)renderLayer
 {
@@ -61,6 +64,11 @@
     self.pickerView.Locked=true;
 }
 
+-(BOOL)numberWheelShowing
+{
+    return self.pickerView.visible;
+}
+
 -(void)setupNumberWheel
 {
     if(!self.pickerViewSelection)self.pickerViewSelection=[[[NSMutableArray alloc]init] autorelease];
@@ -81,7 +89,7 @@
         [self.pickerViewSelection addObject:[NSNumber numberWithInt:0]];
     
     
-    [self.RenderLayer addChild:pickerView z:20];
+    [self.RenderLayer addChild:pickerView z:1000];
     
 }
 
@@ -185,16 +193,7 @@
     [self.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
     
     if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"n"]){
-        
-        
-//        NSString *otherWheel=@"";
-//        
-//        
-//        if(!fractionWheel.StrOutputValue)
-//            otherWheel=@"?";
-//        else
-//            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
-        
+
         float value=0;
         
         if(fractionWheel.StrOutputValue){
@@ -204,19 +203,14 @@
         ((id<Value>)self.AssociatedObject).numerator=[NSNumber numberWithInteger:[self returnPickerNumber]];
 
         [((SGBtxeObjectNumber*)self.AssociatedObject) updateDraw];
-        
-//        NSLog(@"%d/%@ /// %@", [self returnPickerNumber], otherWheel, ((id<Text>)AssociatedObject).text);
+ 
         
     }
     else if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"d"])
     {
+
         NSString *otherWheel=@"";
-        
-//        if(!fractionWheel.StrOutputValue)
-//            otherWheel=@"?";
-//        else
-//            otherWheel=[NSString stringWithFormat:@"%d",[fractionWheel returnPickerNumber]];
-//        
+          
         float value=0;
         
         if(fractionWheel.StrOutputValue){
@@ -226,7 +220,23 @@
         
         ((id<Value>)AssociatedObject).denominator=[NSNumber numberWithFloat:[self returnPickerNumber]];
         [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
+
 //        NSLog(@"%@/%d /// %@", otherWheel, [self returnPickerNumber], ((id<Text>)AssociatedObject).text);
+    }
+    else if([AssociatedObject conformsToProtocol:@protocol(NumberPicker)] && [fractionPart isEqualToString:@"w"])
+    {
+        NSString *nWheel=[fractionWheelN returnPickerNumberString];
+        NSString *dWheel=[fractionWheelD returnPickerNumberString];
+        NSString *thisWheel=[self returnPickerNumberString];
+        
+        float value=0;
+        
+        value=(float)([thisWheel floatValue]*[dWheel floatValue]+[nWheel floatValue])/[dWheel floatValue];
+        ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
+        
+
+        ((id<Value>)AssociatedObject).pickedFractionWholeExplicit=[NSNumber numberWithFloat:[self returnPickerNumber]];
+            [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
     }
     
     self.OutputValue=[self returnPickerNumber];

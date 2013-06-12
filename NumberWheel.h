@@ -34,10 +34,14 @@
 @property (retain) id AssociatedObject;
 @property (retain) NSString *fractionPart;
 @property (retain) NumberWheel *fractionWheel;
+@property (retain) NumberWheel *wholeWheel;
+@property (retain) NumberWheel *fractionWheelN;
+@property (retain) NumberWheel *fractionWheelD;
 
 
 -(NumberWheel *)init; //WithRenderLayer:(CCLayer*)renderLayer;
 -(void)setupNumberWheel;
 -(void)showNumberWheel;
 -(void)hideNumberWheel;
+-(BOOL)numberWheelShowing;
 @end

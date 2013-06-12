@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>NUMBER_CARD_ROW_MIN</key>
+	<integer>1</integer>
+	<key>NUMBER_CARD_ROW_MAX</key>
+	<integer>10</integer>
+	<key>NUMBER_CARD_INTERVAL</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;make half -- no equivs&lt;/b:t&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; disallowEquivFractions=&quot;yes&quot; pickerTargetNumerator=&quot;1&quot; pickerTargetDenominator=&quot;2&quot; /&gt;</string>
+	</array>
+</dict>
+</plist>

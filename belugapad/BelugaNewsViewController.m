@@ -62,6 +62,7 @@
     webView.opaque = NO;
     [webView.scrollView setBounces:NO];
     [self.view addSubview:webView];
+    webView.delegate = self;
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     usersService = ac.usersService;
@@ -107,6 +108,20 @@
 {
     [self.view removeFromSuperview];
     if (self.delegate) [self.delegate newPanelWasClosed];
+}
+
+
+-(BOOL) webView:(UIWebView*)wv
+    shouldStartLoadWithRequest:(NSURLRequest*)req
+    navigationType:(UIWebViewNavigationType)navType
+{
+    if (navType == UIWebViewNavigationTypeLinkClicked)
+    {
+        [[UIApplication sharedApplication] openURL:[req URL]];
+        return NO;
+    }
+    
+    return YES;
 }
 
 -(void)dealloc

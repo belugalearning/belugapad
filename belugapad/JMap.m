@@ -176,12 +176,12 @@ typedef enum  {
         utdHeaderLabel=[CCLabelTTF labelWithString:@""
                                           fontName:CHANGO
                                           fontSize:14.0f
-                                        dimensions:CGSizeMake(500, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
-        [utdHeaderLabel setPosition:ccp(390,742)];
+                                        dimensions:CGSizeMake(440, 42) hAlignment:UITextAlignmentCenter vAlignment:UITextAlignmentCenter];
+        [utdHeaderLabel setPosition:ccp(360,742)];
         [foreLayer addChild:utdHeaderLabel z:10];
     }
     
-    int maxStringSize=90;
+    int maxStringSize = newsButtonSprite ? 65 : 80;
     
     if([toThisString length]>maxStringSize)
     {
@@ -290,8 +290,6 @@ typedef enum  {
     [self buildSearchIndex];
     
     [self addFilterButton];
-    [self addNewsButton];
-    ac.belugaNewsViewController.delegate = self;
     
     //show filter button
     filterButtonSprite.visible=(filterTotalFlagCount>0);
@@ -302,9 +300,15 @@ typedef enum  {
     //after we've finished building everything, set the last jmap viewed user state on the app delegate
     ac.lastJmapViewUState=udata;
     
-    if ([usersService shouldForceDisplayNews])
+    if ([[usersService currentUserDateOrderedNewsItems] count])
     {
-        [self showNewsPanel];
+        [self addNewsButton];
+        ac.belugaNewsViewController.delegate = self;
+        
+        if ([usersService shouldForceDisplayNews])
+        {
+            [self showNewsPanel];
+        }
     }
     
     if(playTransitionAudio)

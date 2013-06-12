@@ -565,6 +565,19 @@
                                     [pDenominator showNumberWheel];
                                 }
                                 
+                                if(!pWhole && opicker.showPickerFractionWhole)
+                                {
+                                    pWhole=[[NumberWheel alloc]init];
+                                    pWhole.RenderLayer=renderLayer;
+                                    pWhole.Components=1;
+                                    pWhole.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pWhole.Components];
+                                    pWhole.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pWhole.Components];
+                                    pWhole.Position=ccp(pNumerator.Position.x-(pNumerator.Components*pNumerator.ComponentWidth)-((pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-105);
+                                    pWhole.fractionPart=@"w";
+                                    pWhole.AssociatedObject=opicker;
+                                    [pWhole setupNumberWheel];
+                                }
+                                
                             }
                             else
                             {

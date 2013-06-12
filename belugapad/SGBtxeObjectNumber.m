@@ -41,6 +41,9 @@
 @synthesize backgroundType;
 @synthesize rowWidth;
 @synthesize disableTrailingPadding;
+@synthesize showPickerFractionWhole;
+@synthesize pickerTargetFractionWhole;
+@synthesize disallowEquivFractions;
 
 @synthesize numerator, denominator, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction;
 

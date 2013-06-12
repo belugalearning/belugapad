@@ -245,6 +245,33 @@ const NSString *matchNumbers=@"0123456789";
         {
             on.pickerTargetNumerator=[nf numberFromString:[pickerNumerator stringValue]];
             on.pickerTargetDenominator=[nf numberFromString:[[element attributeForName:@"pickerTargetDenominator"] stringValue]];
+            
+            CXMLNode *pickerFractionWhole=[element attributeForName:@"pickerTargetFractionWhole"];
+            if(pickerFractionWhole)
+                on.pickerTargetFractionWhole=[nf numberFromString:[pickerFractionWhole stringValue]];
+            
+            //decide on fraction whole part and allow equiv
+            
+            //assume we don't need the whole picker
+            on.showPickerFractionWhole=NO;
+            
+            //only disallow equiv if user specified
+            on.disallowEquivFractions=[self boolFor:@"disallowEquivFractions" on:element];
+            
+            //if num>denom and we're allow equivs, show whole part
+            if(([on.pickerTargetNumerator intValue] > [on.pickerTargetDenominator intValue]) && !on.disallowEquivFractions)
+                on.showPickerFractionWhole=YES;
+            
+            //if pickerTargetFractionWhole specified (regardless of disallows) show fraction picker
+            if(on.pickerTargetFractionWhole)
+                on.showPickerFractionWhole =YES;
+            
+            //show the mixed fraction result if the fraction whole is visible
+            //note that the b:on will override its show logic for the whole part based on the user's
+            // entry if showAsMixedFraction && showPickerFractionWhole -- it's just rendering what the user
+            // selected on the wheels
+            on.showAsMixedFraction=(on.showPickerFractionWhole);
+
         }
         
         CXMLNode *hidden=[element attributeForName:@"hidden"];

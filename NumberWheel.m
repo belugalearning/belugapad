@@ -215,6 +215,9 @@
         
         if(fractionWheel.StrOutputValue){
             value=(float)[otherWheel floatValue]/[self returnPickerNumber];
+            
+            if(value==0)value=1;
+            
             ((id<Value>)AssociatedObject).numberValue=[NSNumber numberWithFloat:value];
         }
         
@@ -236,7 +239,7 @@
         
 
         ((id<Value>)AssociatedObject).pickedFractionWholeExplicit=[NSNumber numberWithFloat:[self returnPickerNumber]];
-            [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
+        [((SGBtxeObjectNumber*)AssociatedObject) updateDraw];
     }
     
     self.OutputValue=[self returnPickerNumber];

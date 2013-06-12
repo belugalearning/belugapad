@@ -652,8 +652,9 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceContainers
 {
+    if([activeCon count]>5)return;
     //int maxPXtoMove=100;
-    int stepper=20;
+    int stepper=10;
     BOOL isLess=NO;
 
     

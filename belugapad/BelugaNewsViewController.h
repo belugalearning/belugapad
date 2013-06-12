@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @protocol BelugaNewsDelegate;
 
-@interface BelugaNewsViewController : UIViewController
+@interface BelugaNewsViewController : UIViewController <UIWebViewDelegate>
 
 @property (retain) id<BelugaNewsDelegate> delegate;
 

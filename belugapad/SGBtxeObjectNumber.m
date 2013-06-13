@@ -211,7 +211,7 @@
 {
     if(!text || [text isEqualToString:self.lastInputText]) return;
 
-    //self.lastInputText = text;
+    self.lastInputText = text;
     
     //split text into parts if passed to this method
     

@@ -55,7 +55,13 @@ const NSString *matchNumbers=@"0123456789";
         NSString *s=[theString substringWithRange:NSMakeRange(i, 1)];
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
-            return YES;
+            //specifically fail on strings of format x:y
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9][.,:;\\/!?%][0-9]" options:NSRegularExpressionCaseInsensitive error:nil];
+            int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
+            
+            return(c==0);
+            
+//            return YES;
         }
     }
     return NO;
@@ -78,9 +84,16 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
                 
-                NSString *sepEndChar=@"?!.,:;";
+                NSString *sepEndChar=@"?!.,:;%s";
                 NSString *newNextT=nil;
-                if([sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound)
+                
+                if([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound)
+                {
+                    newNextT=[s substringFromIndex:s.length-2];
+                    s=[s substringToIndex:s.length-2];
+                }
+
+                else if([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound)
                 {
                     newNextT=[s substringFromIndex:s.length-1];
                     s=[s substringToIndex:s.length-1];

@@ -263,22 +263,58 @@ static float kTimeToPieShake=7.0f;
 
 -(void)updateLabels
 {
+    if(gw.Blackboard.inProblemSetup)return;
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *cont=[activeCon objectAtIndex:i];
-        NSString *thisConVal=@"";
+    
+        
+//        NSString *thisConVal=@"";
         int slicesInCont=[cont.mySlices count];
         float thisVal=(float)slicesInCont/(float)[activeCon count];
-        if(labelType==kLabelShowDecimal) thisConVal=[NSString stringWithFormat:@"%.02g", thisVal];
-        if(labelType==kLabelShowFraction) { 
+        if(labelType==kLabelShowDecimal)
+        {
+            [cont.wholeNum setVisible:NO];
+            [cont.fractNum setVisible:NO];
+            [cont.fractDenom setVisible:NO];
+            [cont.fractLine setVisible:NO];
+            [cont.decimalNum setVisible:YES];
+            cont.decimalNum.string=[NSString stringWithFormat:@"%.02g", thisVal];
+        }
+        if(labelType==kLabelShowFraction) {
+            
+            [cont.wholeNum setVisible:YES];
+            [cont.fractNum setVisible:YES];
+            [cont.fractDenom setVisible:YES];
+            [cont.fractLine setVisible:YES];
+            [cont.decimalNum setVisible:NO];
+            
             int fullPies=slicesInCont/[activeCon count];
             int extraSlices=slicesInCont-(fullPies*[activeCon count]);
-            if(fullPies==0)thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
-            else if(fullPies>0 && extraSlices==0)thisConVal=[NSString stringWithFormat:@"%d", fullPies];
-            else if(fullPies>0 && extraSlices>0)thisConVal=[NSString stringWithFormat:@"%d %d/%d", fullPies, extraSlices, [activeCon count]];
+            if(fullPies==0){
+                [cont.wholeNum setVisible:NO];
+                cont.fractNum.string=[NSString stringWithFormat:@"%d", slicesInCont];
+                cont.fractDenom.string=[NSString stringWithFormat:@"%d", [activeCon count]];
+//                thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
+            }
+            else if(fullPies>0 && extraSlices==0)
+            {
+                [cont.fractDenom setVisible:NO];
+                [cont.fractNum setVisible:NO];
+                [cont.fractLine setVisible:NO];
+                cont.wholeNum.string=[NSString stringWithFormat:@"%d", fullPies];
+//                thisConVal=[NSString stringWithFormat:@"%d", fullPies];
+            }
+            else if(fullPies>0 && extraSlices>0)
+            {
+                cont.wholeNum.string=[NSString stringWithFormat:@"%d", fullPies];
+                cont.fractNum.string=[NSString stringWithFormat:@"%d", extraSlices];
+                cont.fractDenom.string=[NSString stringWithFormat:@"%d", [activeCon count]];
+//                thisConVal=[NSString stringWithFormat:@"%d %d/%d", fullPies, extraSlices, [activeCon count]];
+            }
         }
-        if(!cont.textString)cont.textString=@"";
-        cont.textString=thisConVal;
+//        if(!cont.textString)cont.textString=@"";
+//        cont.textString=thisConVal;
         
     }
     [gw handleMessage:kDWupdateLabels andPayload:nil withLogLevel:-1];
@@ -752,7 +788,7 @@ static float kTimeToPieShake=7.0f;
     // check the labels have been tapped, or not
     for(DWPieSplitterContainerGameObject *c in activeCon)
     {
-        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySprite convertToNodeSpace:location]))
+        if(CGRectContainsPoint([c returnLabelBox], [c.labelNode convertToNodeSpace:location]))
         {
             if(labelType==kLabelShowDecimal)labelType=kLabelShowFraction;
             else if(labelType==kLabelShowFraction)labelType=kLabelShowDecimal;

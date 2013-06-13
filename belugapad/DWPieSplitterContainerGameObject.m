@@ -22,7 +22,24 @@
 @synthesize Nodes;
 @synthesize mySprite;
 @synthesize Touchable;
+@synthesize labelNode;
+@synthesize wholeNum;
+@synthesize fractNum;
+@synthesize fractDenom;
+@synthesize decimalNum;
+@synthesize fractLine;
 
+-(CGRect)returnLabelBox
+{
+    CGRect thisRect=CGRectNull;
+    
+    thisRect=CGRectUnion(wholeNum.boundingBox, thisRect);
+    thisRect=CGRectUnion(fractNum.boundingBox, thisRect);
+    thisRect=CGRectUnion(fractDenom.boundingBox, thisRect);
+    thisRect=CGRectUnion(decimalNum.boundingBox, thisRect);
+    
+    return thisRect;
+}
 
 -(void)dealloc
 {
@@ -32,6 +49,12 @@
     self.BaseNode=nil;
     self.Nodes=nil;
     self.mySprite=nil;
+    self.labelNode=nil;
+    self.wholeNum=nil;
+    self.decimalNum=nil;
+    self.fractNum=nil;
+    self.fractDenom=nil;
+    self.fractLine=nil;
     
     [super dealloc];
 }

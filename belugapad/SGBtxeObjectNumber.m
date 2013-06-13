@@ -544,7 +544,7 @@
             else if([self.denominator intValue]==7)
                 denom=@"seventh";
             else if([self.denominator intValue]==8)
-                denom=@"eigth";
+                denom=@"eighth";
             else if([self.denominator intValue]==9)
                 denom=@"ninth";
             else if([self.denominator intValue]==10)

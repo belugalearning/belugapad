@@ -967,7 +967,7 @@ float timerIgnoreFrog;
                 else if([denominator intValue]==7)
                     denom=@"seventh";
                 else if([denominator intValue]==8)
-                    denom=@"eigth";
+                    denom=@"eighth";
                 else if([denominator intValue]==9)
                     denom=@"ninth";
                 else if([denominator intValue]==10)

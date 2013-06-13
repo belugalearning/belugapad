@@ -15,6 +15,12 @@
 #import "SGBtxeRowLayout.h"
 #import "global.h"
 
+@interface SGBtxeObjectNumber()
+{
+    NSNumberFormatter *nf;
+}
+@end
+
 
 @implementation SGBtxeObjectNumber
 
@@ -82,7 +88,8 @@
         loggingService = ac.loggingService;
         [loggingService.logPoller registerPollee:(id<LogPolling>)self];
         
-        
+        nf =[[NSNumberFormatter alloc] init];
+        [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     }
     
     return self;
@@ -175,14 +182,10 @@
 -(void)setNumberText:(NSString *)theNumberText
 {
     if(numberText) [numberText release];
-    
     numberText=theNumberText;
     [numberText retain];
     
-    NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
-    [nf release];
     
     self.tag=[numberValue stringValue];
 }
@@ -264,13 +267,10 @@
     self.numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
     if(nEnd<[parse length]-1) self.suffixText=[parse substringFromIndex:nEnd];
     [self updateDraw];
-    NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
+    
     self.numberValue=[nf numberFromString:numberText];
     
     [self redrawBkg];
-    
-    [nf release];
     
     self.tag=[numberValue stringValue];
 }

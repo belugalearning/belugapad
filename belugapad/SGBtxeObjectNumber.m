@@ -19,6 +19,7 @@
 {
     NSNumberFormatter *nf;
 }
+@property (retain) NSString* lastInputText;
 @end
 
 
@@ -51,7 +52,7 @@
 @synthesize pickerTargetFractionWhole;
 @synthesize disallowEquivFractions;
 
-@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns;
+@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns, lastInputText;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -208,7 +209,9 @@
 
 -(void)setText:(NSString *)text
 {
-    if(!text) return;
+    if(!text || [text isEqualToString:self.lastInputText]) return;
+
+    //self.lastInputText = text;
     
     //split text into parts if passed to this method
     
@@ -706,6 +709,7 @@
     self.numberText=nil;
     self.suffixText=nil;
     self.numberValue=nil;
+    self.lastInputText = nil;
     self.container=nil;
     self.logPollId = nil;
     if (logPollId) [logPollId release];

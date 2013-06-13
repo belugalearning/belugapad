@@ -594,8 +594,8 @@
     else if(self.numerator && self.showAsMixedFraction==YES)
     {
         int whole=(int)([self.numerator integerValue] / [self.denominator integerValue]);
-        int modtop=[self.numerator integerValue] - (whole * [self.denominator integerValue]);
-        return [NSString stringWithFormat:@"%d and %d %@", whole, [self.numerator intValue], denom];
+        int modtop=[self.numerator intValue] % [self.denominator intValue];
+        return [NSString stringWithFormat:@"%d and %d %@", whole, modtop, denom];
     }
     
     else

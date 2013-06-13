@@ -158,7 +158,9 @@
 
 -(CCLabelTTF*) zeroclone:(CCLabelTTF*)oflabel
 {
-    CCLabelTTF *l0=[CCLabelTTF labelWithString:oflabel.string fontName:oflabel.fontName fontSize:oflabel.fontSize];
+    NSString *sets=oflabel.string ? oflabel.string : @"";
+    
+    CCLabelTTF *l0=[CCLabelTTF labelWithString:sets fontName:oflabel.fontName fontSize:oflabel.fontSize];
     l0.color=ccc3(0,0,0);
     l0.opacity=178;
     l0.position=ccp(oflabel.position.x, oflabel.position.y-0.5f);
@@ -198,7 +200,7 @@
         if(ParentGO.denominator) return [ParentGO.denominator stringValue];
         else return @"?";
     }
-    else return [ParentGO.denominator stringValue];
+    else return (ParentGO.denominator) ? [ParentGO.denominator stringValue] : @"";
 }
 
 -(void)updateLabel

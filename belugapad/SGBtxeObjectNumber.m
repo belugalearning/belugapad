@@ -560,14 +560,20 @@
             else if([self.denominator intValue]==20)
                 denom=@"twentieth";
             
+            if([self.numerator intValue]>1) denom=[NSString stringWithFormat:@"%@s", denom];
+            
             if([self.denominator intValue]>20){
-                int baseNo=[self.denominator intValue]-([self.denominator intValue]%10);
-                int remain=([self.denominator intValue]%10);
+                denom=[NSString stringWithFormat:@" over %d", [self.denominator intValue]];
                 
-                if(remain>0)
-                    denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
-                else
-                    denom=[NSString stringWithFormat:@"%dth", baseNo];
+                //disabling this for the moment due to limited intellectual capacity of monster
+//                
+//                int baseNo=[self.denominator intValue]-([self.denominator intValue]%10);
+//                int remain=([self.denominator intValue]%10);
+//                
+//                if(remain>0)
+//                    denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
+//                else
+//                    denom=[NSString stringWithFormat:@", %dth", baseNo];
             }
         }
     }

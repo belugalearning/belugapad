@@ -984,13 +984,7 @@ float timerIgnoreFrog;
                     denom=@"twentieth";
                 
                 if([denominator intValue]>20){
-                    int baseNo=[denominator intValue]-([denominator intValue]%10);
-                    int remain=([denominator intValue]%10);
-                    
-                    if(remain>0)
-                        denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
-                    else
-                        denom=[NSString stringWithFormat:@"%dth", baseNo];
+                    denom=[NSString stringWithFormat:@" over %d", [denominator intValue]];
                 }
                 
                 if(readNumber>1)

@@ -263,15 +263,13 @@
         }
     }
     
-    if(nStart>0) self.prefixText=[parse substringToIndex:nStart];
-    self.numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
+    if(nStart>0) self.prefixText = [parse substringToIndex:nStart];
+    self.numberText = [parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
     if(nEnd<[parse length]-1) self.suffixText=[parse substringFromIndex:nEnd];
+    
     [self updateDraw];
     
     self.numberValue=[nf numberFromString:numberText];
-    
-    [self redrawBkg];
-    
     self.tag=[numberValue stringValue];
 }
 

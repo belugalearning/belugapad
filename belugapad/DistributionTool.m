@@ -369,7 +369,7 @@ static float kTimeSinceAction=7.0f;
         [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_REMOVE_TO_CAGE"];
     }
     
-    if(evalType==2)
+    if(evalType==1)
         toolHost.disableDescGwBtxeInteractions=NO;
     else 
         toolHost.disableDescGwBtxeInteractions=YES;

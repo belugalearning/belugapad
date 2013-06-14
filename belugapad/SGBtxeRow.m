@@ -332,6 +332,11 @@
     }
 }
 
+-(void)parseXML:(NSString*)xmlString withAutoDisable:(BOOL)autoDisable
+{
+    [self.parserComponent parseXML:xmlString withAutoDisable:autoDisable];
+}
+
 -(void)parseXML:(NSString *)xmlString
 {
     [self.parserComponent parseXML:xmlString];

@@ -34,7 +34,12 @@ const NSString *matchNumbers=@"0123456789";
     return self;
 }
 
--(void)parseXML:(NSString*)xmlString
+-(void)parseXML:(NSString *)xmlString
+{
+    [self parseXML:xmlString withAutoDisable:NO];
+}
+
+-(void)parseXML:(NSString*)xmlString withAutoDisable:(BOOL)autoDisable
 {
     NSString *fullxml=[NSString stringWithFormat:@"<?xml version='1.0'?><root xmlns:b='http://zubi.me/namespaces/2012/BTXE'>%@</root>", xmlString];
     
@@ -44,7 +49,7 @@ const NSString *matchNumbers=@"0123456789";
     
     for (CXMLElement *e in doc.rootElement.children)
     {
-        [self parseElement:e withNSMap:nsmap];
+        [self parseElement:e withNSMap:nsmap withAutoDisable:autoDisable];
     }
 }
 
@@ -67,7 +72,7 @@ const NSString *matchNumbers=@"0123456789";
     return NO;
 }
 
--(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap
+-(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap withAutoDisable:(BOOL)autoDisable
 {
 //    NSLog(@"parsing element %@", element.name);
     
@@ -147,6 +152,8 @@ const NSString *matchNumbers=@"0123456789";
         //also disable if a number picker
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
+        //no auto disable -- if it was declared as an object it should be interactive
+        
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
         
@@ -180,6 +187,9 @@ const NSString *matchNumbers=@"0123456789";
         
         oo.enabled=[self enabledBoolFor:element];
         [ParentGO.containerMgrComponent addObjectToContainer:oo];
+        
+        //auto disable
+        if(autoDisable) oo.interactive=NO;
         
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) oo.interactive=NO;
@@ -216,6 +226,9 @@ const NSString *matchNumbers=@"0123456789";
         
         CXMLNode *tagNode=[element attributeForName:@"preftag"];
         if(tagNode)ot.tag=tagNode.stringValue;
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
         
         ot.enabled=NO;
 
@@ -325,6 +338,9 @@ const NSString *matchNumbers=@"0123456789";
         
         //explicit interactivity disable
         on.interactive=![self boolFor:@"notinteractive" on:element];
+        
+        //auto disable
+        if(autoDisable && !usepicker) on.interactive=NO;
         
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) on.interactive=NO;

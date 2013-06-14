@@ -31,5 +31,8 @@
 -(void)animateAndMoveToPosition:(CGPoint)thePosition;
 -(NSString*)returnRowStringForSpeech;
 
+-(void)parseXML:(NSString*)xmlString;
+-(void)parseXML:(NSString*)xmlString withAutoDisable:(BOOL)autoDisable;
+
 
 @end

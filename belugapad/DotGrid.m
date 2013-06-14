@@ -284,7 +284,8 @@
     
     if(evalType==kProblemSumOfFractions)
         [usersService notifyStartingFeatureKey:@"DOTGRID_EVAL_SUM_FRACTIONS"];
-
+    else if(evalType==kProblemGridMultiplication)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_GRID_MULTIPLICATION"];
 }
 
 -(void)populateGW

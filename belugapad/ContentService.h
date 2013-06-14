@@ -28,8 +28,9 @@
 @property (readonly) int pipelineIndex;
 @property (readonly) int episodeIndex;
 
-@property (readonly) float pipelineProblemAttemptBaseScore;
-@property (readonly) float pipelineProblemAttemptMaxScore;
+@property (readonly) float pipelineProblemAttemptNormalScore;
+@property (readonly) float pipelineProblemAttemptBaseBonusScore;
+@property (readonly) float pipelineProblemAttemptMaxBonusScore;
 
 @property (readonly) NSString *contentDir;
 

@@ -603,13 +603,11 @@ static float kTimeToHintToolTray=0.0f;
 -(void)scoreProblemSuccess
 {
     if(breakOutIntroProblemFK)return;
-    
-    int newScore = ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseScore);
+    int newScore = contentService.pipelineProblemAttemptNormalScore + ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseBonusScore);
     newScore = min(newScore, SCORE_EPISODE_MAX - pipelineScore);
     
     pipelineScore += newScore;
-    
-    int shards = SCORE_MAX_SHARDS * newScore / contentService.pipelineProblemAttemptMaxScore;
+    int shards = SCORE_MAX_SHARDS * newScore / (contentService.pipelineProblemAttemptNormalScore + contentService.pipelineProblemAttemptMaxBonusScore);
     
     displayPerShard = (int) (newScore / (float)shards);
     

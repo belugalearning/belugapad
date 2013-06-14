@@ -276,6 +276,15 @@
     if(drawMode==2)
         showDraggableBlock=NO;
     
+    if(evalType==kProblemGridMultiplication)
+    {
+        showDraggableBlock=NO;
+        drawMode=1;
+        disableDrawing=YES;
+        startX=0;
+        startY=10;
+    }
+    
     if(showDraggableBlock)
         [usersService notifyStartingFeatureKey:@"DOTGRID_DRAG_TO_CREATE_BLOCK"];
         
@@ -395,6 +404,7 @@
         [dragBlock setPosition:ccp(55,550)];
         [renderLayer addChild:dragBlock];
     }
+
 
     
     if(evalType==kProblemNonProportionalGrid)
@@ -1748,7 +1758,8 @@
     
     if(evalMode==kProblemEvalAuto)[self evalProblem];
 
-//    [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
+    if(evalType==kProblemGridMultiplication)
+        [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
     
     [self setTouchVarsToOff];
 }

@@ -1018,7 +1018,7 @@
                 shape.ShapeY=fabsf(firstdrawn.myYpos-lastDrawn.myYpos);
                 
                 //tell shape to draw labels (to get around setup not have anchor and size info)
-                [shape handleMessage:kDWshapeDrawLabels];
+//                [shape handleMessage:kDWshapeDrawLabels];
                 
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
@@ -1748,7 +1748,7 @@
     
     if(evalMode==kProblemEvalAuto)[self evalProblem];
 
-    [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
+//    [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
     
     [self setTouchVarsToOff];
 }

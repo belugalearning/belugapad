@@ -1748,6 +1748,8 @@
     
     if(evalMode==kProblemEvalAuto)[self evalProblem];
 
+    [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
+    
     [self setTouchVarsToOff];
 }
 

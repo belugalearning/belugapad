@@ -33,7 +33,7 @@
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 		<key>DISALLOW_BTXE_TOUCH</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>PlaceValue</key>
 	<dict>

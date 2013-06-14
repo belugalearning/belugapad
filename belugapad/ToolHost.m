@@ -2092,10 +2092,6 @@ static float kTimeToHintToolTray=0.0f;
     qTrayMid.position=ccp(0,0);
     qTrayTop.position=ccp(0,0);
     
-    qTrayBot.zOrder=3;
-    qTrayTop.zOrder=3;
-    qTrayMid.zOrder=1;
-    
     float rowHeight=0;
 
     [qTrayMid setAnchorPoint:ccp(0.5f, 0.0f)];
@@ -2565,7 +2561,6 @@ static float kTimeToHintToolTray=0.0f;
             [self hideWheel];
             [self showPad];
             [self hideCornerTrayAndForce:YES];
-            
             //[self showCornerTray];
         }
     }

@@ -1988,6 +1988,11 @@ static float kTimeToHintToolTray=0.0f;
     
     [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
     npEval=[[pdefNP objectForKey:EVAL_VALUE]floatValue];
+    
+    NSString *evalStr=[NSString stringWithFormat:@"%g", npEval];
+    if(![evalStr rangeOfString:@"."].location == NSNotFound)
+        [usersService notifyStartingFeatureKey:@"NUMBERPICKER_DECIMAL"];
+    
     numberPickerEvalMode=[[pdefNP objectForKey:PICKER_EVAL_MODE]intValue];
     
     

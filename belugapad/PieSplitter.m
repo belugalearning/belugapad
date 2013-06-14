@@ -206,6 +206,11 @@ static float kTimeToPieShake=7.0f;
     
     int totalSlices=dividend*divisor;
     slicesInEachPie=totalSlices/divisor;
+    
+    if(showNewPieCont)
+        [usersService notifyStartingFeatureKey:@"PIESPLITTER_MAKE_FRACTION"];
+    else
+        [usersService notifyStartingFeatureKey:@"PIESPLITTER_SPLIT"];
 }
 
 -(void)populateGW

@@ -65,6 +65,7 @@ static float kTimeToButtonShake=7.0f;
         cy=ly / 2.0f;
         
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         gw.Blackboard.inProblemSetup = YES;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];

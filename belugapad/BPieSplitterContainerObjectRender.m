@@ -59,44 +59,6 @@
     }
     if(messageType==kDWupdateLabels)
     {
-        if(!cont.labelNode)
-        {
-            cont.labelNode=[[CCNode alloc]init];
-            cont.fractNum=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:10.0f];
-            cont.fractDenom=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:10.0f];
-            cont.wholeNum=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:14.0f];
-            cont.decimalNum=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:14.0f];
-            cont.fractLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/PS_FractionLine.png")];
-            
-            [cont.BaseNode addChild:cont.labelNode];
-            [cont.labelNode setPosition:ccp(-50,50)];
-            [cont.labelNode addChild:cont.decimalNum];
-            [cont.labelNode addChild:cont.fractNum];
-            [cont.labelNode addChild:cont.fractDenom];
-            [cont.labelNode addChild:cont.wholeNum];
-            [cont.labelNode addChild:cont.fractLine];
-            
-            [cont.wholeNum setPosition:ccp(-20.0f,0.0f)];
-            [cont.decimalNum setPosition:ccp(-20.0f,0.0f)];
-            [cont.fractNum setPosition:ccp(0.0f,10.0f)];
-            [cont.fractDenom setPosition:ccp(0.0f,-10.0f)];
-            
-            if(gameWorld.Blackboard.inProblemSetup)
-            {
-                [cont.wholeNum setOpacity:0];
-                [cont.decimalNum setOpacity:0];
-                [cont.fractNum setOpacity:0];
-                [cont.fractDenom setOpacity:0];
-                [cont.fractLine setOpacity:0];
-                
-                [cont.wholeNum setTag:3];
-                [cont.decimalNum setTag:3];
-                [cont.fractNum setTag:3];
-                [cont.fractDenom setTag:3];
-                [cont.fractLine setTag:3];
-            }
-            
-        }
 //        if(!cont.myText)[self createMyLabel];
 //        if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
         if(cont.ScaledUp&&!cont.labelNode.visible)[cont.labelNode setVisible:YES];
@@ -130,6 +92,8 @@
     if(messageType==kDWdismantle)
     {
         [[cont.mySprite parent] removeChild:cont.mySprite cleanup:YES];
+        [cont.BaseNode removeFromParentAndCleanup:YES];
+        [cont.labelNode removeFromParentAndCleanup:YES];
 //        [[cont.mySpriteMid parent] removeChild:cont.mySpriteMid cleanup:YES];
 //        [[cont.mySpriteBot parent] removeChild:cont.mySpriteBot cleanup:YES];
     }
@@ -147,6 +111,45 @@
         [cont.BaseNode setPosition:cont.Position];
         if(!cont.ScaledUp)[[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
         else [[gameWorld Blackboard].MovementLayer addChild:cont.BaseNode z:2];
+        
+    }
+    
+    if(!cont.labelNode)
+    {
+        cont.labelNode=[[CCNode alloc]init];
+        cont.fractNum=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:10.0f];
+        cont.fractDenom=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:10.0f];
+        cont.wholeNum=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:14.0f];
+        cont.decimalNum=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:14.0f];
+        cont.fractLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/PS_FractionLine.png")];
+        
+        [cont.BaseNode addChild:cont.labelNode];
+        [cont.labelNode setPosition:ccp(-50,50)];
+        [cont.labelNode addChild:cont.decimalNum];
+        [cont.labelNode addChild:cont.fractNum];
+        [cont.labelNode addChild:cont.fractDenom];
+        [cont.labelNode addChild:cont.wholeNum];
+        [cont.labelNode addChild:cont.fractLine];
+        
+        [cont.wholeNum setPosition:ccp(-20.0f,0.0f)];
+        [cont.decimalNum setPosition:ccp(-20.0f,0.0f)];
+        [cont.fractNum setPosition:ccp(0.0f,10.0f)];
+        [cont.fractDenom setPosition:ccp(0.0f,-10.0f)];
+        
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [cont.wholeNum setOpacity:0];
+            [cont.decimalNum setOpacity:0];
+            [cont.fractNum setOpacity:0];
+            [cont.fractDenom setOpacity:0];
+            [cont.fractLine setOpacity:0];
+            
+            [cont.wholeNum setTag:3];
+            [cont.decimalNum setTag:3];
+            [cont.fractNum setTag:3];
+            [cont.fractDenom setTag:3];
+            [cont.fractLine setTag:3];
+        }
         
     }
 
@@ -175,21 +178,21 @@
     [cont.BaseNode addChild:cont.mySprite];
 
     
-    if(!cont.myText)
-    {
-        cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
-        [cont.myText setPosition:ccp(50,cont.mySprite.contentSize.height+15)];
-        [cont.mySprite addChild:cont.myText];
-        if(gameWorld.Blackboard.inProblemSetup)
-        {
-            [cont.myText setTag:1];
-            [cont.myText setOpacity:0];
-        }
-        if(!cont.ScaledUp)
-        {
-            [cont.myText setVisible:NO];
-        }
-    }
+//    if(!cont.myText)
+//    {
+//        cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
+//        [cont.myText setPosition:ccp(50,cont.mySprite.contentSize.height+15)];
+//        [cont.mySprite addChild:cont.myText];
+//        if(gameWorld.Blackboard.inProblemSetup)
+//        {
+//            [cont.myText setTag:1];
+//            [cont.myText setOpacity:0];
+//        }
+//        if(!cont.ScaledUp)
+//        {
+//            [cont.myText setVisible:NO];
+//        }
+//    }
 //        [cont.BaseNode addChild:cont.mySprite];
     
 }

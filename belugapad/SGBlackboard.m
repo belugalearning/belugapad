@@ -12,6 +12,7 @@
 @implementation SGBlackboard
 
 @synthesize RenderLayer;
+@synthesize IconRenderLayer;
 @synthesize inProblemSetup;
 @synthesize islandData;
 @synthesize MaxObjectDistance;
@@ -38,6 +39,7 @@
 -(void)dealloc
 {
     self.RenderLayer=nil;
+    self.IconRenderLayer=nil;
     self.btxeIconBatch=nil;
     
     self.islandData=nil;

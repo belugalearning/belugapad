@@ -82,6 +82,7 @@
         [self.ForeLayer addChild:renderLayer z:2];
 
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         gw.Blackboard.inProblemSetup = YES;
         
         expressionStringCache=[[NSMutableArray alloc] init];

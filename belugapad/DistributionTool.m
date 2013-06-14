@@ -77,6 +77,7 @@ static float kTimeSinceAction=7.0f;
         
         
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         gw.Blackboard.inProblemSetup = YES;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
@@ -596,6 +597,7 @@ static float kTimeSinceAction=7.0f;
                     [gw release];
                     
                     gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+                    gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
                     gw.Blackboard.inProblemSetup = YES;
                     
                     [self populateGW];

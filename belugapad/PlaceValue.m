@@ -88,7 +88,7 @@ static float kTimeToCageShake=7.0f;
 
         
         sgw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
-        
+        sgw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         sgw.Blackboard.disableAllBTXEinteractions=YES;
         toolHost.disableDescGwBtxeInteractions=YES;
         

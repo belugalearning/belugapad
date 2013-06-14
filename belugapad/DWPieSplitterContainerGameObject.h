@@ -17,7 +17,6 @@
 //@property (retain) CCSprite *mySprite;
 @property (retain) NSMutableArray *mySlices;
 @property BOOL ScaledUp;
-@property (retain) CCLabelTTF *myText;
 @property (retain) NSString *textString;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSMutableArray *Nodes;

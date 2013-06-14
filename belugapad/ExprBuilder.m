@@ -403,7 +403,14 @@
                     id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
                     
                     if(opicker.usePicker){
-                        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_NUMBERPICKER"];
+                        if(!opicker.pickerTargetNumerator)
+                            [usersService notifyStartingFeatureKey:@"EXPRBUILDER_NUMBERPICKER"];
+                        if(opicker.pickerTargetNumerator)
+                            [usersService notifyStartingFeatureKey:@"FRACTIONS_TUTORIAL"];
+                        
+                        if(opicker.showPickerFractionWhole)
+                            [usersService notifyStartingFeatureKey:@"FRACTIONS_MIXED_TUTORIAL"];
+
                         break;
                     }
                     

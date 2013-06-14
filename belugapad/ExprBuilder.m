@@ -227,16 +227,24 @@
             row.tintMyChildren=NO;
         }
         
+        BOOL autoDisable=([evalType isEqualToString:@"ALL_PICKERS_CORRECT"] || [evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"]
+                          || [evalType isEqualToString:@"EXPRESSION_EQUALITIES"]
+                          || [evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"]);
+        
         if(numberMode)
             row.defaultNumbermode=numberMode;
         
-        if(i==0 || repeatRow2Count==0)
+        if(i==0)
         {
-            [row parseXML:[exprStages objectAtIndex:i]];
+            [row parseXML:[exprStages objectAtIndex:i] withAutoDisable:NO];
+        }
+        else if(i==0 || repeatRow2Count==0)
+        {
+            [row parseXML:[exprStages objectAtIndex:i] withAutoDisable:autoDisable];
         }
         else if (repeatRow2Count>0)
         {
-            [row parseXML:[exprStages objectAtIndex:1]];
+            [row parseXML:[exprStages objectAtIndex:1] withAutoDisable:autoDisable];
         }
         
         if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])

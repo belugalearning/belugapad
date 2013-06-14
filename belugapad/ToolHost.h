@@ -58,6 +58,7 @@ typedef enum {
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
+    CCLayer *wheelLayer;
     
     CCSprite *qTrayTop;
     CCSprite *qTrayMid;
@@ -208,6 +209,8 @@ typedef enum {
     CCLayer *trayLayerPad;
     CCNode *lineDrawer;
     
+    CCSprite *wheelULImage;
+    
     BOOL hasTrayWheel;
     BOOL hasTrayCalc;
     BOOL hasTrayMq;
@@ -312,6 +315,7 @@ typedef enum {
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;
 -(CCLayer*)returnBtxeLayer;
+-(CCLayer*)returnWheelLayer;
 -(void)playAudioClick;
 -(void)playAudioPress;
 -(SGGameWorld*)currentDescGW;

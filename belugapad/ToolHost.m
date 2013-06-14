@@ -949,12 +949,16 @@ static float kTimeToHintToolTray=0.0f;
     
     if (mq)
     {
-        self.disableDescGwBtxeInteractions=YES;
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
         [self setupMetaQuestion:mq];
     }
     else if(np)
     {
-        self.disableDescGwBtxeInteractions=YES;
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
         evalMode=1;
         [self setupNumberPicker:np];
     }

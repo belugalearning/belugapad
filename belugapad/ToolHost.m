@@ -84,6 +84,7 @@
 @synthesize pickerView;
 @synthesize CurrentBTXE;
 @synthesize thisProblemDescription;
+@synthesize disableDescGwBtxeInteractions;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -936,6 +937,9 @@ static float kTimeToHintToolTray=0.0f;
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
     
+    //default to allowing BTXE interactions, let the tool set otherwise
+//    self.disableDescGwBtxeInteractions=NO;
+    
     if(toolKey)
     {
         //initialize tool scene
@@ -945,10 +949,16 @@ static float kTimeToHintToolTray=0.0f;
     
     if (mq)
     {
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
         [self setupMetaQuestion:mq];
     }
     else if(np)
     {
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
         evalMode=1;
         [self setupNumberPicker:np];
     }
@@ -1236,6 +1246,10 @@ static float kTimeToHintToolTray=0.0f;
         else 
             currentTool.PassThruScaling=NO;
         
+        if([toolOpt objectForKey:@"DISALLOW_BTXE_TOUCH"])
+            self.disableDescGwBtxeInteractions=[[toolOpt objectForKey:@"DISALLOW_BTXE_TOUCH"]boolValue];
+        else
+            self.disableDescGwBtxeInteractions=NO;
         
         //get tool depth
         if([toolOpt objectForKey:@"TOOL_DEPTH"])
@@ -1280,6 +1294,11 @@ static float kTimeToHintToolTray=0.0f;
 }
 
 #pragma mark - pause show and touch handling
+
+-(BOOL)btxeObjectsEnabled
+{
+    return self.btxeObjectsEnabled;
+}
 
 -(void) showPauseMenu
 {
@@ -2084,6 +2103,11 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - problem description
 
+-(SGGameWorld*)currentDescGW
+{
+    return descGw;
+}
+
 - (void)sizeQuestionDescription
 {
     SGBtxeRow *row=qDescRow;
@@ -2169,6 +2193,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     descGw=[[SGGameWorld alloc] initWithGameScene:self];
+    descGw.Blackboard.disableAllBTXEinteractions=self.disableDescGwBtxeInteractions;
+    descGw.Blackboard.IconRenderLayer=[self returnBtxeLayer];
     descGw.Blackboard.inProblemSetup=YES;
     
     descGw.Blackboard.RenderLayer = btxeDescLayer;

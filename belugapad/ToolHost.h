@@ -239,6 +239,8 @@ typedef enum {
     BOOL quittingToMap;
     BOOL isTouching;
     
+    BOOL allowBtxeTouch;
+    
     SGBtxeRow *qDescRow;
     
     CCParticleSystemQuad *followParticle;
@@ -254,6 +256,7 @@ typedef enum {
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) id CurrentBTXE;
 @property (retain) NSString *thisProblemDescription;
+@property BOOL disableDescGwBtxeInteractions;
 
 +(CCScene *) scene;
 
@@ -311,7 +314,8 @@ typedef enum {
 -(CCLayer*)returnBtxeLayer;
 -(void)playAudioClick;
 -(void)playAudioPress;
-
+-(SGGameWorld*)currentDescGW;
+-(BOOL)btxeObjectsEnabled;
 -(void)resetScoreMultiplier;
 - (void)sizeQuestionDescription;
 -(void)setReadProblemPosWithScale:(float)ascale;

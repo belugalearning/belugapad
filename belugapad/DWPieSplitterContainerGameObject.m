@@ -16,7 +16,6 @@
 //@synthesize mySprite;
 @synthesize mySlices;
 @synthesize ScaledUp;
-@synthesize myText;
 @synthesize textString;
 @synthesize BaseNode;
 @synthesize Nodes;
@@ -44,7 +43,6 @@
 -(void)dealloc
 {
     self.mySlices=nil;
-    self.myText=nil;
     self.textString=nil;
     self.BaseNode=nil;
     self.Nodes=nil;

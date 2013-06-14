@@ -211,6 +211,9 @@ const NSString *matchNumbers=@"0123456789";
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) oi.interactive=NO;
         
+        //forced local disable if no tag
+        if(!tagNode) oi.interactive=NO;
+        
         [ParentGO.containerMgrComponent addObjectToContainer:oi];
     }
     

@@ -150,6 +150,9 @@
     else
         isSequencing=NO;
     
+    if(isSequencing)
+        toolHost.disableDescGwBtxeInteractions=YES;
+    
     NSNumber *rrow2=[pdef objectForKey:@"REPEAT_ROW2_X"];
     if(rrow2)repeatRow2Count=[rrow2 intValue];
     

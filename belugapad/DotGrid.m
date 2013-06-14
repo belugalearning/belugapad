@@ -283,6 +283,12 @@
         disableDrawing=YES;
         startX=0;
         startY=10;
+
+        hiddenRows=[[NSMutableDictionary alloc]init];
+        [hiddenRows setValue:@"YES" forKey:@"12"];
+        [hiddenRows setValue:@"YES" forKey:@"13"];
+        [hiddenRows setValue:@"YES" forKey:@"14"];
+        [hiddenRows setValue:@"YES" forKey:@"15"];
     }
     
     if(showDraggableBlock)

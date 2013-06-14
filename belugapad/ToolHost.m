@@ -2337,9 +2337,19 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
 //        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
-            [self removeAllTrays];
-            return;
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool){
+            BOOL beenHit=YES;
+            if(![currentTool isKindOfClass:[ExprBuilder class]] && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location))
+                beenHit=NO;
+            if([currentTool isKindOfClass:[ExprBuilder class]] && !CGRectContainsPoint(wheelULImage.boundingBox,location))
+                beenHit=NO;
+            
+            if(!beenHit)
+            {
+                [self removeAllTrays];
+                return;
+            }
+            
         }
     }
     
@@ -2825,7 +2835,7 @@ static float kTimeToHintToolTray=0.0f;
     {
         //trayLayerWheel=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
         trayLayerWheel=[[CCLayer alloc]init];
-        [problemDefLayer addChild:trayLayerWheel z:2];
+        [problemDefLayer addChild:trayLayerWheel z:5];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
         
@@ -2914,11 +2924,15 @@ static float kTimeToHintToolTray=0.0f;
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[self numberOfComponentsInPickerView:self.pickerView]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
     
+    wheelULImage=ovSprite;
+    
     self.pickerView = [CCPickerView node];
-//    if(currentTool)
-//        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
-//    else
-    pickerView.position=ccp(cx,cy);
+    
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-430);
+    else
+        pickerView.position=ccp(cx,cy);
+    
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
@@ -3219,6 +3233,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(self.pickerView)self.pickerView=nil;
     
+    wheelULImage=nil;
     
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];

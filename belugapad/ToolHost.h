@@ -208,6 +208,8 @@ typedef enum {
     CCLayer *trayLayerPad;
     CCNode *lineDrawer;
     
+    CCSprite *wheelULImage;
+    
     BOOL hasTrayWheel;
     BOOL hasTrayCalc;
     BOOL hasTrayMq;

@@ -168,6 +168,9 @@ static float kTimeToPieShake=7.0f;
     else
         moveInitObjects=YES;
     
+    if(!showNewPieCont)
+        moveInitObjects=NO;
+    
 //#define DO_NOT_SHOW_NEW_PIES_CONTAINERS @"DO_NOT_SHOW_NEW_PIES_CONTAINERS"
 //#define DISALLOW_MOVE_INIT_PIES @"DISALLOW_MOVE_INIT_PIES"
     

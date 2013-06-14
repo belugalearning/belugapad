@@ -15,6 +15,13 @@
 #import "SGBtxeRowLayout.h"
 #import "global.h"
 
+@interface SGBtxeObjectNumber()
+{
+    NSNumberFormatter *nf;
+}
+@property (retain) NSString* lastInputText;
+@end
+
 
 @implementation SGBtxeObjectNumber
 
@@ -45,7 +52,7 @@
 @synthesize pickerTargetFractionWhole;
 @synthesize disallowEquivFractions;
 
-@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns;
+@synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns, lastInputText;
 
 // LogPolling properties
 @synthesize logPollId, logPollType;
@@ -82,7 +89,8 @@
         loggingService = ac.loggingService;
         [loggingService.logPoller registerPollee:(id<LogPolling>)self];
         
-        
+        nf =[[NSNumberFormatter alloc] init];
+        [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     }
     
     return self;
@@ -175,14 +183,10 @@
 -(void)setNumberText:(NSString *)theNumberText
 {
     if(numberText) [numberText release];
-    
     numberText=theNumberText;
     [numberText retain];
     
-    NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
-    [nf release];
     
     self.tag=[numberValue stringValue];
 }
@@ -205,7 +209,9 @@
 
 -(void)setText:(NSString *)text
 {
-    if(!text) return;
+    if(!text || [text isEqualToString:self.lastInputText]) return;
+
+    self.lastInputText = text;
     
     //split text into parts if passed to this method
     
@@ -260,18 +266,13 @@
         }
     }
     
-    if(nStart>0) self.prefixText=[parse substringToIndex:nStart];
-    self.numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
+    if(nStart>0) self.prefixText = [parse substringToIndex:nStart];
+    self.numberText = [parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
     if(nEnd<[parse length]-1) self.suffixText=[parse substringFromIndex:nEnd];
+    
     [self updateDraw];
-    NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
+    
     self.numberValue=[nf numberFromString:numberText];
-    
-    [self redrawBkg];
-    
-    [nf release];
-    
     self.tag=[numberValue stringValue];
 }
 
@@ -543,7 +544,7 @@
             else if([self.denominator intValue]==7)
                 denom=@"seventh";
             else if([self.denominator intValue]==8)
-                denom=@"eigth";
+                denom=@"eighth";
             else if([self.denominator intValue]==9)
                 denom=@"ninth";
             else if([self.denominator intValue]==10)
@@ -559,14 +560,20 @@
             else if([self.denominator intValue]==20)
                 denom=@"twentieth";
             
+            if([self.numerator intValue]>1) denom=[NSString stringWithFormat:@"%@s", denom];
+            
             if([self.denominator intValue]>20){
-                int baseNo=[self.denominator intValue]-([self.denominator intValue]%10);
-                int remain=([self.denominator intValue]%10);
+                denom=[NSString stringWithFormat:@" over %d", [self.denominator intValue]];
                 
-                if(remain>0)
-                    denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
-                else
-                    denom=[NSString stringWithFormat:@"%dth", baseNo];
+                //disabling this for the moment due to limited intellectual capacity of monster
+//                
+//                int baseNo=[self.denominator intValue]-([self.denominator intValue]%10);
+//                int remain=([self.denominator intValue]%10);
+//                
+//                if(remain>0)
+//                    denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
+//                else
+//                    denom=[NSString stringWithFormat:@", %dth", baseNo];
             }
         }
     }
@@ -587,8 +594,8 @@
     else if(self.numerator && self.showAsMixedFraction==YES)
     {
         int whole=(int)([self.numerator integerValue] / [self.denominator integerValue]);
-        int modtop=[self.numerator integerValue] - (whole * [self.denominator integerValue]);
-        return [NSString stringWithFormat:@"%d and %d %@", whole, [self.numerator intValue], denom];
+        int modtop=[self.numerator intValue] % [self.denominator intValue];
+        return [NSString stringWithFormat:@"%d and %d %@", whole, modtop, denom];
     }
     
     else
@@ -708,6 +715,7 @@
     self.numberText=nil;
     self.suffixText=nil;
     self.numberValue=nil;
+    self.lastInputText = nil;
     self.container=nil;
     self.logPollId = nil;
     if (logPollId) [logPollId release];

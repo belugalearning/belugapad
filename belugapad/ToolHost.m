@@ -84,6 +84,7 @@
 @synthesize pickerView;
 @synthesize CurrentBTXE;
 @synthesize thisProblemDescription;
+@synthesize disableDescGwBtxeInteractions;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -935,6 +936,9 @@ static float kTimeToHintToolTray=0.0f;
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
+    
+    //default to allowing BTXE interactions, let the tool set otherwise
+    self.disableDescGwBtxeInteractions=NO;
     
     if(toolKey)
     {
@@ -2084,6 +2088,11 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - problem description
 
+-(SGGameWorld*)currentDescGW
+{
+    return descGw;
+}
+
 - (void)sizeQuestionDescription
 {
     SGBtxeRow *row=qDescRow;
@@ -2173,6 +2182,7 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     descGw=[[SGGameWorld alloc] initWithGameScene:self];
+    descGw.Blackboard.disableAllBTXEinteractions=self.disableDescGwBtxeInteractions;
     descGw.Blackboard.inProblemSetup=YES;
     
     descGw.Blackboard.RenderLayer = btxeDescLayer;

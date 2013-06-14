@@ -27,4 +27,6 @@
 @property (retain) CCDrawNode *debugDrawNode;
 @property BOOL playFailedBondOverMax;
 
+@property BOOL disableAllBTXEinteractions;
+
 @end

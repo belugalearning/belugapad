@@ -17,6 +17,8 @@
 @synthesize MaxObjectDistance;
 @synthesize jmapInstance;
 @synthesize playFailedBondOverMax;
+@synthesize disableAllBTXEinteractions;
+
 -(id) init
 {
     if((self=[super init]))

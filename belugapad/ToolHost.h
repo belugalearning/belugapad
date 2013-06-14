@@ -254,6 +254,7 @@ typedef enum {
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) id CurrentBTXE;
 @property (retain) NSString *thisProblemDescription;
+@property BOOL disableDescGwBtxeInteractions;
 
 +(CCScene *) scene;
 
@@ -311,6 +312,7 @@ typedef enum {
 -(CCLayer*)returnBtxeLayer;
 -(void)playAudioClick;
 -(void)playAudioPress;
+-(SGGameWorld*)currentDescGW;
 
 -(void)resetScoreMultiplier;
 - (void)sizeQuestionDescription;

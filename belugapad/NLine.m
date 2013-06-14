@@ -76,6 +76,8 @@ float timerIgnoreFrog;
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
+        toolHost.disableDescGwBtxeInteractions=YES;
+        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;
@@ -967,7 +969,7 @@ float timerIgnoreFrog;
                 else if([denominator intValue]==7)
                     denom=@"seventh";
                 else if([denominator intValue]==8)
-                    denom=@"eigth";
+                    denom=@"eighth";
                 else if([denominator intValue]==9)
                     denom=@"ninth";
                 else if([denominator intValue]==10)
@@ -984,13 +986,7 @@ float timerIgnoreFrog;
                     denom=@"twentieth";
                 
                 if([denominator intValue]>20){
-                    int baseNo=[denominator intValue]-([denominator intValue]%10);
-                    int remain=([denominator intValue]%10);
-                    
-                    if(remain>0)
-                        denom=[NSString stringWithFormat:@"%d %dth", baseNo,remain];
-                    else
-                        denom=[NSString stringWithFormat:@"%dth", baseNo];
+                    denom=[NSString stringWithFormat:@" over %d", [denominator intValue]];
                 }
                 
                 if(readNumber>1)

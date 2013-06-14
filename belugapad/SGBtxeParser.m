@@ -61,7 +61,7 @@ const NSString *matchNumbers=@"0123456789";
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
             //specifically fail on strings of format x:y
-            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9][,:;\\/!?%][0-9]" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]+" options:NSRegularExpressionCaseInsensitive error:nil];
             int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
             
             return(c==0);
@@ -92,7 +92,7 @@ const NSString *matchNumbers=@"0123456789";
                 NSString *sepEndChar=@"?!.,:;%s";
                 NSString *newNextT=nil;
                 
-                if([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound)
+                if(([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound) && ([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound))
                 {
                     newNextT=[s substringFromIndex:s.length-2];
                     s=[s substringToIndex:s.length-2];
@@ -210,6 +210,9 @@ const NSString *matchNumbers=@"0123456789";
         
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) oi.interactive=NO;
+        
+        //forced local disable if no tag
+        if(!tagNode) oi.interactive=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:oi];
     }

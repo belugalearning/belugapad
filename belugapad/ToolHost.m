@@ -142,8 +142,11 @@ static float kTimeToHintToolTray=0.0f;
         btxeDescLayer=[[CCLayer alloc] init];
         [self addChild:btxeDescLayer z:3];
         
+        wheelLayer=[[CCLayer alloc] init];
+        [self addChild:wheelLayer z:4];
+        
         pauseLayer=[[CCLayer alloc]init];
-        [self addChild:pauseLayer z:4];
+        [self addChild:pauseLayer z:10];
         
         contextProgressLayer=[[CCLayer alloc] init];
         [self addChild:contextProgressLayer z:6];
@@ -497,6 +500,11 @@ static float kTimeToHintToolTray=0.0f;
 -(CCLayer*)returnBtxeLayer
 {
     return btxeDescLayer;
+}
+
+-(CCLayer*)returnWheelLayer
+{
+    return wheelLayer;
 }
 
 -(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
@@ -1978,6 +1986,11 @@ static float kTimeToHintToolTray=0.0f;
     
     [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
     npEval=[[pdefNP objectForKey:EVAL_VALUE]floatValue];
+    
+    NSString *evalStr=[NSString stringWithFormat:@"%g", npEval];
+    if(![evalStr rangeOfString:@"."].location == NSNotFound)
+        [usersService notifyStartingFeatureKey:@"NUMBERPICKER_DECIMAL"];
+    
     numberPickerEvalMode=[[pdefNP objectForKey:PICKER_EVAL_MODE]intValue];
     
     
@@ -2335,9 +2348,19 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
 //        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location)){
-            [self removeAllTrays];
-            return;
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool){
+            BOOL beenHit=YES;
+            if(![currentTool isKindOfClass:[ExprBuilder class]] && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location))
+                beenHit=NO;
+            if([currentTool isKindOfClass:[ExprBuilder class]] && !CGRectContainsPoint(wheelULImage.boundingBox,location))
+                beenHit=NO;
+            
+            if(!beenHit)
+            {
+                [self removeAllTrays];
+                return;
+            }
+            
         }
     }
     
@@ -2823,7 +2846,7 @@ static float kTimeToHintToolTray=0.0f;
     {
         //trayLayerWheel=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
         trayLayerWheel=[[CCLayer alloc]init];
-        [problemDefLayer addChild:trayLayerWheel z:2];
+        [wheelLayer addChild:trayLayerWheel];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
         
@@ -2912,11 +2935,15 @@ static float kTimeToHintToolTray=0.0f;
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[self numberOfComponentsInPickerView:self.pickerView]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
     
+    wheelULImage=ovSprite;
+    
     self.pickerView = [CCPickerView node];
-//    if(currentTool)
-//        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
-//    else
-    pickerView.position=ccp(cx,cy);
+    
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-430);
+    else
+        pickerView.position=ccp(cx,cy);
+    
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
@@ -3217,6 +3244,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(self.pickerView)self.pickerView=nil;
     
+    wheelULImage=nil;
     
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];

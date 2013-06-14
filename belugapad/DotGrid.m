@@ -82,7 +82,7 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         gw.Blackboard.inProblemSetup = NO;
     }
@@ -284,7 +284,8 @@
     
     if(evalType==kProblemSumOfFractions)
         [usersService notifyStartingFeatureKey:@"DOTGRID_EVAL_SUM_FRACTIONS"];
-
+    else if(evalType==kProblemGridMultiplication)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_GRID_MULTIPLICATION"];
 }
 
 -(void)populateGW
@@ -1016,6 +1017,9 @@
                 shape.ShapeX=fabsf(firstdrawn.myXpos-lastDrawn.myXpos);
                 shape.ShapeY=fabsf(firstdrawn.myYpos-lastDrawn.myYpos);
                 
+                //tell shape to draw labels (to get around setup not have anchor and size info)
+//                [shape handleMessage:kDWshapeDrawLabels];
+                
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
                     [t handleMessage:kDWsetupStuff];
@@ -1744,6 +1748,8 @@
     
     if(evalMode==kProblemEvalAuto)[self evalProblem];
 
+//    [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
+    
     [self setTouchVarsToOff];
 }
 

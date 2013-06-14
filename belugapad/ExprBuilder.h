@@ -67,6 +67,8 @@
     BOOL isSequencing;
     BOOL showingFractionPickers;
 
+    BOOL disableAutoDisableForProblem;
+    
     NSString *numberMode;
     
     SGBtxeRow *ncardRow;

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make a shape of 15 by 2. This will split into 2 rectangles. Tap on each rectangle to count the number of squares. The total number of squares in the shape is calculated by adding the number of squares in each rectangle.</string>
+	<string>Make a shape of 15 by 2. This will split into 2 rectangles. Add together the total number of squares in each rectangle.</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>EVAL_MODE</key>

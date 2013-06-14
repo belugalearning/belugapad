@@ -35,6 +35,9 @@
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
+    NSLog(@"was messaged: %d", messageType);
+    
+    
     if(messageType==kDWsetupStuff)
     {
 

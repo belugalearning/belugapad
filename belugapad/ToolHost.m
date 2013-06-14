@@ -2183,6 +2183,7 @@ static float kTimeToHintToolTray=0.0f;
     
     descGw=[[SGGameWorld alloc] initWithGameScene:self];
     descGw.Blackboard.disableAllBTXEinteractions=self.disableDescGwBtxeInteractions;
+    descGw.Blackboard.IconRenderLayer=[self returnBtxeLayer];
     descGw.Blackboard.inProblemSetup=YES;
     
     descGw.Blackboard.RenderLayer = btxeDescLayer;

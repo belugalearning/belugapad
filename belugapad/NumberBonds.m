@@ -62,6 +62,7 @@ static float kNBFontSizeLarge=35.0f;
         
         gw = [[DWGameWorld alloc] initWithGameScene:self];
         sgw=[[SGGameWorld alloc]initWithGameScene:renderLayer];
+        sgw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         
         gw.Blackboard.inProblemSetup = YES;
         sgw.Blackboard.inProblemSetup = YES;

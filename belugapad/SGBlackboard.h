@@ -17,6 +17,7 @@
 }
 
 @property (retain) CCLayer *RenderLayer;
+@property (retain) CCLayer *IconRenderLayer;
 @property BOOL inProblemSetup;
 @property float MaxObjectDistance;
 @property (retain) NSMutableArray *islandData;

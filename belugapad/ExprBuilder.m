@@ -897,6 +897,9 @@
                         else //eval as equivlient
                         {
                             int anum = pnum + pfwhole * pdenom;
+                            
+                            if(anum==0 || tdenom==0 || tnum==0 || pdenom==0) return NO;
+                            
                             int cpnum=anum*tdenom;
                             int ctnum=tnum*pdenom;
                             

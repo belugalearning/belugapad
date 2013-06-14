@@ -61,7 +61,7 @@ const NSString *matchNumbers=@"0123456789";
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
             //specifically fail on strings of format x:y
-            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9][,:;\\/!?%][0-9]" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]+" options:NSRegularExpressionCaseInsensitive error:nil];
             int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
             
             return(c==0);

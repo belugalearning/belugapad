@@ -76,6 +76,8 @@ float timerIgnoreFrog;
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
+        toolHost.disableDescGwBtxeInteractions=YES;
+        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;

@@ -542,7 +542,7 @@
                                 
                                 if(!pNumerator){
                                     pNumerator=[[NumberWheel alloc]init];
-                                    pNumerator.RenderLayer=renderLayer;
+                                    pNumerator.RenderLayer=[toolHost returnWheelLayer];
                                     pNumerator.Components=numberPickerColumns;
                                     pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
                                     pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
@@ -553,7 +553,7 @@
                                     
                                     pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/NW_fractionsLine.png")];
                                     [pDivLine setPosition:ccp(pNumerator.Position.x,cy-58)];
-                                    [renderLayer addChild:pDivLine];
+                                    [renderLayer addChild:[toolHost returnWheelLayer]];
                                     
                                 }
                                 else
@@ -566,7 +566,7 @@
                                 }
                                 if(!pDenominator){
                                     pDenominator=[[NumberWheel alloc]init];
-                                    pDenominator.RenderLayer=renderLayer;
+                                    pDenominator.RenderLayer=[toolHost returnWheelLayer];
                                     pDenominator.Components=numberPickerColumns;
                                     pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
                                     pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
@@ -593,7 +593,7 @@
                                         columns=2;
                                     
                                     pWhole=[[NumberWheel alloc]init];
-                                    pWhole.RenderLayer=renderLayer;
+                                    pWhole.RenderLayer=[toolHost returnWheelLayer];
                                     pWhole.Components=columns;
                                     pWhole.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pWhole.Components];
                                     pWhole.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pWhole.Components];

@@ -142,8 +142,11 @@ static float kTimeToHintToolTray=0.0f;
         btxeDescLayer=[[CCLayer alloc] init];
         [self addChild:btxeDescLayer z:3];
         
+        wheelLayer=[[CCLayer alloc] init];
+        [self addChild:wheelLayer z:4];
+        
         pauseLayer=[[CCLayer alloc]init];
-        [self addChild:pauseLayer z:4];
+        [self addChild:pauseLayer z:10];
         
         contextProgressLayer=[[CCLayer alloc] init];
         [self addChild:contextProgressLayer z:6];
@@ -497,6 +500,11 @@ static float kTimeToHintToolTray=0.0f;
 -(CCLayer*)returnBtxeLayer
 {
     return btxeDescLayer;
+}
+
+-(CCLayer*)returnWheelLayer
+{
+    return wheelLayer;
 }
 
 -(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
@@ -2835,7 +2843,7 @@ static float kTimeToHintToolTray=0.0f;
     {
         //trayLayerWheel=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
         trayLayerWheel=[[CCLayer alloc]init];
-        [problemDefLayer addChild:trayLayerWheel z:5];
+        [wheelLayer addChild:trayLayerWheel];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
         

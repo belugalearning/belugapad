@@ -227,7 +227,7 @@
             row.tintMyChildren=NO;
         }
         
-        BOOL autoDisable=([evalType isEqualToString:@"ALL_PICKERS_CORRECT"] || [evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"]
+        BOOL autoDisable=([evalType isEqualToString:@"ALL_PICKERS_CORRECT"]
                           || [evalType isEqualToString:@"EXPRESSION_EQUALITIES"]
                           || [evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"]);
         

@@ -92,7 +92,7 @@ const NSString *matchNumbers=@"0123456789";
                 NSString *sepEndChar=@"?!.,:;%s";
                 NSString *newNextT=nil;
                 
-                if([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound)
+                if(([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound) && ([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound))
                 {
                     newNextT=[s substringFromIndex:s.length-2];
                     s=[s substringToIndex:s.length-2];

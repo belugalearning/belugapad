@@ -192,6 +192,11 @@
         numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     else
         numberMode=@"numeral";
+    
+    if([pdef objectForKey:@"DISABLE_AUTO_DISABLE"])
+    {
+        disableAutoDisableForProblem=[[pdef objectForKey:@"DISABLE_AUTO_DISABLE"] boolValue];
+    }
 }
 
 -(void)populateGW
@@ -227,9 +232,10 @@
             row.tintMyChildren=NO;
         }
         
-        BOOL autoDisable=([evalType isEqualToString:@"ALL_PICKERS_CORRECT"]
+        BOOL autoDisable=(!disableAutoDisableForProblem && ([evalType isEqualToString:@"ALL_PICKERS_CORRECT"]
                           || [evalType isEqualToString:@"EXPRESSION_EQUALITIES"]
-                          || [evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"]);
+                          || [evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"]));
+        
         
         if(numberMode)
             row.defaultNumbermode=numberMode;

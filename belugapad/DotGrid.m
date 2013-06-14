@@ -1016,6 +1016,9 @@
                 shape.ShapeX=fabsf(firstdrawn.myXpos-lastDrawn.myXpos);
                 shape.ShapeY=fabsf(firstdrawn.myYpos-lastDrawn.myYpos);
                 
+                //tell shape to draw labels (to get around setup not have anchor and size info)
+                [shape handleMessage:kDWshapeDrawLabels];
+                
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
                     [t handleMessage:kDWsetupStuff];

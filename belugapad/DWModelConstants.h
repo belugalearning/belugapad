@@ -130,6 +130,8 @@ typedef enum {
     
     kDWstartRespositionSeek=121,
     
-    kDWmoveSpriteToPositionWithoutAnimation=122
+    kDWmoveSpriteToPositionWithoutAnimation=122,
+    
+    kDWshapeDrawLabels=123
     
 } DWMessageType;

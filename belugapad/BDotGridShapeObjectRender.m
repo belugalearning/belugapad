@@ -37,7 +37,7 @@
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    if(messageType==kDWsetupStuff)
+    if(messageType==kDWsetupStuff || messageType==kDWshapeDrawLabels)
     {
         
         DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)s.firstAnchor;
@@ -84,137 +84,147 @@
         s.left=leftMostX;
         
         
-        if(!s.tiles||[s.tiles count]==0)return;
-        
-
-        if(s.countLabelType && !s.countBubble)
+        if(messageType==kDWsetupStuff)
         {
             
+            if(!s.tiles||[s.tiles count]==0)return;
             
-            float halfWayWidth=(bottomLeft.x+topRight.x)/2;
-            CCSprite *countBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_counter_multiplication.png")];
-            float botMostYAdj=botMostY-(countBubble.contentSize.height/1.5);
-            CCLabelTTF *countBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
-            [countBubbleLabel setPosition:ccp(countBubble.contentSize.width/2, countBubble.contentSize.height/2)];
-            [countBubble setPosition:ccp(halfWayWidth,botMostYAdj)];
-            [countBubble setVisible:NO];
-            
-            if(!s.shapeGroup)
+
+            if(s.countLabelType && !s.countBubble)
             {
-                s.countBubble=countBubble;
-                s.countLabel=countBubbleLabel;
-            }
-            else
-            {
-                DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
-                if(!sg.countBubble){
-                    sg.countBubble=countBubble;
-                    sg.countLabel=countBubbleLabel;
+                
+                
+                float halfWayWidth=(bottomLeft.x+topRight.x)/2;
+                CCSprite *countBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_counter_multiplication.png")];
+                float botMostYAdj=botMostY-(countBubble.contentSize.height/1.5);
+                CCLabelTTF *countBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
+                [countBubbleLabel setPosition:ccp(countBubble.contentSize.width/2, countBubble.contentSize.height/2)];
+                [countBubble setPosition:ccp(halfWayWidth,botMostYAdj)];
+                [countBubble setVisible:NO];
+                
+                if(!s.shapeGroup)
+                {
                     s.countBubble=countBubble;
-                }
-            }
-            
-            [s.RenderLayer addChild: countBubble];
-            [countBubble addChild:countBubbleLabel];
-        }
-        
-        if(s.countBubble)
-        {
-            float botMostYAdj=botMostY-(s.countBubble.contentSize.height/1.5);
-            [s.countBubble setPosition:ccp(halfWayWidth,botMostYAdj)];
-            [s handleMessage:kDWupdateLabels];
-        }
-        
-        if(s.RenderDimensions)
-        {
-            
-            if(s.shapeGroup)
-            {
-                
-                DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
-                if(!sg.hasLabels)
-                    sg.hasLabels=YES;
-                else
-                    return;
-            }
-            
-            // height label
-            int height=fabsf(fa.myYpos-la.myYpos);
-            NSString *strHeight=[NSString stringWithFormat:@"%d", height];
-            
-            float yPosForHeightLabel=halfWayHeight;
-            float xPosForHeightLabel=leftMostX-30;
-            
-            // width label
-            
-            int width=fabsf(fa.myXpos-la.myXpos);
-            NSString *strWidth=[NSString stringWithFormat:@"%d", width];
-            
-            float yPosForWidthLabel=topMostY+30;
-            float xPosForWidthLabel=halfWayWidth;
-            
-            if(!s.myHeight)
-            {
-                
-                s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-                [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
-                
-                if(gameWorld.Blackboard.inProblemSetup)
-                {
-                    [s.myHeight setOpacity:0];
-                    [s.myHeight setTag:2];
-                }
-                
-                [s.RenderLayer addChild:s.myHeight];
-            }
-            else
-            {
-                [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
-                [s.myHeight setString:strHeight];
-            }
-            if(!s.myWidth)
-            {
-
-                s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-                [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
-                
-                if(gameWorld.Blackboard.inProblemSetup)
-                {
-                    [s.myWidth setOpacity:0];
-                    [s.myWidth setTag:2];
-                }
-                
-                [s.RenderLayer addChild:s.myWidth];
-
-            }
-            else
-            {
-                [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
-                [s.myWidth setString:strWidth];
-            }
-            
-
-            
-            if(s.MyNumberWheel)
-            {
-                CCLabelTTF *l=nil;
-                
-                if(!((DWNWheelGameObject*)s.MyNumberWheel).Label)
-                {
-                    l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string] fontName:SOURCE fontSize:26.0f];
-                    ((DWNWheelGameObject*)s.MyNumberWheel).Label=l;
-                    [((DWNWheelGameObject*)s.MyNumberWheel).RenderLayer addChild:l];
+                    s.countLabel=countBubbleLabel;
                 }
                 else
                 {
-                    l=((DWNWheelGameObject*)s.MyNumberWheel).Label;
-                    [l setString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string]];
+                    DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
+                    if(!sg.countBubble){
+                        sg.countBubble=countBubble;
+                        sg.countLabel=countBubbleLabel;
+                        s.countBubble=countBubble;
+                    }
                 }
                 
-                if(s.autoUpdateWheel)[s.MyNumberWheel handleMessage:kDWupdateLabels];
+                [s.RenderLayer addChild: countBubble];
+                [countBubble addChild:countBubbleLabel];
+            }
+            
+            if(s.countBubble)
+            {
+                float botMostYAdj=botMostY-(s.countBubble.contentSize.height/1.5);
+                [s.countBubble setPosition:ccp(halfWayWidth,botMostYAdj)];
+                [s handleMessage:kDWupdateLabels];
             }
         }
+        else if (messageType==kDWshapeDrawLabels)
+        {
+            if(s.RenderDimensions)
+            {
+                NSLog(@"shape is: %f, %f, %d, %d", s.ShapeX, s.ShapeY, (int)s.firstBoundaryAnchor, (int)s.lastBoundaryAnchor);
+                
+                if(s.shapeGroup)
+                {
+                    
+                    DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
+                    if(!sg.hasLabels)
+                        sg.hasLabels=YES;
+                    else
+                        return;
+                }
+                
+                // height label
+                int height=fabsf(fa.myYpos-la.myYpos);
+                NSString *strHeight=[NSString stringWithFormat:@"%d", height];
+                
+                float yPosForHeightLabel=halfWayHeight;
+                float xPosForHeightLabel=leftMostX-30;
+                
+                // width label
+                
+                int width=fabsf(fa.myXpos-la.myXpos);
+                NSString *strWidth=[NSString stringWithFormat:@"%d", width];
+                
+                float yPosForWidthLabel=topMostY+30;
+                float xPosForWidthLabel=halfWayWidth;
+                
+                if(!s.myHeight)
+                {
+                    
+                    s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+                    [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
+                    
+                    if(gameWorld.Blackboard.inProblemSetup)
+                    {
+                        [s.myHeight setOpacity:0];
+                        [s.myHeight setTag:2];
+                    }
+                    
+                    [s.RenderLayer addChild:s.myHeight];
+                }
+                else
+                {
+                    [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
+                    [s.myHeight setString:strHeight];
+                }
+                if(!s.myWidth)
+                {
+                    
+                    s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+                    [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
+                    
+                    if(gameWorld.Blackboard.inProblemSetup)
+                    {
+                        [s.myWidth setOpacity:0];
+                        [s.myWidth setTag:2];
+                    }
+                    
+                    [s.RenderLayer addChild:s.myWidth];
+                    
+                }
+                else
+                {
+                    [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
+                    [s.myWidth setString:strWidth];
+                }
+                
+                
+                
+                if(s.MyNumberWheel)
+                {
+                    CCLabelTTF *l=nil;
+                    
+                    if(!((DWNWheelGameObject*)s.MyNumberWheel).Label)
+                    {
+                        l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string] fontName:SOURCE fontSize:26.0f];
+                        ((DWNWheelGameObject*)s.MyNumberWheel).Label=l;
+                        [((DWNWheelGameObject*)s.MyNumberWheel).RenderLayer addChild:l];
+                    }
+                    else
+                    {
+                        l=((DWNWheelGameObject*)s.MyNumberWheel).Label;
+                        [l setString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string]];
+                    }
+                    
+                    if(s.autoUpdateWheel)[s.MyNumberWheel handleMessage:kDWupdateLabels];
+                }
+            }
+
+        }
+
     }
+    
     
     if (messageType==kDWmoveSpriteToPosition) {
         [self setPos];

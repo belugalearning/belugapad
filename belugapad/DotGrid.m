@@ -82,7 +82,7 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         gw.Blackboard.inProblemSetup = NO;
     }

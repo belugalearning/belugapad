@@ -12,8 +12,6 @@
 		<integer>0</integer>
 		<key>PICKER_ORIGIN_Y</key>
 		<integer>0</integer>
-		<key>SHOW_DROPBOX</key>
-		<true/>
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>

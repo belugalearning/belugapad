@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>MASTERY</key>
+    <true/>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>&lt;b:t&gt;Place the bubble on&lt;/b:t&gt;&lt;b:on numerator=&quot;{$x}&quot; denominator=&quot;{$y}&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>Count in 1/6</string>
+    <key>TOOL_KEY</key>
+    <string>NLine</string>
+    <key>START_VALUE</key>
+    <string>0</string>
+    <key>MIN_VALUE</key>
+    <string>0</string>
+    <key>MAX_VALUE</key>
+    <string>{$y}</string>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>EVAL_TARGET</key>
+    <string>{$x}</string>
+    <key>REJECT_MODE</key>
+    <integer>0</integer>
+    <key>HIDE_ALL_NUMBERS</key>
+    <true/>
+    <key>HIDE_ALL_NOTCHES</key>
+    <false/>
+    <key>HIDE_START_NUMBER</key>
+    <false/>
+    <key>HIDE_END_NUMBER</key>
+    <false/>
+    <key>HIDE_START_NOTCH</key>
+    <false/>
+    <key>HIDE_END_NOTCH</key>
+    <false/>
+    <key>DISABLE_SNAPPING_TO_NOTCH</key>
+    <false/>
+    <key>EVAL_PLUS_MINUS_THRESHOLD</key>
+    <integer>0</integer>
+    <key>RENDER_STITCHES_AT_INTERVAL</key>
+    <integer>0</integer>
+    <key>DISPLAY_DENOMINATOR</key>
+    <string>{$y}</string>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$x</string>
+        <key>MIN</key>
+        <string>2</string>
+        <key>MAX</key>
+        <string>6</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$y</string>
+        <key>MIN</key>
+        <string>7</string>
+        <key>MAX</key>
+        <string>9</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

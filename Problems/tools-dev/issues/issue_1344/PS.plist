@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>&lt;b:t&gt;Drag numerators and denominators out and share 1 between 4 to show&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;4&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+    <key>TOOL_KEY</key>
+    <string>PieSplitter</string>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>DIVIDEND</key>
+    <integer>1</integer>
+    <key>DIVISOR</key>
+    <integer>4</integer>
+    <key>NUMBER_ACTIVE_PIES</key>
+    <integer>0</integer>
+    <key>NUMBER_ACTIVE_SQUARES</key>
+    <integer>0</integer>
+    <key>START_PROBLEM_SPLIT</key>
+    <true/>
+    <key>NUMBER_CAGED_PIES</key>
+    <integer>10</integer>
+    <key>NUMBER_CAGED_SQUARES</key>
+    <integer>10</integer>
+  </dict>
+</plist>

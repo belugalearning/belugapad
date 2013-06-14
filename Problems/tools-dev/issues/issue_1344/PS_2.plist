@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>This pie has been split into sixths. How many sixths in a whole?</string>
+    <key>TOOL_KEY</key>
+    <string>PieSplitter</string>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>DIVIDEND</key>
+    <integer>1</integer>
+    <key>DIVISOR</key>
+    <integer>6</integer>
+    <key>NUMBER_ACTIVE_PIES</key>
+    <integer>1</integer>
+    <key>NUMBER_ACTIVE_SQUARES</key>
+    <integer>6</integer>
+    <key>START_PROBLEM_SPLIT</key>
+    <true/>
+    <key>NUMBER_CAGED_PIES</key>
+    <integer>0</integer>
+    <key>NUMBER_CAGED_SQUARES</key>
+    <integer>0</integer>
+    <key>META_QUESTION</key>
+    <dict>
+      <key>META_QUESTION_COMPLETE_TEXT</key>
+      <string>Great!</string>
+      <key>META_QUESTION_EVAL_MODE</key>
+      <integer>0</integer>
+      <key>META_QUESTION_ANSWER_MODE</key>
+      <integer>0</integer>
+      <key>META_QUESTION_ANSWERS</key>
+      <array>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>2</string>
+          <key>META_ANSWER_VALUE</key>
+          <false/>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>6</string>
+          <key>META_ANSWER_VALUE</key>
+          <true/>
+        </dict>
+        <dict>
+          <key>META_ANSWER_TEXT</key>
+          <string>3</string>
+          <key>META_ANSWER_VALUE</key>
+          <false/>
+        </dict>
+      </array>
+      <key>META_QUESTION_TITLE</key>
+      <string>&lt;b:t&gt;This is&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;6&quot; /&gt;&lt;b:t&gt;. How many are there in a whole?&lt;/b:t&gt;</string>
+      <key>META_QUESTION_INCOMPLETE_TEXT</key>
+      <string>Try again.</string>
+    </dict>
+    <key>SHOW_NEW_PIES_CONTAINERS</key>
+    <false/>
+  </dict>
+</plist>

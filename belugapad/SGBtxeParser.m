@@ -56,7 +56,7 @@ const NSString *matchNumbers=@"0123456789";
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
             //specifically fail on strings of format x:y
-            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9][.,:;\\/!?%][0-9]" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9][,:;\\/!?%][0-9]" options:NSRegularExpressionCaseInsensitive error:nil];
             int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
             
             return(c==0);
@@ -147,6 +147,9 @@ const NSString *matchNumbers=@"0123456789";
         //also disable if a number picker
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
+        
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
     
@@ -177,6 +180,9 @@ const NSString *matchNumbers=@"0123456789";
         
         oo.enabled=[self enabledBoolFor:element];
         [ParentGO.containerMgrComponent addObjectToContainer:oo];
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) oo.interactive=NO;
     }
     
     else if([element.name isEqualToString:BTXE_OI])
@@ -191,6 +197,9 @@ const NSString *matchNumbers=@"0123456789";
         if(hidden)oi.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         oi.enabled=[self enabledBoolFor:element];
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) oi.interactive=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:oi];
     }
@@ -317,6 +326,8 @@ const NSString *matchNumbers=@"0123456789";
         //explicit interactivity disable
         on.interactive=![self boolFor:@"notinteractive" on:element];
         
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) on.interactive=NO;
         
         [nf release];
         

@@ -239,6 +239,8 @@ typedef enum {
     BOOL quittingToMap;
     BOOL isTouching;
     
+    BOOL allowBtxeTouch;
+    
     SGBtxeRow *qDescRow;
     
     CCParticleSystemQuad *followParticle;
@@ -313,7 +315,7 @@ typedef enum {
 -(void)playAudioClick;
 -(void)playAudioPress;
 -(SGGameWorld*)currentDescGW;
-
+-(BOOL)btxeObjectsEnabled;
 -(void)resetScoreMultiplier;
 - (void)sizeQuestionDescription;
 -(void)setReadProblemPosWithScale:(float)ascale;

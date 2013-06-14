@@ -21,6 +21,8 @@
 		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
 		<false/>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
 	</dict>
 	<key>NumberBonds</key>
 	<dict>
@@ -30,14 +32,18 @@
 		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
 		<false/>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
 	</dict>
 	<key>PlaceValue</key>
 	<dict>
 		<key>SCALE_MIN</key>
-		<real>1</real>
+		<integer>1</integer>
 		<key>SCALE_MAX</key>
 		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
+		<true/>
+		<key>DISALLOW_BTXE_TOUCH</key>
 		<true/>
 	</dict>
 	<key>DotGrid</key>
@@ -48,12 +54,38 @@
 		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
 		<false/>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
+	</dict>
+	<key>CountingTimer</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<integer>1</integer>
+		<key>SCALE_MAX</key>
+		<integer>1</integer>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
+	</dict>
+	<key>FloatingBlock</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<integer>1</integer>
+		<key>SCALE_MAX</key>
+		<integer>1</integer>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
 	</dict>
 	<key>LongDivision</key>
 	<dict>
 		<key>TOOL_DEPTH</key>
 		<string>3</string>
 		<key>SCALING_PASS_THRU</key>
+		<true/>
+		<key>DISALLOW_BTXE_TOUCH</key>
 		<true/>
 	</dict>
 	<key>TimesTables</key>
@@ -64,6 +96,8 @@
 		<integer>1</integer>
 		<key>SCALE_MAX</key>
 		<integer>1</integer>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
 	</dict>
 	<key>PieSplitter</key>
 	<dict>
@@ -73,6 +107,8 @@
 		<integer>1</integer>
 		<key>SCALE_MAX</key>
 		<integer>1</integer>
+		<key>DISALLOW_BTXE_TOUCH</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

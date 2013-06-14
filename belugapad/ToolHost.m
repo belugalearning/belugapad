@@ -938,7 +938,7 @@ static float kTimeToHintToolTray=0.0f;
     NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
     
     //default to allowing BTXE interactions, let the tool set otherwise
-    self.disableDescGwBtxeInteractions=NO;
+//    self.disableDescGwBtxeInteractions=NO;
     
     if(toolKey)
     {
@@ -949,10 +949,16 @@ static float kTimeToHintToolTray=0.0f;
     
     if (mq)
     {
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
         [self setupMetaQuestion:mq];
     }
     else if(np)
     {
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
         evalMode=1;
         [self setupNumberPicker:np];
     }
@@ -1240,6 +1246,10 @@ static float kTimeToHintToolTray=0.0f;
         else 
             currentTool.PassThruScaling=NO;
         
+        if([toolOpt objectForKey:@"DISALLOW_BTXE_TOUCH"])
+            self.disableDescGwBtxeInteractions=[[toolOpt objectForKey:@"DISALLOW_BTXE_TOUCH"]boolValue];
+        else
+            self.disableDescGwBtxeInteractions=NO;
         
         //get tool depth
         if([toolOpt objectForKey:@"TOOL_DEPTH"])
@@ -1284,6 +1294,11 @@ static float kTimeToHintToolTray=0.0f;
 }
 
 #pragma mark - pause show and touch handling
+
+-(BOOL)btxeObjectsEnabled
+{
+    return self.btxeObjectsEnabled;
+}
 
 -(void) showPauseMenu
 {

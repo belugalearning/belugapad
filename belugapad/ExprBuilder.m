@@ -560,7 +560,7 @@
                                     
                                     pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/NW_fractionsLine.png")];
                                     [pDivLine setPosition:ccp(pNumerator.Position.x,cy-58)];
-                                    [renderLayer addChild:[toolHost returnWheelLayer]];
+                                    [[toolHost returnWheelLayer] addChild:pDivLine];
                                     
                                 }
                                 else

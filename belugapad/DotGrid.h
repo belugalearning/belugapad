@@ -146,6 +146,8 @@ typedef struct {
     int spaceBetweenAnchors;
     int startX;
     int startY;
+    
+    CGPoint pickupAnchorPoint;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

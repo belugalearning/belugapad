@@ -53,6 +53,8 @@
         if(!anch.mySprite) { 
             [self setSprite];
         }
+        else
+            [self updatePosition];
         
     }
     if(messageType==kDWdismantle)
@@ -61,7 +63,13 @@
     }
 }
 
-
+-(void)updatePosition
+{
+    if(anch.mySprite)
+    {
+        anch.mySprite.Position=anch.Position;
+    }
+}
 
 -(void)setSprite
 {    

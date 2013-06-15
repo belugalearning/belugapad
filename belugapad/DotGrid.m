@@ -1520,7 +1520,8 @@
             
             [curShape handleMessage:kDWresizeShape];
                 
-             
+            //reatin current anchor position
+            pickupAnchorPoint=((DWDotGridAnchorGameObject*)gw.Blackboard.CurrentHandle).Position;
                 
             return;
         }
@@ -1670,14 +1671,23 @@
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=NO;
     }
     
-    if(gameState==kResizeShape)
-    {
+    if(gameState==kResizeShape && !(evalType==kProblemGridMultiplication && (location.x < 98 || location.y>418)))
+        {
+        
+        
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_block_resized.wav")];
         DWDotGridHandleGameObject * cHandle=(DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle;
         if(!useShapeGroups)
             [self checkAnchorsOfExistingShape:cHandle.myShape];
         else
             [self checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)cHandle.myShape.shapeGroup];
+    }
+    else if(gameState==kResizeShape && evalType==kProblemGridMultiplication)
+    {
+        //reset anchor position
+        DWDotGridHandleGameObject *cHandle=(DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle;
+        cHandle.Position=pickupAnchorPoint;
+        [cHandle handleMessage:kDWupdateSprite andPayload:nil withLogLevel:0];
     }
     
     if(showMoreOrLess)

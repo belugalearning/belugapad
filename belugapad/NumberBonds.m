@@ -67,7 +67,7 @@ static float kNBFontSizeLarge=35.0f;
         gw.Blackboard.inProblemSetup = YES;
         sgw.Blackboard.inProblemSetup = YES;
         
-//        sgw.Blackboard.disableAllBTXEinteractions=YES;
+        sgw.Blackboard.disableAllBTXEinteractions=YES;
 //        toolHost.disableDescGwBtxeInteractions=YES;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];

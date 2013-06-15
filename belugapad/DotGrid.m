@@ -1671,7 +1671,7 @@
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=NO;
     }
     
-    if(gameState==kResizeShape && !(evalType==kProblemGridMultiplication && (location.x < 98 || location.y>418)))
+    if(gameState==kResizeShape && !(evalType==kProblemGridMultiplication && (location.x < 104 || location.y>413)))
         {
         
         

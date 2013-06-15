@@ -276,7 +276,7 @@
     if(drawMode==2)
         showDraggableBlock=NO;
     
-    if(evalType==kProblemGridMultiplication)
+    if(evalType==kProblemGridMultiplication && (!initObjects||[initObjects count]==0))
     {
         showDraggableBlock=NO;
         drawMode=1;

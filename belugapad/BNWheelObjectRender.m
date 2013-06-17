@@ -40,9 +40,9 @@
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     contentService = ac.contentService;
     usersService = ac.usersService;
-    w.ComponentHeight=32;
-    w.ComponentWidth=54;
-    w.ComponentSpacing=0;
+    w.ComponentHeight=62;
+    w.ComponentWidth=71;
+    w.ComponentSpacing=6;
     
     //init pos x & y in case they're not set elsewhere
     
@@ -113,7 +113,7 @@
     
     if(messageType==kDWupdateLabels)
     {
-        if(w.Label)[w.Label setPosition:ccp(w.Position.x-150,w.Position.y)];
+        if(w.Label)[w.Label setPosition:ccp(w.Position.x-215,w.Position.y)];
         if(w.CountBubble)[w.CountBubble setPosition:[self createCountBubblePos]];
     }
     
@@ -151,9 +151,10 @@
         w.CountBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_counter_multiplication.png")];
         [w.CountBubble setPosition:[self createCountBubblePos]];
         w.CountBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:25.0f];
-        [w.CountBubbleLabel setPosition:ccp(49,18)];
+        [w.CountBubbleLabel setPosition:ccp(65,20)];
         [w.CountBubbleRenderLayer addChild:w.CountBubble];
         [w.CountBubble addChild:w.CountBubbleLabel];
+        
     }
     
     [self setupNumberWheel];
@@ -228,7 +229,7 @@
             }
         }
         
-        CGPoint avgPos=ccp(total.x/[s.tiles count], lowest-tileSize);
+        CGPoint avgPos=ccp(total.x/[s.tiles count], lowest-(tileSize+10));
         
         return avgPos;
     }
@@ -288,7 +289,7 @@
             break;
     }
     
-    if(component>0 && w.HasDecimals)
+    if(component>0 && w.HasDecimals && component<(w.Components-1))
         numRows++;
     
     

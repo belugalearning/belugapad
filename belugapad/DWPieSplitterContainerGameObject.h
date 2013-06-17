@@ -17,10 +17,18 @@
 //@property (retain) CCSprite *mySprite;
 @property (retain) NSMutableArray *mySlices;
 @property BOOL ScaledUp;
-@property (retain) CCLabelTTF *myText;
 @property (retain) NSString *textString;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSMutableArray *Nodes;
 @property (retain) CCSprite *mySprite;
+@property (retain) CCNode *labelNode;
+@property (retain) CCLabelTTF *wholeNum;
+@property (retain) CCLabelTTF *fractNum;
+@property (retain) CCLabelTTF *fractDenom;
+@property (retain) CCLabelTTF *decimalNum;
+@property (retain) CCSprite *fractLine;
+@property BOOL Touchable;
+
+-(CGRect)returnLabelBox;
 
 @end

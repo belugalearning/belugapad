@@ -84,6 +84,7 @@
 @synthesize pickerView;
 @synthesize CurrentBTXE;
 @synthesize thisProblemDescription;
+@synthesize disableDescGwBtxeInteractions;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -141,8 +142,11 @@ static float kTimeToHintToolTray=0.0f;
         btxeDescLayer=[[CCLayer alloc] init];
         [self addChild:btxeDescLayer z:3];
         
+        wheelLayer=[[CCLayer alloc] init];
+        [self addChild:wheelLayer z:4];
+        
         pauseLayer=[[CCLayer alloc]init];
-        [self addChild:pauseLayer z:4];
+        [self addChild:pauseLayer z:10];
         
         contextProgressLayer=[[CCLayer alloc] init];
         [self addChild:contextProgressLayer z:6];
@@ -371,15 +375,13 @@ static float kTimeToHintToolTray=0.0f;
     if(delayShowWheel&&timeToWheelStart>2.0f){
         [self showWheel];
         
-        if(currentTool)
-            [self showCornerTray];
-        
         timeToWheelStart=0.0f;
         delayShowWheel=NO;
     }
     
     if(delayShowMeta&&timeToMetaStart>2.0f){
-        [self showMq];
+        if(!currentTool)
+            [self showMq];
         
         timeToMetaStart=0.0f;
         delayShowMeta=NO;
@@ -394,9 +396,12 @@ static float kTimeToHintToolTray=0.0f;
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
             hasRunInteractionFeedback=YES;
         }
-        if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0){
+        if(metaQuestionForThisProblem && !hasUsedMetaTray && !hasRunInteractionFeedback && [traybtnMq numberOfRunningActions]==0 && [metaArrow numberOfRunningActions]==0){
             [traybtnMq setZOrder:10];
             [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+            [metaArrow setZOrder:1000];
+            CCSequence *sq=[CCSequence actions:[CCFadeIn actionWithDuration:0.3f],[InteractionFeedback dropAndBounceAction], [CCFadeOut actionWithDuration:0.3f], nil];
+            [metaArrow runAction:sq];
             hasRunInteractionFeedback=YES;
         }
         
@@ -412,13 +417,12 @@ static float kTimeToHintToolTray=0.0f;
         if(!pickerView){
             [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")]];
             [self showWheel];
-            [self showCornerTray];
         }
         else
         {
             [(id<Text>)CurrentBTXE setText:[self returnPickerNumber]];
         }
-        
+
     }
     
     if(countUpToJmap)
@@ -492,6 +496,16 @@ static float kTimeToHintToolTray=0.0f;
 }
 
 #pragma mark - add layers
+
+-(CCLayer*)returnBtxeLayer
+{
+    return btxeDescLayer;
+}
+
+-(CCLayer*)returnWheelLayer
+{
+    return wheelLayer;
+}
 
 -(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
 {
@@ -597,13 +611,11 @@ static float kTimeToHintToolTray=0.0f;
 -(void)scoreProblemSuccess
 {
     if(breakOutIntroProblemFK)return;
-    
-    int newScore = ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseScore);
+    int newScore = contentService.pipelineProblemAttemptNormalScore + ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseBonusScore);
     newScore = min(newScore, SCORE_EPISODE_MAX - pipelineScore);
     
     pipelineScore += newScore;
-    
-    int shards = SCORE_MAX_SHARDS * newScore / contentService.pipelineProblemAttemptMaxScore;
+    int shards = SCORE_MAX_SHARDS * newScore / (contentService.pipelineProblemAttemptNormalScore + contentService.pipelineProblemAttemptMaxBonusScore);
     
     displayPerShard = (int) (newScore / (float)shards);
     
@@ -930,24 +942,34 @@ static float kTimeToHintToolTray=0.0f;
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
-    if (mq)
-    {
-        [self setupMetaQuestion:mq];
-    }
-    else if(np)
-    {
-        evalMode=1;
-        [self setupNumberPicker:np];
-    }
-    else {
-        [self setupProblemOnToolHost:pdef];
-    }
+    
+    //default to allowing BTXE interactions, let the tool set otherwise
+//    self.disableDescGwBtxeInteractions=NO;
     
     if(toolKey)
     {
         //initialize tool scene
         currentTool=[NSClassFromString(toolKey) alloc];
         [currentTool initWithToolHost:self andProblemDef:pdef];
+    }
+    
+    if (mq)
+    {
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
+        [self setupMetaQuestion:mq];
+    }
+    else if(np)
+    {
+        if(!currentTool)
+            self.disableDescGwBtxeInteractions=YES;
+        
+        evalMode=1;
+        [self setupNumberPicker:np];
+    }
+    else {
+        [self setupProblemOnToolHost:pdef];
     }
     
     NSString *breakOutToFK=[usersService shouldInsertWhatFeatureKey];
@@ -1036,12 +1058,12 @@ static float kTimeToHintToolTray=0.0f;
 }
 -(void)addMetaHintArrow
 {
-    metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_MQ_Tip.png")];
-    [metaArrow setPosition:ccp(lx-124,2*cy-30)];
+    metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/hand.png")];
+    [metaArrow setPosition:ccp(cx+(cx/2),ly-145)];
 //    [metaArrow setTag:3];
-//    [metaArrow setOpacity:0];
-    [metaArrow setVisible:NO];
-    [problemDefLayer addChild:metaArrow z:10];
+    [metaArrow setOpacity:0];
+//    [metaArrow setVisible:YES];
+    [btxeDescLayer addChild:metaArrow z:100];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {
@@ -1056,6 +1078,11 @@ static float kTimeToHintToolTray=0.0f;
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
+}
+
+-(BOOL)isShowingPickerLayer
+{
+    return trayLayerWheel.visible;
 }
 
 -(void)readOutProblemDescriptionAndForce:(BOOL)forceRead
@@ -1225,6 +1252,10 @@ static float kTimeToHintToolTray=0.0f;
         else 
             currentTool.PassThruScaling=NO;
         
+        if([toolOpt objectForKey:@"DISALLOW_BTXE_TOUCH"])
+            self.disableDescGwBtxeInteractions=[[toolOpt objectForKey:@"DISALLOW_BTXE_TOUCH"]boolValue];
+        else
+            self.disableDescGwBtxeInteractions=NO;
         
         //get tool depth
         if([toolOpt objectForKey:@"TOOL_DEPTH"])
@@ -1269,6 +1300,11 @@ static float kTimeToHintToolTray=0.0f;
 }
 
 #pragma mark - pause show and touch handling
+
+-(BOOL)btxeObjectsEnabled
+{
+    return self.btxeObjectsEnabled;
+}
 
 -(void) showPauseMenu
 {
@@ -1649,7 +1685,7 @@ static float kTimeToHintToolTray=0.0f;
             [metaQuestionAnswerLabels addObject:row];
             [row setupDraw];
             [row tagMyChildrenForIntro];
-//            [row rowVisible:NO];
+            [row rowVisible:NO];
         }
     
         if(row)[row release];
@@ -1950,6 +1986,11 @@ static float kTimeToHintToolTray=0.0f;
     
     [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
     npEval=[[pdefNP objectForKey:EVAL_VALUE]floatValue];
+    
+    NSString *evalStr=[NSString stringWithFormat:@"%g", npEval];
+    if([evalStr rangeOfString:@"."].location != NSNotFound)
+        [usersService notifyStartingFeatureKey:@"NUMBERPICKER_DECIMAL"];
+    
     numberPickerEvalMode=[[pdefNP objectForKey:PICKER_EVAL_MODE]intValue];
     
     
@@ -2073,6 +2114,11 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark - problem description
 
+-(SGGameWorld*)currentDescGW
+{
+    return descGw;
+}
+
 - (void)sizeQuestionDescription
 {
     SGBtxeRow *row=qDescRow;
@@ -2081,10 +2127,6 @@ static float kTimeToHintToolTray=0.0f;
     qTrayMid.position=ccp(0,0);
     qTrayTop.position=ccp(0,0);
     
-    qTrayBot.zOrder=3;
-    qTrayTop.zOrder=3;
-    qTrayMid.zOrder=1;
-    
     float rowHeight=0;
 
     [qTrayMid setAnchorPoint:ccp(0.5f, 0.0f)];
@@ -2092,8 +2134,7 @@ static float kTimeToHintToolTray=0.0f;
     if([currentTool isKindOfClass:[ExprBuilder class]])
     {
 //        ExprBuilder *eb=(ExprBuilder*)currentTool;
-        
-        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight] +15;
+        rowHeight=[(ExprBuilder*)currentTool getDescriptionAreaHeight];
         qTrayMid.position=ccp(row.position.x, row.position.y);
     }
     else
@@ -2107,8 +2148,8 @@ static float kTimeToHintToolTray=0.0f;
 
 
     //[qTrayMid setPosition:ccp(cx,row.position.y)];
+//    [qTrayMid setScaleY:(rowHeight-64)/16];
     [qTrayMid setScaleY:(rowHeight-64)/16];
-
     
         NSLog(@"row height %f scaleY %f", rowHeight, qTrayMid.scaleY);
     
@@ -2163,6 +2204,8 @@ static float kTimeToHintToolTray=0.0f;
     }
     
     descGw=[[SGGameWorld alloc] initWithGameScene:self];
+    descGw.Blackboard.disableAllBTXEinteractions=self.disableDescGwBtxeInteractions;
+    descGw.Blackboard.IconRenderLayer=[self returnBtxeLayer];
     descGw.Blackboard.inProblemSetup=YES;
     
     descGw.Blackboard.RenderLayer = btxeDescLayer;
@@ -2219,10 +2262,10 @@ static float kTimeToHintToolTray=0.0f;
     [self setReadProblemPosWithScale:1.0f];
 
     
-    [backgroundLayer addChild:readProblemDesc];
-    [backgroundLayer addChild:qTrayTop];
-    [backgroundLayer addChild:qTrayBot];
-    [backgroundLayer addChild:qTrayMid];
+    [btxeDescLayer addChild:readProblemDesc z:-1];
+    [btxeDescLayer addChild:qTrayTop z:-1];
+    [btxeDescLayer addChild:qTrayBot z:-1];
+    [btxeDescLayer addChild:qTrayMid z:-1];
     
     descGw.Blackboard.inProblemSetup=NO;
     
@@ -2304,9 +2347,20 @@ static float kTimeToHintToolTray=0.0f;
     }
     else
     {
-        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
-            [self removeAllTrays];
-            return;
+//        CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308
+        if((trayMqShowing||trayWheelShowing||trayCalcShowing) && currentTool){
+            BOOL beenHit=YES;
+            if(![currentTool isKindOfClass:[ExprBuilder class]] && !CGRectContainsPoint(CGRectMake(0,cy-61,lx,122), location))
+                beenHit=NO;
+            if([currentTool isKindOfClass:[ExprBuilder class]] && !CGRectContainsPoint(wheelULImage.boundingBox,location))
+                beenHit=NO;
+            
+            if(!beenHit)
+            {
+                [self removeAllTrays];
+                return;
+            }
+            
         }
     }
     
@@ -2350,7 +2404,8 @@ static float kTimeToHintToolTray=0.0f;
     [followParticle setPosition:location];
     [followParticle setVisible:YES];
     
-    [currentTool ccTouchesBegan:touches withEvent:event];
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesBegan:touches withEvent:event];
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -2411,7 +2466,9 @@ static float kTimeToHintToolTray=0.0f;
         [followParticle setPosition:location];
         [explodeParticle setPosition:location];
     }
-    [currentTool ccTouchesMoved:touches withEvent:event];
+    
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesMoved:touches withEvent:event];
 
     
 
@@ -2530,7 +2587,6 @@ static float kTimeToHintToolTray=0.0f;
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
-            if(currentTool)[self showCornerTray];
         }
     }
     if(trayPadShowing && location.y>cx+40.0f)
@@ -2552,7 +2608,6 @@ static float kTimeToHintToolTray=0.0f;
             [self hideWheel];
             [self showPad];
             [self hideCornerTrayAndForce:YES];
-            
             //[self showCornerTray];
         }
     }
@@ -2598,7 +2653,9 @@ static float kTimeToHintToolTray=0.0f;
         hasMovedNumber=NO;
     }
     
-    [currentTool ccTouchesEnded:touches withEvent:event];
+    if(!trayLayerWheel.visible)
+        [currentTool ccTouchesEnded:touches withEvent:event];
+    
     isTouching=NO;
 }
 
@@ -2737,6 +2794,9 @@ static float kTimeToHintToolTray=0.0f;
     {
         [r rowVisible:YES];
     }
+    
+    if(metaArrow)
+        [metaArrow setVisible:NO];
 //    [traybtnMq setColor:ccc3(247,143,6)];
     [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Selected.png")]];
 
@@ -2786,7 +2846,7 @@ static float kTimeToHintToolTray=0.0f;
     {
         //trayLayerWheel=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
         trayLayerWheel=[[CCLayer alloc]init];
-        [problemDefLayer addChild:trayLayerWheel z:2];
+        [wheelLayer addChild:trayLayerWheel];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
         
@@ -2814,6 +2874,7 @@ static float kTimeToHintToolTray=0.0f;
 
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
+    
 //    [traybtnWheel setColor:ccc3(255,255,255)];
     
     if(hasTrayWheel && traybtnWheel)
@@ -2874,11 +2935,15 @@ static float kTimeToHintToolTray=0.0f;
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[self numberOfComponentsInPickerView:self.pickerView]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
     
+    wheelULImage=ovSprite;
+    
     self.pickerView = [CCPickerView node];
-    if(currentTool)
-        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
+    
+    if([currentTool isKindOfClass:[ExprBuilder class]])
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-430);
     else
         pickerView.position=ccp(cx,cy);
+    
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
@@ -2895,12 +2960,17 @@ static float kTimeToHintToolTray=0.0f;
 
 #pragma mark CCPickerView delegate methods
 
+-(void)setPickerColumnCount:(int)count
+{
+    exprBuilderPickerColumns=count;
+}
+
 - (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
     int length=0;
     
     if(CurrentBTXE)
     {
-        length=3;
+        length=exprBuilderPickerColumns;
     }
     
     if(numberPickerForThisProblem) {
@@ -2927,7 +2997,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(component==0)
     {
-        if([self numberOfComponentsInPickerView:pickerView]>1)
+        if([self numberOfComponentsInPickerView:self.pickerView]>1)
             numRows = 12;
         else
             numRows= 10;
@@ -2935,6 +3005,8 @@ static float kTimeToHintToolTray=0.0f;
     else
     {
         numRows = 11;
+        if(component==[self numberOfComponentsInPickerView:self.pickerView]-1)
+            numRows = 10;
     }
     
     return numRows;
@@ -3053,6 +3125,11 @@ static float kTimeToHintToolTray=0.0f;
         NSString *thisStr=[NSString stringWithFormat:@"%c",[thisNumber characterAtIndex:i]];
         int thisInt=[thisStr intValue];
         
+        if([thisStr isEqualToString:@"."])
+            thisInt=10;
+        else if([thisStr isEqualToString:@"-"])
+            thisInt=11;
+        
         [pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
         
 
@@ -3167,6 +3244,7 @@ static float kTimeToHintToolTray=0.0f;
     
     if(self.pickerView)self.pickerView=nil;
     
+    wheelULImage=nil;
     
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];

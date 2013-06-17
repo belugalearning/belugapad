@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
+	<key>EVAL_TYPE</key>
+	<string>SEQUENCE_ASC</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;A sentence.&lt;/b:t&gt;&lt;b:t&gt; A sentence with a number 9,&lt;/b:t&gt;&lt;b:on number=&quot;10&quot; /&gt;&lt;b:t&gt;. New sentence, and an end.&lt;/b:t&gt;&lt;b:on number=&quot;10&quot; /&gt;&lt;b:t&gt;New sentence, no starting full stop.&lt;/b:t&gt;</string>
+		<string>&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;</string>
+	</array>
+</dict>
+</plist>

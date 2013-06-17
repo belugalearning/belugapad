@@ -50,6 +50,7 @@
 
 -(void)checkDropTarget:(CGPoint)hitLoc
 {
+    if(!cont.ScaledUp)return;
     CGRect baseNodeBound=CGRectNull;
     baseNodeBound=CGRectUnion(cont.mySprite.boundingBox, cont.mySprite.boundingBox);
     
@@ -73,7 +74,7 @@
     if(gameWorld.Blackboard.PickupObject && [cont.mySlices containsObject:gameWorld.Blackboard.PickupObject])
     {
         [cont.mySlices removeObject:gameWorld.Blackboard.PickupObject];
-        if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
+//        if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
         
 //        [self scaleMidSection];
         // reorder pie slices
@@ -94,7 +95,7 @@
     [cont.mySlices removeAllObjects];
     [cont.Nodes removeAllObjects];
     NSLog(@"basenode child count: %d",[cont.BaseNode.children count]);
-    if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
+//    if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
     
     //[self scaleMidSection];
 

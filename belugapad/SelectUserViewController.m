@@ -336,18 +336,19 @@
     joinClassButton.enabled = NO;
     
     changeNickView = [[UIView alloc]  initWithFrame:CGRectMake(0, 0, 699, 459)];
-    [changeNickView setCenter:CGPointMake(511.0f, 377.0f)];
+    [changeNickView setCenter:CGPointMake(512.0f, 364.0f)];
     UIImageView *changeNickBG = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/change_username_bg.png"]] autorelease];
     [changeNickView addSubview:changeNickBG];
     
-    nickTakenLabel = [[[UILabel alloc] initWithFrame:CGRectMake(56, 113, 360.0f, 42.0f)] autorelease];
+    nickTakenLabel = [[[UILabel alloc] initWithFrame:CGRectMake(250, 330, 360.0f, 42.0f)] autorelease];
     nickTakenLabel.font = [UIFont fontWithName:@"Chango" size:24];
     nickTakenLabel.text = @"Name Taken!";
+    nickTakenLabel.alpha = 0;
     [nickTakenLabel setTextColor:[UIColor whiteColor]];
     [nickTakenLabel setBackgroundColor:[UIColor clearColor]];
     [changeNickView addSubview:nickTakenLabel];
     
-    changeNickTF = [[[UITextField alloc] initWithFrame:CGRectMake(56, 163, 360.0f, 42.0f)] autorelease];
+    changeNickTF = [[[UITextField alloc] initWithFrame:CGRectMake(169, 175, 360.0f, 42.0f)] autorelease];
     changeNickTF.delegate = self;
     changeNickTF.font = [UIFont fontWithName:@"Chango" size:24];
     changeNickTF.clearButtonMode = UITextFieldViewModeNever;
@@ -356,18 +357,19 @@
     changeNickTF.keyboardType = UIKeyboardTypeNamePhonePad;
     changeNickTF.returnKeyType = UIReturnKeyDone;
     [changeNickTF setTextColor:[UIColor whiteColor]];
-    [changeNickTF setBorderStyle:UITextBorderStyleLine];
+    [changeNickTF setBorderStyle:UITextBorderStyleNone];
     [changeNickView addSubview:changeNickTF];
+    [changeNickTF addTarget:self action:@selector(handleChangeNickTFChange:) forControlEvents:UIControlEventEditingChanged];
     
     cancelChangeNickButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelChangeNickButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
-    cancelChangeNickButton.frame = CGRectMake(57, 246, 131, 51);
+    cancelChangeNickButton.frame = CGRectMake(161, 242, 131, 51);
     [cancelChangeNickButton addTarget:self action:@selector(handleCancelChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [changeNickView addSubview:cancelChangeNickButton];
     
     saveChangeNickButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveChangeNickButton setImage:[UIImage imageNamed:@"/login-images/change_button.png"] forState:UIControlStateNormal];
-    saveChangeNickButton.frame = CGRectMake(289, 246, 131, 51);
+    saveChangeNickButton.frame = CGRectMake(405, 242, 131, 51);
     [saveChangeNickButton addTarget:self action:@selector(handleSaveChangeNickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [changeNickView addSubview:saveChangeNickButton];
     
@@ -468,26 +470,16 @@
     if (freezeUI) return;
     freezeUI = YES;
     
-    if (button == joinClassButton) joiningClass = YES;
-    
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
     
-    NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
-
-    if (selectUserModalContainer) return;
-    
+    if (selectUserModalContainer) return;    
     [self buttonTap];
     
-    // TEMP way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
+    if (button == joinClassButton) joiningClass = YES;
+    
+    NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
     NSDictionary *ur = deviceUsers[ip.row];
-    NSRegularExpression *m = [[[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil] autorelease];
-    if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
-    {
-        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:ur repeats:NO];
-        return;
-    }
-    // -----------------
     
     selectUserModalUnderlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
     selectUserModalUnderlay.userInteractionEnabled = YES; // prevents buttons behind modal view from receiving touch events
@@ -603,7 +595,7 @@
     {
         [self showJoinClassTokenModal];
     }
-    // does user need to change their nick
+    // does user need to change their nick? (because he created it without our servers being able to verify that it was unique)
     else if ([ur[@"nickClash"] integerValue] == 2)
     {
         [selectUserModalUnderlay removeFromSuperview];
@@ -612,11 +604,12 @@
         [selectUserModalContainer removeFromSuperview];
         [playButton removeFromSuperview];
         tickCrossImg.alpha = 0;
-        [tickCrossImg setCenter:CGPointMake(595, 331)];
+        [tickCrossImg setCenter:CGPointMake(308, 335)];
         
         [loadingImg setCenter:CGPointMake(596, 415)];
         changeNickTF.text = ur[@"nickName"];
         [selectUserView addSubview:changeNickView];
+        freezeUI = NO;
     }
     else
     {
@@ -700,6 +693,12 @@
                             callback:callback];
 }
 
+-(void)handleChangeNickTFChange:(id)textField
+{
+    tickCrossImg.alpha = 0;
+    nickTakenLabel.alpha = 0;
+}
+
 -(void)handleCancelChangeNickClicked:(id)button
 {
     if (freezeUI) return;
@@ -718,6 +717,7 @@
     loadingImg.alpha = 1;
     nickTakenLabel.alpha = 0;
     tickCrossImg.alpha = 0;
+    [changeNickTF resignFirstResponder];
     
     SEL proceed = @selector(proceedAfterPause:);
     

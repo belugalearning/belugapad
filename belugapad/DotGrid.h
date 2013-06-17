@@ -99,6 +99,7 @@ typedef struct {
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
     BOOL debugLogging;
+    BOOL traceOriginalShapes;
     
     NSString *showCount;
     
@@ -145,6 +146,8 @@ typedef struct {
     int spaceBetweenAnchors;
     int startX;
     int startY;
+    
+    CGPoint pickupAnchorPoint;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

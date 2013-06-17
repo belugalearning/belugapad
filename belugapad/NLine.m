@@ -76,6 +76,8 @@ float timerIgnoreFrog;
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
+//        toolHost.disableDescGwBtxeInteractions=YES;
+        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;
@@ -488,6 +490,10 @@ float timerIgnoreFrog;
     NSNumber *ddp=[problemDef objectForKey:@"DISPLAY_NUMBER_DP"];
     if(ddp)rambler.DisplayNumberDP=[ddp integerValue];
     else rambler.DisplayNumberDP=1;
+    
+    NSNumber *ddenom=[problemDef objectForKey:@"DISPLAY_DENOMINATOR"];
+    if(ddenom) rambler.DisplayDenominator=[ddenom integerValue];
+    else rambler.DisplayDenominator=0;
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
@@ -923,14 +929,16 @@ float timerIgnoreFrog;
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
-            if(countOutLoudFromInitStartVal) readNumber-=initStartVal;
+//            if(countOutLoudFromInitStartVal)
+            readNumber=lastBubbleLoc;
+            
+            if(initSegmentVal!=1)
+                readNumber*=initSegmentVal;
             
             NSString *writeText=[NSString stringWithFormat:@"%d", readNumber];
-            
+            float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;
             if(rambler.DisplayNumberDP>0 && rambler.DisplayNumberMultiplier!=1)
             {
-                float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;
-                
                 NSString *fmt=[NSString stringWithFormat:@"%%.%df", rambler.DisplayNumberDP];
                 writeText=[NSString stringWithFormat:fmt, multDisplayNum];
             }
@@ -938,7 +946,60 @@ float timerIgnoreFrog;
             if(readNumber>0 && countOutLoudFromInitStartVal)
                 writeText=[NSString stringWithFormat:@"plus %@", writeText];
             
+            if(readNumber<0)
+                writeText=[NSString stringWithFormat:@"negative %g", fabsf([writeText floatValue])];
             
+            if(readNumber>0&&rambler.DisplayDenominator!=0){
+                NSLog(@"do stuff");
+                writeText=[NSString stringWithFormat:@"%d", readNumber];
+                
+                NSNumber *denominator=[NSNumber numberWithInt:rambler.DisplayDenominator];
+                NSString *denom=@"";
+                
+                if([denominator isEqualToNumber:[NSNumber numberWithInt:2]])
+                    denom=@"halve";
+                else if([denominator intValue]==3)
+                    denom=@"third";
+                else if([denominator intValue]==4)
+                    denom=@"quarter";
+                else if([denominator intValue]==5)
+                    denom=@"fifth";
+                else if([denominator intValue]==6)
+                    denom=@"sixth";
+                else if([denominator intValue]==7)
+                    denom=@"seventh";
+                else if([denominator intValue]==8)
+                    denom=@"eighth";
+                else if([denominator intValue]==9)
+                    denom=@"ninth";
+                else if([denominator intValue]==10)
+                    denom=@"tenth";
+                else if([denominator intValue]==11)
+                    denom=@"eleventh";
+                else if([denominator intValue]==12)
+                    denom=@"twelfth";
+                else if([denominator intValue]==13)
+                    denom=@"thirteenth";
+                else if([denominator intValue]>13 && [denominator intValue]<=19)
+                    denom=[NSString stringWithFormat:@"%d teenth", [denominator intValue]-10];
+                else if([denominator intValue]==20)
+                    denom=@"twentieth";
+                
+                if([denominator intValue]>20){
+                    denom=[NSString stringWithFormat:@" over %d", [denominator intValue]];
+                }
+                
+                if(readNumber>1)
+                    denom=[NSString stringWithFormat:@"%@s",denom];
+                
+                if(readNumber==rambler.DisplayDenominator){ writeText=@"1"; }
+                else
+                {
+                    writeText=[writeText stringByAppendingFormat:@" %@", denom];
+                }
+            }
+            
+            NSLog(@"speakstring is %@", writeText);
             
             AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
             [ac speakString:writeText];

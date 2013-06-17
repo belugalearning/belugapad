@@ -178,6 +178,7 @@
 {
     NSString *rowString=@"";
     id lastc=nil;
+    SGBtxeObjectNumber *lastFract=nil;
     
     for(id c in children)
     {
@@ -188,13 +189,64 @@
                ([c isKindOfClass:[SGBtxeObjectIcon class]] || [c isKindOfClass:[SGBtxeObjectNumber class]] ||
                 [c isKindOfClass:[SGBtxeObjectText class]]))
             {
-                rowString=[NSString stringWithFormat:@"%@, ", rowString];
+                    rowString=[NSString stringWithFormat:@"%@, ", rowString];
             }
         }
         
         if([c isKindOfClass:[SGBtxeText class]])
         {
-            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];
+            NSString *thisItem=[(SGBtxeText*)c returnMyText];
+            if(lastFract){
+                if(lastFract.showAsMixedFraction)
+                {
+                    NSLog(@"last was a mixed fraction");
+                    if([lastFract.numerator intValue]>1 && [lastFract.denominator intValue]>1 && [thisItem isEqualToString:@"are"])
+                    {
+                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                        
+                    }
+                    else if([lastFract.numerator intValue]==1 && [thisItem isEqualToString:@"are"])
+                    {
+                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                    }
+                    else if([lastFract.numerator intValue]==1 && ![thisItem isEqualToString:@"are"])
+                    {
+                        rowString=[NSString stringWithFormat:@"%@ %@", rowString, thisItem];
+                    }
+                    else
+                    {
+                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                    }
+                        
+                }
+                else if(lastFract.denominator)
+                {
+                    NSLog(@"last was a fraction");
+                    if([lastFract.numerator intValue]>1 && [lastFract.denominator intValue]>1 && [thisItem isEqualToString:@"are"])
+                    {
+                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                        
+                    }
+                    else if([lastFract.numerator intValue]==1 && [thisItem isEqualToString:@"are"])
+                    {
+                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                    }
+                    else if([lastFract.numerator intValue]==1 && ![thisItem isEqualToString:@"are"])
+                    {
+                        rowString=[NSString stringWithFormat:@"%@ %@", rowString, thisItem];
+                    }
+                    else
+                    {
+                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                    }
+                }
+
+                
+                lastFract=nil;
+            }
+            else{
+                rowString=[NSString stringWithFormat:@"%@ %@", rowString, thisItem];
+            }
         }
         
         if([c isKindOfClass:[SGBtxeObjectText class]])
@@ -210,11 +262,15 @@
             nf.numberStyle = NSNumberFormatterDecimalStyle;
 //            NSNumber *thisNumber=[NSNumber numberWithFloat:[[(SGBtxeObjectNumber*)c numberText]floatValue]];
 //            NSString *str = [nf stringFromNumber:thisNumber];
-            NSString *str=bon.text;
+            NSString *str=[bon returnMyText];
             
             NSLog(@"text from db: %@", str);
             
             [nf release];
+                
+            
+            if(bon.pickerTargetDenominator||bon.showAsMixedFraction)
+                lastFract=bon;
             
             if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0)
             {
@@ -274,6 +330,11 @@
             incr+=incrTime;
         }
     }
+}
+
+-(void)parseXML:(NSString*)xmlString withAutoDisable:(BOOL)autoDisable
+{
+    [self.parserComponent parseXML:xmlString withAutoDisable:autoDisable];
 }
 
 -(void)parseXML:(NSString *)xmlString

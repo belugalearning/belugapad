@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>MASTERY</key>
+    <true/>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>INTERNAL_DESCRIPTION</key>
+    <string>Complete the statements.</string>
+    <key>EVAL_MODE</key>
+    <string>1</string>
+    <key>EVAL_TYPE</key>
+    <string>EXPRESSION_EQUALITIES</string>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:oi tag=&quot;thing_4&quot;/&gt;&lt;b:t&gt;has&lt;/b:t&gt;&lt;b:on number=&quot;8&quot;/&gt;&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt;. He gives&lt;/b:t&gt;&lt;b:on number=&quot;3&quot;/&gt;&lt;b:obj count=&quot;2&quot;/&gt;&lt;b:t&gt;to&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_3&quot;/&gt;&lt;b:t&gt;. Complete the following statements.&lt;/b:t&gt;</string>
+      <string>&lt;b:ph/&gt;
+&lt;b:oo value=&quot;-&quot;/&gt;
+&lt;b:ph/&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:on number=&quot;5&quot; enabled=&quot;yes&quot;/&gt;</string>
+      <string>&lt;b:ph/&gt;
+&lt;b:oo value=&quot;+&quot;/&gt;
+&lt;b:on number=&quot;5&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:ph/&gt;</string>
+      <string>&lt;b:on number=&quot;5&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;+&quot;/&gt;
+&lt;b:ph/&gt;
+&lt;b:oo value=&quot;=&quot;/&gt;
+&lt;b:ph/&gt;</string>
+    </array>
+    <key>DVARS</key>
+    <array>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$x</string>
+        <key>MIN</key>
+        <string>1</string>
+        <key>MAX</key>
+        <string>3</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$y</string>
+        <key>MIN</key>
+        <string>4</string>
+        <key>MAX</key>
+        <string>7</string>
+      </dict>
+      <dict>
+        <key>VAR_NAME</key>
+        <string>$z</string>
+        <key>MIN</key>
+        <string>8</string>
+        <key>MAX</key>
+        <string>10</string>
+      </dict>
+    </array>
+    <key>DSTRINGS</key>
+    <dict>
+      <key>@object</key>
+      <dict>
+        <key>MODE</key>
+        <string>RANDOM</string>
+        <key>DATA</key>
+        <array>
+          <string>apples</string>
+          <string>sweets</string>
+          <string>pens</string>
+        </array>
+      </dict>
+    </dict>
+  </dict>
+</plist>

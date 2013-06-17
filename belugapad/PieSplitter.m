@@ -22,7 +22,7 @@
 #import "BATQuery.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
-
+#import "SimpleAudioEngine.h"
 static float kTimeToPieShake=7.0f;
 
 @interface PieSplitter()
@@ -113,7 +113,7 @@ static float kTimeToPieShake=7.0f;
         [self animShake];
         timeSinceInteractionOrShake=0;
     }
-
+    
     [self updateLabels];
     
 }
@@ -155,9 +155,24 @@ static float kTimeToPieShake=7.0f;
     
     if([pdef objectForKey:SHOW_RESET_SLICES])
         showResetSlicesToPies=[[pdef objectForKey:SHOW_RESET_SLICES]boolValue];
-    else 
+    else
         showResetSlicesToPies=YES;
     
+    if([pdef objectForKey:SHOW_NEW_PIES_CONTAINERS])
+        showNewPieCont=[[pdef objectForKey:SHOW_NEW_PIES_CONTAINERS]boolValue];
+    else
+        showNewPieCont=YES;
+    
+    if([pdef objectForKey:MOVE_INIT_OBJECTS])
+        moveInitObjects=[[pdef objectForKey:MOVE_INIT_OBJECTS]boolValue];
+    else
+        moveInitObjects=YES;
+    
+    if(!showNewPieCont)
+        moveInitObjects=NO;
+    
+//#define DO_NOT_SHOW_NEW_PIES_CONTAINERS @"DO_NOT_SHOW_NEW_PIES_CONTAINERS"
+//#define DISALLOW_MOVE_INIT_PIES @"DISALLOW_MOVE_INIT_PIES"
     
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
     numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_SQUARES]intValue];
@@ -191,6 +206,11 @@ static float kTimeToPieShake=7.0f;
     
     int totalSlices=dividend*divisor;
     slicesInEachPie=totalSlices/divisor;
+    
+    if(showNewPieCont)
+        [usersService notifyStartingFeatureKey:@"PIESPLITTER_MAKE_FRACTION"];
+    else
+        [usersService notifyStartingFeatureKey:@"PIESPLITTER_SPLIT"];
 }
 
 -(void)populateGW
@@ -201,11 +221,12 @@ static float kTimeToPieShake=7.0f;
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     startProblemSplit=YES;
     
-    CCSprite *tabs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/drag_tabs.png")];
-    [tabs setAnchorPoint:ccp(0,0.5)];
-    [tabs setPosition:ccp(0,500)];
-    [renderLayer addChild:tabs];
-    
+    if(showNewPieCont){
+        CCSprite *tabs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/drag_tabs.png")];
+        [tabs setAnchorPoint:ccp(0,0.5)];
+        [tabs setPosition:ccp(0,500)];
+        [renderLayer addChild:tabs];
+    }
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     
@@ -223,9 +244,11 @@ static float kTimeToPieShake=7.0f;
     [renderLayer addChild:pieBox];
     [renderLayer addChild:conBox];
     
-    [self createPieAtMount];
-    [self createContainerAtMount];
-
+    if(showNewPieCont){
+    
+        [self createPieAtMount];
+        [self createContainerAtMount];
+    }
     for (int i=0;i<numberOfActiveContainers;i++)
     {
         [self createActiveContainer];
@@ -248,28 +271,95 @@ static float kTimeToPieShake=7.0f;
 
 -(void)updateLabels
 {
+    if(gw.Blackboard.inProblemSetup)return;
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *cont=[activeCon objectAtIndex:i];
-        NSString *thisConVal=@"";
+    
+        
+//        NSString *thisConVal=@"";
         int slicesInCont=[cont.mySlices count];
         float thisVal=(float)slicesInCont/(float)[activeCon count];
-        if(labelType==kLabelShowDecimal) thisConVal=[NSString stringWithFormat:@"%.02g", thisVal];
-        if(labelType==kLabelShowFraction) { 
+        if(labelType==kLabelShowDecimal)
+        {
+            [cont.wholeNum setVisible:NO];
+            [cont.fractNum setVisible:NO];
+            [cont.fractDenom setVisible:NO];
+            [cont.fractLine setVisible:NO];
+            [cont.decimalNum setVisible:YES];
+            cont.decimalNum.string=[NSString stringWithFormat:@"%.02g", thisVal];
+        }
+        if(labelType==kLabelShowFraction) {
+            
+            [cont.wholeNum setVisible:YES];
+            [cont.fractNum setVisible:YES];
+            [cont.fractDenom setVisible:YES];
+            [cont.fractLine setVisible:YES];
+            [cont.decimalNum setVisible:NO];
+            
             int fullPies=slicesInCont/[activeCon count];
             int extraSlices=slicesInCont-(fullPies*[activeCon count]);
-            if(fullPies==0)thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
-            else if(fullPies>0 && extraSlices==0)thisConVal=[NSString stringWithFormat:@"%d", fullPies];
-            else if(fullPies>0 && extraSlices>0)thisConVal=[NSString stringWithFormat:@"%d %d/%d", fullPies, extraSlices, [activeCon count]];
+            if(fullPies==0){
+                [cont.wholeNum setVisible:NO];
+                cont.fractNum.string=[NSString stringWithFormat:@"%d", slicesInCont];
+                cont.fractDenom.string=[NSString stringWithFormat:@"%d", [activeCon count]];
+//                thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
+            }
+            else if(fullPies>0 && extraSlices==0)
+            {
+                [cont.fractDenom setVisible:NO];
+                [cont.fractNum setVisible:NO];
+                [cont.fractLine setVisible:NO];
+                cont.wholeNum.string=[NSString stringWithFormat:@"%d", fullPies];
+//                thisConVal=[NSString stringWithFormat:@"%d", fullPies];
+            }
+            else if(fullPies>0 && extraSlices>0)
+            {
+                cont.wholeNum.string=[NSString stringWithFormat:@"%d", fullPies];
+                cont.fractNum.string=[NSString stringWithFormat:@"%d", extraSlices];
+                cont.fractDenom.string=[NSString stringWithFormat:@"%d", [activeCon count]];
+//                thisConVal=[NSString stringWithFormat:@"%d %d/%d", fullPies, extraSlices, [activeCon count]];
+            }
         }
-        if(!cont.textString)cont.textString=@"";
-        cont.textString=thisConVal;
+//        if(!cont.textString)cont.textString=@"";
+//        cont.textString=thisConVal;
         
     }
     [gw handleMessage:kDWupdateLabels andPayload:nil withLogLevel:-1];
 }
 
 #pragma mark - object interaction
+-(BOOL)allContainersEqual
+{
+    int lasNum=-1;
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        if(lasNum==-1)lasNum=[c.mySlices count];
+        
+        if(lasNum!=[c.mySlices count])return NO;
+        
+        if([c.mySlices count]==0)return NO;
+    }
+    
+    return YES;
+}
+
+-(void)tintThroughAllSlices
+{
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_equal.wav")];
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        for(DWPieSplitterSliceGameObject *s in c.mySlices)
+        {
+            CCTintTo *tt=[CCTintTo actionWithDuration:0.2f red:0 green:220 blue:0];
+            CCTintTo *tb=[CCTintTo actionWithDuration:0.2f red:255 green:255 blue:255];
+            CCSequence *sq=[CCSequence actions:tt, tb, nil];
+            
+            [s.mySprite runAction:sq];
+        }
+    }
+}
+
 -(void)createPieAtMount
 {
     createdPies++;
@@ -277,6 +367,7 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
     pie.Position=ccp(52,544);
     pie.MountPosition=pie.Position;
+    pie.Touchable=YES;
     //if(hasSplit)[self splitPie:pie];
     newPie=pie; 
     
@@ -290,6 +381,7 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(62,456);
     cont.MountPosition=cont.Position;
+    cont.Touchable=YES;
     newCon=cont;
     
     [cont release];
@@ -306,6 +398,11 @@ static float kTimeToPieShake=7.0f;
     if(hasSplit)
         [self splitPie:pie];
     
+    if(gw.Blackboard.inProblemSetup)
+        pie.Touchable=moveInitObjects;
+    else
+        pie.Touchable=YES;
+    
     [activePie addObject:pie];
     
     [pie release];
@@ -319,6 +416,12 @@ static float kTimeToPieShake=7.0f;
     cont.MountPosition=ccp(62,456);
     [cont.mySprite setScale:1.0f];
     cont.ScaledUp=YES;
+    
+    if(gw.Blackboard.inProblemSetup)
+        cont.Touchable=moveInitObjects;
+    else
+        cont.Touchable=YES;
+    
     [activeCon addObject:cont];
     
     [cont release];
@@ -326,7 +429,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)addGhostPie
 {
-    [pieBox setVisible:YES];
+//    [pieBox setVisible:YES];
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     ghost=pie;
     [activePie addObject:pie];
@@ -364,7 +467,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)addGhostContainer
 {
-    [conBox setVisible:YES];
+//    [conBox setVisible:YES];
     
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     ghost=cont;
@@ -444,7 +547,7 @@ static float kTimeToPieShake=7.0f;
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
         if(!c.ScaledUp)continue;
 //        p.Position=ccp((currentIndex+1)*((lx-100)/maxPerRow), (pieBox.position.y+45)-(110*currentYPos));
-        c.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (conBox.position.y+45)-(110*currentYPos));
+        c.Position=ccp((currentIndex+0.5)*((lx-100)/maxPerRow)+100, (conBox.position.y+45)-(140*currentYPos));
         [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
         currentIndex++;
         
@@ -535,7 +638,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)removeSlices
 {
-    for (DWPieSplitterContainerGameObject *p in activePie)
+    for (DWPieSplitterPieGameObject *p in activePie)
     {
 
         for (DWPieSplitterSliceGameObject *s in p.mySlices)
@@ -544,6 +647,12 @@ static float kTimeToPieShake=7.0f;
             [gw delayRemoveGameObject:s];
         }
         
+        [p.mySlices removeAllObjects];
+        
+    }
+    for (DWPieSplitterContainerGameObject *p in activeCon)
+    {
+        [p.mySlices removeAllObjects];
     }
 }
 
@@ -587,8 +696,9 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceContainers
 {
+    if([activeCon count]>5)return;
     //int maxPXtoMove=100;
-    int stepper=20;
+    int stepper=10;
     BOOL isLess=NO;
 
     
@@ -686,7 +796,7 @@ static float kTimeToPieShake=7.0f;
     // check the labels have been tapped, or not
     for(DWPieSplitterContainerGameObject *c in activeCon)
     {
-        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySprite convertToNodeSpace:location]))
+        if(CGRectContainsPoint([c returnLabelBox], [c.labelNode convertToNodeSpace:location]))
         {
             if(labelType==kLabelShowDecimal)labelType=kLabelShowFraction;
             else if(labelType==kLabelShowFraction)labelType=kLabelShowDecimal;
@@ -699,8 +809,10 @@ static float kTimeToPieShake=7.0f;
     
     if(gw.Blackboard.PickupObject)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_pickup.wav")];
+        
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp){
-            [self addGhostPie];
+//            [self addGhostPie];
             [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_PIE withAdditionalData:nil];
         }
         else
@@ -713,21 +825,21 @@ static float kTimeToPieShake=7.0f;
             
             if(!cont.ScaledUp && numberOfCagedSlices==0)
             {
-                [self addGhostContainer];
+//                [self addGhostContainer];
                 [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_SQUARE withAdditionalData:nil];
             }
             else if(cont.ScaledUp)
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_MOUNTED_SQUARE withAdditionalData:nil];
             }
-            else if(numberOfCagedSlices>0)
-            {
-                gw.Blackboard.PickupObject=nil;
-            }
+//            else if(numberOfCagedSlices>0)
+//            {
+//                gw.Blackboard.PickupObject=nil;
+//            }
         }
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
         {
-
+            if(sparkles)sparkles=NO;
         }
         
     }
@@ -750,6 +862,35 @@ static float kTimeToPieShake=7.0f;
 
         BOOL needPieAtMount=NO;
         BOOL needContAtMount=NO;
+
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]]){
+            
+            if(!madeGhost&&CGRectContainsPoint(pieBox.boundingBox, location)){
+                [self addGhostPie];
+                madeGhost=YES;
+            }
+            else if(madeGhost&&!CGRectContainsPoint(pieBox.boundingBox, location)){
+                [self removeGhost];
+                [self reorderActivePies]; 
+                madeGhost=NO;
+                [pieBox setVisible:NO];
+            }
+        }
+
+        else if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
+        {
+                if(!madeGhost&&CGRectContainsPoint(conBox.boundingBox, location)){
+                    [self addGhostContainer];
+                    madeGhost=YES;
+                }
+                else if(madeGhost&&!CGRectContainsPoint(conBox.boundingBox, location)){
+                    [self removeGhost];
+                    [self reorderActiveContainers];
+                    [conBox setVisible:NO];
+                    madeGhost=NO;
+                }
+        }
+    
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
         {
@@ -822,6 +963,7 @@ static float kTimeToPieShake=7.0f;
             {
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_SQUARE withAdditionalData:nil];
                 [cont handleMessage:kDWswitchParentToMovementLayer];
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_adding_object.wav")];
                 // if this object isn't in the array, add it
                 if(![activeCon containsObject:cont])[activeCon addObject:cont];
                 
@@ -830,6 +972,10 @@ static float kTimeToPieShake=7.0f;
                 {
                     [self removeSlices];
                     [self splitPies];
+                }
+                else if(hasSplit && numberOfCagedSlices>0)
+                {
+                    [self resetSlicesToPies];
                 }
                 
             }
@@ -842,6 +988,7 @@ static float kTimeToPieShake=7.0f;
                 {
                     [self removeSlices];
                     [self splitPies];
+                    [cont.mySlices removeAllObjects];
                 }
 
                 // and if it wasn't - eject it back to it's mount
@@ -867,6 +1014,8 @@ static float kTimeToPieShake=7.0f;
                 [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_PIE withAdditionalData:nil];
                 // if this object isn't in the array, add it
                 [pie.mySprite setScale:1.0f];
+                
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_adding_object.wav")];
                 
                 if(![activePie containsObject:pie])
                     [activePie addObject:pie];
@@ -911,6 +1060,7 @@ static float kTimeToPieShake=7.0f;
                     [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
                     [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
                     hasASliceInCont=YES;
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_dropping_slice.wav")];
                 }
                 else if(!gw.Blackboard.DropObject)
                 {
@@ -930,7 +1080,7 @@ static float kTimeToPieShake=7.0f;
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
                 [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
                 hasASliceInCont=YES;
-                
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_pie_splitter_dropping_slice.wav")];
             }
             else {
 
@@ -951,6 +1101,12 @@ static float kTimeToPieShake=7.0f;
     //[self balanceLayer];
     [self balanceContainers];
     
+    if(!sparkles&&[self allContainersEqual])
+    {
+        [self tintThroughAllSlices];
+        sparkles=YES;
+    }
+    
     if(hasMovedSquare)
         [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_SQUARE withAdditionalData:nil];
         
@@ -960,6 +1116,7 @@ static float kTimeToPieShake=7.0f;
     if(hasMovedSlice)
         [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_SLICE withAdditionalData:nil];
     
+    madeGhost=NO;
     hasMovedSquare=NO;
     hasMovedPie=NO;
     hasMovedSlice=NO;

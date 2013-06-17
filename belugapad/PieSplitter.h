@@ -59,6 +59,7 @@ typedef enum {
     BOOL showReset;
     BOOL startProblemSplit;
     BOOL reqCorrectPieSquaresToSplit;
+    BOOL madeGhost;
     int numberOfCagedPies;
     int numberOfCagedContainers;
     int numberOfActivePies;
@@ -66,6 +67,9 @@ typedef enum {
     int numberOfCagedSlices;
     int dividend;
     int divisor;
+    
+    // this is for tinting on an equal amount in every pie
+    BOOL sparkles;
     
     int slicesInEachPie;
     
@@ -80,6 +84,8 @@ typedef enum {
     BOOL hasSplit;
     BOOL showResetSlicesToPies;
     BOOL hasASliceInCont;
+    BOOL showNewPieCont;
+    BOOL moveInitObjects;
     
     CCSprite *pieBox;
     CCSprite *conBox;

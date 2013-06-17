@@ -24,8 +24,8 @@
 #import "NumberLayout.h"
 
 
-#define kEarliestHit 1.2
-#define kLatestHit 1.0
+#define kEarliestHit 0.75
+#define kLatestHit 0.99
 
 @interface CountingTimer()
 {
@@ -65,7 +65,9 @@ static float kTimeToButtonShake=7.0f;
         cy=ly / 2.0f;
         
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         gw.Blackboard.inProblemSetup = YES;
+
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
@@ -453,8 +455,8 @@ static float kTimeToButtonShake=7.0f;
             [loggingService logEvent:BL_PA_CT_TOUCH_START_START_TIMER withAdditionalData:nil];
         }
         else{
-            [self evalProblem];
             [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:[NSNumber numberWithInt:trackNumber]];
+            [self evalProblem];
         }
     }
     

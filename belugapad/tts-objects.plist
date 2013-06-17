@@ -21,7 +21,7 @@
 	<key>30_commit</key>
 	<string>OK button</string>
 	<key>30_mq_true</key>
-	<string>button or buttons that display a correct answer</string>
+	<string>button or buttons that display true</string>
 	<key>30_Q</key>
 	<string>what?</string>
 	<key>30_QM</key>
@@ -71,11 +71,11 @@
 	<key>30_pause</key>
 	<string>pause button</string>
 	<key>30_DT_Shape_Circle</key>
-	<string>circle</string>
-	<key>30_DT_Shape_Circle_s</key>
 	<string>circles</string>
+	<key>30_DT_Shape_Circle_s</key>
+	<string>circle</string>
 	<key>30_DT_Shape_Ellipse</key>
-	<string>ellipses</string>
+	<string>ovals</string>
 	<key>30_DT_Shape_Square</key>
 	<string>squares</string>
 	<key>30_DT_Shape_RoundedSquare</key>
@@ -83,7 +83,7 @@
 	<key>30_DT_Shape_House</key>
 	<string>houses</string>
 	<key>30_DT_Shape_Diamond</key>
-	<string>octagon</string>
+	<string>octagons</string>
 	<key>30_DT_Shape_Value_10</key>
 	<string>ten circle</string>
 	<key>30_DT_2Circles</key>
@@ -112,6 +112,8 @@
 	<string>plus button</string>
 	<key>30_FB_Bubble_Plus</key>
 	<string>plus button</string>
+	<key>30_FB_Bubble_Mult</key>
+	<string>multiplication button</string>
 	<key>30_NB_grid</key>
 	<string>container</string>
 	<key>30_NB_Grid_1</key>
@@ -120,6 +122,14 @@
 	<string>container</string>
 	<key>30_NB_grid_p</key>
 	<string>containers</string>
+	<key>30_PS_bubble</key>
+	<string>denominator bubbles</string>
+	<key>30_PS_bubble_s</key>
+	<string>denominator bubble</string>
+	<key>30_PS_pie</key>
+	<string>numerator pie</string>
+	<key>30_PS_slice</key>
+	<string>slice</string>
 	<key>30_TT_Tile_Black</key>
 	<string>black square</string>
 	<key>30_NB_Block</key>

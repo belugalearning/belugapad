@@ -58,6 +58,7 @@ typedef enum {
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
+    CCLayer *wheelLayer;
     
     CCSprite *qTrayTop;
     CCSprite *qTrayMid;
@@ -102,6 +103,7 @@ typedef enum {
     BOOL hasMovedNumber;
     BOOL hasUsedNumber;
     BOOL canMoveNumber;
+    int exprBuilderPickerColumns;
     
     float timeSinceInteractionOrShake;
     float timeBeforeUserInteraction;
@@ -207,6 +209,8 @@ typedef enum {
     CCLayer *trayLayerPad;
     CCNode *lineDrawer;
     
+    CCSprite *wheelULImage;
+    
     BOOL hasTrayWheel;
     BOOL hasTrayCalc;
     BOOL hasTrayMq;
@@ -238,6 +242,8 @@ typedef enum {
     BOOL quittingToMap;
     BOOL isTouching;
     
+    BOOL allowBtxeTouch;
+    
     SGBtxeRow *qDescRow;
     
     CCParticleSystemQuad *followParticle;
@@ -253,6 +259,7 @@ typedef enum {
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) id CurrentBTXE;
 @property (retain) NSString *thisProblemDescription;
+@property BOOL disableDescGwBtxeInteractions;
 
 +(CCScene *) scene;
 
@@ -303,14 +310,16 @@ typedef enum {
 -(void)incrementDisplayScore: (id)sender;
 -(NSString*)returnPickerNumber;
 -(void)updatePickerNumber:(NSString*)thisNumber;
-
-
+-(void)setPickerColumnCount:(int)count;
+-(BOOL)isShowingPickerLayer;
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;
-
+-(CCLayer*)returnBtxeLayer;
+-(CCLayer*)returnWheelLayer;
 -(void)playAudioClick;
 -(void)playAudioPress;
-
+-(SGGameWorld*)currentDescGW;
+-(BOOL)btxeObjectsEnabled;
 -(void)resetScoreMultiplier;
 - (void)sizeQuestionDescription;
 -(void)setReadProblemPosWithScale:(float)ascale;

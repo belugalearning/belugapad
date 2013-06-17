@@ -65,6 +65,7 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
+    if(!cont.Touchable)return;
     if([cont.mySlices count]>0)return;
     
     CGRect baseNodeBound=CGRectNull;

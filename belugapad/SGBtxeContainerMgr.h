@@ -15,4 +15,6 @@
 }
 
 -(void)addObjectToContainer:(id<Bounding>)object;
+-(void)removeObjectFromContainer:(id<Bounding, NSObject>)object;
+
 @end

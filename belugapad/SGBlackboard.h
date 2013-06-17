@@ -17,6 +17,7 @@
 }
 
 @property (retain) CCLayer *RenderLayer;
+@property (retain) CCLayer *IconRenderLayer;
 @property BOOL inProblemSetup;
 @property float MaxObjectDistance;
 @property (retain) NSMutableArray *islandData;
@@ -26,5 +27,7 @@
 
 @property (retain) CCDrawNode *debugDrawNode;
 @property BOOL playFailedBondOverMax;
+
+@property BOOL disableAllBTXEinteractions;
 
 @end

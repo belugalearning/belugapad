@@ -157,6 +157,8 @@
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
     
+    NSString *columnCountTotalType;
+    
     CGRect boundingBoxCondense;
     CGRect boundingBoxMulch;
     CGRect noDragAreaTop;

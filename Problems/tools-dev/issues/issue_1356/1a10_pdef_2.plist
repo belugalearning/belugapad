@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>TOOL_KEY</key>
+    <string>ExprBuilder</string>
+    <key>EVAL_TYPE</key>
+    <string>EXPRESSION_EQUALITIES</string>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>EXPR_STAGES</key>
+    <array>
+      <string>&lt;b:oi tag=&quot;thing_2&quot;/&gt;&lt;b:t&gt;travels&lt;/b:t&gt;&lt;b:on numerator=&quot;23&quot; denominator=&quot;4&quot; showAsMixedFraction=&quot;yes&quot;/&gt;&lt;b:t&gt;miles.&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_4&quot;/&gt;&lt;b:t&gt;travels&lt;/b:t&gt;&lt;b:on number=&quot;5&quot;/&gt;&lt;b:t&gt;miles. How much further than&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_4&quot;/&gt;&lt;b:t&gt;did&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_2&quot;/&gt;&lt;b:t&gt;travel?&lt;/b:t&gt;</string>
+      <string>&lt;b:on numerator=&quot;23&quot; denominator=&quot;4&quot; showAsMixedFraction=&quot;yes&quot;/&gt;&lt;b:oo value=&quot;-&quot;/&gt;&lt;b:on number=&quot;5&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTargetNumerator=&quot;3&quot; pickerTargetDenominator=&quot;4&quot;/&gt;</string>
+    </array>
+  </dict>
+</plist>

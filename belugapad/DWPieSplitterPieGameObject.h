@@ -20,6 +20,6 @@
 @property BOOL HasSplit;
 @property int numberOfSlices;
 @property (retain) CCSprite *touchOverlay;
-
+@property BOOL Touchable;
 
 @end

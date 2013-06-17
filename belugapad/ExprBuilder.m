@@ -32,6 +32,7 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "SimpleAudioEngine.h"
+#import "NumberWheel.h"
 
 #define AUTO_LARGE_ROW_X_MAX 5
 #define AUTO_LARGE_ROW_Y_MAX 3
@@ -78,9 +79,10 @@
         [toolHost addToolForeLayer:self.ForeLayer];
         
         renderLayer = [[CCLayer alloc] init];
-        [self.ForeLayer addChild:renderLayer];
+        [self.ForeLayer addChild:renderLayer z:2];
 
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         gw.Blackboard.inProblemSetup = YES;
         
         expressionStringCache=[[NSMutableArray alloc] init];
@@ -160,6 +162,13 @@
     
     excludedEvalRows=[pdef objectForKey:@"EVAL_EXCLUDE_ROWS"];
     
+    if([pdef objectForKey:@"NUMBER_PICKER_COLUMNS"])
+        numberPickerColumns=[[pdef objectForKey:@"NUMBER_PICKER_COLUMNS"]intValue];
+    else
+        numberPickerColumns=3;
+    
+    [toolHost setPickerColumnCount:numberPickerColumns];
+    
     if(ncardmax && ncardmin && ncardint)
     {
         presentNumberCardRow=YES;
@@ -183,6 +192,11 @@
         numberMode=[pdef objectForKey:@"NUMBER_MODE"];
     else
         numberMode=@"numeral";
+    
+    if([pdef objectForKey:@"DISABLE_AUTO_DISABLE"])
+    {
+        disableAutoDisableForProblem=[[pdef objectForKey:@"DISABLE_AUTO_DISABLE"] boolValue];
+    }
 }
 
 -(void)populateGW
@@ -218,16 +232,25 @@
             row.tintMyChildren=NO;
         }
         
+        BOOL autoDisable=(!disableAutoDisableForProblem && ([evalType isEqualToString:@"ALL_PICKERS_CORRECT"]
+                          || [evalType isEqualToString:@"EXPRESSION_EQUALITIES"]
+                          || [evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"]));
+        
+        
         if(numberMode)
             row.defaultNumbermode=numberMode;
         
-        if(i==0 || repeatRow2Count==0)
+        if(i==0)
         {
-            [row parseXML:[exprStages objectAtIndex:i]];
+            [row parseXML:[exprStages objectAtIndex:i] withAutoDisable:NO];
+        }
+        else if(i==0 || repeatRow2Count==0)
+        {
+            [row parseXML:[exprStages objectAtIndex:i] withAutoDisable:autoDisable];
         }
         else if (repeatRow2Count>0)
         {
-            [row parseXML:[exprStages objectAtIndex:1]];
+            [row parseXML:[exprStages objectAtIndex:1] withAutoDisable:autoDisable];
         }
         
         if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
@@ -253,6 +276,7 @@
         if(i==0)
         {
             descRow=row;
+            descRow.renderLayer=[toolHost returnBtxeLayer];
             //position at top, top aligned, with spacer underneath
             row.position=ccp(cx, (cy*2) - 115);
             row.forceVAlignTop=YES;
@@ -290,7 +314,7 @@
         {
             //this ivar is released in dealloc, but only if set
             //should really be property based -- this assumes this is the only place it's alloc'd
-            ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+            ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:[toolHost returnBtxeLayer]];
             ncardRow.maxChildrenPerLine=10;
             
             if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
@@ -379,7 +403,14 @@
                     id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
                     
                     if(opicker.usePicker){
-                        [usersService notifyStartingFeatureKey:@"EXPRBUILDER_NUMBERPICKER"];
+                        if(!opicker.pickerTargetNumerator)
+                            [usersService notifyStartingFeatureKey:@"EXPRBUILDER_NUMBERPICKER"];
+                        if(opicker.pickerTargetNumerator)
+                            [usersService notifyStartingFeatureKey:@"FRACTIONS_TUTORIAL"];
+                        
+                        if(opicker.showPickerFractionWhole)
+                            [usersService notifyStartingFeatureKey:@"FRACTIONS_MIXED_TUTORIAL"];
+
                         break;
                     }
                     
@@ -465,11 +496,14 @@
 
     for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
     {
+
+        if(pNumerator && [pNumerator numberWheelShowing])break;
+        
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             if(!o.interactive)continue;
             id<Bounding> obounding=(id<Bounding>)o;
-            id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
+            id<NumberPicker,Text,Value> opicker=(id<NumberPicker,Text,Value>)o;
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
@@ -499,22 +533,124 @@
                             if(opicker.text&&[opicker.text isEqualToString:@"?"])
                                 opicker.text=@"0";
                             
-                                [toolHost updatePickerNumber:opicker.text];
+                            NSString *value=[NSString stringWithFormat:@"%g", [opicker.numberValue floatValue]];
+                                [toolHost updatePickerNumber:value];
  
                         }
-                        toolHost.CurrentBTXE=o;
-                        if(!toolHost.pickerView && toolHost.CurrentBTXE)
+                        
+                        if(!opicker.pickerTargetNumerator)
+                            toolHost.CurrentBTXE=o;
+                        
+                        if(opicker.pickerTargetNumerator)
                         {
-                            [self contractDescAndCardRows];
-                            
+                            if(!showingFractionPickers)
+                            {
+                                [toolHost hideWheel];
+                                
+                                if(!pNumerator){
+                                    pNumerator=[[NumberWheel alloc]init];
+                                    pNumerator.RenderLayer=[toolHost returnWheelLayer];
+                                    pNumerator.Components=numberPickerColumns;
+                                    pNumerator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pNumerator.Components];
+                                    pNumerator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pNumerator.Components];
+//                                    pNumerator.Position=ccp(870,640);
+                                    pNumerator.Position=ccp(lx-(pNumerator.ComponentSpacing+pNumerator.ComponentWidth)*(pNumerator.Components-1),430);                                    pNumerator.fractionPart=@"n";
+                                    pNumerator.AssociatedObject=opicker;
+                                    [pNumerator setupNumberWheel];
+                                    
+                                    pDivLine=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/NW_fractionsLine.png")];
+                                    [pDivLine setPosition:ccp(pNumerator.Position.x,cy-58)];
+                                    [[toolHost returnWheelLayer] addChild:pDivLine];
+                                    
+                                }
+                                else
+                                {
+                                    pNumerator.AssociatedObject=opicker;
+//                                    [pNumerator setPosition:ccp(pNumerator.position.x-lx,pNumerator.position.y)];
+                                    [pNumerator showNumberWheel];
+                                    [pNumerator updatePickerNumber:[opicker.numerator stringValue]];
+                                    [pDivLine setVisible:YES];
+                                }
+                                if(!pDenominator){
+                                    pDenominator=[[NumberWheel alloc]init];
+                                    pDenominator.RenderLayer=[toolHost returnWheelLayer];
+                                    pDenominator.Components=numberPickerColumns;
+                                    pDenominator.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pDenominator.Components];
+                                    pDenominator.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pDenominator.Components];
+                                    pDenominator.Position=ccp(lx-((pDenominator.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-210);
+                                    pDenominator.fractionPart=@"d";
+                                    pDenominator.AssociatedObject=opicker;
+                                    pNumerator.fractionWheel=pDenominator;
+                                    pDenominator.fractionWheel=pNumerator;
+                                    [pDenominator setupNumberWheel];
+                                }
+                                else
+                                {
+                                    pDenominator.AssociatedObject=opicker;
+//                                    [pDenominator setPosition:ccp(pDenominator.position.x-lx,pDenominator.position.y)];
+                                    [pDenominator showNumberWheel];
+                                    [pDenominator updatePickerNumber:[opicker.denominator stringValue]];
+                                }
+                                
+                                if(!pWhole && opicker.showPickerFractionWhole)
+                                {
+                                    int columns=1;
+                                    
+                                    if(opicker.pickerFractionWholeTwoColumns)
+                                        columns=2;
+                                    
+                                    pWhole=[[NumberWheel alloc]init];
+                                    pWhole.RenderLayer=[toolHost returnWheelLayer];
+                                    pWhole.Components=columns;
+                                    pWhole.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",pWhole.Components];
+                                    pWhole.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", pWhole.Components];
+                                    pWhole.Position=ccp(pNumerator.Position.x-((pNumerator.Components*pNumerator.ComponentWidth)/2)-((pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1)),pNumerator.Position.y-105);
+                                    pWhole.fractionPart=@"w";
+                                    pWhole.AssociatedObject=opicker;
+                                    pWhole.fractionWheelD=pDenominator;
+                                    pWhole.fractionWheelN=pNumerator;
+                                    [pWhole setupNumberWheel];
+                                }
+                                else if(pWhole && opicker.showPickerFractionWhole)
+                                {
+                                    [pWhole showNumberWheel];
+                                    [pWhole updatePickerNumber:[opicker.pickedFractionWholeExplicit stringValue]];
+                                }
+                                
+                            }
+                            else
+                            {
+
+                                [pNumerator hideNumberWheel];
+                                [pDivLine setVisible:NO];
+                                [pDenominator hideNumberWheel];
+                                
+                                if(pWhole)
+                                    [pWhole hideNumberWheel];
+                                
+                                NSLog(@"hide fraction picker");                               
+                            }
+                            showingFractionPickers=!showingFractionPickers;
                         }
+                        
+//                        if(!toolHost.pickerView && toolHost.CurrentBTXE)
+//                        {
+//                            [self contractDescAndCardRows];
+//                            
+//                        }
                         
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
-                            [toolHost showWheel];
-                            [toolHost showCornerTray];
+//                            if(!opicker.pickerTargetNumerator)
+//                            {
+                                [toolHost showWheel];
+//                            }
+//                            else
+//                            {
+//                                NSLog(@"we dun has 2 wheels hawh");
+//                            }
                             
-                            [self contractDescAndCardRows];
+                            //[self contractDescAndCardRows];
                         }
                     }
                     else
@@ -522,9 +658,17 @@
                         if(toolHost.pickerView && toolHost.CurrentBTXE)
                         {
                             [toolHost tearDownNumberPicker];
-                            [self expandDescAndCardRows];
-                            [toolHost hideCornerTray];
+                            //[self expandDescAndCardRows];
                             toolHost.CurrentBTXE=nil;
+                        }
+                        if(showingFractionPickers)
+                        {
+                            [pNumerator hideNumberWheel];
+                            [pDivLine setVisible:NO];
+                            [pDenominator hideNumberWheel];
+                            if(pWhole)
+                                [pWhole hideNumberWheel];
+                            showingFractionPickers=NO;
                         }
                     }
                 }
@@ -538,14 +682,48 @@
         }
     }
     
-    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(650,480,374,328), location)){
+    float numberWheelWidth=numberPickerColumns*90;
+    float wheelXStartPos=0.0f;
+    float wheelYStartPos=cy;
+    
+    if(showingFractionPickers&&!pWhole){
+        wheelXStartPos=870-(numberWheelWidth/2);
+        wheelYStartPos=180.0f;
+    }
+    else if(showingFractionPickers&&pWhole)
+    {
+        wheelXStartPos=870-(numberWheelWidth/2);
+        wheelXStartPos-=(pWhole.ComponentSpacing+pDenominator.ComponentWidth)*(pDenominator.Components-1);
+        wheelXStartPos-=pWhole.ComponentSpacing*2;
+        wheelYStartPos=180.0f;
+        numberWheelWidth=lx-wheelXStartPos;
+    }
+    else{
+        wheelXStartPos=cx-(numberWheelWidth/2);
+        wheelYStartPos-=100;
+        numberWheelWidth=numberPickerColumns*95;
+    }
+    
+    NSLog(@"loc: %@ / x%g y%g", NSStringFromCGPoint(location), wheelXStartPos, wheelYStartPos);
+    ;
+    if(!showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,200), location)){
         toolHost.CurrentBTXE=nil;
+
         if(toolHost.pickerView){
-            [self expandDescAndCardRows];
-            [toolHost disableWheel];
-            [toolHost hideCornerTray];
+//            [self expandDescAndCardRows];
+            [toolHost tearDownNumberPicker];
+//            [toolHost hideWheel];
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_START_HIDE_PICKER withAdditionalData:nil];
         }
+    }
+    else if(showingFractionPickers && (!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(wheelXStartPos,wheelYStartPos,numberWheelWidth,360), location)){
+
+        [pNumerator hideNumberWheel];
+        [pDivLine setVisible:NO];
+        [pDenominator hideNumberWheel];
+        if(pWhole)
+            [pWhole hideNumberWheel];
+        showingFractionPickers=NO;
     }
 }
 
@@ -629,7 +807,6 @@
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sentence_builder_object_fly_back.wav")];
             else
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_sentence_builder_sequencing_sequencing_card_flying_back_(on_replacement).wav")];
-            
             [loggingService logEvent:BL_PA_EXPRBUILDER_TOUCH_END_DROP_CARD_EMPTY_SPACE withAdditionalData:nil];
         }
         else
@@ -696,9 +873,51 @@
                 id<NumberPicker, Value> io=(id<NumberPicker, Value>)o;
                 if(io.usePicker)
                 {
-                    if((int)io.targetNumber != [io.value intValue])
+                    if(io.pickerTargetNumerator)
                     {
-                        //first disbled element fails the evaluation
+                        if(!io.numerator || !io.denominator) return NO;
+                        
+                        int tnum=[io.pickerTargetNumerator intValue];
+                        int tdenom=[io.pickerTargetDenominator intValue];
+                        int tfwhole=io.pickerTargetFractionWhole ? [io.pickerTargetFractionWhole intValue] : 0;
+                        int pnum=[io.numerator intValue];
+                        int pdenom=[io.denominator intValue];
+                        int pfwhole=io.pickedFractionWholeExplicit ? [io.pickedFractionWholeExplicit intValue] : 0;
+                        
+                        //need to get explicit picker whole part of fraction -- i.e. what the user selected
+                        
+                        if(pnum > pdenom && pfwhole>0)
+                        {
+                            //do not allow mixed mixed fractions
+                            return NO;
+                        }
+                        
+                        if(io.disallowEquivFractions)
+                        {
+                            if(tnum!=pnum || tdenom != pdenom || tfwhole!=pfwhole)
+                            {
+                                //as per int comparison, first non-matching element fails evaluation
+                                return NO;
+                            }
+                        }
+                        
+                        else //eval as equivlient
+                        {
+                            int anum = pnum + pfwhole * pdenom;
+                            
+                            if(anum==0 || tdenom==0 || tnum==0 || pdenom==0) return NO;
+                            
+                            int cpnum=anum*tdenom;
+                            int ctnum=tnum*pdenom;
+                            
+                            //just look at (common) numberator comparison for equivilence
+                            if(cpnum!=ctnum) return NO;
+                        }
+                        
+                    }
+                    else if(io.targetNumber != [io.value floatValue])
+                    {
+                        //first non matching target element fails the evaluation
                         return NO;
                     }
                 }
@@ -1139,7 +1358,7 @@
     if(isWinning){
         [toolHost doWinning];
     }else{
-        [self expandDescAndCardRows];
+//        [self expandDescAndCardRows];
         [self resetProblem];
     }
 }

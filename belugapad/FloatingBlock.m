@@ -80,6 +80,7 @@
         cy=ly / 2.0f;
         
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
         gw.Blackboard.inProblemSetup = YES;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
@@ -290,22 +291,22 @@
     float sectWidth=lx/totalShapes;
     
     float xStartPos=sectWidth*(thisShape+0.5);
-    float yStartPos=540;
+    float yStartPos=540.0f;
     
-    //int farLeft=100;
-    //int farRight=lx-60;
-    //int topMost=ly-170;
-    //int botMost=130;
+//    int farLeft=100;
+//    int farRight=lx-60;
+//    int topMost=ly-230;
+//    int botMost=130;
     
-    //float xStartPos=farLeft + arc4random() % (farRight - farLeft);
-    //float yStartPos=botMost + arc4random() % (topMost - botMost);
+//    float xStartPos=farLeft + arc4random() % (farRight - farLeft);
+//    float yStartPos=botMost + arc4random() % (topMost - botMost);
     
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
-    for(int i=0;i<numberInShape;i++)
+    for(int i=numberInShape-1;i>=0;i--)
     {
         CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
-        thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
+        thisPos=ccp(thisPos.x+xStartPos, yStartPos+thisPos.y);
         
         id<Rendered,Moveable,LogPolling> newblock;
         newblock=[[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos] autorelease];
@@ -580,7 +581,6 @@
 
 -(void)multiplyGroupsInBubbles
 {
-    // TODO: is now not running the fade ani -- sort! probably due to updated returnCurrentValidGroups
     NSMutableArray *groups=[self returnCurrentValidGroups];
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Group> operatedGroup=[groups objectAtIndex:1];
@@ -591,6 +591,28 @@
     
     NSLog(@"multiply result %d, existing %d, needed %d", result, existing, needed);
 
+    if(needed<0)
+    {
+        if([targetGroup.MyBlocks count]==1){
+        
+            for(SGFBlockBlock *b in targetGroup.MyBlocks)
+            {
+                [b fadeAndDestroy];
+            }
+            
+            [targetGroup destroy];
+        }
+        
+        else if([operatedGroup.MyBlocks count]==1){
+            for(SGFBlockBlock *b in operatedGroup.MyBlocks)
+            {
+                [b fadeAndDestroy];
+            }
+            
+            [operatedGroup destroy];
+        }
+    }
+    
     [self mergeGroupsFromBubbles];
     
 
@@ -970,7 +992,6 @@
                 
                 [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:[(NSObject*)pickupObject isKindOfClass:[SGFBlockGroup class]]?[NSNumber numberWithInt:[(SGFBlockGroup*)pickupObject blocksInGroup]]:nil];
                 [self evalProblem];
-                [self setTouchVarsToOff];
                 return;
             }
             [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_releasing_blocks.wav")];

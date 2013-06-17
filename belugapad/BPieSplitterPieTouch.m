@@ -63,6 +63,8 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
+    if(!pie.Touchable)return;
+    
     if(CGRectContainsPoint(pie.mySprite.boundingBox, hitLoc) && !pie.HasSplit)
     {
         gameWorld.Blackboard.PickupObject=gameObject;

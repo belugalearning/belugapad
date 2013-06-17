@@ -34,7 +34,12 @@ const NSString *matchNumbers=@"0123456789";
     return self;
 }
 
--(void)parseXML:(NSString*)xmlString
+-(void)parseXML:(NSString *)xmlString
+{
+    [self parseXML:xmlString withAutoDisable:NO];
+}
+
+-(void)parseXML:(NSString*)xmlString withAutoDisable:(BOOL)autoDisable
 {
     NSString *fullxml=[NSString stringWithFormat:@"<?xml version='1.0'?><root xmlns:b='http://zubi.me/namespaces/2012/BTXE'>%@</root>", xmlString];
     
@@ -44,7 +49,7 @@ const NSString *matchNumbers=@"0123456789";
     
     for (CXMLElement *e in doc.rootElement.children)
     {
-        [self parseElement:e withNSMap:nsmap];
+        [self parseElement:e withNSMap:nsmap withAutoDisable:autoDisable];
     }
 }
 
@@ -55,13 +60,19 @@ const NSString *matchNumbers=@"0123456789";
         NSString *s=[theString substringWithRange:NSMakeRange(i, 1)];
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
-            return YES;
+            //specifically fail on strings of format x:y
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]+" options:NSRegularExpressionCaseInsensitive error:nil];
+            int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
+            
+            return(c==0);
+            
+//            return YES;
         }
     }
     return NO;
 }
 
--(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap
+-(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap withAutoDisable:(BOOL)autoDisable
 {
 //    NSLog(@"parsing element %@", element.name);
     
@@ -78,15 +89,28 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
                 
-                NSString *sepEndChar=@"?!.,:;";
+                NSString *sepEndChar=@"?!.,:;%s";
                 NSString *newNextT=nil;
-                if([sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound)
+                
+                if(([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound) && ([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound))
+                {
+                    newNextT=[s substringFromIndex:s.length-2];
+                    s=[s substringToIndex:s.length-2];
+                }
+
+                else if([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound)
                 {
                     newNextT=[s substringFromIndex:s.length-1];
                     s=[s substringToIndex:s.length-1];
                 }
 
-                on.text=s;
+                //cast the string through a float covnersion to trim zeros
+                NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
+                NSNumber *n=[nf numberFromString:s];
+                NSString *trims=[NSString stringWithFormat:@"%g", [n floatValue]];
+                [nf release];
+                
+                on.text=trims;
                 on.enabled=YES;
                 on.interactive=NO;
 
@@ -128,6 +152,11 @@ const NSString *matchNumbers=@"0123456789";
         //also disable if a number picker
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
+        //no auto disable -- if it was declared as an object it should be interactive
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
+        
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
     
@@ -158,6 +187,12 @@ const NSString *matchNumbers=@"0123456789";
         
         oo.enabled=[self enabledBoolFor:element];
         [ParentGO.containerMgrComponent addObjectToContainer:oo];
+        
+        //auto disable
+        if(autoDisable) oo.interactive=NO;
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) oo.interactive=NO;
     }
     
     else if([element.name isEqualToString:BTXE_OI])
@@ -172,6 +207,12 @@ const NSString *matchNumbers=@"0123456789";
         if(hidden)oi.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         oi.enabled=[self enabledBoolFor:element];
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) oi.interactive=NO;
+        
+        //forced local disable if no tag
+        if(!tagNode) oi.interactive=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:oi];
     }
@@ -189,6 +230,9 @@ const NSString *matchNumbers=@"0123456789";
         CXMLNode *tagNode=[element attributeForName:@"preftag"];
         if(tagNode)ot.tag=tagNode.stringValue;
         
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
+        
         ot.enabled=NO;
 
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
@@ -196,10 +240,84 @@ const NSString *matchNumbers=@"0123456789";
     
     else if ([element.name isEqualToString:BTXE_ON])
     {
+        NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
+        
         SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
+        
         on.numberText=[[element attributeForName:@"number"] stringValue];
+//        NSNumber *n=(NSNumber*)[element attributeForName:@"number"];
+//        on.numberText=[NSString stringWithFormat:@"%g", [n floatValue]];
+        
         on.prefixText=[[element attributeForName:@"prefix"] stringValue];
         on.suffixText=[[element attributeForName:@"suffix"] stringValue];
+        
+        CXMLNode *num=[element attributeForName:@"numerator"];
+        if(num)
+        {
+            on.numerator=[nf numberFromString:[num stringValue]];
+            on.denominator=[nf numberFromString:[[element attributeForName:@"denominator"] stringValue]];
+            
+            CXMLNode *value=[element attributeForName:@"value"];
+            if(value) on.numberValue=[nf numberFromString:[value stringValue]];
+            else on.numberValue=[NSNumber numberWithFloat:[on.numerator floatValue] / [on.denominator floatValue]];
+            
+            CXMLNode *showAsMF=[element attributeForName:@"showAsMixedFraction"];
+            if(showAsMF)
+            {
+                on.showAsMixedFraction=[[[showAsMF stringValue] lowercaseString] isEqualToString:@"yes"];
+            }
+            else
+            {
+                on.showAsMixedFraction=NO;
+            }
+        }
+        else
+        {
+            //value is also used for percentages (for example)
+            CXMLNode *value=[element attributeForName:@"value"];
+            if(value) on.numberValue=[nf numberFromString:[value stringValue]];
+        }
+        
+        CXMLNode *pickerNumerator=[element attributeForName:@"pickerTargetNumerator"];
+        if(pickerNumerator)
+        {
+            on.pickerTargetNumerator=[nf numberFromString:[pickerNumerator stringValue]];
+            on.pickerTargetDenominator=[nf numberFromString:[[element attributeForName:@"pickerTargetDenominator"] stringValue]];
+            
+            CXMLNode *pickerFractionWhole=[element attributeForName:@"pickerTargetFractionWhole"];
+            if(pickerFractionWhole)
+                on.pickerTargetFractionWhole=[nf numberFromString:[pickerFractionWhole stringValue]];
+            
+            //decide on fraction whole part and allow equiv
+            
+            //assume we don't need the whole picker
+            on.showPickerFractionWhole=NO;
+            
+            //only disallow equiv if user specified
+            on.disallowEquivFractions=[self boolFor:@"disallowEquivFractions" on:element];
+            
+            //if num>denom and we're allow equivs, show whole part
+            if(([on.pickerTargetNumerator intValue] > [on.pickerTargetDenominator intValue]) && !on.disallowEquivFractions)
+                on.showPickerFractionWhole=YES;
+            
+            //if pickerTargetFractionWhole specified (regardless of disallows) show fraction picker
+            if(on.pickerTargetFractionWhole)
+                on.showPickerFractionWhole =YES;
+            
+            //show the mixed fraction result if the fraction whole is visible
+            //note that the b:on will override its show logic for the whole part based on the user's
+            // entry if showAsMixedFraction && showPickerFractionWhole -- it's just rendering what the user
+            // selected on the wheels
+            on.showAsMixedFraction=(on.showPickerFractionWhole);
+            
+            on.pickerFractionWholeTwoColumns=NO;
+            if(on.showPickerFractionWhole && on.pickerTargetFractionWhole)
+                if ([on.pickerTargetFractionWhole intValue] > 9) on.pickerFractionWholeTwoColumns=YES;
+            
+            if (!on.showPickerFractionWhole && !on.disallowEquivFractions && [on.pickerTargetNumerator intValue] > [on.pickerTargetDenominator intValue])
+                if([on.pickerTargetNumerator intValue] / [on.pickerTargetDenominator intValue] > 9)
+                   on.pickerFractionWholeTwoColumns=YES;
+        }
         
         CXMLNode *hidden=[element attributeForName:@"hidden"];
         if(hidden)on.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
@@ -208,12 +326,10 @@ const NSString *matchNumbers=@"0123456789";
         if(usepicker)
         {
             on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
-            
-            NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
+        
             NSString *at=[[element attributeForName:@"pickerTarget"] stringValue];
             NSNumber *n=[nf numberFromString:at];
             on.targetNumber=[n floatValue];
-            [nf release];
         }
         
         if([element attributeForName:@"numbermode"])
@@ -222,6 +338,17 @@ const NSString *matchNumbers=@"0123456789";
             on.numberMode=ParentGO.defaultNumbermode;
     
         on.enabled=[self enabledBoolFor:element];
+        
+        //explicit interactivity disable
+        on.interactive=![self boolFor:@"notinteractive" on:element];
+        
+        //auto disable
+        if(autoDisable && !usepicker) on.interactive=NO;
+        
+        //global interactivity disable
+        if(gameWorld.Blackboard.disableAllBTXEinteractions) on.interactive=NO;
+        
+        [nf release];
         
         [ParentGO.containerMgrComponent addObjectToContainer:on];
     }

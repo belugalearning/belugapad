@@ -10,6 +10,7 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+@class SGGameWorld;
 @class DWNBondObjectGameObject;
 @class DWNBondRowGameObject;
 @class DWNBondStoreGameObject;
@@ -26,6 +27,8 @@ typedef enum {
 {
     ToolHost *toolHost;
     DWGameWorld *gw;
+    SGGameWorld *sgw;
+    
     NSDictionary *problemDef;
     
     CGPoint winL;

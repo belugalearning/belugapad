@@ -8,12 +8,13 @@
 
 #import "cocos2d.h"
 #import "AppDelegate.h"
+#import "BelugaNewsViewController.h"
 
 @class Daemon;
 @class SGJmapMasteryNode;
 @class SGJmapNode;
 
-@interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, BelugaNewsDelegate>
 {
     float cx, cy, lx, ly;
     
@@ -73,7 +74,7 @@
 
 -(void)startTransitionToToolHostWithPos:(CGPoint)pos;
 -(void)setUtdLabel:(NSString*)toThisString;
--(BOOL) isPointInView:(CGPoint)testPoint;
-
+-(BOOL)isPointInView:(CGPoint)testPoint;
+-(void)newPanelWasClosed;
 
 @end

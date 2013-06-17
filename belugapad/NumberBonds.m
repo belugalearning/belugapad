@@ -23,6 +23,8 @@
 #import "UsersService.h"
 #import "AppDelegate.h"
 #import "InteractionFeedback.h"
+#import "SGGameWorld.h"
+#import "SGBtxeRow.h"
 
 @interface NumberBonds()
 {
@@ -59,7 +61,14 @@ static float kNBFontSizeLarge=35.0f;
         cy=ly / 2.0f;
         
         gw = [[DWGameWorld alloc] initWithGameScene:self];
+        sgw=[[SGGameWorld alloc]initWithGameScene:renderLayer];
+        sgw.Blackboard.IconRenderLayer=[toolHost returnBtxeLayer];
+        
         gw.Blackboard.inProblemSetup = YES;
+        sgw.Blackboard.inProblemSetup = YES;
+        
+        sgw.Blackboard.disableAllBTXEinteractions=YES;
+//        toolHost.disableDescGwBtxeInteractions=YES;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
@@ -83,6 +92,7 @@ static float kNBFontSizeLarge=35.0f;
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         gw.Blackboard.inProblemSetup = NO;
+        sgw.Blackboard.inProblemSetup = NO;
         
     }
     
@@ -236,8 +246,8 @@ static float kNBFontSizeLarge=35.0f;
     else
         dockMidSpacing=60.0f;
     
-    if([initCages count]>0)
-    {
+//    if([initCages count]>0)
+//    {
         NSString *middleAsset=[NSString stringWithFormat:@"/images/partition/NB_Dock_Middle%d.png",(int)dockMidSpacing];
         
         for(int i=0;i<dockSize;i++)
@@ -267,7 +277,7 @@ static float kNBFontSizeLarge=35.0f;
                 dockPieceYPos-=dockMidSpacing;
             
         }
-    }
+//    }
 
     // do stuff with our INIT_BARS (DWNBondRowGameObject)
     
@@ -337,35 +347,105 @@ static float kNBFontSizeLarge=35.0f;
             storeCanCreate[pogo.IndexPos]=NO;
         else
             storeCanCreate[pogo.IndexPos]=YES;
+        
+        NSString *labelString=nil;
+        NSString *raw=nil;
+        
+        if([[initCages objectAtIndex:i] objectForKey:LABEL])
+        {
             
-            if([[initCages objectAtIndex:i] objectForKey:LABEL])
+            raw=[[initCages objectAtIndex:i] objectForKey:LABEL];
+            
+            if(raw.length<3)
             {
-                float fontSize=0.0f;
-                if(pogo.Length<3)
-                    fontSize=kNBFontSizeSmall;
-                else
-                    fontSize=kNBFontSizeLarge;
+                //this can't have a <b:t> at the begining
                 
-                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:CHANGO fontSize:fontSize];
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
             }
-            
-            
-            if(!useBlockScaling){
-                pogo.IsScaled=YES;
-                pogo.NoScaleBlock=YES;
-                pogo.Position=ccp(20,initCageStartYPos-(pogo.IndexPos*dockMidSpacing));
+            else if([[raw substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else if([[raw substringToIndex:4] isEqualToString:@" <b:"])
+            {
+                raw=[NSString stringWithFormat:@"<b:t></b:t>%@", raw];
             }
             else
             {
-                pogo.Position=ccp(20,initCageStartYPos-(pogo.IndexPos*dockMidSpacing));
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
             }
             
-            pogo.MountPosition = pogo.Position;
+            //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
+            labelString=[NSString stringWithFormat:@"%@", raw];
+        
             
+//                
+//                float fontSize=0.0f;
+//                if(pogo.Length<3)
+//                    fontSize=kNBFontSizeSmall;
+//                else
+//                    fontSize=kNBFontSizeLarge;
+//                
+//                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:CHANGO fontSize:fontSize];
             
-            [currentVal addObject:pogo];
+        }
+        else{
+            labelString=[NSString stringWithFormat:@"%d",pogo.Length];
+        }
+        
+        if(labelString.length<3)
+        {
+            //this can't have a <b:t> at the begining
+            
+            //assume the string needs wrapping in b:t
+            labelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", labelString];
+        }
+        else if([[labelString substringToIndex:3] isEqualToString:@"<b:"])
+        {
+            //doesn't need wrapping
+        }
+        else
+        {
+            //assume the string needs wrapping in b:t
+            labelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", labelString];
+        }
+        
+        if(!useBlockScaling){
+            pogo.IsScaled=YES;
+            pogo.NoScaleBlock=YES;
+            pogo.Position=ccp(20,initCageStartYPos-(pogo.IndexPos*dockMidSpacing));
+        }
+        else
+        {
+            pogo.Position=ccp(20,initCageStartYPos-(pogo.IndexPos*dockMidSpacing));
+        }
+        
+        pogo.MountPosition = pogo.Position;
+        
+        
+        [currentVal addObject:pogo];
 
         [mountedObjects replaceObjectAtIndex:thisLength-1 withObject:currentVal];
+        
+        [pogo handleMessage:kDWsetupStuff];
+        
+        SGBtxeRow *row=[[SGBtxeRow alloc]initWithGameWorld:sgw andRenderLayer:(CCLayer*)pogo.BaseNode];
+        row.forceVAlignTop=NO;
+        row.rowWidth=100;
+        row.tintMyChildren=NO;
+        row.position=ccp((pogo.Length * 50) * 0.5f, 0);
+        pogo.labelString=labelString;
+        [row parseXML:labelString];
+        [row setupDraw];
+        [row inflateZindex];
+        
+        row.baseNode.zOrder+=10;
+        
+        [row tagMyChildrenForIntro];
+        
+        pogo.BTXELabel=row;
         
         if(showBadgesOnCages)
         {
@@ -431,8 +511,59 @@ static float kNBFontSizeLarge=35.0f;
         
         pogo.InitedObject=YES;
         
-        if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
-        else fillText=[NSString stringWithFormat:@"%d", insLength];
+        NSString *raw=nil;
+        NSString *labelString=nil;
+        
+        if([[initObjects objectAtIndex:i]objectForKey:LABEL]){
+            
+            raw=[[initObjects objectAtIndex:i] objectForKey:LABEL];
+            
+            if(raw.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
+            }
+            else if([[raw substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else if([[raw substringToIndex:4] isEqualToString:@" <b:"])
+            {
+                raw=[NSString stringWithFormat:@"<b:t></b:t>%@", raw];
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                raw=[NSString stringWithFormat:@"<b:t>%@</b:t>", raw];
+            }
+            
+            //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
+            labelString=[NSString stringWithFormat:@"%@", raw];
+            
+            if(labelString.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                labelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", labelString];
+            }
+            else if([[labelString substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                labelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", labelString];
+            }
+//            pogo.BTXELabel=row;
+
+            
+//            fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
+        }
+//        else fillText=[NSString stringWithFormat:@"%d", insLength];
         
         float fontSize=0.0f;
         if(pogo.Length<3)
@@ -448,6 +579,27 @@ static float kNBFontSizeLarge=35.0f;
         pogo.Position = prgo.Position;
         pogo.MountPosition = prgo.Position;
         [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
+        
+        NSLog(@"initObjects labelString: %@",labelString);
+        
+        [pogo handleMessage:kDWsetupStuff];
+        
+//        SGBtxeRow *row=[[SGBtxeRow alloc]initWithGameWorld:sgw andRenderLayer:renderLayer];
+        SGBtxeRow *row=[[SGBtxeRow alloc]initWithGameWorld:sgw andRenderLayer:(CCLayer*)pogo.BaseNode];
+        row.forceVAlignTop=NO;
+        row.rowWidth=100;
+        row.tintMyChildren=NO;
+//        row.position=[pogo.BaseNode convertToWorldSpace:ccp((pogo.Length * 50) * 0.5f, 0)];
+        row.position=ccp((pogo.Length * 50) * 0.5f, 0);
+        pogo.labelString=labelString;
+        [row parseXML:labelString];
+        [row setupDraw];
+        [row inflateZindex];
+        row.baseNode.zOrder+=10;
+        
+        [row tagMyChildrenForIntro];
+        
+        pogo.BTXELabel=row;
         
         [allRows addObject:prgo];
         [fillText release];
@@ -843,7 +995,7 @@ static float kNBFontSizeLarge=35.0f;
             else
                 fontSize=kNBFontSizeLarge;
             
-            newbar.Label=[CCLabelTTF labelWithString:pogo.Label.string fontName:CHANGO fontSize:fontSize];
+            //newbar.Label=[CCLabelTTF labelWithString:pogo.Label.string fontName:CHANGO fontSize:fontSize];
             
             
             
@@ -858,8 +1010,23 @@ static float kNBFontSizeLarge=35.0f;
             }
             
             newbar.MountPosition = newbar.Position;
-            
+            newbar.labelString=pogo.labelString;
             [newbar handleMessage:kDWsetupStuff];
+            
+            SGBtxeRow *row=[[SGBtxeRow alloc]initWithGameWorld:sgw andRenderLayer:(CCLayer*)newbar.BaseNode];
+            row.forceVAlignTop=NO;
+            row.rowWidth=100;
+            row.tintMyChildren=NO;
+            row.position=ccp((pogo.Length * 50) * 0.5f, 0);
+            [row parseXML:pogo.labelString];
+            [row setupDraw];
+            [row inflateZindex];
+            
+            row.baseNode.zOrder+=10;
+            
+            [row tagMyChildrenForIntro];
+            
+            newbar.BTXELabel=row;
         }
 
         //previously removex b/c of log perf - restored for testing with sans-Couchbase logging
@@ -1307,9 +1474,14 @@ static float kNBFontSizeLarge=35.0f;
         [toolHost doWinning];
     }
     else {
-        if(rejectMode==kProblemRejectOnCommit && rejectType==kProblemAutomatedTransition)[self resetProblemFromReject];
-        else if(rejectType==kProblemResetOnReject)[toolHost resetProblem];
-        else [toolHost doIncomplete];
+        if(rejectMode==kProblemRejectOnCommit && rejectType==kProblemAutomatedTransition){[self resetProblemFromReject];}
+        else if(rejectType==kProblemResetOnReject){
+            [toolHost doIncomplete];
+            [toolHost resetProblem];
+        }
+        else{
+            [toolHost doIncomplete];
+        }
     }
 }
 

@@ -44,6 +44,7 @@
 @synthesize DisplayNumberOffset;
 @synthesize DisplayNumberMultiplier;
 @synthesize DisplayNumberDP;
+@synthesize DisplayDenominator;
 
 -(void)readyRender
 {

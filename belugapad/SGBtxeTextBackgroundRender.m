@@ -135,10 +135,14 @@
     m.scaleX=(size.width-BTXE_OTBKG_WIDTH_OVERDRAW_PAD) / m.contentSize.width;
     
     ParentGO.size=CGSizeMake(size.width, m.contentSize.height);
-    //m.scaleY=size.height / m.contentSize.height;
     
-    //lh.scaleY=size.height / m.contentSize.height;
-    //rh.scaleY=size.height / m.contentSize.height;
+    if(self.useBespokeHeight)
+    {
+        m.scaleY=size.height / m.contentSize.height;
+        
+        lh.scaleY=size.height / m.contentSize.height;
+        rh.scaleY=size.height / m.contentSize.height;
+    }
     
     [self.backgroundNode setPosition:ccp(0, -3)];
     [lh setPosition:ccp(-((m.contentSize.width/2)*m.scaleX)-(lh.contentSize.width/2),0)];
@@ -182,11 +186,15 @@
     CCSprite *m=[backgroundNode.children objectAtIndex:1];
     CCSprite *rh=[backgroundNode.children objectAtIndex:2];
     m.scaleX=(size.width-BTXE_OTBKG_WIDTH_OVERDRAW_PAD) / m.contentSize.width;
-    //m.scaleY=size.height / m.contentSize.height;
-    
-    //lh.scaleY=size.height / m.contentSize.height;
-    //rh.scaleY=size.height / m.contentSize.height;
-    
+
+    if(self.useBespokeHeight)
+    {
+        m.scaleY=size.height / m.contentSize.height;
+        
+        lh.scaleY=size.height / m.contentSize.height;
+        rh.scaleY=size.height / m.contentSize.height;
+    }
+
     //[self.backgroundNode setPosition:ccp(0, -3)];
     [lh setPosition:ccp(-((m.contentSize.width/2)*m.scaleX)-(lh.contentSize.width/2),0)];
     [rh setPosition:ccp(((m.contentSize.width/2)*m.scaleX)+(rh.contentSize.width/2),0)];

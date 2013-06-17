@@ -164,7 +164,7 @@
     
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
+    if(textBackgroundRenderComponent.backgroundNode)[renderBase addChild:textBackgroundRenderComponent.backgroundNode];
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }

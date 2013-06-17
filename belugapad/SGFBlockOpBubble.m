@@ -52,6 +52,7 @@
         float lblXPos=MySprite.contentSize.width/2;
         float lblYPos=MySprite.contentSize.height/2;
         str=[SupportedOperators objectAtIndex:0];
+        if([str isEqualToString:@"/"])str=@"÷";
         Label=[CCLabelTTF labelWithString:str fontName:@"Chango" fontSize:40.0f];
         [Label setPosition:ccp(lblXPos,lblYPos)];
         [MySprite addChild:Label];

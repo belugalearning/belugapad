@@ -53,6 +53,8 @@
         if(!anch.mySprite) { 
             [self setSprite];
         }
+        else
+            [self updatePosition];
         
     }
     if(messageType==kDWdismantle)
@@ -61,7 +63,13 @@
     }
 }
 
-
+-(void)updatePosition
+{
+    if(anch.mySprite)
+    {
+        anch.mySprite.Position=anch.Position;
+    }
+}
 
 -(void)setSprite
 {    
@@ -86,7 +94,7 @@
 
         
 
-        [anch.RenderLayer addChild:anch.mySprite z:2];
+        [anch.RenderLayer addChild:anch.mySprite];
         
         [spriteFileName release];
     }

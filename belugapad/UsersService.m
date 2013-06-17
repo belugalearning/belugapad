@@ -22,7 +22,7 @@
 #import "NSData+GzipExtension.h"
 #import "Flurry.h"
 
-NSString * const kUsersWSBaseURL = @"http://app.zubi.me:3000";
+NSString * const kUsersWSBaseURL = @"https://ios-app-ws.belugalearning.com";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
@@ -49,6 +49,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     BOOL applyingDownloadedState;
     
     NSMutableArray *potentiallyExposedFeatureKeys;
+    NSArray *newsItems;
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
@@ -148,6 +149,12 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         currentUser = nil;
     }
     
+    if (newsItems)
+    {
+        [newsItems release];
+        newsItems = nil;
+    }
+    
     if (currentUserStateDatabase)
     {
         [currentUserStateDatabase close];
@@ -187,6 +194,7 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
         }
         currentUserStateDatabase = [[FMDatabase databaseWithPath:urStateDbPath] retain];
         
+        [self loadCurrentUserNewsItems];
         [self ensureStateDbConsistency];
         
         [self applyDownloadedStateUpdatesForCurrentUser];
@@ -647,6 +655,9 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     }
     for (UserNodeState* ns in [nodesStates allValues]) [ns saveState];
     
+    [currentUserStateDatabase open];
+    
+    // FEATURE KEYS
     NSMutableDictionary *urActivityFKEncounters = [NSMutableDictionary dictionary];
     rs = [allUsersDatabase executeQuery:@"SELECT key,encounters FROM FeatureKeys WHERE user_id=?", self.currentUserId];
     while ([rs next])
@@ -654,15 +665,12 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     
     if ([[urActivityFKEncounters allKeys] count])
     {
-        [currentUserStateDatabase open];
-        
         NSMutableDictionary *urStateFKEncounters = [NSMutableDictionary dictionary];
         rs = [currentUserStateDatabase executeQuery:@"SELECT * FROM FeatureKeys"];
         while ([rs next])
             [urStateFKEncounters setValue:[[rs stringForColumnIndex:1] objectFromJSONString] forKey:[rs stringForColumnIndex:0]];
         
         [currentUserStateDatabase beginTransaction];
-        
         for (NSString *key in [urActivityFKEncounters allKeys])
         {
             if ([urStateFKEncounters objectForKey:key])
@@ -676,10 +684,51 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
                 [currentUserStateDatabase executeUpdate:@"INSERT INTO FeatureKeys (key,encounters) VALUES (?,?);", key, [urActivityFKEncounters objectForKey:key]];
             }
         }
-        
         [currentUserStateDatabase commit];
-        [currentUserStateDatabase close];
     }
+    
+    // NEWS -- ensure that first_read col values are up-to-date
+    if (newsItems && [newsItems count])
+    {
+        // ensure that the News table exists - it should always exist!
+        rs = [currentUserStateDatabase executeQuery:@"SELECT 1 FROM sqlite_master WHERE type='table' AND name='News'"];
+        if ([rs next])
+        {
+            NSMutableDictionary *newsDict = [NSMutableDictionary dictionary];
+            for (NSDictionary *item in newsItems)
+            {
+                if ([item[@"firstRead"] boolValue])
+                {
+                    newsDict[item[@"id"]] = item[@"firstRead"];
+                }
+            }
+            
+            BOOL newsUpdates = NO;
+            rs = [currentUserStateDatabase executeQuery:@"SELECT id FROM News WHERE first_read IS NULL"];
+            
+            while ([rs next])
+            {
+                NSString *itemId = [rs stringForColumnIndex:0];
+                if (newsDict[itemId])
+                {
+                    if (!newsUpdates)
+                    {
+                        newsUpdates = YES;
+                        [currentUserStateDatabase beginTransaction];
+                    }
+                    [currentUserStateDatabase executeUpdate:@"UPDATE News SET first_read = ? WHERE id = ?", newsDict[itemId], itemId];
+                }
+            }
+            if (newsUpdates)
+            {
+                [currentUserStateDatabase commit];
+                [self loadCurrentUserNewsItems];
+            }
+        }
+    }
+    
+    
+    [currentUserStateDatabase close];
     
     // delete update file
     [[NSFileManager defaultManager] removeItemAtPath:updateFilePath error:nil];
@@ -962,6 +1011,63 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     return nil;
 }
 
+-(BOOL)shouldForceDisplayNews
+{
+    NSArray *news = [self currentUserDateOrderedNewsItems];
+    return [news count] && ![[news lastObject][@"firstRead"] boolValue];
+}
+
+-(void)loadCurrentUserNewsItems
+{
+    if (newsItems)
+    {
+        [newsItems release];
+        newsItems = nil;
+    }
+    
+    if (!currentUserId) return;
+    
+    NSMutableArray *items = [NSMutableArray array];
+    [currentUserStateDatabase open];
+    
+    FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT 1 FROM sqlite_master WHERE type='table' AND name='News'"];
+    if ([rs next])
+    {
+        rs = [currentUserStateDatabase executeQuery:@"SELECT id, date, html, first_read FROM News ORDER BY date"];
+        while([rs next])
+        {
+            [items addObject:@{
+                 @"id":          [rs stringForColumnIndex:0],
+                 @"date":        [rs stringForColumnIndex:1],
+                 @"html":        [rs stringForColumnIndex:2],
+                 @"firstRead":   [NSNumber numberWithDouble:[rs doubleForColumnIndex:3]]
+             }];
+        }
+    }
+    
+    [currentUserStateDatabase close];
+    newsItems = [items copy];
+}
+
+-(NSArray*)currentUserDateOrderedNewsItems
+{
+    if (!newsItems) [self loadCurrentUserNewsItems];
+    return newsItems;
+}
+
+-(void)recordNewsItemView:(NSString*)itemId
+{
+    [loggingService logEvent:BL_USER_VIEW_NEWS_ITEM withAdditionalData:@{ @"itemId": itemId }];
+    
+    [currentUserStateDatabase open];
+    [currentUserStateDatabase executeUpdate:@"UPDATE News SET first_read = ? WHERE first_read IS NULL AND id = ?"
+        , [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]]
+        , itemId];
+    [currentUserStateDatabase close];
+    
+    [self loadCurrentUserNewsItems];
+}
+
 -(void)dealloc
 {
     [potentiallyExposedFeatureKeys release];
@@ -980,6 +1086,11 @@ NSString * const kUsersWSChangeNickPath = @"app-users/change-user-nick";
     if (httpClient) [httpClient release];
     if (opQueue) [opQueue release];
     if (currentUserId) [currentUserId release];
+    if (newsItems)
+    {
+        [newsItems release];
+        newsItems = nil;
+    }
     [super dealloc];
 }
 

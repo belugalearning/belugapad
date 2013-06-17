@@ -76,6 +76,7 @@ static float kLabelOffset=0.0f;
     assNumberBackgrounds=[[NSMutableArray alloc] init];
     jumpSprites=[[NSMutableArray alloc] init];
     jumpLabels=[[NSMutableArray alloc] init];
+    fractLines=[[NSMutableArray alloc] init];
     
     //repeat the fors so we add the stuff in the right paint order
     
@@ -105,6 +106,13 @@ static float kLabelOffset=0.0f;
         [numback setVisible:YES];
         [assNumberBackgrounds addObject:numback];
         [gameWorld.Blackboard.ComponentRenderLayer addChild:numback z:4];
+    }
+    
+    for (int i=0; i<baseSegs; i++) {
+        CCSprite *ind=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_fractionsLine.png")];
+        [ind setVisible:NO];
+        [fractLines addObject:ind];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind z:5];
     }
     
 
@@ -154,6 +162,14 @@ static float kLabelOffset=0.0f;
         [labelLayer addChild:f z:99];
     }
     
+    denominatorLabels=[[NSMutableArray alloc] init];
+    for (int i=0; i<20; i++)
+    {
+        CCLabelBMFont *f=[CCLabelBMFont labelWithString:[NSString stringWithFormat:@"%d",ramblerGameObject.DisplayDenominator] fntFile:BUNDLE_FULL_PATH(@"/images/fonts/chango12.fnt")];
+        [denominatorLabels addObject:f];
+        [labelLayer addChild:f z:99];
+    }
+    
     if(ramblerGameObject.MarkerValuePositions)
     {
         markerSprites=[[NSMutableArray alloc] init];
@@ -188,6 +204,8 @@ static float kLabelOffset=0.0f;
     int bmlabelindex15=0;
     int bmlabelindex12=0;
     int bmlabelindex9=0;
+    int fractLinei=0;
+    int denomLabeli=0;
     
     //[labelLayer removeAllChildrenWithCleanup:YES];
     [[CCSpriteFrameCache sharedSpriteFrameCache] removeUnusedSpriteFrames];
@@ -208,6 +226,7 @@ static float kLabelOffset=0.0f;
         float diffInValFromCentre=iValue-ramblerGameObject.Value;
         CGPoint segStartPos=CGPointMake(ramblerGameObject.Pos.x + ramblerGameObject.TouchXOffset + (diffInValFromCentre / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize, ramblerGameObject.Pos.y);
         CGPoint segStartPosForLine = CGPointMake(segStartPos.x + ramblerGameObject.DefaultSegmentSize / 2.0f, segStartPos.y);
+        
         
         if(segStartPos.x > -ramblerGameObject.DefaultSegmentSize && segStartPos.x < (2*gameWorld.Blackboard.hostCX))
         {
@@ -278,6 +297,7 @@ static float kLabelOffset=0.0f;
 
             float thisNumber=(float)iValue;
             BOOL renderNotch=NO;
+            BOOL isFraction=NO;
             
             if(thisNumber==[ramblerGameObject.MinValue floatValue] && !ramblerGameObject.HideStartNotch) renderNotch=YES;
             else if(thisNumber==[ramblerGameObject.MaxValue floatValue] && !ramblerGameObject.HideEndNotch) renderNotch=YES;
@@ -353,7 +373,7 @@ static float kLabelOffset=0.0f;
                     
                     int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    NSString *writeText=[[NSString alloc] initWithFormat:@"%d", displayNum];
+                    NSString *writeText=[[[NSString alloc] initWithFormat:@"%d", displayNum] autorelease];
                     
                     if(ramblerGameObject.DisplayNumberDP>0 && ramblerGameObject.DisplayNumberMultiplier!=1)
                     {
@@ -362,6 +382,27 @@ static float kLabelOffset=0.0f;
                         NSString *fmt=[[NSString alloc] initWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
                         writeText=[NSString stringWithFormat:fmt, multDisplayNum];
                         [fmt release];
+
+                    }
+                    
+                    //append a display denominator (later a fraction) if there is one and this isn't zero
+                    if(displayNum>0 && ramblerGameObject.DisplayDenominator!=0)
+                    {
+                        if(displayNum==ramblerGameObject.DisplayDenominator){ writeText=@"1"; }
+                        else
+                        {
+                            isFraction=YES;
+                            CCSprite *fractLine=[fractLines objectAtIndex:fractLinei];
+                            fractLinei++;
+                            fractLine.visible=YES;
+                            
+                            [fractLine setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
+                            
+                            CCLabelBMFont *dLabel=[denominatorLabels objectAtIndex:denomLabeli];
+                            dLabel.visible=YES;
+                            denomLabeli++;
+                            [dLabel setPosition:CGPointMake(segStartPos.x, segStartPos.y-10-kLabelOffset)];
+                        }
                     }
                     
                     CCLabelBMFont *lex=nil;
@@ -378,17 +419,23 @@ static float kLabelOffset=0.0f;
                         lex=[bmlabels9 objectAtIndex:bmlabelindex9];
                         bmlabelindex9++;
                     }
+                    else if(isFraction){
+                        lex=[bmlabels12 objectAtIndex:bmlabelindex12];
+                        bmlabelindex12++;
+                        [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+7+kLabelOffset)];
+                    }
                     else{
                         lex=[bmlabels24 objectAtIndex:bmlabelindex24];
                         bmlabelindex24++;
                     }
 
+
+                    
                     lex.string=writeText;
                     lex.visible=YES;
-            
-                    [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                     
-                    [writeText release];
+                    if(!isFraction)
+                        [lex setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                 }
                 
                 //tidy up number rendering
@@ -472,6 +519,15 @@ static float kLabelOffset=0.0f;
     for(int i=bmlabelindex9; i<[bmlabels9 count]; i++)
     {
         [[bmlabels9 objectAtIndex:i] setVisible:NO];
+    }
+    for(int i=fractLinei; i<[fractLines count]; i++)
+    {
+        [[fractLines objectAtIndex:i] setVisible:NO];
+    }
+    
+    for(int i=denomLabeli; i<[denominatorLabels count]; i++)
+    {
+        [[denominatorLabels objectAtIndex:i] setVisible:NO];
     }
     
     

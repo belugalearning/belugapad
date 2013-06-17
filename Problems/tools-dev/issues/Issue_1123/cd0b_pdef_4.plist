@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PROBLEM_DESCRIPTION</key>
+    <string>&lt;b:t&gt;How many&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;9&quot;/&gt;&lt;b:t&gt;s are there in&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;9&quot;/&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+    <key>TOOL_KEY</key>
+    <string>NumberBonds</string>
+    <key>SOLUTION_MODE</key>
+    <integer>0</integer>
+    <key>SOLUTIONS</key>
+    <array/>
+    <key>INIT_BARS</key>
+    <array>
+      <dict>
+        <key>LOCKED</key>
+        <true/>
+        <key>LENGTH</key>
+        <integer>10</integer>
+      </dict>
+      <dict>
+        <key>LOCKED</key>
+        <false/>
+        <key>LENGTH</key>
+        <integer>10</integer>
+      </dict>
+      <dict>
+        <key>LOCKED</key>
+        <false/>
+        <key>LENGTH</key>
+        <integer>10</integer>
+      </dict>
+      <dict>
+        <key>LOCKED</key>
+        <false/>
+        <key>LENGTH</key>
+        <integer>10</integer>
+      </dict>
+    </array>
+    <key>INIT_OBJECTS</key>
+    <array>
+      <dict>
+        <key>LABEL</key>
+        <string>&lt;b:on numerator=&quot;5&quot; denominator=&quot;9&quot;/&gt;</string>
+        <key>PUT_IN_ROW</key>
+        <integer>0</integer>
+        <key>LENGTH</key>
+        <integer>10</integer>
+      </dict>
+    </array>
+    <key>EVAL_MODE</key>
+    <integer>1</integer>
+    <key>INIT_CAGES</key>
+    <array>
+      <dict>
+        <key>LENGTH</key>
+        <integer>2</integer>
+        <key>LABEL</key>
+        <string>&lt;b:on numerator=&quot;1&quot; denominator=&quot;9&quot;/&gt;</string>
+        <key>QUANTITY</key>
+        <integer>18</integer>
+      </dict>
+      <dict>
+        <key>LENGTH</key>
+        <integer>4</integer>
+        <key>LABEL</key>
+        <string>&lt;b:on numerator=&quot;2&quot; denominator=&quot;9&quot;/&gt;</string>
+        <key>QUANTITY</key>
+        <integer>18</integer>
+      </dict>
+      <dict>
+        <key>LENGTH</key>
+        <integer>6</integer>
+        <key>LABEL</key>
+        <string>&lt;b:on numerator=&quot;3&quot; denominator=&quot;9&quot;/&gt;</string>
+        <key>QUANTITY</key>
+        <integer>18</integer>
+      </dict>
+      <dict>
+        <key>LENGTH</key>
+        <integer>8</integer>
+        <key>LABEL</key>
+        <string>&lt;b:on numerator=&quot;4&quot; denominator=&quot;9&quot;/&gt;</string>
+        <key>QUANTITY</key>
+        <integer>18</integer>
+      </dict>
+      <dict>
+        <key>LENGTH</key>
+        <integer>10</integer>
+        <key>LABEL</key>
+        <string>&lt;b:on numerator=&quot;5&quot; denominator=&quot;9&quot;/&gt;</string>
+        <key>QUANTITY</key>
+        <integer>18</integer>
+      </dict>
+    </array>
+    <key>NUMBER_PICKER</key>
+    <dict>
+      <key>NUMBER_PICKER_DESCRIPTION</key>
+      <string>&lt;b:t&gt;How many&lt;/b:t&gt;&lt;b:on numerator=&quot;1&quot; denominator=&quot;9&quot;/&gt;&lt;b:t&gt;are there in&lt;/b:t&gt;&lt;b:on numerator=&quot;5&quot; denominator=&quot;9&quot;/&gt;&lt;b:t&gt;?&lt;/b:t&gt;</string>
+      <key>PICKER_LAYOUT</key>
+      <integer>1</integer>
+      <key>PICKER_ORIGIN_X</key>
+      <integer>0</integer>
+      <key>PICKER_ORIGIN_Y</key>
+      <integer>0</integer>
+      <key>SHOW_DROPBOX</key>
+      <true/>
+      <key>PICKER_EVAL_MODE</key>
+      <integer>1</integer>
+      <key>EVAL_VALUE</key>
+      <integer>5</integer>
+    </dict>
+    <key>SHOW_BADGES</key>
+    <false/>
+  </dict>
+</plist>

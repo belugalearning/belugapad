@@ -85,6 +85,10 @@
 @protocol Value <NSObject>
 
 @property (readonly) NSNumber *value;
+@property (retain) NSNumber *numerator;
+@property (retain) NSNumber *denominator;
+@property (retain) NSNumber *numberValue;
+@property (retain) NSNumber *pickedFractionWholeExplicit;
 
 @end
 
@@ -162,7 +166,12 @@
 
 @property float targetNumber;
 @property BOOL usePicker;
-
+@property (retain) NSNumber *pickerTargetNumerator;
+@property (retain) NSNumber *pickerTargetDenominator;
+@property (retain) NSNumber *pickerTargetFractionWhole;
+@property BOOL showPickerFractionWhole;
+@property BOOL pickerFractionWholeTwoColumns;
+@property BOOL disallowEquivFractions;
 
 @end
 

@@ -82,7 +82,7 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         gw.Blackboard.inProblemSetup = NO;
     }
@@ -222,6 +222,7 @@
     nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
     nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
     solutionsDef=[pdef objectForKey:SOLUTIONS];
+    traceOriginalShapes=[[pdef objectForKey:TRACE_ORIGINAL_SHAPES]boolValue];
     
     numberWheelComponents=[[NSString stringWithFormat:@"%d", solutionNumber] length];
     
@@ -275,6 +276,21 @@
     if(drawMode==2)
         showDraggableBlock=NO;
     
+    if(evalType==kProblemGridMultiplication && (!initObjects||[initObjects count]==0))
+    {
+        showDraggableBlock=NO;
+        drawMode=1;
+        disableDrawing=YES;
+        startX=0;
+        startY=10;
+
+        hiddenRows=[[NSMutableDictionary alloc]init];
+        [hiddenRows setValue:@"YES" forKey:@"12"];
+        [hiddenRows setValue:@"YES" forKey:@"13"];
+        [hiddenRows setValue:@"YES" forKey:@"14"];
+        [hiddenRows setValue:@"YES" forKey:@"15"];
+    }
+    
     if(showDraggableBlock)
         [usersService notifyStartingFeatureKey:@"DOTGRID_DRAG_TO_CREATE_BLOCK"];
         
@@ -283,7 +299,8 @@
     
     if(evalType==kProblemSumOfFractions)
         [usersService notifyStartingFeatureKey:@"DOTGRID_EVAL_SUM_FRACTIONS"];
-
+    else if(evalType==kProblemGridMultiplication)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_GRID_MULTIPLICATION"];
 }
 
 -(void)populateGW
@@ -393,6 +410,7 @@
         [dragBlock setPosition:ccp(55,550)];
         [renderLayer addChild:dragBlock];
     }
+
 
     
     if(evalType==kProblemNonProportionalGrid)
@@ -1015,6 +1033,9 @@
                 shape.ShapeX=fabsf(firstdrawn.myXpos-lastDrawn.myXpos);
                 shape.ShapeY=fabsf(firstdrawn.myYpos-lastDrawn.myYpos);
                 
+                //tell shape to draw labels (to get around setup not have anchor and size info)
+//                [shape handleMessage:kDWshapeDrawLabels];
+                
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
                     [t handleMessage:kDWsetupStuff];
@@ -1114,8 +1135,6 @@
         [shape.RenderLayer addChild:shape.hintArrowX];
         [shape.RenderLayer addChild:shape.hintArrowY];
     }
-    
-    int numberCounted=0;
 
 
         for(int i=0;i<[anchors count];i++)
@@ -1137,16 +1156,26 @@
             // if we have pre counting tiles on
             if(preCountedTiles){
 
-                if(numberCounted<[preCountedTiles count]) 
+                for(NSDictionary *thisTile in preCountedTiles)
                 {
-                    NSDictionary *thisTile=[preCountedTiles objectAtIndex:numberCounted];              
-                
                     if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
                     {
-                        numberCounted++;
+//                        numberCounted++;
                         tile.Selected=YES;
+                        break;
                     }
                 }
+//                
+//                if(numberCounted<[preCountedTiles count]) 
+//                {
+//                    NSDictionary *thisTile=[preCountedTiles objectAtIndex:numberCounted];              
+//                
+//                    if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
+//                    {
+//                        numberCounted++;
+//                        tile.Selected=YES;
+//                    }
+//                }
 
             }
             
@@ -1178,7 +1207,15 @@
                 [mvhandle release];
 
             }
-            
+
+            if(traceOriginalShapes && gw.Blackboard.inProblemSetup)
+            {
+                NSString *filename=[NSString stringWithFormat:@"/images/dotgrid/DG_Trace_Sq%d.png", spaceBetweenAnchors];
+                CCSprite *traceShape=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(filename)];
+                traceShape.position=tile.Position;
+                traceShape.opacity=120;
+                [renderLayer addChild:traceShape z:1000];
+            }
 
             [tile release];
         }
@@ -1360,8 +1397,8 @@
                 DWNWheelGameObject *w=[[DWNWheelGameObject alloc] autorelease];
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
-                w.RenderLayer=renderLayer;
-                w.Position=ccp(lx-140,(ly-150)-185*[numberWheels count]);
+                w.RenderLayer=anchorLayer;
+                w.Position=ccp(lx-140,(ly-300)-185*[numberWheels count]);
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
@@ -1370,12 +1407,18 @@
                 w.CountBubbleRenderLayer=anchorLayer;
                 
                 if(s.ShapeX>0 && s.ShapeY>0){
-                    w.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g x %g", s.ShapeX, s.ShapeY] fontName:SOURCE fontSize:20.0f];
+                    w.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g x %g", s.ShapeX, s.ShapeY] fontName:CHANGO fontSize:20.0f];
+                    [w.Label setColor:ccBLACK];
+                    [w.Label setAnchorPoint:ccp(0,0.5)];
+                    
+                    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/Number_Wheel_Label.png")];
+                    [s setPosition:ccp(35,10)];
+                    [w.Label addChild:s z:-1];
                     if(gw.Blackboard.inProblemSetup){
                         [w.Label setTag:2];
                         [w.Label setOpacity:0];
                     }
-                    [w.RenderLayer addChild:w.Label];
+                    [w.RenderLayer addChild:w.Label z:20];
                 }
                 [w handleMessage:kDWsetupStuff];
                 [w handleMessage:kDWupdateLabels];
@@ -1404,13 +1447,19 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     
-    w.RenderLayer=renderLayer;
+    w.RenderLayer=anchorLayer;
     w.Components=numberWheelComponents;
-    w.Position=ccp(lx-140,(ly-120)-200*[numberWheels count]);
+    w.Position=ccp(lx-140,(ly-280)-200*[numberWheels count]);
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
     w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasCountBubble=NO;
-    w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
+    w.Label=[CCLabelTTF labelWithString:@"Total" fontName:CHANGO fontSize:20.0f];
+    [w.Label setColor:ccBLACK];
+    [w.Label setAnchorPoint:ccp(0,0.5)];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/Number_Wheel_Label.png")];
+    [s setPosition:ccp(35,10)];
+    [w.Label addChild:s z:-1];
     [w.RenderLayer addChild:w.Label];
     [w handleMessage:kDWsetupStuff];
     [w handleMessage:kDWupdateLabels];
@@ -1430,7 +1479,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
     
-    if(!CGRectContainsPoint(CGRectMake(700,460,324,308), location) && toolHost.pickerView)
+    if(!CGRectContainsPoint(CGRectMake(700,460,324,308), location) && [toolHost isShowingPickerLayer])
         return;
     
     if([gw.Blackboard.SelectedObjects count]>0)
@@ -1471,7 +1520,8 @@
             
             [curShape handleMessage:kDWresizeShape];
                 
-             
+            //reatin current anchor position
+            pickupAnchorPoint=((DWDotGridAnchorGameObject*)gw.Blackboard.CurrentHandle).Position;
                 
             return;
         }
@@ -1621,14 +1671,23 @@
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=NO;
     }
     
-    if(gameState==kResizeShape)
-    {
+    if(gameState==kResizeShape && !(evalType==kProblemGridMultiplication && (location.x < 104 || location.y>413)))
+        {
+        
+        
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_block_resized.wav")];
         DWDotGridHandleGameObject * cHandle=(DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle;
         if(!useShapeGroups)
             [self checkAnchorsOfExistingShape:cHandle.myShape];
         else
             [self checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)cHandle.myShape.shapeGroup];
+    }
+    else if(gameState==kResizeShape && evalType==kProblemGridMultiplication)
+    {
+        //reset anchor position
+        DWDotGridHandleGameObject *cHandle=(DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle;
+        cHandle.Position=pickupAnchorPoint;
+        [cHandle handleMessage:kDWupdateSprite andPayload:nil withLogLevel:0];
     }
     
     if(showMoreOrLess)
@@ -1715,6 +1774,9 @@
     
     if(evalMode==kProblemEvalAuto)[self evalProblem];
 
+    if(evalType==kProblemGridMultiplication)
+        [gw handleMessage:kDWshapeDrawLabels andPayload:nil withLogLevel:0];
+    
     [self setTouchVarsToOff];
 }
 

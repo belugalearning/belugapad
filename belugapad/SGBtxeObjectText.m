@@ -20,14 +20,14 @@
 @synthesize enabled, interactive, tag;
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
-@synthesize usePicker;
+//@synthesize usePicker;
 @synthesize mount;
 @synthesize hidden;
 @synthesize assetType;
 @synthesize container;
 @synthesize backgroundType;
 @synthesize rowWidth;
-@synthesize targetNumber;
+//@synthesize targetNumber;
 @synthesize disableTrailingPadding;
 
 // LogPolling properties
@@ -48,7 +48,7 @@
         tag=@"";
         enabled=YES;
         interactive=YES;
-        usePicker=NO;
+//        usePicker=NO;
         backgroundType=@"Tile";
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
@@ -73,7 +73,7 @@
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
     dupe.assetType=self.assetType;
-    dupe.usePicker=self.usePicker;
+//    dupe.usePicker=self.usePicker;
     dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
@@ -205,7 +205,7 @@
     [textRenderComponent setupDraw];
     
     //don't show the label if it's not enabled
-    if(!self.enabled || self.usePicker)
+    if(!self.enabled)
     {
         textRenderComponent.label.visible=NO;
         textRenderComponent.label0.visible=NO;

@@ -30,6 +30,8 @@
 //searchable
 @synthesize searchMatchString;
 
+@synthesize searchFlagCount;
+
 @synthesize flip;
 
 @synthesize ustate;

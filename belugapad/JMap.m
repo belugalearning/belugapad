@@ -466,7 +466,7 @@ typedef enum  {
         //node position
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
-        id<CouchDerived, Configurable, Selectable, Transform> newnode;
+        id<CouchDerived, Configurable, Selectable, Transform> newnode=nil;
         
         if([n._id isEqualToString:ac.lastViewedNodeId])
         {

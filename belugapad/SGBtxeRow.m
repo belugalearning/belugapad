@@ -63,6 +63,11 @@
     
 }
 
+-(void)changeVisibility:(BOOL)visibility
+{
+    //not implemented for rows
+}
+
 -(void)doUpdate:(ccTime)delta
 {
     

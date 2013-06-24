@@ -154,6 +154,9 @@ const NSString *matchNumbers=@"0123456789";
         
         //no auto disable -- if it was declared as an object it should be interactive
         
+        //explicit interactivity disable
+        ot.interactive=![self boolFor:@"notinteractive" on:element];
+        
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
         
@@ -188,6 +191,9 @@ const NSString *matchNumbers=@"0123456789";
         oo.enabled=[self enabledBoolFor:element];
         [ParentGO.containerMgrComponent addObjectToContainer:oo];
         
+        //explicit interactivity disable
+        oo.interactive=![self boolFor:@"notinteractive" on:element];
+        
         //auto disable
         if(autoDisable) oo.interactive=NO;
         
@@ -207,6 +213,10 @@ const NSString *matchNumbers=@"0123456789";
         if(hidden)oi.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         oi.enabled=[self enabledBoolFor:element];
+        
+        
+        //explicit interactivity disable
+        oi.interactive=![self boolFor:@"notinteractive" on:element];
         
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) oi.interactive=NO;

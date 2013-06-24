@@ -533,7 +533,7 @@
 -(BOOL)isUserAtEpisodeHead
 {
     //is the user on the head problem -- e.g. the last (current) problem in the episode
-    BOOL head=(episodeIndex>=[currentEpisode count]<1) || [currentEpisode count]==0;
+    BOOL head=(episodeIndex>=([currentEpisode count]-1)) || [currentEpisode count]==0;
     
     return head;
 }
@@ -545,11 +545,13 @@
     return [(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue];
 }
 
--(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData
+-(BOOL)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData
 {
     //key insertion to pipeline method -- attempt to insert things using inserters + repeat of current problem
     //progression to the inserted problems isn't actually handled here - this just inserts stuff
  
+    BOOL didInsert=NO;
+    
     //get list of inserters
     AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
     NSArray *inserterNameList=[ac.AdplineSettings objectForKey:@"INSERTER_ORDER"];
@@ -605,7 +607,7 @@
              withAdditionalData:@{ @"triggerData": triggerData, @"allDecisionsData:": allDecisionsData, @"inserter": (useThisInserter ? useThisInserter.inserterName : [NSNull null]) }];
     
     //if we found an inserter -- insert some stuff
-    if(useThisInserter)
+    if(useThisInserter && self.isUserAtEpisodeHead)
     {
         //open db for problem insert, inserter insert
         [usersService.allUsersDatabase open];
@@ -664,10 +666,14 @@
         [usersService.allUsersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, source_problem_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?, ?)", episodeInsertId, self.currentEpisodeId, p._id, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
         
         [usersService.allUsersDatabase close];
+        
+        didInsert=YES;
     }
     
     [allDecisionsData release];
     [inserters release];
+    
+    return didInsert;
 }
 
 -(NSArray*)getInsertersUsedForProblemId:(NSString*)seekProblemId inEpisodeId:(NSString*)seekEpisodeId

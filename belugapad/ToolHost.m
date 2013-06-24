@@ -539,6 +539,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)incrementScoreAndMultiplier
 {
+    if(!contentService.isUserAtEpisodeHead) return;
+    
     //increment the score if we're past init (e.g. in first scoring problem)
     if(multiplierStage>0)
     {

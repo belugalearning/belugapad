@@ -61,7 +61,7 @@ const NSString *matchNumbers=@"0123456789";
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
             //specifically fail on strings of format x:y
-            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]+" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]*[0-9]+" options:NSRegularExpressionCaseInsensitive error:nil];
             int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
             
             return(c==0);
@@ -115,17 +115,18 @@ const NSString *matchNumbers=@"0123456789";
                 on.interactive=NO;
 
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
-                
-                
+                                
                 if(newNextT)
                 {
-                    //set no trailing space on number
-                    on.disableTrailingPadding=YES;
+                    on.suffixText=newNextT;
                     
-                    //create text
-                    SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
-                    t.text=newNextT;
-                    [ParentGO.containerMgrComponent addObjectToContainer:t];
+//                    //set no trailing space on number
+//                    on.disableTrailingPadding=YES;
+//                    
+//                    //create text
+//                    SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
+//                    t.text=newNextT;
+//                    [ParentGO.containerMgrComponent addObjectToContainer:t];
                 }
             }
             else

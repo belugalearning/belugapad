@@ -61,7 +61,7 @@ const NSString *matchNumbers=@"0123456789";
         if([matchNumbers rangeOfString:s].location!=NSNotFound)
         {
             //specifically fail on strings of format x:y
-            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]+" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSRegularExpression *rx=[NSRegularExpression regularExpressionWithPattern:@"[0-9.]+[*,:;\\/!?%a-zA-Z-]+[0-9.]*[0-9]+" options:NSRegularExpressionCaseInsensitive error:nil];
             int c=[[rx matchesInString:theString options:0 range:NSMakeRange(0, [theString length])] count];
             
             return(c==0);
@@ -89,7 +89,7 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
                 
-                NSString *sepEndChar=@"?!.,:;%s";
+                NSString *sepEndChar=@"?!.,:;%s°C";
                 NSString *newNextT=nil;
                 
                 if(([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound) && ([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound))
@@ -115,17 +115,18 @@ const NSString *matchNumbers=@"0123456789";
                 on.interactive=NO;
 
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
-                
-                
+                                
                 if(newNextT)
                 {
-                    //set no trailing space on number
-                    on.disableTrailingPadding=YES;
+                    on.suffixText=newNextT;
                     
-                    //create text
-                    SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
-                    t.text=newNextT;
-                    [ParentGO.containerMgrComponent addObjectToContainer:t];
+//                    //set no trailing space on number
+//                    on.disableTrailingPadding=YES;
+//                    
+//                    //create text
+//                    SGBtxeText *t=[[[SGBtxeText alloc] initWithGameWorld:gameWorld] autorelease];
+//                    t.text=newNextT;
+//                    [ParentGO.containerMgrComponent addObjectToContainer:t];
                 }
             }
             else
@@ -153,6 +154,9 @@ const NSString *matchNumbers=@"0123456789";
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
         //no auto disable -- if it was declared as an object it should be interactive
+        
+        //explicit interactivity disable
+        ot.interactive=![self boolFor:@"notinteractive" on:element];
         
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) ot.interactive=NO;
@@ -188,6 +192,9 @@ const NSString *matchNumbers=@"0123456789";
         oo.enabled=[self enabledBoolFor:element];
         [ParentGO.containerMgrComponent addObjectToContainer:oo];
         
+        //explicit interactivity disable
+        oo.interactive=![self boolFor:@"notinteractive" on:element];
+        
         //auto disable
         if(autoDisable) oo.interactive=NO;
         
@@ -207,6 +214,10 @@ const NSString *matchNumbers=@"0123456789";
         if(hidden)oi.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         oi.enabled=[self enabledBoolFor:element];
+        
+        
+        //explicit interactivity disable
+        oi.interactive=![self boolFor:@"notinteractive" on:element];
         
         //global interactivity disable
         if(gameWorld.Blackboard.disableAllBTXEinteractions) oi.interactive=NO;
@@ -336,7 +347,14 @@ const NSString *matchNumbers=@"0123456789";
             on.numberMode=[[element attributeForName:@"numbermode"] stringValue];
         else
             on.numberMode=ParentGO.defaultNumbermode;
+        
+        
+        //explicit fraction pluralisation
+        on.pluraliseSpokenFraction=[self boolFor:@"pluraliseSpokenFraction" on:element];
     
+        //force a static background
+        on.showStaticBackground=[self boolFor:@"showStaticBackground" on:element];
+        
         on.enabled=[self enabledBoolFor:element];
         
         //explicit interactivity disable

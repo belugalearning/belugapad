@@ -127,6 +127,7 @@
 //@property BOOL isLargeObject;
 @property (retain) NSString *assetType;
 @property (retain) NSString *backgroundType;
+@property BOOL showStaticBackground;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;

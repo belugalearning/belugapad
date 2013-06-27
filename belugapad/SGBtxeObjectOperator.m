@@ -27,6 +27,8 @@
 @synthesize assetType;
 @synthesize backgroundType;
 
+@synthesize showStaticBackground;
+
 @synthesize disableTrailingPadding;
 
 // LogPolling properties

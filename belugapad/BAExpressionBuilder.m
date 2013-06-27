@@ -100,7 +100,7 @@ NSInteger gcd(NSInteger a, NSInteger b)
 	// the base is a random int (1-9)
 	NSInteger aRandomBase = randomIntInRange(2, 8);
 	// the exponenet is a random int (2-9)
-	NSInteger aRandomExponent;
+	NSInteger aRandomExponent=0;
 	if(aRandomBase <= 4) // exponent value (2-4)
 		aRandomExponent = randomIntInRange(2, 3);
 	else if(aRandomBase > 4 && aRandomBase <= 6) // exponent value (2-3)

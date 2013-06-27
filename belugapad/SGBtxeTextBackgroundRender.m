@@ -26,6 +26,13 @@
 
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour
 {
+    //if the thing is set to showStaticBackground, ignore colour changes
+    if([((id<NSObject>)ParentGO) conformsToProtocol:@protocol(MovingInteractive)])
+    {
+        id<MovingInteractive> pgomi=(id<MovingInteractive>)ParentGO;
+        if(pgomi.showStaticBackground) return;
+    }
+    
     for(CCSprite *s in backgroundNode.children)
     {
         [s setColor:thisColour];
@@ -71,7 +78,13 @@
     
     if([((id<NSObject>)ParentGO) conformsToProtocol:@protocol(MovingInteractive)])
     {
-        if(!((id<MovingInteractive>)ParentGO).interactive)return;
+        id<MovingInteractive> pgomi=(id<MovingInteractive>)ParentGO;
+        
+        //if the thing is not interactive, and it's not forced to show a static background, return
+        if(!pgomi.interactive && !pgomi.showStaticBackground) return;
+        
+//        if(!((id<MovingInteractive>)ParentGO).interactive)return;
+        
         assetType=((id<MovingInteractive>)ParentGO).assetType;
         
         backgroundType=((id<MovingInteractive>)ParentGO).backgroundType;

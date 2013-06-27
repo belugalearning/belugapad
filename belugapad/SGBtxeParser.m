@@ -89,7 +89,7 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
                 
-                NSString *sepEndChar=@"?!.,:;%s";
+                NSString *sepEndChar=@"?!.,:;%s°C";
                 NSString *newNextT=nil;
                 
                 if(([s length]>1 && [sepEndChar rangeOfString:[[s substringFromIndex:s.length-2] substringToIndex:1]].location!=NSNotFound) && ([s length]>0 && [sepEndChar rangeOfString:[s substringFromIndex:s.length-1]].location!=NSNotFound))

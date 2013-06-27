@@ -53,6 +53,7 @@
 @synthesize disallowEquivFractions;
 
 @synthesize pluraliseSpokenFraction;
+@synthesize showStaticBackground;
 
 @synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns, lastInputText;
 
@@ -625,7 +626,7 @@
 
 -(void)updateMySize
 {
-    if(self.textRenderComponent && self.interactive)
+    if(self.textRenderComponent && (self.interactive || self.showStaticBackground))
     {
         self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     }

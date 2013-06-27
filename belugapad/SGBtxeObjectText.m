@@ -30,6 +30,8 @@
 //@synthesize targetNumber;
 @synthesize disableTrailingPadding;
 
+@synthesize showStaticBackground;
+
 // LogPolling properties
 @synthesize logPollId, logPollType;
 -(NSString*)logPollType { return @"SGBtxeObjectText"; }

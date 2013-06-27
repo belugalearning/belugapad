@@ -351,6 +351,9 @@ const NSString *matchNumbers=@"0123456789";
         //explicit fraction pluralisation
         on.pluraliseSpokenFraction=[self boolFor:@"pluraliseSpokenFraction" on:element];
     
+        //force a static background
+        on.showStaticBackground=[self boolFor:@"showStaticBackground" on:element];
+        
         on.enabled=[self enabledBoolFor:element];
         
         //explicit interactivity disable

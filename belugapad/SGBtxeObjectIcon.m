@@ -24,6 +24,8 @@
 @synthesize backgroundType;
 @synthesize animatePos;
 
+@synthesize showStaticBackground;
+
 // LogPolling properties
 @synthesize logPollId, logPollType;
 -(NSString*)logPollType { return @"SGBtxeObjectIcon"; }

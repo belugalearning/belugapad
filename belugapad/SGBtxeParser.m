@@ -346,6 +346,10 @@ const NSString *matchNumbers=@"0123456789";
             on.numberMode=[[element attributeForName:@"numbermode"] stringValue];
         else
             on.numberMode=ParentGO.defaultNumbermode;
+        
+        
+        //explicit fraction pluralisation
+        on.pluraliseSpokenFraction=[self enabledBoolFor:element];
     
         on.enabled=[self enabledBoolFor:element];
         

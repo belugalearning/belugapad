@@ -1293,6 +1293,8 @@ static float kTimeToHintToolTray=0.0f;
     followParticle=nil;
     explodeParticle=nil;
     
+    if(wheelLayer) [wheelLayer removeAllChildrenWithCleanup:YES];
+    
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];

@@ -103,7 +103,7 @@
         
         //move position of selector
         selector.pos=CGPointMake(selector.BasePos.x - moveX, selector.BasePos.y - moveY);
-        [mySprite setPosition:selector.pos];
+//        [mySprite setPosition:selector.pos];
         
 //        [connectorSprite setOpacity:connectorOpacity];
         [selectionLabel setOpacity:connectorOpacity];
@@ -112,19 +112,19 @@
 
 -(void)setSprite
 {
-    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
-    if(!sname) sname=@"selector.png";
-    
-    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/numberline/%@", sname]))];
-    
-    //tagged for staged introduction into problem
-    if(gameWorld.Blackboard.inProblemSetup)
-    {
-        [mySprite setTag:2];
-        [mySprite setOpacity:0];
-    }
-    
-    [mySprite setPosition:ccp(selector.pos.x, selector.pos.y)];
+//    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
+//    if(!sname) sname=@"selector.png";
+//    
+//    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/numberline/%@", sname]))];
+//    
+//    //tagged for staged introduction into problem
+//    if(gameWorld.Blackboard.inProblemSetup)
+//    {
+//        [mySprite setTag:2];
+//        [mySprite setOpacity:0];
+//    }
+//    
+//    [mySprite setPosition:ccp(selector.pos.x, selector.pos.y)];
     
     
     //[[gameWorld GameScene].ForeLayer addChild:mySprite z:0];

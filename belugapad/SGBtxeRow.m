@@ -220,7 +220,10 @@
                     }
                     else
                     {
-                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                        if(rowString.length>0 && ![[rowString substringFromIndex:rowString.length-1] isEqualToString:@"s"])
+                            rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                        else
+                            rowString=[NSString stringWithFormat:@"%@ %@", rowString, thisItem];
                     }
                         
                 }
@@ -242,7 +245,10 @@
                     }
                     else
                     {
-                        rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                        if(rowString.length>0 && ![[rowString substringFromIndex:rowString.length-1] isEqualToString:@"s"])
+                            rowString=[NSString stringWithFormat:@"%@s %@", rowString, thisItem];
+                        else
+                            rowString=[NSString stringWithFormat:@"%@ %@", rowString, thisItem];
                     }
                 }
 

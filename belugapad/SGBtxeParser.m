@@ -349,7 +349,7 @@ const NSString *matchNumbers=@"0123456789";
         
         
         //explicit fraction pluralisation
-        on.pluraliseSpokenFraction=[self enabledBoolFor:element];
+        on.pluraliseSpokenFraction=[self boolFor:@"pluraliseSpokenFraction" on:element];
     
         on.enabled=[self enabledBoolFor:element];
         

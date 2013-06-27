@@ -16,7 +16,7 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Place the numbers below into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot;/&gt;&lt;b:t&gt;in the order 1, 2, 3. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;Place the numbers below into the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_SB_Drop&quot; notinteractive=&quot;yes&quot;/&gt;&lt;b:t&gt;in the order 1, 2, 3. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;30_commit&quot; notinteractive=&quot;yes&quot;/&gt;&lt;b:t&gt;.&lt;/b:t&gt;</string>
 		<string>&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;</string>
 	</array>
 </dict>

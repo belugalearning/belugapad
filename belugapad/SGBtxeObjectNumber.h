@@ -27,6 +27,7 @@
 @property (retain) NSString *numberText;
 @property (retain) NSString *suffixText;
 
+@property BOOL pluraliseSpokenFraction;
 
 @property BOOL showAsMixedFraction;
 

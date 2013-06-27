@@ -103,36 +103,36 @@
         
         //move position of selector
         selector.pos=CGPointMake(selector.BasePos.x - moveX, selector.BasePos.y - moveY);
-        [mySprite setPosition:selector.pos];
+//        [mySprite setPosition:selector.pos];
         
-        [connectorSprite setOpacity:connectorOpacity];
+//        [connectorSprite setOpacity:connectorOpacity];
         [selectionLabel setOpacity:connectorOpacity];
     }
 }
 
 -(void)setSprite
 {
-    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
-    if(!sname) sname=@"selector.png";
-    
-    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/numberline/%@", sname]))];
-    
-    //tagged for staged introduction into problem
-    if(gameWorld.Blackboard.inProblemSetup)
-    {
-        [mySprite setTag:2];
-        [mySprite setOpacity:0];
-    }
-    
-    [mySprite setPosition:ccp(selector.pos.x, selector.pos.y)];
+//    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
+//    if(!sname) sname=@"selector.png";
+//    
+//    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/numberline/%@", sname]))];
+//    
+//    //tagged for staged introduction into problem
+//    if(gameWorld.Blackboard.inProblemSetup)
+//    {
+//        [mySprite setTag:2];
+//        [mySprite setOpacity:0];
+//    }
+//    
+//    [mySprite setPosition:ccp(selector.pos.x, selector.pos.y)];
     
     
     //[[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
     
-    connectorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/selector-connector.png")];
-    [connectorSprite setPosition:CGPointMake(selector.pos.x, selector.pos.y-92)];
-    [connectorSprite setTag:3];
-    [connectorSprite setOpacity:0];
+//    connectorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/selector-connector.png")];
+//    [connectorSprite setPosition:CGPointMake(selector.pos.x, selector.pos.y-92)];
+//    [connectorSprite setTag:3];
+//    [connectorSprite setOpacity:0];
     //[[gameWorld GameScene].ForeLayer addChild:connectorSprite];
     
     

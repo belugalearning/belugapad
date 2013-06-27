@@ -539,6 +539,8 @@ static float kTimeToHintToolTray=0.0f;
 
 -(void)incrementScoreAndMultiplier
 {
+    if(!contentService.isUserAtEpisodeHead) return;
+    
     //increment the score if we're past init (e.g. in first scoring problem)
     if(multiplierStage>0)
     {
@@ -712,6 +714,7 @@ static float kTimeToHintToolTray=0.0f;
     //this problem will award multiplier if not subsequently reset
     hasResetMultiplier=NO;
     
+    BOOL modifyNewToReset=NO;
     
     if(adpSkipProblemAndInsert)
     {
@@ -719,7 +722,7 @@ static float kTimeToHintToolTray=0.0f;
         //todo: contentservice fail problem call
         
         //request that we insert problems in the pipeline
-        [contentService adaptPipelineByInsertingWithTriggerData:triggerData];
+        modifyNewToReset=![contentService adaptPipelineByInsertingWithTriggerData:triggerData];
         
         adpSkipProblemAndInsert=NO;
     }
@@ -729,18 +732,26 @@ static float kTimeToHintToolTray=0.0f;
     
     if(!breakOutIntroProblemFK)
     {
-        //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
-        [contentService gotoNextProblemInPipeline];
-        
-        
+                
         //check that the content service found a pdef (this will be the raw dynamic one)
-        if(contentService.currentPDef)
+        if(modifyNewToReset)
         {
-            [self loadProblem];
+            [self resetProblem];
         }
         else
         {
-            countUpToJmap=YES;
+            //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
+            [contentService gotoNextProblemInPipeline];
+
+            
+            if(contentService.currentPDef)
+            {
+                [self loadProblem];
+            }
+            else
+            {
+                countUpToJmap=YES;
+            }
         }
     }
     else
@@ -1281,6 +1292,8 @@ static float kTimeToHintToolTray=0.0f;
     
     followParticle=nil;
     explodeParticle=nil;
+    
+    if(wheelLayer) [wheelLayer removeAllChildrenWithCleanup:YES];
     
     [self tearDownQuestionTray];
     [problemDefLayer removeAllChildrenWithCleanup:YES];

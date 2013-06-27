@@ -15,7 +15,7 @@
 
 @class SGBtxeTextBackgroundRender;
 
-@interface SGBtxeObjectText : SGGameObject <Text, MovingInteractive, NumberPicker, Containable, FadeIn, LogPolling, LogPollPositioning>
+@interface SGBtxeObjectText : SGGameObject <Text, MovingInteractive, Containable, FadeIn, LogPolling, LogPollPositioning>
 {
     CCNode *renderBase;
     LoggingService *loggingService;

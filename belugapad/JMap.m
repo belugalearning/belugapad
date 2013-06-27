@@ -466,7 +466,7 @@ typedef enum  {
         //node position
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
-        id<CouchDerived, Configurable, Selectable, Transform> newnode;
+        id<CouchDerived, Configurable, Selectable, Transform> newnode=nil;
         
         if([n._id isEqualToString:ac.lastViewedNodeId])
         {
@@ -1451,6 +1451,25 @@ typedef enum  {
     [self evalProximityAcrossGW];
 }
 
+-(void)zoomToMapPointUnsafe:(CGPoint)mapPoint
+{
+    [loggingService logEvent:BL_JS_ZOOM_IN withAdditionalData:nil];
+    
+    zoomedOut=NO;
+    [backarrow setFlipX:NO];
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];
+    
+    CGPoint newpos=mapPoint;
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:newpos] rate:2.0f]];
+    
+    [gw handleMessage:kSGzoomIn];
+    
+    //needs immediate proximity check
+    [self evalProximityAcrossGW];
+}
+
 -(void)zoomToRegionView
 {
     [loggingService logEvent:BL_JS_ZOOM_OUT withAdditionalData:nil];
@@ -1626,7 +1645,14 @@ typedef enum  {
     
     if(zoomedOut)moveto=[BLMath MultiplyVector:moveto byScalar:REGION_ZOOM_LEVEL];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.75f position:moveto] rate:2.0f]];
+    if(zoomedOut)
+    {
+        [self zoomToMapPointUnsafe:ccp(400-node.Position.x, 530-node.Position.y)];
+    }
+    else
+    {
+        [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.75f position:moveto] rate:2.0f]];
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

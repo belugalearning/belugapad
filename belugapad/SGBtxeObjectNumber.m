@@ -52,6 +52,9 @@
 @synthesize pickerTargetFractionWhole;
 @synthesize disallowEquivFractions;
 
+@synthesize pluraliseSpokenFraction;
+@synthesize showStaticBackground;
+
 @synthesize numerator, denominator, pickedFractionWholeExplicit, pickerTargetNumerator, pickerTargetDenominator, showAsMixedFraction, pickerFractionWholeTwoColumns, lastInputText;
 
 // LogPolling properties
@@ -345,6 +348,8 @@
 
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour
 {
+    //todo: ignore if gray
+    
     [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
     
     // no equivilent for number dots
@@ -560,7 +565,7 @@
             else if([self.denominator intValue]==20)
                 denom=@"twentieth";
             
-            if([self.numerator intValue]>1) denom=[NSString stringWithFormat:@"%@s", denom];
+            if(([self.numerator intValue]>1) || self.pluraliseSpokenFraction) denom=[NSString stringWithFormat:@"%@s", denom];
             
             if([self.denominator intValue]>20){
                 denom=[NSString stringWithFormat:@" over %d", [self.denominator intValue]];
@@ -621,7 +626,7 @@
 
 -(void)updateMySize
 {
-    if(self.textRenderComponent && self.interactive)
+    if(self.textRenderComponent && (self.interactive || self.showStaticBackground))
     {
         self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
     }

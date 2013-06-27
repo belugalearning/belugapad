@@ -60,7 +60,7 @@
 
 -(void)quitPipelineTracking;
 
--(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
+-(BOOL)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
 -(NSString*)debugPipelineString;
 
 -(NSDictionary*)saveChangesToCurrentProblemPDef:(NSDictionary*)pdef;

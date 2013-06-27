@@ -13,6 +13,10 @@
 {
     id<Value> ParentGO;
     float spacing;
+    
+    CGSize lastSize;
+    int lastCount;
+    bool cacheSet;
 }
 @property (retain) CCNode *baseNode;
 @property (readonly) CGSize size;

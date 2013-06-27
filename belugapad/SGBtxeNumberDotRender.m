@@ -71,6 +71,8 @@
 
 -(CGSize)size
 {
+    if(cacheSet && lastCount==[ParentGO.value intValue]) return lastSize;
+    
     spacing=20.0f;
     id<MovingInteractive>pgo=(id<MovingInteractive>)ParentGO;
     if([pgo.assetType isEqualToString:@"Medium"]) spacing*=1.5f;
@@ -79,7 +81,11 @@
     int count=[ParentGO.value intValue];
     NSArray *positions=[NumberLayout physicalLayoutAcrossToNumber:count withSpacing:spacing];
     CGPoint s=[[positions lastObject] CGPointValue];
-    return CGSizeMake(fabsf(s.x) + 2*spacing, fabsf(s.y));
+    lastSize=CGSizeMake(fabsf(s.x) + 2*spacing, fabsf(s.y));
+    lastCount=count;
+    cacheSet=YES;
+    return lastSize;
+    
 //    return CGSizeMake(fabsf(s.x), fabsf(s.y));
 }
 

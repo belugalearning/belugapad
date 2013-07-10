@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EVAL_TYPE</key>
+	<string>ALL_PICKERS_CORRECT</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:on number=&quot;1&quot; suffix=&quot; foot&quot; notinteractive=&quot;yes&quot;/&gt;&lt;b:t&gt;is&lt;/b:t&gt;&lt;b:on number=&quot;12&quot; suffix=&quot; inches&quot; notinteractive=&quot;yes&quot;/&gt;&lt;b:t&gt;. So...&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;3&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;36&quot; suffix=&quot; inches&quot;/&gt;</string>
+		<string>&lt;b:on number=&quot;7&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;84&quot; suffix=&quot; inches&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;10&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;120&quot; suffix=&quot; inches&quot;/&gt;</string>
+		<string>&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;2&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;24&quot; suffix=&quot; inches&quot;/&gt;</string>
+		<string>&lt;b:on showAsMixedFraction=&quot;yes&quot; numerator=&quot;13&quot; denominator=&quot;2&quot; suffix=&quot; feet&quot;/&gt;&lt;b:oo value=&quot;=&quot;/&gt;&lt;b:on usePicker=&quot;yes&quot; pickerTarget=&quot;78&quot; suffix=&quot; inches&quot;/&gt;</string>
+	</array>
+</dict>
+</plist>
